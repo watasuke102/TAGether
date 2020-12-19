@@ -3,19 +3,29 @@ import Head  from 'next/head';
 import App, { Container } from 'next/app';
 import { PageTransition } from 'next-page-transitions';
 
+import Header from '../components/Header';
+
 export default class MyApp extends App {
   render() {
     const { Component, pageProps, router } = this.props
     return (
       <>
       <Head>
-        <title>Next app</title>
+        <title>TAGether</title>
       </Head>
+      <Header />
       <Container>
         <PageTransition timeout={500} classNames="page-transition">
           <Component {...pageProps} key={router.route} />
         </PageTransition>
-        <style jsx global>{`
+          <style jsx global>{`
+          @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@300&display=swap');
+          body {
+            margin: 15px;
+            font-family: 'M PLUS 1p', sans-serif;
+            background-color: #282c34;
+            color: #e1e2dc;
+          }          
           .page-transition-enter {
             opacity: 0;
           }
