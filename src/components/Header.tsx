@@ -39,7 +39,7 @@ export default class Header extends React.Component {
           }
 
           /* 縦幅が狭かったらロゴとボタンを同じ行に */
-          @media screen and (max-height: 500px) {
+          @media screen and (max-height: 600px) {
             .header {
               display: flex;
               justify-content: flex-end;

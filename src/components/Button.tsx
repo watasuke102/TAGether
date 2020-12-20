@@ -32,7 +32,7 @@ export default class Button extends React.Component<ButtonInfo> {
             text-align: center;
           }
           .button_icon>span {
-            font-size: 30px;
+            font-size: 25px;
             color: #ffffff;
             width:  auto;
             margin: 0px auto;
@@ -42,9 +42,11 @@ export default class Button extends React.Component<ButtonInfo> {
           .button_desc {
             text-align: center;
             margin: -10px auto;
+            font-size: 20px;
           }
 
           .button:hover{
+            cursor: default;
             background-color: #ffffff55;
             transition: 0.3s;
           }
@@ -54,13 +56,13 @@ export default class Button extends React.Component<ButtonInfo> {
           }
 
           /* 横幅が狭かったら説明テキストを非表示に */
-          @media screen and (max-width: 500px) {
+          @media screen and (max-width: 700px) {
             .button_desc {
               display: none;
             }
           }
           /* 横幅が広かったらアイコンと説明を横に並べる */
-          @media screen and (min-width: 800px) {
+          @media screen and (min-width: 900px) {
             .button {
               display: flex;
             }
@@ -70,7 +72,7 @@ export default class Button extends React.Component<ButtonInfo> {
           }
 
           /* 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に */
-          @media screen and (max-height: 500px) {
+          @media screen and (max-height: 600px) {
             .button {
               margin: auto;
             }
