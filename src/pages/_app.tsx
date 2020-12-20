@@ -25,7 +25,10 @@ export default class MyApp extends App {
             font-family: 'M PLUS 1p', sans-serif;
             background-color: #282c34;
             color: #e1e2dc;
-          }          
+          }
+          a {
+            color: #8181ff;
+          }
           .page-transition-enter {
             opacity: 0;
           }
