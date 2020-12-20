@@ -1,3 +1,11 @@
+// TAGether - Share self-made exam for classmates
+// Button.tsx
+//
+// CopyRight (c) 2020 Watasuke
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT SUSHI-WARE License.
+//
 import React from 'react';
 import Router from 'next/router'
 import { UrlObject } from 'url';
@@ -46,7 +54,7 @@ export default class Button extends React.Component<ButtonInfo> {
           }
 
           .button:hover{
-            cursor: default;
+            cursor: pointer;
             background-color: #ffffff55;
             transition: 0.3s;
           }
