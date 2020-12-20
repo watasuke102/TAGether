@@ -7,10 +7,10 @@ export default class Header extends React.Component {
       <header className="header">
         <h1>Tagether</h1>
         <nav className="buttons">
-          <Button url="/"        icon="fas fa-home" desc="Home" />
-          <Button url="/list"    icon="fas fa-book" desc="List" />
-          <Button url="/edit"    icon="fas fa-pen"  desc="Add/Edit" />
-          <Button url="/profile" icon="fas fa-user" desc="Profile" />
+          <Button url="/"        icon="fas fa-home" desc="ホーム" />
+          <Button url="/list"    icon="fas fa-book" desc="問題リスト" />
+          <Button url="/edit"    icon="fas fa-pen"  desc="問題の編集/作成" />
+          <Button url="/profile" icon="fas fa-user" desc="プロフィール" />
         </nav>
         <style jsx>{`
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
