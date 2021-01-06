@@ -8,25 +8,27 @@
 //
 import React from 'react';
 import { GetServerSideProps } from 'next'
-import GenerateList from '../api/LoadListFromDB'
+//import GenerateList from '../components/GenerateList'
+import Categoly from '../types/categoly'
 import ExamCard from '../components/Card';
 
-export default ({cards}) => {
-    return (
-      <div>
-        <h1>List</h1>
-        <ul>
-          {cards}
-        </ul>
-      </div>
+export default ({ data }) => {
+  let cards: object[] = [];
+  data.forEach(element => {
+    cards.push(<ExamCard title={element.title} desc={element.desc} />);
+  });
+  return (
+    <div>
+      <h1>List</h1>
+      <ul>
+        {cards}
+      </ul>
+    </div>
     )
-  }
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context.query);
-  let cards: object[] = [];
-    GenerateList().forEach(element => {
-      cards.push(<ExamCard title={element.title} desc={element.desc} />);
-    });
-  return {props:{cards}};
+  const res = await fetch(`http://api.watasuke.tk`);
+  const data = await res.json();
+  return {props:{data}};
 }
