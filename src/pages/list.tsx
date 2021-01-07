@@ -10,12 +10,13 @@ import React from 'react';
 import { GetServerSideProps } from 'next'
 //import GenerateList from '../components/GenerateList'
 import Categoly from '../types/categoly'
-import ExamCard from '../components/Card';
+import CategolyCard from '../components/Card';
 
 export default ({ data }) => {
   let cards: object[] = [];
-  data.forEach(element => {
-    cards.push(<ExamCard title={element.title} desc={element.desc} />);
+  const list: Categoly[] = data;
+  list.forEach(element => {
+    cards.push(<CategolyCard title={element.title} desc={element.desc} />);
   });
   return (
     <div>
@@ -24,11 +25,12 @@ export default ({ data }) => {
         {cards}
       </ul>
     </div>
-    )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(`http://api.watasuke.tk`);
+  let query: string = '';
+  const res = await fetch(`http://api.watasuke.tk`+query);
   const data = await res.json();
   return {props:{data}};
 }
