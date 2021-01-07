@@ -11,9 +11,9 @@ import React from 'react';
 export default class ExamCard extends React.Component<any, any> {
   render() {
     return (
-      <li>
+      <div>
         title: {this.props.title}, desc: {this.props.desc}
-      </li>
+      </div>
     )
   }
 }

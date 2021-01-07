@@ -8,7 +8,6 @@
 //
 import React from 'react';
 import { GetServerSideProps } from 'next'
-//import GenerateList from '../components/GenerateList'
 import Categoly from '../types/categoly'
 import CategolyCard from '../components/Card';
 
@@ -21,9 +20,7 @@ export default ({ data }) => {
   return (
     <div>
       <h1>List</h1>
-      <ul>
-        {cards}
-      </ul>
+      {cards}
     </div>
   );
 }
