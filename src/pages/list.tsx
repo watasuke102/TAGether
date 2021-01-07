@@ -16,7 +16,7 @@ export default ({ data }) => {
   let cards: object[] = [];
   const list: Categoly[] = data;
   list.forEach(element => {
-    cards.push(<CategolyCard title={element.title} desc={element.desc} />);
+    cards.push(<CategolyCard data={element} />);
   });
   return (
     <>

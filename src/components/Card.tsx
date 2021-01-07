@@ -8,13 +8,17 @@
 //
 import css from '../style/Card.module.css';
 import React from 'react';
+import Router from 'next/router'
 
-export default class ExamCard extends React.Component<any, any> {
+export default class ExamCard extends React.Component<any> {
   render() {
     return (
-      <div className={css.card}>
-        <p className={css.title}>{this.props.title}</p>
-        <p className={css.desc}> {this.props.desc} </p>
+      <div
+        className={css.card}
+        onClick={() => Router.push('categoly-detail?id='+this.props.data.id)}
+      >
+        <p className={css.title}>{this.props.data.title}</p>
+        <p className={css.desc}> {this.props.data.desc} </p>
       </div>
     )
   }
