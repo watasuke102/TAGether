@@ -27,7 +27,7 @@ export default ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let query: string = '';
-  if (context.query) {
+  if (context.query.id) {
     query = '?id='+context.query.id;
   }
   const res = await fetch(`http://api.watasuke.tk`+query);
