@@ -6,6 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
+import css from '../style/list.module.css'
 import React from 'react';
 import { GetServerSideProps } from 'next'
 import Categoly from '../types/categoly'
@@ -18,10 +19,10 @@ export default ({ data }) => {
     cards.push(<CategolyCard title={element.title} desc={element.desc} />);
   });
   return (
-    <div>
-      <h1>List</h1>
-      {cards}
-    </div>
+    <>
+    <h1>List</h1>
+    <div className={css.list}> {cards} </div>
+    </>
   );
 }
 

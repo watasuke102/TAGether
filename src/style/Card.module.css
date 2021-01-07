@@ -1,0 +1,36 @@
+/*
+ TAGether - Share self-made exam for classmates
+ Card.module.css
+
+ CopyRight (c) 2020 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+.card {
+  width: 300px;
+  margin: 10px 25px;
+  padding: 5px 10px;
+  box-shadow: 5px 5px 5px #1e1e1e;
+  background-color: #6b6b6baa;
+  color: #dbdbdb;
+  transition: 300ms;
+}
+.card:hover{
+  cursor: pointer;
+  background-color: #dbdbdbaa;
+  color: #353535;
+  transition: 300ms;
+}
+
+.title {
+  overflow-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 2px solid #dbdbdb;
+  font-size: 25px;
+  margin: 5px 0 0;
+}
+
+.desc {
+  font-size: 15px
+}
