@@ -8,7 +8,7 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .background {
-  position: absolute;
+  position: fixed;
   left: 0; top: 0;
   width: 100%; height: 100%;
   background-color: #00000088;
