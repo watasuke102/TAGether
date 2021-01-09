@@ -9,7 +9,7 @@
 import css from '../style/categoly-detail.module.css'
 import React from 'react';
 import { GetServerSideProps } from 'next'
-import Categoly from '../types/categoly'
+import Categoly from '../types/Categoly'
 import Tag from '../components/Tag'
 
 export default ({ data }) => {
