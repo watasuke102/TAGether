@@ -6,8 +6,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Button.module.css'
-import material_css from '../style/MaterialLikeButton.module.css'
+import css from '../style/Button/IconAndText.module.css'
+import material_css from '../style/Button/MaterialLike.module.css'
 import React from 'react';
 import ButtonInfo from '../types/ButtonInfo'
 
