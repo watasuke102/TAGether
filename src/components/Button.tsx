@@ -9,6 +9,7 @@
 import css from '../style/Button.module.css'
 import React from 'react';
 import Router from 'next/router'
+import ButtonInfo from '../types/ButtonInfo'
 
 function GetStyleFromButtonType(type: string) {
   if (type == 'icon_desc') {
@@ -19,15 +20,16 @@ function GetStyleFromButtonType(type: string) {
 
 export default class Button extends React.Component<any> {
   render() {
+    const info: ButtonInfo = this.props.info;
     return (
       <div
-        className={GetStyleFromButtonType(this.props.info.type)}
-        onClick={() => Router.push(this.props.info.url)}
+        className={GetStyleFromButtonType(info.type)}
+        onClick={() => Router.push(info.url)}
       >
         <div className={css.button_icon}>
-          <span className={this.props.info.icon}></span>
+          <span className={info.icon}></span>
         </div>
-        <span className={css.button_text}>{this.props.info.text}</span>
+        <span className={css.button_text}>{info.text}</span>
       </div>
     )
   }
