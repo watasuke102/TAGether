@@ -8,7 +8,6 @@
 //
 import css from '../style/Card.module.css';
 import React from 'react';
-import Router from 'next/router';
 import Tag from './Tag';
 import Modal from './Modal';
 import Categoly from '../types/Categoly';

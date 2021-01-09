@@ -9,8 +9,8 @@
 import css from '../style/list.module.css'
 import React from 'react';
 import { GetServerSideProps } from 'next'
-import Categoly from '../types/Categoly'
 import CategolyCard from '../components/Card';
+import Categoly from '../types/Categoly'
 
 export default function list({data}) {
   let cards: object[] = [];
