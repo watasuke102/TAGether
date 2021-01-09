@@ -8,7 +8,6 @@
 //
 import css from '../style/CategolyDetail.module.css'
 import React from 'react';
-import { GetServerSideProps } from 'next'
 import Categoly from '../types/Categoly'
 import Tag from './Tag'
 
@@ -26,7 +25,7 @@ export default function categoly_detail(props) {
   });
 
   return (
-    <>
+    <div className={css.container}>
       <h1>{data.title}</h1>
       <h2>{data.desc}</h2>
 
@@ -38,6 +37,6 @@ export default function categoly_detail(props) {
       <Tag tag={data.tag} />
 
       {exam_list}
-    </>
+    </div>
   );
 }

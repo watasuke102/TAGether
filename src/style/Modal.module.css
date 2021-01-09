@@ -1,0 +1,40 @@
+/*
+ TAGether - Share self-made exam for classmates
+ Modal.module.css
+
+ CopyRight (c) 2020-2021 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+.background {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: #00000088;
+  animation: bg_fade 0.5s;
+}
+@keyframes bg_fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.detail {
+  animation: detail_fade 0.5s;
+}
+@keyframes detail_fade {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+    scrollbar-width: none;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+    scrollbar-width: auto;
+  }
+}

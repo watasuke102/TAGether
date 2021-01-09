@@ -7,6 +7,13 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+.container {
+  width: 80vw;
+  height: 80vh;
+  margin: 50px auto;
+  padding: 10px 50px;
+  background-color: #646772;
+}
 .updated_at {
   display: inline-flex;
   height: 25px;

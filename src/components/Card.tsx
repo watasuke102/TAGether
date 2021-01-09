@@ -10,21 +10,31 @@ import css from '../style/Card.module.css';
 import React from 'react';
 import Router from 'next/router';
 import Tag from './Tag';
+import Modal from './Modal';
 import Categoly from '../types/Categoly';
-
-//Modal.setAppElement("#root");
+import ModalData from '../types/ModalData';
 
 export default function ExamCard(props) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const data: Categoly = props.data;
-    return (
+  // Modalに渡す用のデータ
+  const modalData: ModalData = {
+    data: data,
+    isOpen: isModalOpen,
+    close: () => setIsModalOpen(false)
+  };
+
+  return (
+    <>
       <div
         className={css.card}
-        onClick={() => Router.push('categoly-detail?id='+data.id)}
+        onClick={() => { setIsModalOpen(true) }}
       >
         <p className={css.title}>{data.title}</p>
         <p className={css.desc}> {data.desc} </p>
         <Tag tag={data.tag} />
       </div>
+      <Modal data={modalData} />
+    </>
   );
-  }
+}
