@@ -37,8 +37,6 @@ export default function categoly_detail(props) {
 
       <Tag tag={data.tag} />
 
-      {exam_list}
-
       <div className={css.buttons}>
         <Button info={{
           text: '閉じる', icon: 'fas fa-times',
