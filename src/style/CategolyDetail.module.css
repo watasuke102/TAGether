@@ -28,9 +28,9 @@
 }
 
 .buttons {
-  width: 80vw;
   position: absolute;
   display: flex;
   justify-content: space-between;
+  width: 80vw;
   bottom: 30px;
 }
