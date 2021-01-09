@@ -25,29 +25,38 @@
   transition: 0.3s;
 }
 .icon_desc:hover span{
-  color: #eeff52;
+  color: #52f9ff;
   transition: 0.3s;
 }
 
 /* マテリアルっぽいボタン */
 .material_like {
-  background-color: #eeff52;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  width: 120px;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid  #7766d8;
+  transition: 0.3s;
 }
 .material_like>span {
+  color: #e7e7e7;
   transition: 0.3s;
 }
 .material_like:hover{
   cursor: pointer;
-  background-color: #ffffff55;
+  background-color: #8e7aff3a;
   transition: 0.3s;
 }
 .material_like:hover span{
-  color: #eeff52;
+  color: #ffffff;
   transition: 0.3s;
 }
 
 /* ボタンのなかみ */
 .button_icon {
+  margin: auto 5px;
   text-align: center;
 }
 .button_icon>span {
