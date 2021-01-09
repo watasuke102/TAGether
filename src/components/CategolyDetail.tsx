@@ -6,17 +6,17 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/categoly-detail.module.css'
+import css from '../style/CategolyDetail.module.css'
 import React from 'react';
 import { GetServerSideProps } from 'next'
 import Categoly from '../types/Categoly'
-import Tag from '../components/Tag'
+import Tag from './Tag'
 
 
-export default function categoly_detail({data}) {
+export default function categoly_detail(props) {
   let exam_list: object[] = [];
-  const list: Categoly = data[0];
-  const exam = JSON.parse(list.list);
+  const data: Categoly = props.data;
+  const exam = JSON.parse(data.list);
   exam.forEach(element => {
     exam_list.push(
       <ul>
@@ -27,25 +27,17 @@ export default function categoly_detail({data}) {
 
   return (
     <>
-      <h1>{list.title}</h1>
-      <h2>{list.desc}</h2>
+      <h1>{data.title}</h1>
+      <h2>{data.desc}</h2>
 
       <div className={css.updated_at}>
         <div className='fas fa-clock'></div>
-        <p>{list.updated_at}</p>
+        <p>{data.updated_at}</p>
       </div>
 
-      <Tag tag={list.tag} />
+      <Tag tag={data.tag} />
 
       {exam_list}
     </>
   );
-}
-
-// APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const query = '?id='+context.query.id;
-  const res = await fetch(`http://api.watasuke.tk`+query);
-  const data = await res.json();
-  return {props:{data}};
 }
