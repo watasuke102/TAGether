@@ -14,11 +14,10 @@ import ButtonInfo from '../types/ButtonInfo'
 export default class Header extends React.Component {
   render() {
     let info: ButtonInfo[] = [];
-    info.push({ url: "/",        icon: "fas fa-home", desc: "ホーム" });
-    info.push({ url: "/list",    icon: "fas fa-book", desc: "問題リスト" });
-    info.push({ url: "/edit",    icon: "fas fa-pen",  desc: "問題の編集/作成" });
-    info.push({ url: "/profile", icon: "fas fa-user", desc: "プロフィール" });
-    console.log(info);
+    info.push({ type: "icon_desc", url: "/",        icon: "fas fa-home", text: "ホーム" });
+    info.push({ type: "icon_desc", url: "/list",    icon: "fas fa-book", text: "問題リスト" });
+    info.push({ type: "icon_desc", url: "/edit",    icon: "fas fa-pen",  text: "問題の編集/作成" });
+    info.push({ type: "icon_desc", url: "/profile", icon: "fas fa-user", text: "プロフィール" });
     let button_list: object[] = [];
     info.forEach(element => {
       button_list.push(<Button info={element} />);

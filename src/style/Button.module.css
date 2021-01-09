@@ -7,17 +7,46 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-.button {
+
+/* アイコンと説明、ヘッダに使用 */
+.icon_desc {
   padding: 5px 15px;
   border-radius: 25px;
   margin: 0px auto 5px;
   background-color: #ffffff00;
   transition: 0.3s;
 }
-.button>span {
+.icon_desc>span {
+  transition: 0.3s;
+}
+.icon_desc:hover{
+  cursor: pointer;
+  background-color: #ffffff55;
+  transition: 0.3s;
+}
+.icon_desc:hover span{
+  color: #eeff52;
   transition: 0.3s;
 }
 
+/* マテリアルっぽいボタン */
+.material_like {
+  background-color: #eeff52;
+}
+.material_like>span {
+  transition: 0.3s;
+}
+.material_like:hover{
+  cursor: pointer;
+  background-color: #ffffff55;
+  transition: 0.3s;
+}
+.material_like:hover span{
+  color: #eeff52;
+  transition: 0.3s;
+}
+
+/* ボタンのなかみ */
 .button_icon {
   text-align: center;
 }
@@ -29,47 +58,37 @@
   transition: 0.3s;
 }
 
-.button_desc {
+.button_text {
   text-align: center;
   margin: -10px auto;
   font-size: 20px;
 }
 
-.button:hover{
-  cursor: pointer;
-  background-color: #ffffff55;
-  transition: 0.3s;
-}
-.button:hover span{
-  color: #eeff52;
-  transition: 0.3s;
-}
-
 /* 横幅が狭かったら説明テキストを非表示に */
 @media screen and (max-width: 700px) {
-  .button_desc {
+  .button_text {
     display: none;
   }
 }
 /* 横幅が広かったらアイコンと説明を横に並べる */
 @media screen and (min-width: 900px) {
-  .button {
+  .icon_desc {
     display: flex;
   }
-  .button_desc {
+  .button_text {
     margin: auto 10px;
   }
 }
 
 /* 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に */
 @media screen and (max-height: 600px) {
-  .button {
+  .icon_desc {
     margin: auto;
   }
   .button_icon {
     margin: 0 10px;
   }
-  .button_desc {
+  .button_text {
     display: none;
   }
 }

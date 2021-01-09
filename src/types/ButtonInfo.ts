@@ -7,7 +7,8 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 export default interface ButtonInfo {
+  type: string,
   url:  string,
   icon: string,
-  desc: string
+  text: string
 }
