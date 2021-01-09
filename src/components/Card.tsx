@@ -9,6 +9,7 @@
 import css from '../style/Card.module.css';
 import React from 'react';
 import Router from 'next/router'
+import Tag from './Tag'
 
 export default class ExamCard extends React.Component<any> {
   render() {
@@ -19,6 +20,7 @@ export default class ExamCard extends React.Component<any> {
       >
         <p className={css.title}>{this.props.data.title}</p>
         <p className={css.desc}> {this.props.data.desc} </p>
+        <Tag tag={this.props.data.tag} />
       </div>
     )
   }

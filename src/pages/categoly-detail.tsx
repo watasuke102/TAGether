@@ -10,6 +10,7 @@ import css from '../style/categoly-detail.module.css'
 import React from 'react';
 import { GetServerSideProps } from 'next'
 import Categoly from '../types/categoly'
+import Tag from '../components/Tag'
 
 export default ({ data }) => {
   let exam_list: object[] = [];
@@ -26,11 +27,14 @@ export default ({ data }) => {
     <>
       <h1>{list.title}</h1>
       <h2>{list.desc}</h2>
+
       <div className={css.updated_at}>
         <div className='fas fa-clock'></div>
         <p>{list.updated_at}</p>
       </div>
-      <p>tag:{list.tag}</p>
+
+      <Tag tag={list.tag} />
+
       {exam_list}
     </>
   );
