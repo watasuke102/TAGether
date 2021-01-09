@@ -12,7 +12,7 @@ import { GetServerSideProps } from 'next'
 import Categoly from '../types/Categoly'
 import CategolyCard from '../components/Card';
 
-export default ({ data }) => {
+export default function list({data}) {
   let cards: object[] = [];
   const list: Categoly[] = data;
   list.forEach(element => {
@@ -26,6 +26,7 @@ export default ({ data }) => {
   );
 }
 
+// APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let query: string = '';
   if (context.query.id) {

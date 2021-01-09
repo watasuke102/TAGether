@@ -8,9 +8,11 @@
 //
 import React from 'react';
 
-export default () => (
-  <div>
-    <h1>profile</h1>
-    <p>整備中</p>
-  </div>
-)
+export default function profile() {
+  return (
+    <div>
+      <h1>profile</h1>
+      <p>整備中</p>
+    </div>
+  );
+}

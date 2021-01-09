@@ -8,9 +8,11 @@
 //
 import React from 'react';
 
-export default () => (
-  <div>
-    <h1>Edit</h1>
-    <p>整備中</p>
-  </div>
-)
+export default function edit() {
+  return (
+    <div>
+      <h1>Edit</h1>
+      <p>整備中</p>
+    </div>
+  );
+}

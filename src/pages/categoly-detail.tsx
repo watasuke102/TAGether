@@ -12,7 +12,8 @@ import { GetServerSideProps } from 'next'
 import Categoly from '../types/Categoly'
 import Tag from '../components/Tag'
 
-export default ({ data }) => {
+
+export default function categoly_detail({data}) {
   let exam_list: object[] = [];
   const list: Categoly = data[0];
   const exam = JSON.parse(list.list);
@@ -23,6 +24,7 @@ export default ({ data }) => {
         <li>{element.answer}</li>
       </ul>);
   });
+
   return (
     <>
       <h1>{list.title}</h1>
@@ -40,6 +42,7 @@ export default ({ data }) => {
   );
 }
 
+// APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const query = '?id='+context.query.id;
   const res = await fetch(`http://api.watasuke.tk`+query);
