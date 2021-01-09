@@ -23,9 +23,9 @@ export default function list({data}) {
     if (tmp.title.length > 25) {
       tmp.title = element.title.slice(0, 25) + '...';
     }
-    // 説明を140文字以内に
-    if (tmp.desc.length > 140) {
-      tmp.desc = element.desc.slice(0, 140) + '...';
+    // 説明を100文字以内に
+    if (tmp.desc.length > 100) {
+      tmp.desc = element.desc.slice(0, 100) + '...';
     }
     cards.push(<CategolyCard data={element} />);
   });

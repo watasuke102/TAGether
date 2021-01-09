@@ -36,5 +36,6 @@
 }
 
 .desc {
+  overflow-wrap: break-word;
   font-size: 15px
 }
