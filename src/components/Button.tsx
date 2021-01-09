@@ -19,33 +19,33 @@ function GetStyleFromButtonType(type: string) {
   return css.material_like;
 }
 
-export default class Button extends React.Component<any> {
-  render() {
-    const info: ButtonInfo = this.props.info;
-    if (info.type == 'icon_desc') {
-      return (
-        <div
-          className={css.button}
-          onClick={() => Router.push(info.url)}
-        >
-          <div className={css.button_icon}>
-            <span className={info.icon}></span>
-          </div>
-          <span className={css.button_text}>{info.text}</span>
-        </div>
-      );
-    } else {
-      return (
-        <div
-          className={material_css.button}
-          onClick={() => Router.push(info.url)}
-        >
-        <div className={material_css.button_icon}>
+export default function Button(props) {
+  const info = props.info;
+  // アイコンと説明テキストのボタン
+  if (info.type == 'icon_desc') {
+    return (
+      <div
+        className={css.button}
+        onClick={() => Router.push(info.url)}
+      >
+        <div className={css.button_icon}>
           <span className={info.icon}></span>
         </div>
-        <span className={material_css.button_text}>{info.text}</span>
-        </div>
-      );
-    }
+        <span className={css.button_text}>{info.text}</span>
+      </div>
+    );
+  } else {
+    // マテリアルっぽいボタン
+    return (
+      <div
+        className={material_css.button}
+        onClick={() => Router.push(info.url)}
+      >
+      <div className={material_css.button_icon}>
+        <span className={info.icon}></span>
+      </div>
+      <span className={material_css.button_text}>{info.text}</span>
+      </div>
+    );
   }
 }

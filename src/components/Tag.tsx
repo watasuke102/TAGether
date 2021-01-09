@@ -12,17 +12,15 @@ import React from 'react';
 function generate_tag(body: string) {
   return (
     <div className={css.tag}>{body}</div>
-  )
+  );
 }
 
-export default class Tag extends React.Component<any> {  
-  render() {
-    let tags: object[] = [];
-    this.props.tag.split(',').forEach(element => {
-      tags.push(generate_tag(element));
-    });
-    return (
-      <div className={css.tag_container}> {tags} </div>
-    )
-  }
+export default function Tag(props) {  
+  let tags: object[] = [];
+  props.tag.split(',').forEach(element => {
+    tags.push(generate_tag(element));
+  });
+  return (
+    <div className={css.tag_container}> {tags} </div>
+  );
 }

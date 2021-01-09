@@ -8,13 +8,15 @@
 //
 import css from '../style/Card.module.css';
 import React from 'react';
-import Router from 'next/router'
-import Tag from './Tag'
-import Categoly from '../types/Categoly'
+import Modal from 'react-modal';
+import Router from 'next/router';
+import Tag from './Tag';
+import Detail from './CategolyDetail'
+import Categoly from '../types/Categoly';
 
-export default class ExamCard extends React.Component<any> {
-  render() {
-    const data: Categoly = this.props.data;
+export default function ExamCard(props) {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const data:Categoly = props.data;
     return (
       <div
         className={css.card}
@@ -26,4 +28,3 @@ export default class ExamCard extends React.Component<any> {
       </div>
     )
   }
-}
