@@ -9,7 +9,6 @@
 import css from '../style/Button.module.css'
 import material_css from '../style/MaterialLikeButton.module.css'
 import React from 'react';
-import Router from 'next/router'
 import ButtonInfo from '../types/ButtonInfo'
 
 function GetStyleFromButtonType(type: string) {
@@ -20,13 +19,13 @@ function GetStyleFromButtonType(type: string) {
 }
 
 export default function Button(props) {
-  const info = props.info;
+  const info: ButtonInfo = props.info;
   // アイコンと説明テキストのボタン
   if (info.type == 'icon_desc') {
     return (
       <div
         className={css.button}
-        onClick={() => Router.push(info.url)}
+        onClick={() => info.onClick()}
       >
         <div className={css.button_icon}>
           <span className={info.icon}></span>
@@ -39,7 +38,7 @@ export default function Button(props) {
     return (
       <div
         className={material_css.button}
-        onClick={() => Router.push(info.url)}
+        onClick={() => info.onClick()}
       >
       <div className={material_css.button_icon}>
         <span className={info.icon}></span>

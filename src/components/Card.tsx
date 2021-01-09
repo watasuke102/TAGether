@@ -8,15 +8,15 @@
 //
 import css from '../style/Card.module.css';
 import React from 'react';
-import Modal from 'react-modal';
 import Router from 'next/router';
 import Tag from './Tag';
-import Detail from './CategolyDetail'
 import Categoly from '../types/Categoly';
+
+//Modal.setAppElement("#root");
 
 export default function ExamCard(props) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const data:Categoly = props.data;
+  const data: Categoly = props.data;
     return (
       <div
         className={css.card}
@@ -26,5 +26,5 @@ export default function ExamCard(props) {
         <p className={css.desc}> {data.desc} </p>
         <Tag tag={data.tag} />
       </div>
-    )
+  );
   }
