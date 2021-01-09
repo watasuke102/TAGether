@@ -1,0 +1,53 @@
+/*
+ TAGether - Share self-made exam for classmates
+ MaterialLikeButton.module.css
+
+ CopyRight (c) 2020 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+
+/* マテリアルっぽいボタン */
+.button {
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  width: 120px;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid  #7766d8;
+  transition: 0.3s;
+}
+.button>span {
+  color: #e7e7e7;
+  transition: 0.3s;
+}
+.button:hover{
+  cursor: pointer;
+  background-color: #8e7aff3a;
+  transition: 0.3s;
+}
+.button:hover span{
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+/* ボタンのなかみ */
+.button_icon {
+  margin: auto 5px;
+  text-align: center;
+}
+.button_icon>span {
+  font-size: 25px;
+  color: #ffffff;
+  width:  auto;
+  margin: 0px auto;
+  transition: 0.3s;
+}
+
+.button_text {
+  text-align: center;
+  margin: auto;
+  font-size: 22px;
+}

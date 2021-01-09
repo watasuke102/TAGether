@@ -9,48 +9,23 @@
 */
 
 /* アイコンと説明、ヘッダに使用 */
-.icon_desc {
+.button {
   padding: 5px 15px;
   border-radius: 25px;
   margin: 0px auto 5px;
   background-color: #ffffff00;
   transition: 0.3s;
 }
-.icon_desc>span {
+.button>span {
   transition: 0.3s;
 }
-.icon_desc:hover{
+.button:hover{
   cursor: pointer;
   background-color: #ffffff55;
   transition: 0.3s;
 }
-.icon_desc:hover span{
+.button:hover span{
   color: #52f9ff;
-  transition: 0.3s;
-}
-
-/* マテリアルっぽいボタン */
-.material_like {
-  display: inline-flex;
-  justify-content: center;
-  text-align: center;
-  width: 120px;
-  padding: 5px;
-  border-radius: 3px;
-  border: 1px solid  #7766d8;
-  transition: 0.3s;
-}
-.material_like>span {
-  color: #e7e7e7;
-  transition: 0.3s;
-}
-.material_like:hover{
-  cursor: pointer;
-  background-color: #8e7aff3a;
-  transition: 0.3s;
-}
-.material_like:hover span{
-  color: #ffffff;
   transition: 0.3s;
 }
 
@@ -81,7 +56,7 @@
 }
 /* 横幅が広かったらアイコンと説明を横に並べる */
 @media screen and (min-width: 900px) {
-  .icon_desc {
+  .button {
     display: flex;
   }
   .button_text {
@@ -91,7 +66,7 @@
 
 /* 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に */
 @media screen and (max-height: 600px) {
-  .icon_desc {
+  .button {
     margin: auto;
   }
   .button_icon {
