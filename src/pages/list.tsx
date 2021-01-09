@@ -15,7 +15,18 @@ import CategolyCard from '../components/Card';
 export default function list({data}) {
   let cards: object[] = [];
   const list: Categoly[] = data;
+  let tmp: Categoly;
   list.forEach(element => {
+    console.log('hi');
+    tmp = element;
+    // タイトルを25文字以内に
+    if (tmp.title.length > 25) {
+      tmp.title = element.title.slice(0, 25) + '...';
+    }
+    // 説明を140文字以内に
+    if (tmp.desc.length > 140) {
+      tmp.desc = element.desc.slice(0, 140) + '...';
+    }
     cards.push(<CategolyCard data={element} />);
   });
   return (
