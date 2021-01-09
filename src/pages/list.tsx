@@ -17,7 +17,6 @@ export default function list({data}) {
   const list: Categoly[] = data;
   let tmp: Categoly;
   list.forEach(element => {
-    console.log('hi');
     tmp = element;
     // タイトルを25文字以内に
     if (tmp.title.length > 25) {
