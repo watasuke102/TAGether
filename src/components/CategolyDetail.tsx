@@ -8,8 +8,9 @@
 //
 import css from '../style/CategolyDetail.module.css'
 import React from 'react';
-import Categoly from '../types/Categoly'
 import Tag from './Tag'
+import Button from './Button';
+import Categoly from '../types/Categoly'
 
 
 export default function categoly_detail(props) {
@@ -37,6 +38,14 @@ export default function categoly_detail(props) {
       <Tag tag={data.tag} />
 
       {exam_list}
+
+      <div className={css.buttons}>
+        <Button info={{text:'閉じる', onClick: () => props.close() , type: 'material'}} />
+        <Button info={{
+          text: 'この問題を解く', icon: 'fas fa-arrow-right',
+          onClick: () => props.close(), type: 'material'
+        }} />
+      </div>
     </div>
   );
 }

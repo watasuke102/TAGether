@@ -9,7 +9,6 @@
 import css from '../style/Modal.module.css';
 import React from 'react';
 import Detail from './CategolyDetail';
-import Button from './Button';
 import ModalData from '../types/ModalData';
 
 export default function ExamCard(props) {
@@ -22,10 +21,7 @@ export default function ExamCard(props) {
   return (
     <div className={css.background}>
       <div className={css.detail}>
-        <Detail data={data.data} />
-        <div className={css.button}>
-          <Button info={{text:'閉じる', onClick: () => data.close() , type: 'material'}} />
-        </div>
+        <Detail data={data.data} close={() => data.close()} />
       </div>
     </div>
   );

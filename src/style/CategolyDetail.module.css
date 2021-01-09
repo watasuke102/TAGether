@@ -8,6 +8,7 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .container {
+  position: relative;
   width: 80vw;
   height: 80vh;
   margin: 50px auto;
@@ -24,4 +25,12 @@
 }
 .updated_at>p {
   margin: 0 10px;
+}
+
+.buttons {
+  width: 80vw;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  bottom: 30px;
 }
