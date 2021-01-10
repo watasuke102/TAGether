@@ -16,3 +16,22 @@
   display: flex;
   justify-content: space-between;
 }
+
+.window {
+  width: 50vw;
+  margin: 50px auto;
+  padding: 30px 50px;
+  text-align: center;
+  background-color: #646772;
+}
+
+.window>h1 {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.window_buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 0 0;
+}

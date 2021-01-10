@@ -9,21 +9,23 @@
 import css from '../style/exam.module.css'
 import React from 'react';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps } from 'next';
+import Modal from '../components/Modal';
 import Button from '../components/Button';
+import ModalData from '../types/ModalData';
 
 export default class list extends React.Component {
-  public exam;
+  private exam;
   constructor(props) {
     super(props);
-    this.state = { index: 0, icon:'arrow-right', text: '次へ' };
+    this.state = { index: 0, icon:'arrow-right', text: '次へ' , isModalOpen: false};
     this.exam = JSON.parse(this.props.data[0].list);
   }
   // indexを増減する
   IncrementIndex() {
     // 終了ボタンを押したらlistに戻る
     if (this.state.index == this.exam.length - 1) {
-      Router.push('/list');
+      this.setState({ isModalOpen: true });
       return;
     }
     // 最後の問題であれば、ボタンの内容を変化させる
@@ -51,8 +53,34 @@ export default class list extends React.Component {
     );
   }
 
+  // 問題をとき終わったときに表示するウィンドウ
+  FinishWindow() {
+    return (
+      <div className={css.window}>
+        <h1>🎉問題終了🎉</h1>
+        <p>お疲れさまでした。</p>
+        <div className={css.window_buttons}>
+        <Button info={{
+          text: 'ウィンドウを閉じる', icon: 'fas fa-times',
+          onClick: () => this.setState({isModalOpen: false}), type: 'material'
+        }} />
+        <Button info={{
+          text: '問題一覧へ戻る', icon: 'fas fa-undo',
+          onClick: () => Router.push('/list'), type: 'material'
+        }} />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const index = this.state.index;
+    // Modalに渡す用のデータ
+    const modalData: ModalData = {
+      body: this.FinishWindow(),
+      isOpen: this.state.isModalOpen
+    };
+  
     return (
       <>
         <h1>exam</h1>
@@ -69,6 +97,8 @@ export default class list extends React.Component {
             onClick: () => this.IncrementIndex(), type: 'material'
           }} />
         </div>
+
+        <Modal data={modalData} />
  
       </>
     );
