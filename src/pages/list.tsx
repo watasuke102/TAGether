@@ -19,7 +19,7 @@ export default function list({data}) {
   let tmp: Categoly;
   // 問題作成ページへ飛ぶカードを追加
   cards.push(
-    <div className={css.card_create}>
+    <div className={css.card_create} onClick={() => Router.push('/create')}>
       <div className='fas fa-plus' />
       <p>新規作成</p>
     </div>

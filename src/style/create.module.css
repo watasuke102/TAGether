@@ -1,0 +1,29 @@
+/*
+ TAGether - Share self-made exam for classmates
+ list.module.css
+
+ CopyRight (c) 2020-2021 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+.container {
+}
+
+.edit_area {
+  width: 70vw;
+  margin: 30px auto;
+}
+.edit_area textarea {
+  margin: 0 0 15px;
+}
+
+.edit_exam {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+}
+.edit_exam textarea {
+  width: 43vw;
+}
