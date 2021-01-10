@@ -16,8 +16,6 @@ import Categoly from '../types/Categoly'
 
 export default function categoly_detail(props) {
   const data: Categoly = props.data;
-  const exam = JSON.parse(data.list);
-  let exam_list: object[] = [];
 
   return (
     <div className={css.container}>
