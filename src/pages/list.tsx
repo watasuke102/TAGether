@@ -39,7 +39,7 @@ export default function list({data}) {
   });
   return (
     <>
-    <h1>List</h1>
+    <h1>カテゴリ一覧</h1>
     <div className={css.list}> {cards} </div>
     </>
   );

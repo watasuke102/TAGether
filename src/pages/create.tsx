@@ -87,7 +87,7 @@ export default class create extends React.Component {
   render() {
     return (
       <div className={css.container}>
-        <h1>問題の新規登録</h1>
+        <h1>新規カテゴリの登録</h1>
 
         <div className={css.edit_area}>
           <Form info={{
@@ -108,7 +108,7 @@ export default class create extends React.Component {
         {this.ExamEditForm()}
         
         <Button info={{
-          text: "問題の追加", icon: "fas fa-plus",
+            text: "問題の追加", icon: "fas fa-plus",
           onClick: () => this.AddExam(), type: "material"
         }} />
       </div>
