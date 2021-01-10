@@ -18,10 +18,10 @@ interface Exam {
   answer:   string
 }
 
-    const categoly_default: Categoly = {
-      id: 0, updated_at: '', title: '',
-      desc: '', tag: '', list: ''
-    }
+const categoly_default: Categoly = {
+  id: 0, updated_at: '', title: '',
+  desc: '', tag: '', list: ''
+}
 
 export default class create extends React.Component {
   constructor(props) {
@@ -39,20 +39,8 @@ export default class create extends React.Component {
     tmp.push({ question: '', answer: '' });
     this.setState({ exam: tmp });
   }
-  
-  ExamEditForm() {
-    let obj: object[] = []
-    this.state.exam.forEach(element => {
-      obj.push(
-        <div className={css.edit_exam}>
-          <label>問題文<textarea className={css_form.form}/></label>
-          <label>答え<textarea className={css_form.form}/></label>
-        </div>
-      );
-    });
-    return obj;
-  }
 
+  // state更新
   UpdateCategoly(type: string, str: string) {
     let tmp = categoly_default;
     switch (type) {
@@ -62,6 +50,38 @@ export default class create extends React.Component {
     }
     this.setState({ categoly: tmp });
   }
+  UpdateExam(type: string, i: number, str: string) {
+    let tmp = this.state.exam;
+    if (type == 'question') {
+      tmp[i].question = str;
+    } 
+    if (type == 'answer') {
+      tmp[i].answer = str;
+    } 
+    this.setState({ exam: tmp });
+  }
+  
+  ExamEditForm() {
+    let obj: object[] = []
+    let i = 0;
+    this.state.exam.forEach(element => {
+      obj.push(
+        <div className={css.edit_exam}>
+          <Form info={{
+            label: '問題文', value: element.question, disabled: false,
+            onChange: (e) => this.UpdateExam('question', i, e.target.value)
+          }}/>
+          <Form info={{
+            label: '答え', value: element.answer, disabled: false,
+            onChange: (e) => this.UpdateExam('answer', i, e.target.value)
+          }}/>
+        </div>
+      );
+      i++;
+    });
+    return obj;
+  }
+
 
   render() {
     return (
