@@ -8,9 +8,11 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .display {
+  margin: 0 25px;
 }
 
 .buttons {
+  margin: 50px 25px 0;
   display: flex;
   justify-content: space-between;
 }
