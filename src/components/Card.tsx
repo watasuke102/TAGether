@@ -10,6 +10,7 @@ import css from '../style/Card.module.css';
 import React from 'react';
 import Tag from './Tag';
 import Modal from './Modal';
+import Detail from './CategolyDetail';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 
@@ -18,7 +19,7 @@ export default function ExamCard(props) {
   const data: Categoly = props.data;
   // Modalに渡す用のデータ
   const modalData: ModalData = {
-    data: data,
+    body: <Detail data={data} close={() => setIsModalOpen(false)} />,
     isOpen: isModalOpen,
     close: () => setIsModalOpen(false)
   };

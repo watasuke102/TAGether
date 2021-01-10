@@ -8,7 +8,6 @@
 //
 import css from '../style/Modal.module.css';
 import React from 'react';
-import Detail from './CategolyDetail';
 import ModalData from '../types/ModalData';
 
 export default function ExamCard(props) {
@@ -21,7 +20,7 @@ export default function ExamCard(props) {
   return (
     <div className={css.background}>
       <div className={css.detail}>
-        <Detail data={data.data} close={() => data.close()} />
+        {data.body}
       </div>
     </div>
   );

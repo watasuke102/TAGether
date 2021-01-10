@@ -9,7 +9,7 @@
 import Categoly from './Categoly';
 
 export default interface ModalData {
-  data:   Categoly,
+  body:   object,
   isOpen: boolean,
   close:  Function
 }
