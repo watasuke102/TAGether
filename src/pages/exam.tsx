@@ -205,6 +205,7 @@ export default class list extends React.Component {
               <label>解答: </label>
               <input type='text' value={this.state.input}
                 onChange={(e) => this.UpdateUsersResponse(e)}
+                disabled={this.state.examState[this.state.index].checked? 'disabled':''}
                 />
               {/* 入力中エンターを押して送信を無効化 */}
               <input id={css.dummy} />
