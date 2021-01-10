@@ -21,19 +21,16 @@ export default function ExamCard(props) {
   const modalData: ModalData = {
     body: <Detail data={data} close={() => setIsModalOpen(false)} />,
     isOpen: isModalOpen,
-    close: () => setIsModalOpen(false)
   };
 
   return (
     <>
-      <div
-        className={css.card}
-        onClick={() => { setIsModalOpen(true) }}
-      >
+      <div className={css.card} onClick={() => { setIsModalOpen(true) }}>
         <p className={css.title}>{data.title}</p>
         <p className={css.desc}> {data.desc} </p>
         <Tag tag={data.tag} />
       </div>
+
       <Modal data={modalData} />
     </>
   );

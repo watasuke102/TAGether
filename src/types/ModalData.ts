@@ -6,10 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import Categoly from './Categoly';
-
 export default interface ModalData {
   body:   object,
-  isOpen: boolean,
-  close:  Function
+  isOpen: boolean
 }
