@@ -8,22 +8,16 @@
 //
 import css from '../style/CategolyDetail.module.css'
 import React from 'react';
+import Router from 'next/router';
 import Tag from './Tag'
 import Button from './Button';
 import Categoly from '../types/Categoly'
 
 
 export default function categoly_detail(props) {
-  let exam_list: object[] = [];
   const data: Categoly = props.data;
   const exam = JSON.parse(data.list);
-  exam.forEach(element => {
-    exam_list.push(
-      <ul>
-        <li>{element.question}</li>
-        <li>{element.answer}</li>
-      </ul>);
-  });
+  let exam_list: object[] = [];
 
   return (
     <div className={css.container}>
@@ -44,7 +38,7 @@ export default function categoly_detail(props) {
         }} />
         <Button info={{
           text: 'この問題を解く', icon: 'fas fa-arrow-right',
-          onClick: () => props.close(), type: 'material'
+          onClick: () => Router.push('/exam?id='+data.id), type: 'material'
         }} />
       </div>
     </div>
