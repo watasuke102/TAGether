@@ -8,6 +8,7 @@
 //
 import css from '../style/list.module.css'
 import React from 'react';
+import Router from 'next/router';
 import { GetServerSideProps } from 'next'
 import CategolyCard from '../components/Card';
 import Categoly from '../types/Categoly'
@@ -16,6 +17,14 @@ export default function list({data}) {
   let cards: object[] = [];
   const list: Categoly[] = data;
   let tmp: Categoly;
+  // 問題作成ページへ飛ぶカードを追加
+  cards.push(
+    <div className={css.card_create}>
+      <div className='fas fa-plus' />
+      <p>新規作成</p>
+    </div>
+  );
+  // リストから
   list.forEach(element => {
     tmp = element;
     // タイトルを25文字以内に

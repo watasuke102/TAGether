@@ -7,6 +7,30 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+
+.card_create {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: auto;
+  margin: 10px 25px;
+  padding: 5px 10px;
+  border: 1px solid #77797a;
+  color: #e1e2dc;
+  background-color: #dbdbdb00;
+  transition: 0.3s;
+}
+.card_create:hover {
+  cursor: pointer;
+  color: #1a1a1a;
+  background-color: #dbdbdbaa;
+  transition: 0.3s;
+}
+.card_create div{
+  margin: 0 15px 0 0;
+}
+
 .list {
   display: flex;
   justify-content: center;
