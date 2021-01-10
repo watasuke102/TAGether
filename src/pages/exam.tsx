@@ -179,7 +179,7 @@ export default class list extends React.Component {
         }} />
         <Button info={{
           text: '問題一覧へ戻る', icon: 'fas fa-undo',
-          onClick: () => Router.push('/list'), type: 'material'
+          onClick: () => Router.push('/list'), type: 'filled'
         }} />
         </div>
       </div>

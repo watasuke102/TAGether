@@ -36,7 +36,7 @@ export default function categoly_detail(props) {
         }} />
         <Button info={{
           text: 'この問題を解く', icon: 'fas fa-arrow-right',
-          onClick: () => Router.push('/exam?id='+data.id), type: 'material'
+          onClick: () => Router.push('/exam?id='+data.id), type: 'filled'
         }} />
       </div>
     </div>

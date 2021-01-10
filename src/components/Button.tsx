@@ -6,22 +6,25 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Button/IconAndText.module.css'
-import material_css from '../style/Button/MaterialLike.module.css'
+import filled from '../style/Button/Filled.module.css'
+import material from '../style/Button/MaterialLike.module.css'
+import icon_and_text from '../style/Button/IconAndText.module.css'
 import React from 'react';
 import ButtonInfo from '../types/ButtonInfo'
 
 function GetStyleFromButtonType(type: string) {
-  if (type == 'icon_desc') {
-    return css.icon_desc;
-  }
-  return css.material_like;
 }
 
 export default function Button(props) {
   const info: ButtonInfo = props.info;
-  // アイコンと説明テキストのボタン
+  // cssの設定
+  let css = filled;
   if (info.type == 'icon_desc') {
+    css = icon_and_text;
+  } else if (info.type == 'material') {
+    css = material;
+  }
+  // アイコンと説明テキストのボタン
     return (
       <div
         className={css.button}
@@ -33,18 +36,4 @@ export default function Button(props) {
         <span className={css.button_text}>{info.text}</span>
       </div>
     );
-  } else {
-    // マテリアルっぽいボタン
-    return (
-      <div
-        className={material_css.button}
-        onClick={() => info.onClick()}
-      >
-      <div className={material_css.button_icon}>
-        <span className={info.icon}></span>
-      </div>
-      <span className={material_css.button_text}>{info.text}</span>
-      </div>
-    );
-  }
 }
