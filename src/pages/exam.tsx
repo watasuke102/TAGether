@@ -14,6 +14,12 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ModalData from '../types/ModalData';
 
+enum NextButtonState {
+  show_answer,
+  next_question,
+  finish_exam
+}
+
 export default class list extends React.Component {
   private exam;
   constructor(props) {
@@ -21,8 +27,8 @@ export default class list extends React.Component {
     this.UpdateUsersResponse = this.UpdateUsersResponse.bind(this);
     this.exam = JSON.parse(this.props.data[0].list);
     this.state = {
-      index: 0, icon: 'arrow-right',
-      text: '次へ', isModalOpen: false,
+      index: 0, isModalOpen: false,
+      next_button_state: NextButtonState.show_answer,
       responses: Array(this.exam.length), input: ''
     };
   }
@@ -35,28 +41,35 @@ export default class list extends React.Component {
     }
     this.setState({
       index: i,
-      input: input
+      input: input,
+      next_button_state: NextButtonState.show_answer
     });
   }
   IncrementIndex() {
-    // 終了ボタンを押したらlistに戻る
-    if (this.state.index == this.exam.length - 1) {
-      this.setState({ isModalOpen: true });
-      return;
+    switch (this.state.next_button_state) {
+      // 答えを表示、答え合わせをする
+      case NextButtonState.show_answer:
+        this.setState({ next_button_state: NextButtonState.next_question });
+        // 最後の問題であれば、ボタンの内容を変化させる
+        if (this.state.index == this.exam.length - 1) {
+          this.setState({ next_button_state: NextButtonState.finish_exam });
+        }
+        break;
+        
+        // 次の問題へ進む
+        case NextButtonState.next_question:
+        // indexの変更
+        this.SetIndex(this.state.index + 1);
+        break;
+    
+      // 終了ボタンを押したらモーダルウィンドウを表示
+      case NextButtonState.finish_exam:
+        this.setState({ isModalOpen: true });
+        break;
     }
-    // 最後の問題であれば、ボタンの内容を変化させる
-    if (this.state.index + 1 == this.exam.length - 1) {
-      this.setState({ icon: 'check', text: '終了' });
-    }
-    // indexの変更
-    this.SetIndex(this.state.index + 1);
   }
   DecrementIndex() {
     if (this.state.index == 0) return;
-    // 最後の問題からひとつ前に戻る時、ボタンの内容をもとに戻す
-    if (this.state.index == this.exam.length - 1) {
-      this.setState({ icon: 'arrow-right', text: '次へ' });
-    }
     // indexの変更
     this.SetIndex(this.state.index - 1);
   }
@@ -77,6 +90,26 @@ export default class list extends React.Component {
       <Button info={{
         text: '戻る', icon: 'fas fa-arrow-left',
         onClick: () => this.DecrementIndex(), type: 'material'
+      }} />
+    );
+  }
+  NextButton() {
+    let text: string, icon: string;
+    switch (this.state.next_button_state) {
+      case NextButtonState.show_answer:
+        text = '答え合わせ'; icon = 'far fa-circle';
+        break;
+        case NextButtonState.next_question:
+        text = '次へ'; icon = 'fas fa-arrow-right';
+        break;
+        case NextButtonState.finish_exam:
+        text = '終了'; icon = 'fas fa-check';
+        break;
+    }
+    return (
+      <Button info={{
+        text: text, icon: icon,
+        onClick: () => this.IncrementIndex(), type: 'material'
       }} />
     );
   }
@@ -127,10 +160,7 @@ export default class list extends React.Component {
 
         <div className={css.buttons}>
           {this.BackButton()}
-          <Button info={{
-            text: this.state.text, icon: 'fas fa-'+this.state.icon,
-            onClick: () => this.IncrementIndex(), type: 'material'
-          }} />
+          {this.NextButton()}
         </div>
 
         <Modal data={modalData} />
