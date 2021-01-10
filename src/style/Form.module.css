@@ -12,7 +12,7 @@
   display: flex;
   resize: vertical;
   height: 30px;
-  width: 40vw;
+  width: 100%;
   padding: 12px 10px;
   font-size: 18px;
   background-color: #8c9ab6;

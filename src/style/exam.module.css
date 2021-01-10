@@ -10,7 +10,8 @@
 /* 全体の親 */
 .display {
   display: flex;
-  margin: 0 25px;
+  justify-content: space-between;
+  margin: 0 50px;
 }
 
 /* 正誤表示 */
@@ -35,6 +36,7 @@
 .answer_area #question {
   font-size: 30px;
   padding: 0 0 10px 0;
+  width: 50vw;
   border-bottom: 3px solid ;
 }
 
