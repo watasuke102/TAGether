@@ -63,26 +63,23 @@ export default class create extends React.Component {
   
   // 問題編集欄
   ExamEditForm() {
-    let obj: object[] = []
-    let i = 0;
-    this.state.exam.forEach(element => {
+    let obj: object[] = [];
+    for (let i = 0; i < this.state.exam.length;i++){
       obj.push(
         <div className={css.edit_exam}>
           <Form info={{
-            label: '問題文', value: element.question, disabled: false,
-            onChange: (e) => this.UpdateExam('question', i-1, e.target.value)
+            label: '問題文', value: this.state.exam[i].question, disabled: false,
+            onChange: (e) => this.UpdateExam('question', i, e.target.value)
           }}/>
           <Form info={{
-            label: '答え', value: element.answer, disabled: false,
-            onChange: (e) => this.UpdateExam('answer', i-1, e.target.value)
+            label: '答え', value: this.state.exam[i].answer, disabled: false,
+            onChange: (e) => this.UpdateExam('answer', i, e.target.value)
           }}/>
         </div>
       );
-      i++;
-    });
+    }
     return obj;
   }
-
 
   render() {
     return (
