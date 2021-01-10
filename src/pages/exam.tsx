@@ -116,11 +116,13 @@ export default class list extends React.Component {
           <p>{this.exam[this.state.index].question}</p>
         </div>
 
-        <form>
-          <label>解答</label>
+        <form className={css.form}>
+          <label>解答: </label>
           <input type='text' value={this.state.input}
             onChange={(e) => this.UpdateUsersResponse(e)}
           />
+          {/* 入力中エンターを押して送信を無効化 */}
+          <input id={css.dummy} />
         </form>
 
         <div className={css.buttons}>
