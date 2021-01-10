@@ -7,6 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from '../style/exam.module.css'
+import css_form from '../style/Form.module.css'
 import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
@@ -203,7 +204,7 @@ export default class list extends React.Component {
 
             <form className={css.form}>
               <label>解答: </label>
-              <input type='text' value={this.state.input}
+              <input className={css_form.form} type='text' value={this.state.input}
                 onChange={(e) => this.UpdateUsersResponse(e)}
                 disabled={this.state.examState[this.state.index].checked? 'disabled':''}
                 />

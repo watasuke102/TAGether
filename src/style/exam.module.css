@@ -38,22 +38,6 @@
   border-bottom: 3px solid ;
 }
 
-.form input {
-  height: 20px;
-  width: 40vw;
-  padding: 12px 10px;
-  font-size: 20px;
-  background-color: #8c9ab6;
-  border: none;
-  box-shadow: none;
-  transition: box-shadow 0.3s;
-}
-.form input:focus {
-  border: none;
-  outline: none;
-  box-shadow: 0 0 3px 2.5px #dddddd;
-  transition: 0.3s;
-}
 /* Enter送信防止用 */
 #dummy {
   display: none;
