@@ -27,6 +27,17 @@ export default class list extends React.Component {
     };
   }
   // indexを増減する
+  SetIndex(i: number) {
+    // 入力欄を変更する
+    let input = '';
+    if (this.state.responses[i]) {
+      input = this.state.responses[i];
+    }
+    this.setState({
+      index: i,
+      input: input
+    });
+  }
   IncrementIndex() {
     // 終了ボタンを押したらlistに戻る
     if (this.state.index == this.exam.length - 1) {
@@ -34,23 +45,27 @@ export default class list extends React.Component {
       return;
     }
     // 最後の問題であれば、ボタンの内容を変化させる
-    if (this.state.index+1 == this.exam.length-1)
-    this.setState({ icon: 'check', text: '終了' });
-    this.setState({ index: this.state.index + 1 });
+    if (this.state.index + 1 == this.exam.length - 1) {
+      this.setState({ icon: 'check', text: '終了' });
+    }
+    // indexの変更
+    this.SetIndex(this.state.index + 1);
   }
   DecrementIndex() {
     if (this.state.index == 0) return;
     // 最後の問題からひとつ前に戻る時、ボタンの内容をもとに戻す
-    if (this.state.index == this.exam.length-1)
+    if (this.state.index == this.exam.length - 1) {
       this.setState({ icon: 'arrow-right', text: '次へ' });
-    this.setState({ index: this.state.index - 1 });
+    }
+    // indexの変更
+    this.SetIndex(this.state.index - 1);
   }
 
   // ユーザーの入力（問題への解答）を配列に入れる
   UpdateUsersResponse(event) {
     let tmp = this.state.responses;
     tmp[this.state.index] = event.target.value;
-    this.setState({ responses: tmp });
+    this.setState({ responses: tmp, input: event.target.value});
     console.log(this.state.responses);
   }
 
@@ -103,7 +118,7 @@ export default class list extends React.Component {
 
         <form>
           <label>解答</label>
-          <input type='text' value={this.state.responses[this.state.index]}
+          <input type='text' value={this.state.input}
             onChange={(e) => this.UpdateUsersResponse(e)}
           />
         </form>
