@@ -7,7 +7,6 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from '../style/create.module.css';
-import css_form from '../style/Form.module.css';
 import React from 'react';
 import Button from '../components/Button';
 import Form from '../components/Form';
@@ -52,6 +51,7 @@ export default class create extends React.Component {
   }
   UpdateExam(type: string, i: number, str: string) {
     let tmp = this.state.exam;
+    console.log(i);
     if (type == 'question') {
       tmp[i].question = str;
     } 
@@ -61,6 +61,7 @@ export default class create extends React.Component {
     this.setState({ exam: tmp });
   }
   
+  // 問題編集欄
   ExamEditForm() {
     let obj: object[] = []
     let i = 0;
@@ -69,11 +70,11 @@ export default class create extends React.Component {
         <div className={css.edit_exam}>
           <Form info={{
             label: '問題文', value: element.question, disabled: false,
-            onChange: (e) => this.UpdateExam('question', i, e.target.value)
+            onChange: (e) => this.UpdateExam('question', i-1, e.target.value)
           }}/>
           <Form info={{
             label: '答え', value: element.answer, disabled: false,
-            onChange: (e) => this.UpdateExam('answer', i, e.target.value)
+            onChange: (e) => this.UpdateExam('answer', i-1, e.target.value)
           }}/>
         </div>
       );
