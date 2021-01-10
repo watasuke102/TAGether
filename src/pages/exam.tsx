@@ -11,6 +11,7 @@ import css_form from '../style/Form.module.css'
 import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
+import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ModalData from '../types/ModalData';
@@ -203,11 +204,11 @@ export default class list extends React.Component {
             <p id={css.question}>問題: {this.exam[this.state.index].question}</p>
 
             <form className={css.form}>
-              <label>解答: </label>
-              <textarea className={css_form.form} type='text' value={this.state.input}
-                onChange={(e) => this.UpdateUsersResponse(e)}
-                disabled={this.state.examState[this.state.index].checked? 'disabled':''}
-                />
+              <Form info={{
+                label: '解答', value: this.state.input,
+                onChange: (e) => this.UpdateUsersResponse(e),
+                disabled: this.state.examState[this.state.index].checked
+              }}/>
               {/* 入力中エンターを押して送信を無効化 */}
               <input id={css.dummy} />
             </form>
