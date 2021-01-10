@@ -18,8 +18,13 @@ export default class list extends React.Component {
   private exam;
   constructor(props) {
     super(props);
-    this.state = { index: 0, icon:'arrow-right', text: '次へ' , isModalOpen: false};
+    this.UpdateUsersResponse = this.UpdateUsersResponse.bind(this);
     this.exam = JSON.parse(this.props.data[0].list);
+    this.state = {
+      index: 0, icon: 'arrow-right',
+      text: '次へ', isModalOpen: false,
+      responses: Array(this.exam.length), input: ''
+    };
   }
   // indexを増減する
   IncrementIndex() {
@@ -30,7 +35,7 @@ export default class list extends React.Component {
     }
     // 最後の問題であれば、ボタンの内容を変化させる
     if (this.state.index+1 == this.exam.length-1)
-      this.setState({ icon: 'check', text: '終了' });
+    this.setState({ icon: 'check', text: '終了' });
     this.setState({ index: this.state.index + 1 });
   }
   DecrementIndex() {
@@ -39,6 +44,14 @@ export default class list extends React.Component {
     if (this.state.index == this.exam.length-1)
       this.setState({ icon: 'arrow-right', text: '次へ' });
     this.setState({ index: this.state.index - 1 });
+  }
+
+  // ユーザーの入力（問題への解答）を配列に入れる
+  UpdateUsersResponse(event) {
+    let tmp = this.state.responses;
+    tmp[this.state.index] = event.target.value;
+    this.setState({ responses: tmp });
+    console.log(this.state.responses);
   }
 
   // 最初の要素だった場合はボタンを非表示に
@@ -74,21 +87,26 @@ export default class list extends React.Component {
   }
 
   render() {
-    const index = this.state.index;
     // Modalに渡す用のデータ
     const modalData: ModalData = {
       body: this.FinishWindow(),
       isOpen: this.state.isModalOpen
     };
-  
+    
     return (
       <>
         <h1>exam</h1>
 
         <div className={css.display}>
-          <p>{this.exam[index].question}</p>
-          <p>{this.exam[index].answer}</p>
+          <p>{this.exam[this.state.index].question}</p>
         </div>
+
+        <form>
+          <label>解答</label>
+          <input type='text' value={this.state.responses[this.state.index]}
+            onChange={(e) => this.UpdateUsersResponse(e)}
+          />
+        </form>
 
         <div className={css.buttons}>
           {this.BackButton()}
