@@ -232,7 +232,7 @@ export default class list extends React.Component {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch('http://api.watasuke.tk?id=' + context.query.id);
+  const res = await fetch('https://api.watasuke.tk?id=' + context.query.id);
   const data = await res.json();
   return {props:{data}};
 }

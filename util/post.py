@@ -24,7 +24,7 @@ try:
 except IndexError:
   tag = ""
 
-com0 = 'curl -X POST -H "Content-Type: application/json" "http://api.watasuke.tk" -d '
+com0 = 'curl -X POST -H "Content-Type: application/json" "https://api.watasuke.tk" -d '
 com1 = "'{"
 com2 = '"title":"{}","desc":"{}","tag":"{}"'.format(title, desc, tag)
 com3 = ',"list":"[{\\"question\\":\\"1+1=?\\",\\"answer\\":\\"2\\"},{\\"question\\":\\"5+5=?\\",\\"answer\\":\\"10\\"}]"'
