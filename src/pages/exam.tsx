@@ -20,18 +20,43 @@ enum NextButtonState {
   finish_exam
 }
 
+interface ExamState {
+  checked: boolean,
+  isCorrect: boolean
+}
+
 export default class list extends React.Component {
   private exam;
   constructor(props) {
     super(props);
-    this.UpdateUsersResponse = this.UpdateUsersResponse.bind(this);
     this.exam = JSON.parse(this.props.data[0].list);
+    // 解答状況の初期化
+    const length = this.exam.length;
+    let tmp: ExamState[] = Array<ExamState>();
+    for (let i = 0; i < length; i++){
+      tmp[i] = { checked: false, isCorrect: false };
+    }
+    // stateの初期化
     this.state = {
-      index: 0, isModalOpen: false,
-      next_button_state: NextButtonState.show_answer,
-      responses: Array(this.exam.length), input: ''
+      index: 0, isModalOpen: false, input: '',
+      nextButtonState: NextButtonState.show_answer,
+      responses: Array<string>(length),
+      examState: tmp
     };
   }
+
+  // 解答が合っているかどうか確認してstateに格納
+  CheckAnswer() {
+    const index = this.state.index;
+    let result: ExamState = {checked: true, isCorrect: false};
+    if (this.state.responses[index] == this.exam[index].answer) {
+      result.isCorrect = true;
+    }
+    let tmp = this.state.examState;
+    tmp[index] = result;
+    this.setState({ examState: tmp });
+  }
+
   // indexを増減する
   SetIndex(i: number) {
     // 入力欄を変更する
@@ -39,20 +64,35 @@ export default class list extends React.Component {
     if (this.state.responses[i]) {
       input = this.state.responses[i];
     }
+
+    let button_state = NextButtonState.show_answer
+    // 解答済みの問題だった場合
+    if (this.state.examState[i].checked) {
+      // 最後の問題であれば終了ボタン
+      if (i == this.exam.length - 1) {
+        button_state = NextButtonState.finish_exam;
+      } else {
+        //そうでないなら次へボタン
+        button_state = NextButtonState.next_question;
+      }
+    }
     this.setState({
       index: i,
       input: input,
-      next_button_state: NextButtonState.show_answer
+      nextButtonState: button_state
     });
   }
   IncrementIndex() {
-    switch (this.state.next_button_state) {
+    switch (this.state.nextButtonState) {
       // 答えを表示、答え合わせをする
       case NextButtonState.show_answer:
-        this.setState({ next_button_state: NextButtonState.next_question });
-        // 最後の問題であれば、ボタンの内容を変化させる
+        this.CheckAnswer();
+        // 最後の問題であれば、ボタンを終了ボタンに
         if (this.state.index == this.exam.length - 1) {
-          this.setState({ next_button_state: NextButtonState.finish_exam });
+          this.setState({ nextButtonState: NextButtonState.finish_exam });
+        } else {
+          //そうでないなら次へボタン
+          this.setState({ nextButtonState: NextButtonState.next_question });
         }
         break;
         
@@ -71,7 +111,7 @@ export default class list extends React.Component {
   DecrementIndex() {
     if (this.state.index == 0) return;
     // indexの変更
-    this.SetIndex(this.state.index - 1);
+    this.SetIndex(this.state.index - 1); 
   }
 
   // ユーザーの入力（問題への解答）を配列に入れる
@@ -79,7 +119,6 @@ export default class list extends React.Component {
     let tmp = this.state.responses;
     tmp[this.state.index] = event.target.value;
     this.setState({ responses: tmp, input: event.target.value});
-    console.log(this.state.responses);
   }
 
   // 最初の要素だった場合はボタンを非表示に
@@ -95,14 +134,14 @@ export default class list extends React.Component {
   }
   NextButton() {
     let text: string, icon: string;
-    switch (this.state.next_button_state) {
+    switch (this.state.nextButtonState) {
       case NextButtonState.show_answer:
         text = '答え合わせ'; icon = 'far fa-circle';
         break;
-        case NextButtonState.next_question:
+      case NextButtonState.next_question:
         text = '次へ'; icon = 'fas fa-arrow-right';
         break;
-        case NextButtonState.finish_exam:
+      case NextButtonState.finish_exam:
         text = '終了'; icon = 'fas fa-check';
         break;
     }
@@ -111,6 +150,18 @@ export default class list extends React.Component {
         text: text, icon: icon,
         onClick: () => this.IncrementIndex(), type: 'material'
       }} />
+    );
+  }
+
+  // 正解状況の表示
+  ShowExamState() {
+    const state = this.state.examState[this.state.index];
+    if (!state.checked) return;
+    return (
+      <div className={css.exam_state}>
+        <div className={state.isCorrect ? 'far fa-circle' : 'fas fa-times'} />
+        <p>{state.isCorrect ? '正解' : '不正解'}</p>
+      </div>
     );
   }
 
@@ -146,17 +197,23 @@ export default class list extends React.Component {
         <h1>exam</h1>
 
         <div className={css.display}>
-          <p>{this.exam[this.state.index].question}</p>
-        </div>
+          {/* 問題文、解答欄 */}
+          <div className={css.answer_area}>
+            <p>{this.exam[this.state.index].question}</p>
 
-        <form className={css.form}>
-          <label>解答: </label>
-          <input type='text' value={this.state.input}
-            onChange={(e) => this.UpdateUsersResponse(e)}
-          />
-          {/* 入力中エンターを押して送信を無効化 */}
-          <input id={css.dummy} />
-        </form>
+            <form className={css.form}>
+              <label>解答: </label>
+              <input type='text' value={this.state.input}
+                onChange={(e) => this.UpdateUsersResponse(e)}
+                />
+              {/* 入力中エンターを押して送信を無効化 */}
+              <input id={css.dummy} />
+            </form>
+          </div>
+
+          {/* 結果 */}
+          {this.ShowExamState()}
+        </div>
 
         <div className={css.buttons}>
           {this.BackButton()}

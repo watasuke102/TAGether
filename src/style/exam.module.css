@@ -8,12 +8,19 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .display {
+  display: flex;
   margin: 0 25px;
 }
 
-.form {
-  margin: 0 25px;
+.exam_state {
+  display: flex;
+  margin: 0 20px;
+  font-size: 40px;
 }
+.exam_state div {
+  margin: auto 20px;
+}
+
 .form label {
   margin: 0 20px 0 0;
 }
