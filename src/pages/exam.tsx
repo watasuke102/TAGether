@@ -199,7 +199,7 @@ export default class list extends React.Component {
         <div className={css.display}>
           {/* 問題文、解答欄 */}
           <div className={css.answer_area}>
-            <p>{this.exam[this.state.index].question}</p>
+            <p id={css.question}>問題: {this.exam[this.state.index].question}</p>
 
             <form className={css.form}>
               <label>解答: </label>

@@ -7,18 +7,31 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+/* 全体の親 */
 .display {
   display: flex;
   margin: 0 25px;
 }
 
+/* 問題文と解答欄 */
+.answer_area #question {
+  font-size: 30px;
+  padding: 0 0 10px 0;
+  border-bottom: 3px solid ;
+}
+
+/* 正誤表示 */
 .exam_state {
   display: flex;
+  align-items: center;
   margin: 0 20px;
   font-size: 40px;
 }
 .exam_state div {
   margin: auto 20px;
+}
+.exam_state p {
+  margin: 0;
 }
 
 .form label {
@@ -33,7 +46,7 @@
   background-color: #8c9ab6;
   border: none;
   box-shadow: none;
-  transition: 0.3s;
+  transition: box-shadow 0.3s;
 }
 .form input:focus {
   border: none;
@@ -41,18 +54,19 @@
   box-shadow: 0 0 3px 2.5px #dddddd;
   transition: 0.3s;
 }
-
 /* Enter送信防止用 */
 #dummy {
   display: none;
 }
 
+/* ボタン */
 .buttons {
   margin: 50px 25px 0;
   display: flex;
   justify-content: space-between;
 }
 
+/* モーダルウィンドウ */
 .window {
   width: 50vw;
   margin: 50px auto;
