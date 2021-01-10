@@ -14,10 +14,9 @@ import ButtonInfo from '../types/ButtonInfo';
 
 export default function Header() {
   let info: ButtonInfo[] = [];
-  info.push({ text: "ホーム",          icon: "fas fa-home", onClick: () => Router.push("/"),        type: "icon_desc" });
-  info.push({ text: "問題リスト",      icon: "fas fa-book", onClick: () => Router.push("/list"),    type: "icon_desc" });
-  info.push({ text: "問題の編集/作成", icon: "fas fa-pen",  onClick: () => Router.push("/edit"),    type: "icon_desc" });
-  info.push({ text: "プロフィール",    icon: "fas fa-user", onClick: () => Router.push("/profile"), type: "icon_desc" });
+  info.push({ text: "ホーム",       icon: "fas fa-home", onClick: () => Router.push("/"),        type: "icon_desc" });
+  info.push({ text: "問題リスト",   icon: "fas fa-book", onClick: () => Router.push("/list"),    type: "icon_desc" });
+  info.push({ text: "プロフィール", icon: "fas fa-user", onClick: () => Router.push("/profile"), type: "icon_desc" });
   let button_list: object[] = [];
   info.forEach(element => {
     button_list.push(<Button info={element} />);

@@ -13,13 +13,6 @@
   margin: 0 25px;
 }
 
-/* 問題文と解答欄 */
-.answer_area #question {
-  font-size: 30px;
-  padding: 0 0 10px 0;
-  border-bottom: 3px solid ;
-}
-
 /* 正誤表示 */
 .exam_state {
   display: flex;
@@ -36,6 +29,13 @@
 
 .form label {
   margin: 0 20px 0 0;
+}
+
+/* 問題文と解答欄 */
+.answer_area #question {
+  font-size: 30px;
+  padding: 0 0 10px 0;
+  border-bottom: 3px solid ;
 }
 
 .form input {
