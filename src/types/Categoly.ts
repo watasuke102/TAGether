@@ -7,10 +7,10 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 export default interface Categoly {
-  id:         number;
-  updated_at: string;
-  title:      string;
-  desc:       string;
-  tag:        string;
-  list:       string;
+  id?:         number;
+  updated_at?: string;
+  title:       string;
+  desc:        string;
+  tag:         string;
+  list:        string;
 }

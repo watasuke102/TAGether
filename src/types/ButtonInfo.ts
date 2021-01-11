@@ -8,7 +8,7 @@
 //
 export default interface ButtonInfo {
   type:    string,
-  icon:    string,
+  icon:   string,
   text:    string,
   onClick: Function
 }
