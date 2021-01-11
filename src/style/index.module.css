@@ -9,8 +9,7 @@
 */
 .form {
   width: 60vw;
-  height: 200px;
-  margin: 0 0 100px;
+  margin: 0 0 50px;
 }
 
 .button {
@@ -23,4 +22,10 @@
   padding: 30px 50px;
   text-align: center;
   background-color: #646772;
+}
+
+.version {
+  position: fixed;
+  right: 20px;
+  bottom: 0;
 }
