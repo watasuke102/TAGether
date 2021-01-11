@@ -207,7 +207,7 @@ export default class create extends React.Component<any, State> {
       isOpen: this.state.isModalOpen
     };
     return (
-      <>
+      <div className={css.container}>
         <h1>新規カテゴリの登録</h1>
 
         <div className={css.edit_area}>
@@ -229,20 +229,20 @@ export default class create extends React.Component<any, State> {
         {this.ExamEditForm()}
         
         <div className={css.button_container}>
-        <div className={css.buttons}>
-          <Button {...{
-            text: "問題の追加", icon: "fas fa-plus",
-            onClick: () => this.AddExam(), type: "material"
-          }} />
-          <Button {...{
-            text: "カテゴリの登録", icon: "fas fa-check",
-            onClick: () => this.RegistExam(), type: "filled"
-          }} />
-        </div>
+          <div className={css.buttons}>
+            <Button {...{
+              text: "問題の追加", icon: "fas fa-plus",
+              onClick: () => this.AddExam(), type: "material"
+            }} />
+            <Button {...{
+              text: "カテゴリの登録", icon: "fas fa-check",
+              onClick: () => this.RegistExam(), type: "filled"
+            }} />
+          </div>
         </div>
 
         <Modal {...modalData} />
-      </>
+      </div>
     );
   }
 }

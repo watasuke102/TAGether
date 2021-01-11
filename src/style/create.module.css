@@ -7,6 +7,9 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+.container {
+  padding: 0 0 100px;
+}
 .edit_area {
   width: 70vw;
   margin: 30px auto;
