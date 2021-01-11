@@ -230,9 +230,11 @@ export default class exam extends React.Component<Props, State> {
           {this.ShowExamState()}
         </div>
 
-        <div className={css.buttons}>
-          {this.BackButton()}
-          {this.NextButton()}
+        <div className={css.button_container}>
+          <div className={css.buttons}>
+            {this.BackButton()}
+            {this.NextButton()}
+          </div>
         </div>
 
         <Modal {...modalData} />

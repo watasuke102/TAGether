@@ -42,8 +42,15 @@
 }
 
 /* ボタン */
+.button_container {
+  position:fixed;
+  width: 100%;
+  left: 0px;
+  bottom: 0px;
+  background-color: #646464ea;
+}
 .buttons {
-  margin: 50px 25px 0;
+  margin: 20px 25px;
   display: flex;
   justify-content: space-between;
 }
