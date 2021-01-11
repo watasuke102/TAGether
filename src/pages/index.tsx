@@ -35,7 +35,7 @@ export default function index() {
     body: (
       <div className={css.window}>
         <p>送信しました。<br/>ご協力ありがとうございます。</p>
-        <Button info={{
+        <Button {...{
           type: 'filled', icon: 'fas fa-times', text: '閉じる',
           onClick: () => SetIsModalOpen(false)
         }} />
@@ -67,7 +67,7 @@ export default function index() {
           label: '意見', value: request, rows: 10,
           onChange: (e) => SetRequest(e.target.value)
         }} />
-        <div className={css.button}> <Button info={{
+        <div className={css.button}> <Button {...{
           icon: 'fas fa-paper-plane', text: '送信', type: 'filled',
           onClick: () => SendRequest(request, () => SetIsModalOpen(true))
         }} /> </div>

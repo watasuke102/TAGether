@@ -30,11 +30,11 @@ export default function categoly_detail(props) {
       <h2>{data.desc}</h2>
 
       <div className={css.buttons}>
-        <Button info={{
+        <Button {...{
           text: '閉じる', icon: 'fas fa-times',
           onClick: () => props.close(), type: 'material'
         }} />
-        <Button info={{
+        <Button {...{
           text: 'この問題を解く', icon: 'fas fa-arrow-right',
           onClick: () => Router.push('/exam?id='+data.id), type: 'filled'
         }} />

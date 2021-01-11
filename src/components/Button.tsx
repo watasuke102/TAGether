@@ -12,28 +12,24 @@ import icon_and_text from '../style/Button/IconAndText.module.css'
 import React from 'react';
 import ButtonInfo from '../types/ButtonInfo'
 
-function GetStyleFromButtonType(type: string) {
-}
-
-export default function Button(props) {
-  const info: ButtonInfo = props.info;
+export default function Button(props: ButtonInfo) {
   // cssの設定
   let css = filled;
-  if (info.type == 'icon_desc') {
+  if (props.type == 'icon_desc') {
     css = icon_and_text;
-  } else if (info.type == 'material') {
+  } else if (props.type == 'material') {
     css = material;
   }
   // アイコンと説明テキストのボタン
     return (
       <div
         className={css.button}
-        onClick={() => info.onClick()}
+        onClick={() => props.onClick()}
       >
         <div className={css.button_icon}>
-          <span className={info.icon}></span>
+          <span className={props.icon}></span>
         </div>
-        <span className={css.button_text}>{info.text}</span>
+        <span className={css.button_text}>{props.text}</span>
       </div>
     );
 }

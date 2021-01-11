@@ -19,7 +19,7 @@ export default function Header() {
   info.push({ text: "プロフィール", icon: "fas fa-user", onClick: () => Router.push("/profile"), type: "icon_desc" });
   let button_list: object[] = [];
   info.forEach(element => {
-    button_list.push(<Button info={element} />);
+    button_list.push(<Button {...element} />);
   });
 
   return (

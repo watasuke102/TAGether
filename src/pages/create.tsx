@@ -120,7 +120,7 @@ export default class create extends React.Component {
   DeleteButton(i: number) {
     if (i == 0) return <div className={css.dummy_button} />;
     else return (
-      <Button info={{
+      <Button {...{
         type: 'material', icon: 'fas fa-trash', text: '削除',
         onClick: () => this.RemoveExam(i)
       }} />
@@ -221,11 +221,11 @@ export default class create extends React.Component {
         {this.ExamEditForm()}
         
         <div className={css.buttons}>
-          <Button info={{
+          <Button {...{
             text: "問題の追加", icon: "fas fa-plus",
             onClick: () => this.AddExam(), type: "material"
           }} />
-          <Button info={{
+          <Button {...{
             text: "カテゴリの登録", icon: "fas fa-check",
             onClick: () => this.RegistExam(), type: "filled"
           }} />

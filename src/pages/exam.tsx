@@ -127,7 +127,7 @@ export default class list extends React.Component {
   BackButton() {
     if (this.state.index == 0) return(<div></div>);
     else return (
-      <Button info={{
+      <Button {...{
         text: '戻る', icon: 'fas fa-arrow-left',
         onClick: () => this.DecrementIndex(), type: 'material'
       }} />
@@ -147,7 +147,7 @@ export default class list extends React.Component {
         break;
     }
     return (
-      <Button info={{
+      <Button {...{
         text: text, icon: icon,
         onClick: () => this.IncrementIndex(), type: 'material'
       }} />
@@ -173,11 +173,11 @@ export default class list extends React.Component {
         <h1>🎉問題終了🎉</h1>
         <p>お疲れさまでした。</p>
         <div className={css.window_buttons}>
-        <Button info={{
+        <Button {...{
           text: 'ウィンドウを閉じる', icon: 'fas fa-times',
           onClick: () => this.setState({isModalOpen: false}), type: 'material'
         }} />
-        <Button info={{
+        <Button {...{
           text: '問題一覧へ戻る', icon: 'fas fa-undo',
           onClick: () => Router.push('/list'), type: 'filled'
         }} />
