@@ -20,14 +20,14 @@ export default function categoly_detail(props) {
   return (
     <div className={css.container}>
       <h1>{data.title}</h1>
-      <h2>{data.desc}</h2>
 
       <div className={css.updated_at}>
         <div className='fas fa-clock'></div>
         <p>{data.updated_at}</p>
       </div>
-
       <Tag tag={data.tag} />
+
+      <h2>{data.desc}</h2>
 
       <div className={css.buttons}>
         <Button info={{
