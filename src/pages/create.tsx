@@ -51,6 +51,21 @@ export default class create extends React.Component {
       this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タイトルを設定してください"}' })
       return;
     }
+    let f: boolean = false;
+    this.state.exam.forEach(e => {
+      console.log(e);
+      if (e.question == '') {
+        f = true;
+        this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"問題文が入力されていない欄があります"}' })
+        return;
+      }
+      if (e.answer == '') {
+        f = true;
+        this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"答えが入力されていない欄があります"}' })
+        return;
+      }
+    });
+    if (f) return;
     const exam = JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
     const categoly = {
