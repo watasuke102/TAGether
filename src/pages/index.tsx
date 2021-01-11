@@ -14,7 +14,6 @@ import Button from '../components/Button';
 import ModalData from '../types/ModalData';
 
 function SendRequest(s: string, func: Function) {
-  console.log(s);
   func();
 }
 

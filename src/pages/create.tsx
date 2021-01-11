@@ -53,7 +53,6 @@ export default class create extends React.Component {
     }
     let f: boolean = false;
     this.state.exam.forEach(e => {
-      console.log(e);
       if (e.question == '') {
         f = true;
         this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"問題文が入力されていない欄があります"}' })
@@ -81,8 +80,6 @@ export default class create extends React.Component {
     }
     req.open('POST', 'https://api.watasuke.tk');
     req.setRequestHeader('Content-Type', 'application/json');
-    console.log(req);
-    console.log(JSON.stringify(categoly));
     req.send(JSON.stringify(categoly));
   }
 

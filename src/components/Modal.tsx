@@ -16,7 +16,6 @@ export default function ExamCard(props) {
   if (!data.isOpen) {
     return (<></>);
   }
-  console.log()
   return (
     <div className={css.background}>
       <div className={css.detail}>
