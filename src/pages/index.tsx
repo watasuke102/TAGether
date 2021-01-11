@@ -79,7 +79,8 @@ export default function index() {
           onClick: () => SendRequest(request, () => SetIsModalOpen(true))
         }} /> </div>
       </div>
-      </form>
+
+      <p className={css.version}>TAGether v1.0.0</p>
 
       <Modal {...modalData} />
     </div>
