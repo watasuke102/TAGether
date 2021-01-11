@@ -9,16 +9,12 @@
 import css from '../style/Tag.module.css';
 import React from 'react';
 
-function generate_tag(body: string) {
-  return (
-    <div className={css.tag}>{body}</div>
-  );
-}
+interface TagData {tag: string}
 
-export default function Tag(props) {  
+export default function Tag(props: TagData) {  
   let tags: object[] = [];
-  props.tag.split(',').forEach(element => {
-    tags.push(generate_tag(element));
+  props.tag.split(',').forEach(e => {
+    tags.push(<div className={css.tag}>{e}</div>);
   });
   return (
     <div className={css.tag_container}> {tags} </div>
