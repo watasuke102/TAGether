@@ -42,10 +42,8 @@ function exam_default() {
   return tmp;
 }
 
-const bottomRef = React.createRef();
-
 export default class create extends React.Component<any, State> {
-
+  private bottom;
 
   constructor(props: State) {
     super(props);
@@ -99,7 +97,7 @@ export default class create extends React.Component<any, State> {
     tmp.push({ question: '', answer: '' });
     this.setState({ exam: tmp });
     // 追加した問題欄が表示されるようにする
-    bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    this.bottom.scrollIntoView({ behavior: 'smooth' });
   }
   RemoveExam(i: number) {
     let tmp = this.state.exam;
@@ -233,7 +231,7 @@ export default class create extends React.Component<any, State> {
         <h2>問題</h2>
         {this.ExamEditForm()}
 
-        <div className={css.bottom} ref={bottomRef} />
+        <div className={css.bottom} ref={e => this.bottom = e} />
         
         <div className={css.button_container}>
           <div className={css.buttons}>
