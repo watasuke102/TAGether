@@ -7,10 +7,6 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-.container {
-  height: 100%;
-}
-
 .label {
   font-size: 22px;
 }
@@ -19,7 +15,6 @@
   font-family: 'M PLUS 1p', sans-serif;
   display: flex;
   resize: vertical;
-  height: 100%;
   width: 100%;
   padding: 12px 10px;
   font-size: 18px;

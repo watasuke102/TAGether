@@ -139,11 +139,11 @@ export default class create extends React.Component {
           </div>
 
           <Form info={{
-            label: '問題文', value: this.state.exam[i].question, disabled: false,
+            label: '問題文', value: this.state.exam[i].question, rows: 2,
             onChange: (e) => this.UpdateExam('question', i, e.target.value)
           }}/>
           <Form info={{
-            label: '答え', value: this.state.exam[i].answer, disabled: false,
+            label: '答え', value: this.state.exam[i].answer, rows: 2,
             onChange: (e) => this.UpdateExam('answer', i, e.target.value)
           }}/>
         </div>
@@ -207,15 +207,15 @@ export default class create extends React.Component {
 
         <div className={css.edit_area}>
           <Form info={{
-            label: 'タイトル', value: this.state.categoly.title, disabled: false,
+            label: 'タイトル', value: this.state.categoly.title, rows: 1,
             onChange: (e) => this.UpdateCategoly('title', e.target.value)
           }}/>
           <Form info={{
-            label: '説明', value: this.state.categoly.desc, disabled: false,
+            label: '説明', value: this.state.categoly.desc, rows: 3,
             onChange: (e) => this.UpdateCategoly('desc', e.target.value)
           }}/>
           <Form info={{
-            label: 'タグ (半角コンマ , で区切る)', value: this.state.categoly.tag, disabled: false,
+            label: 'タグ (半角コンマ , で区切る)', value: this.state.categoly.tag, rows: 1,
             onChange: (e) => this.UpdateCategoly('tag', e.target.value)
           }}/>
         </div>
