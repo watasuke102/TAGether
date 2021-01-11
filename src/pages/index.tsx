@@ -47,6 +47,7 @@ export default function index() {
     <div>
       <h1>ようこそ</h1>
       <p>「カテゴリ一覧」を選択して問題を解いてみましょう。</p>
+      <p>不満があれば、以下の「機能要望」へお願いします。</p>
 
       <h2>機能について</h2>
       <p>以下の機能は未実装ですが、（やる気があれば）実装される予定です。</p>
@@ -59,10 +60,16 @@ export default function index() {
         <li>その他こまかいとこ</li>
       </ul>
 
+      <h2>既知の不具合</h2>
+      <ul>
+        <li>画面切り替えがおかしくなる</li>
+      </ul>
+
       <h2>機能要望</h2>
       <p>Webサービスなんもわからないので、意見がほしいです</p>
       <p>スマホでここが押しづらいとか、表示がわかりにくい等、不満があれば<b>全部</b>書いてください</p>
-      <form className={css.form}>
+      <p>連絡が必要であればTeamsアカウントなりTwitter IDなりを書いといてください</p>
+      <div className={css.form}>
         <Form {...{
           label: '意見', value: request, rows: 10,
           onChange: (e) => SetRequest(e.target.value)
@@ -71,6 +78,7 @@ export default function index() {
           icon: 'fas fa-paper-plane', text: '送信', type: 'filled',
           onClick: () => SendRequest(request, () => SetIsModalOpen(true))
         }} /> </div>
+      </div>
       </form>
 
       <Modal {...modalData} />
