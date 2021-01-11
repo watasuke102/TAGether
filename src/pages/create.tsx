@@ -105,16 +105,22 @@ export default class create extends React.Component {
   }
   
   // 問題編集欄
+  DeleteButton(i: number) {
+    if (i == 0) return <div className={css.dummy_button} />;
+    else return (
+      <Button info={{
+        type: 'material', icon: 'fas fa-trash', text: '削除',
+        onClick: () => this.RemoveExam(i)
+      }} />
+    );
+  }
   ExamEditForm() {
     let obj: object[] = [];
     for (let i = 0; i < this.state.exam.length;i++){
       obj.push(
         <div className={css.edit_exam}>
           <div className={css.delete_button}>
-            <Button info={{
-              type: 'material', icon: 'fas fa-trash', text: '削除',
-              onClick: () => this.RemoveExam(i)
-            }} />
+            {this.DeleteButton(i)}
           </div>
 
           <Form info={{
