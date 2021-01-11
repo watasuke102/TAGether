@@ -105,7 +105,7 @@ export default class create extends React.Component<any, State> {
 
   // state更新
   UpdateCategoly(type: string, str: string) {
-    let tmp = categoly_default();
+    let tmp = this.state.categoly;
     switch (type) {
       case 'title': tmp.title = str; break;
       case 'desc':  tmp.desc  = str; break;
