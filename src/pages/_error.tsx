@@ -9,15 +9,17 @@
 import React from 'react';
 import Link from 'next/link'
 
-export default class Error extends React.Component<number> {
+interface Props {code: number}
+
+export default class Error extends React.Component<Props> {
   static getInitialProps({ res, err }) {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : null;
-    return { statusCode };
+    const code = res ? res.statusCode : err ? err.statusCode : null;
+    return { code };
   }
   render() {
     return (
       <div>
-        <h1>エラーが発生しました: {this.props.statusCode}</h1>
+        <h1>エラーが発生しました: {this.props.code}</h1>
         <Link href="/">ホームに戻る</Link>
       </div>
     );
