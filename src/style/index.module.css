@@ -17,11 +17,13 @@
 }
 
 .window {
+  position: fixed;
   width: 50vw;
-  margin: 50px auto;
+  top: 50%; left: 50%;
   padding: 30px 50px;
   text-align: center;
   background-color: #646772;
+  transform: translateY(-50%) translateX(-50%);
 }
 
 .version {
