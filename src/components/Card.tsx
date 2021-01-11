@@ -23,11 +23,22 @@ export default function ExamCard(props) {
     isOpen: isModalOpen,
   };
 
+  // タイトルを25文字以内に
+  let title = data.title;
+  if (data.title.length > 25) {
+    title = data.title.slice(0, 25) + '...';
+  }
+  // 説明を100文字以内に
+  let desc = data.desc;
+  if (data.desc.length > 100) {
+    desc = data.desc.slice(0, 100) + '...';
+  }
+
   return (
     <>
       <div className={css.card} onClick={() => { setIsModalOpen(true) }}>
-        <p className={css.title}>{data.title}</p>
-        <p className={css.desc}> {data.desc} </p>
+        <p className={css.title}>{title}</p>
+        <p className={css.desc}> {desc} </p>
         <Tag tag={data.tag} />
       </div>
 

@@ -26,15 +26,6 @@ export default function list({data}) {
   );
   // リストから
   list.forEach(element => {
-    tmp = element;
-    // タイトルを25文字以内に
-    if (tmp.title.length > 25) {
-      tmp.title = element.title.slice(0, 25) + '...';
-    }
-    // 説明を100文字以内に
-    if (tmp.desc.length > 100) {
-      tmp.desc = element.desc.slice(0, 100) + '...';
-    }
     cards.push(<CategolyCard data={element} />);
   });
   return (
