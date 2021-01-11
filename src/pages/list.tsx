@@ -15,6 +15,7 @@ import Categoly from '../types/Categoly'
 
 export default function list({data}) {
   let cards: object[] = [];
+  console.log(typeof (data));
   const list: Categoly[] = data;
   let tmp: Categoly;
   // 問題作成ページへ飛ぶカードを追加
@@ -26,7 +27,7 @@ export default function list({data}) {
   );
   // リストから
   list.forEach(element => {
-    cards.push(<CategolyCard data={element} />);
+    cards.push(<CategolyCard {...element} />);
   });
   return (
     <>

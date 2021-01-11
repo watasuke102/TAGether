@@ -14,24 +14,23 @@ import Detail from './CategolyDetail';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 
-export default function ExamCard(props) {
+export default function ExamCard(props: Categoly) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const data: Categoly = props.data;
   // Modalに渡す用のデータ
   const modalData: ModalData = {
-    body: <Detail data={data} close={() => setIsModalOpen(false)} />,
+    body: <Detail data={props} close={() => setIsModalOpen(false)} />,
     isOpen: isModalOpen,
   };
 
   // タイトルを25文字以内に
-  let title = data.title;
-  if (data.title.length > 25) {
-    title = data.title.slice(0, 25) + '...';
+  let title = props.title;
+  if (props.title.length > 25) {
+    title = props.title.slice(0, 25) + '...';
   }
   // 説明を100文字以内に
-  let desc = data.desc;
-  if (data.desc.length > 100) {
-    desc = data.desc.slice(0, 100) + '...';
+  let desc = props.desc;
+  if (props.desc.length > 100) {
+    desc = props.desc.slice(0, 100) + '...';
   }
 
   return (
@@ -39,7 +38,7 @@ export default function ExamCard(props) {
       <div className={css.card} onClick={() => { setIsModalOpen(true) }}>
         <p className={css.title}>{title}</p>
         <p className={css.desc}> {desc} </p>
-        <Tag tag={data.tag} />
+        <Tag tag={props.tag} />
       </div>
 
       <Modal data={modalData} />
