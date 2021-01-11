@@ -1,5 +1,5 @@
 // TAGether - Share self-made exam for classmates
-// Card.tsx
+// Modal.tsx
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>

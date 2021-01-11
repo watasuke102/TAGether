@@ -1,5 +1,5 @@
 // TAGether - Share self-made exam for classmates
-// categoly.ts
+// Categoly.ts
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
