@@ -11,13 +11,12 @@ import React from 'react';
 import FormInfo from '../types/FormInfo'
 
 
-export default function Form(props) {
-  const info:FormInfo = props.info;
+export default function Form(props: FormInfo) {
   return (
     <div>
-      <label className={css.label}>{info.label}</label>
-      <textarea className={css.form} value={info.value} rows={info.rows}
-        onChange={(e) => info.onChange(e)} disabled={info.disabled}
+      <label className={css.label}>{props.label}</label>
+      <textarea className={css.form} value={props.value} rows={props.rows}
+        onChange={(e) => props.onChange(e)} disabled={props.disabled}
       />
     </div>
   )

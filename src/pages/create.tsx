@@ -135,11 +135,11 @@ export default class create extends React.Component {
             {this.DeleteButton(i)}
           </div>
 
-          <Form info={{
+          <Form {...{
             label: '問題文', value: this.state.exam[i].question, rows: 2,
             onChange: (e) => this.UpdateExam('question', i, e.target.value)
           }}/>
-          <Form info={{
+          <Form {...{
             label: '答え', value: this.state.exam[i].answer, rows: 2,
             onChange: (e) => this.UpdateExam('answer', i, e.target.value)
           }}/>
@@ -203,15 +203,15 @@ export default class create extends React.Component {
         <h1>新規カテゴリの登録</h1>
 
         <div className={css.edit_area}>
-          <Form info={{
+          <Form {...{
             label: 'タイトル', value: this.state.categoly.title, rows: 1,
             onChange: (e) => this.UpdateCategoly('title', e.target.value)
           }}/>
-          <Form info={{
+          <Form {...{
             label: '説明', value: this.state.categoly.desc, rows: 3,
             onChange: (e) => this.UpdateCategoly('desc', e.target.value)
           }}/>
-          <Form info={{
+          <Form {...{
             label: 'タグ (半角コンマ , で区切る)', value: this.state.categoly.tag, rows: 1,
             onChange: (e) => this.UpdateCategoly('tag', e.target.value)
           }}/>

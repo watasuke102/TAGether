@@ -63,7 +63,7 @@ export default function index() {
       <p>Webサービスなんもわからないので、意見がほしいです</p>
       <p>スマホでここが押しづらいとか、表示がわかりにくい等、不満があれば<b>全部</b>書いてください</p>
       <form className={css.form}>
-        <Form info={{
+        <Form {...{
           label: '意見', value: request, rows: 10,
           onChange: (e) => SetRequest(e.target.value)
         }} />

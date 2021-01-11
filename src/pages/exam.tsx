@@ -203,7 +203,7 @@ export default class list extends React.Component {
             <p id={css.question}>問題: {this.exam[this.state.index].question}</p>
 
             <form className={css.form}>
-              <Form info={{
+              <Form {...{
                 label: '解答', value: this.state.input, rows: 1,
                 onChange: (e) => this.UpdateUsersResponse(e),
                 disabled: this.state.examState[this.state.index].checked
