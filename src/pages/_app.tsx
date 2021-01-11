@@ -10,7 +10,7 @@ import '../style/main.css'
 import React from 'react';
 import Head  from 'next/head';
 import App, { Container } from 'next/app';
-import { PageTransition } from 'next-page-transitions';
+import PageTransition from '../next-page-transisions/PageTransition';
 
 import Header from '../components/Header';
 
