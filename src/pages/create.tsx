@@ -22,11 +22,11 @@ interface Exam {
   question: string,
   answer: string,
 }
-interface Props{
+interface State{
   isModalOpen: boolean,
   res_result:  string,
   categoly: Categoly,
-  exam: Exam
+  exam: Exam[]
 }
 
 function categoly_default() {
@@ -43,8 +43,8 @@ function exam_default() {
 }
 
 
-export default class create extends React.Component {
-  constructor(props: Props) {
+export default class create extends React.Component<any, State> {
+  constructor(props: State) {
     super(props);
     this.state = {
       categoly: categoly_default(),
