@@ -14,6 +14,15 @@ import Button from '../components/Button';
 import ModalData from '../types/ModalData';
 
 function SendRequest(s: string, func: Function) {
+  if (s == '') return;
+  const req = new XMLHttpRequest();
+  req.onreadystatechange = () => {
+    if (req.readyState == 4) {
+      console.log(req.statusText);
+    }
+  }
+  req.open('POST', 'https://api.watasuke.tk/request.php?body='+s);
+  req.send();
   func();
 }
 
