@@ -228,6 +228,7 @@ export default class create extends React.Component<any, State> {
         <h2>問題</h2>
         {this.ExamEditForm()}
         
+        <div className={css.button_container}>
         <div className={css.buttons}>
           <Button {...{
             text: "問題の追加", icon: "fas fa-plus",
@@ -237,6 +238,7 @@ export default class create extends React.Component<any, State> {
             text: "カテゴリの登録", icon: "fas fa-check",
             onClick: () => this.RegistExam(), type: "filled"
           }} />
+        </div>
         </div>
 
         <Modal {...modalData} />
