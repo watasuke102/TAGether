@@ -76,6 +76,12 @@ export default class create extends React.Component {
     tmp.push({ question: '', answer: '' });
     this.setState({ exam: tmp });
   }
+  RemoveExam(i: number) {
+    let tmp = this.state.exam;
+    // tmp[i]から要素を1つ削除
+    tmp.splice(i, 1);
+    this.setState({ exam: tmp });
+  }
 
   // state更新
   UpdateCategoly(type: string, str: string) {
@@ -104,6 +110,13 @@ export default class create extends React.Component {
     for (let i = 0; i < this.state.exam.length;i++){
       obj.push(
         <div className={css.edit_exam}>
+          <div className={css.delete_button}>
+            <Button info={{
+              type: 'material', icon: 'fas fa-trash', text: '削除',
+              onClick: () => this.RemoveExam(i)
+            }} />
+          </div>
+
           <Form info={{
             label: '問題文', value: this.state.exam[i].question, disabled: false,
             onChange: (e) => this.UpdateExam('question', i, e.target.value)
