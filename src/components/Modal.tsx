@@ -10,16 +10,15 @@ import css from '../style/Modal.module.css';
 import React from 'react';
 import ModalData from '../types/ModalData';
 
-export default function ExamCard(props) {
-  const data: ModalData = props.data;
+export default function ExamCard(props: ModalData) {
   //開かれていない場合は空要素を渡す
-  if (!data.isOpen) {
+  if (!props.isOpen) {
     return (<></>);
   }
   return (
     <div className={css.background}>
       <div className={css.detail}>
-        {data.body}
+        {props.body}
       </div>
     </div>
   );

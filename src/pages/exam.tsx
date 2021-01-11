@@ -222,7 +222,7 @@ export default class list extends React.Component {
           {this.NextButton()}
         </div>
 
-        <Modal data={modalData} />
+        <Modal {...modalData} />
  
       </>
     );

@@ -41,7 +41,7 @@ export default function ExamCard(props: Categoly) {
         <Tag tag={props.tag} />
       </div>
 
-      <Modal data={modalData} />
+      <Modal {...modalData} />
     </>
   );
 }

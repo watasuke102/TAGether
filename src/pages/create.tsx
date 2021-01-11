@@ -231,7 +231,7 @@ export default class create extends React.Component {
           }} />
         </div>
 
-        <Modal data={modalData} />
+        <Modal {...modalData} />
       </>
     );
   }

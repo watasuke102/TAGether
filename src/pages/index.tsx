@@ -73,7 +73,7 @@ export default function index() {
         }} /> </div>
       </form>
 
-      <Modal data={modalData} />
+      <Modal {...modalData} />
     </div>
   );
 }
