@@ -13,11 +13,11 @@ import { GetServerSideProps } from 'next'
 import CategolyCard from '../components/Card';
 import Categoly from '../types/Categoly'
 
-export default function list({data}) {
+interface Props { data: Categoly[] }
+
+export default function list(props: Props) {
   let cards: object[] = [];
-  console.log(typeof (data));
-  const list: Categoly[] = data;
-  let tmp: Categoly;
+  const list: Categoly[] = props.data;
   // 問題作成ページへ飛ぶカードを追加
   cards.push(
     <div className={css.card_create} onClick={() => Router.push('/create')}>
