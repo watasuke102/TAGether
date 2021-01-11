@@ -7,7 +7,6 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from '../style/exam.module.css'
-import css_form from '../style/Form.module.css'
 import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';

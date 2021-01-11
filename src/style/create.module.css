@@ -7,9 +7,6 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-.container {
-}
-
 .edit_area {
   width: 70vw;
   margin: 30px auto;
@@ -32,4 +29,18 @@
   display: flex;
   justify-content: space-between;
   margin: 25px;
+}
+
+.window {
+  width: 40vw;
+  margin: 50px auto;
+  padding: 30px 50px;
+  text-align: center;
+  background-color: #646772;
+}
+
+.window_buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 0 0;
 }

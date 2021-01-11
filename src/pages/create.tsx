@@ -1,5 +1,5 @@
 // TAGether - Share self-made exam for classmates
-// list.tsx
+// create.tsx
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
@@ -8,34 +8,49 @@
 //
 import css from '../style/create.module.css';
 import React from 'react';
-import Button from '../components/Button';
+import Router from 'next/router';
 import Form from '../components/Form';
+import Modal from '../components/Modal';
+import Button from '../components/Button';
 import Categoly from '../types/Categoly';
-import { request } from 'https';
+import ModalData from '../types/ModalData';
+import ButtonInfo from '../types/ButtonInfo';
 
 interface Exam {
   question: string,
   answer:   string
 }
 
-const categoly_default: Categoly = {
-  id: 0, updated_at: '', title: '',
-  desc: '', tag: '', list: ''
+function categoly_default() {
+  let tmp: Categoly = {
+    id: 0, updated_at: '', title: '',
+    desc: '', tag: '', list: ''
+  }
+  return tmp;
+}
+
+function exam_default() {
+  let tmp: Exam[] = [];
+  tmp.push({ question: '', answer: '' });
+  return tmp;
 }
 
 export default class create extends React.Component {
   constructor(props) {
     super(props);
-    let tmp: Exam[] = [];
-    tmp.push({question: '', answer: ''});
     this.state = {
-      categoly: categoly_default,
-      exam: tmp
+      categoly: categoly_default(),
+      exam: exam_default(),
+      isModalOpen: false, res_result: ''
     }
   }
 
   // カテゴリ登録
   RegistExam() {
+    if (this.state.categoly.title == '') {
+      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タイトルを設定してください"}' })
+      return;
+    }
     const exam = JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
     const categoly = {
@@ -43,9 +58,11 @@ export default class create extends React.Component {
     }
     
     const req = new XMLHttpRequest();
-    req.onreadystatechange = function () {
-      if (this.readyState == 4)
-        console.log('status: '+req.responseText);
+    req.onreadystatechange = () => {
+      if (req.readyState == 4) {
+        const str = req.responseText;
+        this.setState({ isModalOpen: true, res_result: str });
+      }
     }
     req.open('POST', 'https://api.watasuke.tk');
     req.setRequestHeader('Content-Type', 'application/json');
@@ -101,9 +118,57 @@ export default class create extends React.Component {
     return obj;
   }
 
-  render() {
+  // モーダルウィンドウの中身
+  RegistResult() {
+    // 何も中身がなければ終了
+    if (this.state.res_result == '') return <></>;
+    const result = JSON.parse(this.state.res_result);
+    let message;
+    let button_info: ButtonInfo[] = [];
+    // 成功した場合、続けて追加/カテゴリ一覧へ戻るボタンを表示
+    if (result.status == 'ok') {
+      message = 'カテゴリの追加に成功しました';
+      button_info.push({
+        type: 'material', icon: 'fas fa-arrow-right', text: '続けて追加',
+        onClick: () => this.setState({
+          isModalOpen: false,
+          categoly: categoly_default(), exam: exam_default()
+        })
+      });
+      button_info.push({
+        type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
+        onClick: () => Router.push('/list')
+      });
+    // 失敗した場合、閉じるボタンのみ
+    } else {
+      message = 'エラー: ' + result.message;
+      button_info.push({
+        type: 'filled', icon: 'fas fa-times', text: '閉じる',
+        onClick: () => this.setState({isModalOpen: false})
+      });
+    }
+
+    let button: object[] = [];
+    button_info.forEach(e => { button.push(<Button info={e} />) });
     return (
-      <div className={css.container}>
+      <div className={css.window}>
+        <p>{message}</p>
+        <div className={css.window_buttons}>
+          {button}
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    // Modalに渡す用のデータ
+    const modalData: ModalData = {
+      //body: <p>{this.state.res_result}</p>,
+      body: this.RegistResult(),
+      isOpen: this.state.isModalOpen
+    };
+    return (
+      <>
         <h1>新規カテゴリの登録</h1>
 
         <div className={css.edit_area}>
@@ -134,7 +199,9 @@ export default class create extends React.Component {
             onClick: () => this.RegistExam(), type: "filled"
           }} />
         </div>
-      </div>
+
+        <Modal data={modalData} />
+      </>
     );
   }
 }
