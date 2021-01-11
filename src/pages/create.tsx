@@ -11,6 +11,7 @@ import React from 'react';
 import Button from '../components/Button';
 import Form from '../components/Form';
 import Categoly from '../types/Categoly';
+import { request } from 'https';
 
 interface Exam {
   question: string,
@@ -33,6 +34,26 @@ export default class create extends React.Component {
     }
   }
 
+  // カテゴリ登録
+  RegistExam() {
+    const exam = JSON.stringify(this.state.exam);
+    const tmp: Categoly = this.state.categoly;
+    const categoly = {
+      title: tmp.title, desc: tmp.desc, tag: tmp.tag, list: exam
+    }
+    
+    const req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+      if (this.readyState == 4)
+        console.log('status: '+req.responseText);
+    }
+    req.open('POST', 'https://api.watasuke.tk');
+    req.setRequestHeader('Content-Type', 'application/json');
+    console.log(req);
+    console.log(JSON.stringify(categoly));
+    req.send(JSON.stringify(categoly));
+  }
+
   AddExam() {
     let tmp = this.state.exam;
     tmp.push({ question: '', answer: '' });
@@ -51,7 +72,6 @@ export default class create extends React.Component {
   }
   UpdateExam(type: string, i: number, str: string) {
     let tmp = this.state.exam;
-    console.log(i);
     if (type == 'question') {
       tmp[i].question = str;
     } 
@@ -104,10 +124,16 @@ export default class create extends React.Component {
         <h2>問題</h2>
         {this.ExamEditForm()}
         
-        <Button info={{
+        <div className={css.buttons}>
+          <Button info={{
             text: "問題の追加", icon: "fas fa-plus",
-          onClick: () => this.AddExam(), type: "material"
-        }} />
+            onClick: () => this.AddExam(), type: "material"
+          }} />
+          <Button info={{
+            text: "カテゴリの登録", icon: "fas fa-check",
+            onClick: () => this.RegistExam(), type: "filled"
+          }} />
+        </div>
       </div>
     );
   }

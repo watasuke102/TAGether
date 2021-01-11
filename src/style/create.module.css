@@ -27,3 +27,9 @@
 .edit_exam textarea {
   width: 43vw;
 }
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 25px;
+}
