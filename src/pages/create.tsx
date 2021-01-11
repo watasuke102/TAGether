@@ -188,7 +188,7 @@ export default class create extends React.Component<any, State> {
     }
 
     let button: object[] = [];
-    button_info.forEach(e => { button.push(<Button info={e} />) });
+    button_info.forEach(e => { button.push(<Button {...e} />) });
     return (
       <div className={css.window}>
         <p>{message}</p>
