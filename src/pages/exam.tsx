@@ -28,16 +28,18 @@ interface ExamState {
 }
 
 interface Props {
+  data: Categoly[]
+}
+interface State {
   index:           number,
   input:           string,
   isModalOpen:     boolean,
   nextButtonState: NextButtonState,
   responses:       Array<string>,
-  examState:       ExamState,
-  data:            Categoly[]
+  examState:       ExamState[],
 }
 
-export default class list extends React.Component {
+export default class exam extends React.Component<Props, State> {
   private exam;
   constructor(props: Props) {
     super(props);
