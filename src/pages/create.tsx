@@ -16,9 +16,17 @@ import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 import ButtonInfo from '../types/ButtonInfo';
 
+
+// interfaceとデフォルト値
 interface Exam {
   question: string,
-  answer:   string
+  answer: string,
+}
+interface Props{
+  isModalOpen: boolean,
+  res_result:  string,
+  categoly: Categoly,
+  exam: Exam
 }
 
 function categoly_default() {
@@ -28,15 +36,15 @@ function categoly_default() {
   }
   return tmp;
 }
-
 function exam_default() {
   let tmp: Exam[] = [];
   tmp.push({ question: '', answer: '' });
   return tmp;
 }
 
+
 export default class create extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       categoly: categoly_default(),

@@ -14,6 +14,7 @@ import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ModalData from '../types/ModalData';
+import Categoly from '../types/Categoly';
 
 enum NextButtonState {
   show_answer,
@@ -26,9 +27,19 @@ interface ExamState {
   isCorrect: boolean
 }
 
+interface Props {
+  index:           number,
+  input:           string,
+  isModalOpen:     boolean,
+  nextButtonState: NextButtonState,
+  responses:       Array<string>,
+  examState:       ExamState,
+  data:            Categoly[]
+}
+
 export default class list extends React.Component {
   private exam;
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.exam = JSON.parse(this.props.data[0].list);
     // 解答状況の初期化
