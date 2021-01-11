@@ -18,7 +18,7 @@ export default function ExamCard(props: Categoly) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   // Modalに渡す用のデータ
   const modalData: ModalData = {
-    body: <Detail data={props} close={() => setIsModalOpen(false)} />,
+    body: <Detail {...{ data: props, close: () => setIsModalOpen(false) }} />,
     isOpen: isModalOpen,
   };
 

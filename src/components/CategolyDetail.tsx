@@ -13,8 +13,12 @@ import Tag from './Tag'
 import Button from './Button';
 import Categoly from '../types/Categoly'
 
+interface CategolyDetailData {
+  data: Categoly,
+  close: Function
+}
 
-export default function categoly_detail(props) {
+export default function categoly_detail(props: CategolyDetailData) {
   const data: Categoly = props.data;
 
   return (
