@@ -14,7 +14,7 @@ import FormInfo from '../types/FormInfo'
 export default function Form(props) {
   const info:FormInfo = props.info;
   return (
-    <div>
+    <div className={css.container}>
       <label className={css.label}>{info.label}</label>
       <textarea className={css.form} value={info.value}
         onChange={(e) => info.onChange(e)} disabled={info.disabled}
