@@ -172,9 +172,12 @@ export default class exam extends React.Component<Props, State> {
     const state = this.state.examState[this.state.index];
     if (!state.checked) return;
     return (
-      <div className={css.exam_state}>
-        <div className={state.isCorrect ? 'far fa-circle' : 'fas fa-times'} />
-        <p>{state.isCorrect ? '正解' : '不正解'}</p>
+      <div className={css.state_and_answer}>
+        <div className={css.exam_state}>
+          <div className={state.isCorrect ? 'far fa-circle' : 'fas fa-times'} />
+          <p>{state.isCorrect ? '正解' : '不正解'}</p>
+        </div>
+        <p className={css.answer}>正解: {this.exam[this.state.index].answer}</p>
       </div>
     );
   }

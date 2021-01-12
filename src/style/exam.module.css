@@ -15,17 +15,20 @@
 }
 
 /* 正誤表示 */
+.state_and_answer {
+  display: flex;
+  flex-direction: column;
+}
+.answer{
+  font-size: 25px;
+  padding: 0 100px 0 0;
+}
+
 .exam_state {
   display: flex;
   align-items: center;
-  margin: 0 20px;
-  font-size: 40px;
-}
-.exam_state div {
-  margin: auto 20px;
-}
-.exam_state p {
   margin: 0;
+  font-size: 40px;
 }
 
 /* 問題文と解答欄 */
@@ -82,7 +85,7 @@
   .display {
     flex-direction: column;
   }
-  .exam_state {
+  .state_and_answer {
     margin: 50px 0 0;
   }
   .window_buttons {
