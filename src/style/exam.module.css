@@ -10,8 +10,23 @@
 /* 全体の親 */
 .display {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: 0 50px;
+}
+
+/* 問題文と解答欄 */
+.answer_area {
+  margin: 0 50px 0 0;
+}
+.answer_area #question {
+  font-size: 30px;
+  padding: 0 0 10px 0;
+  width: 50vw;
+  border-bottom: 3px solid ;
+}
+/* Enter送信防止用 */
+#dummy {
+  display: none;
 }
 
 /* 正誤表示 */
@@ -29,19 +44,6 @@
   align-items: center;
   margin: 0;
   font-size: 40px;
-}
-
-/* 問題文と解答欄 */
-.answer_area #question {
-  font-size: 30px;
-  padding: 0 0 10px 0;
-  width: 50vw;
-  border-bottom: 3px solid ;
-}
-
-/* Enter送信防止用 */
-#dummy {
-  display: none;
 }
 
 /* ボタン */
