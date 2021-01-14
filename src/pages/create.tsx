@@ -37,8 +37,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   private bottom;
   public text = {
     heading: '新規カテゴリの追加',
-    apply_button: 'カテゴリの登録'
+    apply_button: 'カテゴリの登録',
+    api_success: 'カテゴリの追加に成功しました'
   }
+  public api_method = 'POST';
 
   constructor(props: EditCategolyPageState) {
     super(props);
@@ -72,7 +74,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const exam = JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
     const categoly = {
-      title: tmp.title, desc: tmp.desc, tag: tmp.tag, list: exam
+      id: tmp.id, title: tmp.title, desc: tmp.desc, tag: tmp.tag, list: exam
     }
     
     const req = new XMLHttpRequest();
@@ -82,7 +84,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         this.setState({ isModalOpen: true, res_result: str });
       }
     }
-    req.open('POST', 'https://api.watasuke.tk');
+    req.open(this.api_method, 'https://api.watasuke.tk');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
   }
@@ -134,7 +136,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
   ExamEditForm() {
     let obj: object[] = [];
-    for (let i = 0; i < this.state.exam.length;i++){
+    for (let i = 0; i < this.state.exam.length; i++){
       obj.push(
         <div className={css.edit_exam}>
           <div className={css.delete_button}>
@@ -164,7 +166,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/カテゴリ一覧へ戻るボタンを表示
     if (result.status == 'ok') {
-      message = 'カテゴリの追加に成功しました';
+      message = this.text.api_success;
       button_info.push({
         type: 'material', icon: 'fas fa-arrow-right', text: '続けて追加',
         onClick: () => this.setState({

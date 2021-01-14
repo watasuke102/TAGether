@@ -13,8 +13,11 @@ import EditCategolyPageState from '../types/EditCategolyPageState';
 export default class edit extends Create {
   public text = {
     heading: 'カテゴリの編集',
-    apply_button: '編集内容の適用'
+    apply_button: '編集内容の適用',
+    api_success: '編集結果を適用しました'
   }
+  public api_method = 'PUT';
+
   constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
