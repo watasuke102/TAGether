@@ -39,6 +39,10 @@ export default function categoly_detail(props: CategolyDetailData) {
           onClick: () => props.close(), type: 'material'
         }} />
         <Button {...{
+          text: '編集する', icon: 'fas fa-pen',
+          onClick: () => Router.push('/edit?id='+data.id), type: 'material'
+        }} />
+        <Button {...{
           text: 'この問題を解く', icon: 'fas fa-arrow-right',
           onClick: () => Router.push('/exam?id='+data.id), type: 'filled'
         }} />

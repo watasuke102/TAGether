@@ -22,7 +22,7 @@ interface Exam {
   question: string,
   answer: string,
 }
-interface State{
+export interface State{
   isModalOpen: boolean,
   res_result:  string,
   categoly: Categoly,
@@ -44,6 +44,10 @@ function exam_default() {
 
 export default class create extends React.Component<any, State> {
   private bottom;
+  public text = {
+    heading: '新規カテゴリの追加',
+    apply_button: 'カテゴリの登録'
+  }
 
   constructor(props: State) {
     super(props);
@@ -211,7 +215,7 @@ export default class create extends React.Component<any, State> {
     };
     return (
       <>
-        <h1>新規カテゴリの登録</h1>
+        <h1>{this.text.heading}</h1>
 
         <div className={css.edit_area}>
           <Form {...{
@@ -240,7 +244,7 @@ export default class create extends React.Component<any, State> {
               onClick: () => this.AddExam(), type: "material"
             }} />
             <Button {...{
-              text: "カテゴリの登録", icon: "fas fa-check",
+              text: this.text.apply_button, icon: "fas fa-check",
               onClick: () => this.RegistExam(), type: "filled"
             }} />
           </div>
