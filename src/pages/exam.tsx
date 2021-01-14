@@ -222,7 +222,7 @@ export default class exam extends React.Component<Props, State> {
     // 正しい答えの一覧
     let correct_answer = '';
     this.exam[this.state.index].answer.forEach(e => {
-      correct_answer += e + ' '
+      correct_answer += e + ', '
     });
     return (
       <div className={css.state_and_answer}>
@@ -230,7 +230,7 @@ export default class exam extends React.Component<Props, State> {
           <div className={className}/>
           <p>{result}</p>
         </div>
-        <p className={css.answer}>正解: {correct_answer}</p>
+        <p className={css.answer}>正解: {correct_answer.slice(0, -2)}</p>
       </div>
     );
   }
