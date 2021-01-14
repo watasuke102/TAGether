@@ -8,5 +8,5 @@
 //
 export default interface Exam {
   question: string,
-  answer: string,
+  answer: string[],
 }

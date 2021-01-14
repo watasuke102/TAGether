@@ -14,6 +14,7 @@ import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ModalData from '../types/ModalData';
+import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 
 enum NextButtonState {
@@ -24,7 +25,7 @@ enum NextButtonState {
 
 interface ExamState {
   checked: boolean,
-  isCorrect: boolean
+  correctAnswerCount: number
 }
 
 interface Props {
@@ -32,40 +33,53 @@ interface Props {
 }
 interface State {
   index:           number,
-  input:           string,
   isModalOpen:     boolean,
   nextButtonState: NextButtonState,
-  responses:       Array<string>,
+  // answers[index][問題番号]
+  answers:         string[][],
   examState:       ExamState[],
 }
 
 export default class exam extends React.Component<Props, State> {
-  private exam;
+  private exam: Exam[];
   constructor(props: Props) {
     super(props);
     this.exam = JSON.parse(this.props.data[0].list);
     // 解答状況の初期化
-    const length = this.exam.length;
-    let tmp: ExamState[] = Array<ExamState>();
-    for (let i = 0; i < length; i++){
-      tmp[i] = { checked: false, isCorrect: false };
+    const exam_length = this.exam.length;
+    let exam_state: ExamState[] = Array<ExamState>();
+    let max_answer = 1;
+    for (let i = 0; i < exam_length; i++) {
+      exam_state[i] = { checked: false, correctAnswerCount: 0 };
+      console.log('length (' + i + ') is ' + this.exam[i].answer.length);
+      if (this.exam[i].answer.length > max_answer) {
+        max_answer = this.exam[i].answer.length;
+      }
     }
+    // 解答欄の初期化
+    let answers: string[][] = Array<Array<string>>(exam_length);
+    for (let i = 0; i < exam_length; i++) {
+      answers[i] = Array<string>(max_answer).fill('');
+    }
+    console.log(answers);
     // stateの初期化
     this.state = {
-      index: 0, isModalOpen: false, input: '',
+      index: 0, isModalOpen: false,
       nextButtonState: NextButtonState.show_answer,
-      responses: Array<string>(length),
-      examState: tmp
+      answers: answers,
+      examState: exam_state
     };
   }
 
   // 解答が合っているかどうか確認してstateに格納
   CheckAnswer() {
     const index = this.state.index;
-    let result: ExamState = {checked: true, isCorrect: false};
-    if (this.state.responses[index] == this.exam[index].answer) {
-      result.isCorrect = true;
-    }
+    let result: ExamState = { checked: true, correctAnswerCount: 0 };
+    this.exam[index].answer.forEach((e, i) => {
+      if (this.state.answers[index][i] == e) {
+        result.correctAnswerCount++;
+      }
+    });
     let tmp = this.state.examState;
     tmp[index] = result;
     this.setState({ examState: tmp });
@@ -73,12 +87,6 @@ export default class exam extends React.Component<Props, State> {
 
   // indexを増減する
   SetIndex(i: number) {
-    // 入力欄を変更する
-    let input = '';
-    if (this.state.responses[i]) {
-      input = this.state.responses[i];
-    }
-
     let button_state = NextButtonState.show_answer
     // 解答済みの問題だった場合
     if (this.state.examState[i].checked) {
@@ -92,7 +100,6 @@ export default class exam extends React.Component<Props, State> {
     }
     this.setState({
       index: i,
-      input: input,
       nextButtonState: button_state
     });
   }
@@ -129,10 +136,30 @@ export default class exam extends React.Component<Props, State> {
   }
 
   // ユーザーの入力（問題への解答）を配列に入れる
-  UpdateUsersResponse(event) {
-    let tmp = this.state.responses;
-    tmp[this.state.index] = event.target.value;
-    this.setState({ responses: tmp, input: event.target.value});
+  UpdateUsersResponse(event, i: number) {
+    let tmp = this.state.answers;
+    tmp[this.state.index][i] = event.target.value;
+    this.setState({ answers: tmp});
+  }
+
+
+  AnswerArea() {
+    const length = this.exam[this.state.index].answer.length;
+    let obj: object[] = [];
+    let label = '';
+    for (let i = 0; i < length; i++) {
+      let tmp = this.state.answers[this.state.index][i];
+      // 入力欄のラベル
+      label = '解答' + ( (length == 1)? '' : '('+(i+1)+')' );
+      obj.push(
+        <Form {...{
+          label: label, value: tmp, rows: 1,
+          onChange: (ev) => this.UpdateUsersResponse(ev, i),
+          disabled: this.state.examState[this.state.index].checked
+        }} />
+      );
+    }
+    return obj;
   }
 
   // 最初の要素だった場合はボタンを非表示に
@@ -170,14 +197,40 @@ export default class exam extends React.Component<Props, State> {
   // 正解状況の表示
   ShowExamState() {
     const state = this.state.examState[this.state.index];
+    const answer_length = this.exam[this.state.index].answer.length;
     if (!state.checked) return;
+    let className = 'fas fa-times';
+    let result: string;
+    // 問題数がひとつだった場合は「正解 or 不正解」
+    if (answer_length == 1) {
+      // 正解だった場合
+      if (state.correctAnswerCount == 1) {
+        className = 'far fa-circle';
+        result = '正解'
+      } else {
+        // 不正解だった場合
+        result = '不正解'
+      }
+    } else {
+      // 2つ以上だった場合は「n問正解」
+      //全問正解で○アイコン
+      if (state.correctAnswerCount == answer_length) {
+        className = 'far fa-circle';
+      }
+      result = state.correctAnswerCount + '問正解'
+    }
+    // 正しい答えの一覧
+    let correct_answer = '';
+    this.exam[this.state.index].answer.forEach(e => {
+      correct_answer += e + ' '
+    });
     return (
       <div className={css.state_and_answer}>
         <div className={css.exam_state}>
-          <div className={state.isCorrect ? 'far fa-circle' : 'fas fa-times'} />
-          <p>{state.isCorrect ? '正解' : '不正解'}</p>
+          <div className={className}/>
+          <p>{result}</p>
         </div>
-        <p className={css.answer}>正解: {this.exam[this.state.index].answer}</p>
+        <p className={css.answer}>正解: {correct_answer}</p>
       </div>
     );
   }
@@ -202,6 +255,7 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 
+
   render() {
     // Modalに渡す用のデータ
     const modalData: ModalData = {
@@ -217,13 +271,8 @@ export default class exam extends React.Component<Props, State> {
           {/* 問題文、解答欄 */}
           <div className={css.answer_area}>
             <p id={css.question}>問題: {this.exam[this.state.index].question}</p>
-
             <form className={css.form}>
-              <Form {...{
-                label: '解答', value: this.state.input, rows: 1,
-                onChange: (e) => this.UpdateUsersResponse(e),
-                disabled: this.state.examState[this.state.index].checked
-              }}/>
+              {this.AnswerArea()}
               {/* 入力中エンターを押して送信を無効化 */}
               <input id={css.dummy} />
             </form>
