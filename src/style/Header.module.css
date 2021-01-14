@@ -9,9 +9,9 @@
 */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 .header {
-  padding: 10px 20px;
-  margin: -15px -15px 5px;
+  margin: -15px -15px 70px;
   width: 100% + 15px;
+  height: 90px;
   font-size: 24px;
   background-color: #8891a580;
   color: #b9ccbe;
@@ -21,6 +21,7 @@
   font-family: 'Montserrat', sans-serif;
   text-align: center;
   margin: 0 auto 15px;
+  padding: 10px 0 0;
 }
 #first {
   margin-right: auto;
@@ -29,7 +30,19 @@
 .buttons {
   display: flex;
   justify-content: space-around;
-  margin: 0px auto 5px;
+  padding: 5px 0 5px;
+}
+.buttons_container {
+  position: absolute;
+  width: 100%;
+  top: 90px;
+  background-color: #8891a580;
+}
+.buttons_container_fixed {
+  position: fixed;
+  width: 100%;
+  left: 0; top: 0;
+  background-color: #8891a580;
 }
 
 /* 縦幅が狭かったらロゴとボタンを同じ行に */

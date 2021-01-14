@@ -12,22 +12,54 @@ import Router from 'next/router';
 import Button from './Button';
 import ButtonInfo from '../types/ButtonInfo';
 
-export default function Header() {
-  let info: ButtonInfo[] = [];
-  info.push({ text: "ホーム",       icon: "fas fa-home", onClick: () => Router.push("/"),        type: "icon_desc" });
-  info.push({ text: "カテゴリ一覧", icon: "fas fa-book", onClick: () => Router.push("/list"),    type: "icon_desc" });
-  info.push({ text: "プロフィール", icon: "fas fa-user", onClick: () => Router.push("/profile"), type: "icon_desc" });
-  let button_list: object[] = [];
-  info.forEach(element => {
-    button_list.push(<Button {...element} />);
-  });
+interface State {isFixedButtons: boolean}
 
-  return (
-    <header className={css.header}>
-      <h1>Tagether</h1>
-      <nav className={css.buttons}>
-        {button_list}
-      </nav>
-    </header>
-  );
+export default class header extends React.Component {
+  constructor(props: State) {
+    super(props);
+    this.state = { isFixedButtons: false }
+  }
+  
+  componentDidMount() {
+    window.addEventListener('scroll', () => this.SetIsFixedButtons() , true);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', () => this.SetIsFixedButtons(), true);
+  }
+
+  SetIsFixedButtons() {
+    if (!process.browser) return;
+    let isFixedButtons = false
+    if (window.pageYOffset > 90) {
+      isFixedButtons = true;
+    }
+    this.setState({ isFixedButtons: isFixedButtons });
+  }
+
+  ButtonContainersCSS() {
+    if (!this.state.isFixedButtons) return css.buttons_container;
+    return css.buttons_container_fixed;
+  }
+
+  render() {
+    let info: ButtonInfo[] = [];
+    info.push({ text: "ホーム", icon: "fas fa-home", onClick: () => Router.push("/"), type: "icon_desc" });
+    info.push({ text: "カテゴリ一覧", icon: "fas fa-book", onClick: () => Router.push("/list"), type: "icon_desc" });
+    info.push({ text: "プロフィール", icon: "fas fa-user", onClick: () => Router.push("/profile"), type: "icon_desc" });
+    let button_list: object[] = [];
+    info.forEach(element => {
+      button_list.push(<Button {...element} />);
+    });
+
+    return (
+      <header className={css.header}>
+        <h1>Tagether</h1>
+        <nav className={this.ButtonContainersCSS()}>
+          <div className={css.buttons}>
+            {button_list}
+          </div>
+        </nav>
+      </header>
+    );
+  }
 }
