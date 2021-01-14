@@ -12,23 +12,14 @@ import Router from 'next/router';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
+import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 import ButtonInfo from '../types/ButtonInfo';
+import EditCategolyPageState from '../types/EditCategolyPageState';
 
 
-// interfaceとデフォルト値
-interface Exam {
-  question: string,
-  answer: string,
-}
-export interface State{
-  isModalOpen: boolean,
-  res_result:  string,
-  categoly: Categoly,
-  exam: Exam[]
-}
-
+// デフォルト値
 function categoly_default() {
   let tmp: Categoly = {
     id: 0, updated_at: '', title: '',
@@ -42,14 +33,14 @@ function exam_default() {
   return tmp;
 }
 
-export default class create extends React.Component<any, State> {
+export default class create extends React.Component<any, EditCategolyPageState> {
   private bottom;
   public text = {
     heading: '新規カテゴリの追加',
     apply_button: 'カテゴリの登録'
   }
 
-  constructor(props: State) {
+  constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
       categoly: categoly_default(),

@@ -14,7 +14,7 @@ import ButtonInfo from '../types/ButtonInfo';
 
 interface State {isFixedButtons: boolean}
 
-export default class header extends React.Component {
+export default class header extends React.Component<any, State> {
   constructor(props: State) {
     super(props);
     this.state = { isFixedButtons: false }

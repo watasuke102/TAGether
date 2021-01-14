@@ -8,13 +8,14 @@
 //
 import { GetServerSideProps } from 'next';
 import Create from './create';
+import EditCategolyPageState from '../types/EditCategolyPageState';
 
 export default class edit extends Create {
   public text = {
     heading: 'カテゴリの編集',
     apply_button: '編集内容の適用'
   }
-  constructor(props: Create.State) {
+  constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
       categoly: this.props.data[0],
