@@ -32,29 +32,38 @@
   justify-content: space-around;
   padding: 5px 0 5px;
 }
-.buttons_container {
-  position: absolute;
-  width: 100%;
-  top: 90px;
-  background-color: #8891a580;
-}
-.buttons_container_fixed {
-  position: fixed;
-  width: 100%;
-  left: 0; top: 0;
-  background-color: #8891a580;
-}
 
 /* 縦幅が狭かったらロゴとボタンを同じ行に */
 @media screen and (max-height: 600px) {
   .header {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 0;
+    padding: 0 15px;
   }
   .header>h1 {
     margin: auto auto auto 0;
   }
   .buttons {
     margin: 0;
+  }
+  .buttons_container,
+  .buttons_container_fixed {
+    margin: auto 0;
+  }
+}
+/* 縦幅が狭くなければヘッダーを追従させる */
+@media screen and (min-height: 600px) {
+  .buttons_container {
+    position: absolute;
+    width: 100%;
+    top: 90px;
+    background-color: #8891a580;
+  }
+  .buttons_container_fixed {
+    position: fixed;
+    width: 100%;
+    left: 0; top: 0;
+    background-color: #8891a580;
   }
 }
