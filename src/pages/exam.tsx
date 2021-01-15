@@ -51,7 +51,6 @@ export default class exam extends React.Component<Props, State> {
     let max_answer = 1;
     for (let i = 0; i < exam_length; i++) {
       exam_state[i] = { checked: false, correctAnswerCount: 0 };
-      console.log('length (' + i + ') is ' + this.exam[i].answer.length);
       if (this.exam[i].answer.length > max_answer) {
         max_answer = this.exam[i].answer.length;
       }
@@ -61,7 +60,6 @@ export default class exam extends React.Component<Props, State> {
     for (let i = 0; i < exam_length; i++) {
       answers[i] = Array<string>(max_answer).fill('');
     }
-    console.log(answers);
     // stateの初期化
     this.state = {
       index: 0, isModalOpen: false,

@@ -88,7 +88,6 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     req.open(this.api_method, 'https://api.watasuke.tk');
     req.setRequestHeader('Content-Type', 'application/json');
-    console.log(JSON.stringify(categoly));
     req.send(JSON.stringify(categoly));
   }
 
