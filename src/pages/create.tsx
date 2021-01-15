@@ -29,7 +29,7 @@ function categoly_default() {
 }
 function exam_default() {
   let tmp: Exam[] = [];
-  tmp.push({ question: '', answer: '' });
+  tmp.push({ question: '', answer: Array<string>(1).fill('') });
   return tmp;
 }
 
@@ -64,11 +64,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"問題文が入力されていない欄があります"}' })
         return;
       }
-      if (e.answer == '') {
-        f = true;
-        this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"答えが入力されていない欄があります"}' })
-        return;
-      }
+      e.answer.forEach(answer => {
+        if (answer == '') {
+          f = true;
+          this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"答えが入力されていない欄があります"}' })
+          return;
+        }
+      });
     });
     if (f) return;
     const exam = JSON.stringify(this.state.exam);
@@ -86,20 +88,36 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     req.open(this.api_method, 'https://api.watasuke.tk');
     req.setRequestHeader('Content-Type', 'application/json');
+    console.log(JSON.stringify(categoly));
     req.send(JSON.stringify(categoly));
   }
 
+  // 問題を追加
   AddExam() {
     let tmp = this.state.exam;
-    tmp.push({ question: '', answer: '' });
+    tmp.push({ question: '', answer: Array<string>(1).fill('') });
     this.setState({ exam: tmp });
     // 追加した問題欄が表示されるようにする
+    this.bottom.scrollIntoView({ behavior: 'smooth' });
+  }
+  // 答え欄を追加
+  AddAnswer(i: number) {
+    let tmp = this.state.exam;
+    tmp[i].answer.push('');
+    this.setState({ exam: tmp });
+    // 追加した答え欄が表示されるようにする
     this.bottom.scrollIntoView({ behavior: 'smooth' });
   }
   RemoveExam(i: number) {
     let tmp = this.state.exam;
     // tmp[i]から要素を1つ削除
     tmp.splice(i, 1);
+    this.setState({ exam: tmp });
+  }
+  RemoveAnswer(i: number, j: number) {
+    let tmp = this.state.exam;
+    // tmp[i]から要素を1つ削除
+    tmp[i].answer.splice(j, 1);
     this.setState({ exam: tmp });
   }
 
@@ -113,47 +131,78 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     this.setState({ categoly: tmp });
   }
-  UpdateExam(type: string, i: number, str: string) {
+  UpdateExam(type: string, str: string, i: number, j: number) {
     let tmp = this.state.exam;
     if (type == 'question') {
       tmp[i].question = str;
     } 
     if (type == 'answer') {
-      tmp[i].answer = str;
+      tmp[i].answer[j] = str;
     } 
     this.setState({ exam: tmp });
   }
   
   // 問題編集欄
-  DeleteButton(i: number) {
-    if (i == 0) return <div className={css.dummy_button} />;
+  DeleteButton(i: number, f: Function, returnDummy: boolean) {
+    if (i == 0) {
+      if (returnDummy)
+        return <div className={css.dummy_button} />;
+      else return;
+    }
     else return (
       <Button {...{
         type: 'material', icon: 'fas fa-trash', text: '削除',
-        onClick: () => this.RemoveExam(i)
+        onClick: () => f()
       }} />
     );
   }
   ExamEditForm() {
     let obj: object[] = [];
-    for (let i = 0; i < this.state.exam.length; i++){
+    this.state.exam.forEach((e, i) => {
+      // 答え欄の生成
+      let answer_form: object[] = [];
+      e.answer.forEach((answer, j) => {
+        answer_form.push(
+          <div className={css.answer_area}>
+            <Form {...{
+              label: '答え', value: answer, rows: 2,
+              onChange: (ev) => this.UpdateExam('answer', ev.target.value, i, j)
+            }} />
+            <div className={css.answer_area_buttons}>
+              {/* 問題の追加/削除 */}
+              <Button {...{
+                text: '追加', icon: "fas fa-plus",
+                onClick: () => this.AddAnswer(i), type: "material"
+              }} />
+              {/* 答え欄削除ボタン */}
+              {
+                this.DeleteButton(j, () => this.RemoveAnswer(i, j), false)
+              }
+            </div>
+          </div>
+        )
+      })
+
+      // 問題文と答え欄
       obj.push(
         <div className={css.edit_exam}>
           <div className={css.delete_button}>
-            {this.DeleteButton(i)}
+            {/* 問題削除ボタン */}
+            {
+              this.DeleteButton(i, () => this.RemoveExam(i), true)
+            }
           </div>
-
           <Form {...{
-            label: '問題文', value: this.state.exam[i].question, rows: 2,
-            onChange: (e) => this.UpdateExam('question', i, e.target.value)
-          }}/>
-          <Form {...{
-            label: '答え', value: this.state.exam[i].answer, rows: 2,
-            onChange: (e) => this.UpdateExam('answer', i, e.target.value)
-          }}/>
+            label: '問題文', value: e.question, rows: 2,
+            onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
+          }} />
+          
+          <div className={css.answers}>
+            {answer_form}
+          </div>
         </div>
       );
-    }
+    })
     return obj;
   }
 

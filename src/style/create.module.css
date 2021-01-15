@@ -7,6 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+/* タイトル等の説明 */
 .edit_area {
   width: 70vw;
   margin: 30px auto;
@@ -15,6 +16,7 @@
   margin: 0 0 15px;
 }
 
+/* 問題文などの編集 */
 .edit_exam {
   display: flex;
   justify-content: space-around;
@@ -22,8 +24,24 @@
   margin: 20px 0;
 }
 .edit_exam textarea {
-  width: 40vw;
+  width: 30vw;
 }
+
+.answers {
+  display: flex;
+  flex-direction: column;
+}
+.answer_area {
+  display: flex;
+  flex-direction: row;
+}
+.answer_area_buttons {
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 
 .dummy_button {
   width: 88px;
