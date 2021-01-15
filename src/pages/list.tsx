@@ -18,7 +18,7 @@ interface Props { data: Categoly[] }
 export default function list(props: Props) {
   let cards: object[] = [];
   const list: Categoly[] = props.data;
-  // 問題作成ページへ飛ぶカードを追加
+  // カテゴリ作成ページへ飛ぶカードを追加
   cards.push(
     <div className={css.card_create} onClick={() => Router.push('/create')}>
       <div className='fas fa-plus' />
