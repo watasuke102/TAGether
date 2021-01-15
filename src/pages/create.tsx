@@ -159,9 +159,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
   // モーダルウィンドウの中身
   RegistResult() {
-    // 何も中身がなければ終了
-    if (this.state.res_result == '') return <></>;
-    const result = JSON.parse(this.state.res_result);
+    let result;
+    if (this.state.res_result != '') {
+      result = JSON.parse(this.state.res_result);
+    } else {
+      // 何も中身がなければエラー時の値を代入する
+      result = { status: 'error', message: '失敗しました' };
+    }
     let message;
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/カテゴリ一覧へ戻るボタンを表示
