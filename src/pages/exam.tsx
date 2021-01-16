@@ -296,7 +296,7 @@ export default class exam extends React.Component<Props, State> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch('https://api.watasuke.tk?id=' + context.query.id);
+  const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
   const data = await res.json();
   return {props:{data}};
 }

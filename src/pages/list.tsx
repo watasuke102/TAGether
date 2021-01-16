@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (context.query.id) {
     query = '?id='+context.query.id;
   }
-  const res = await fetch(`https://api.watasuke.tk`+query);
+  const res = await fetch(process.env.API_URL+query);
   const data = await res.json();
   return {props:{data}};
 }

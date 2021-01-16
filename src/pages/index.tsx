@@ -16,7 +16,7 @@ import ModalData from '../types/ModalData';
 function SendRequest(s: string, func: Function) {
   if (s == '') return;
   const req = new XMLHttpRequest();
-  req.open('POST', 'https://api.watasuke.tk/request.php?body='+s);
+  req.open('POST', process.env.API_URL + '/request.php?body='+s);
   req.send();
   func();
 }

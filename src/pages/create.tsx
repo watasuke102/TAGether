@@ -86,7 +86,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         this.setState({ isModalOpen: true, res_result: str });
       }
     }
-    req.open(this.api_method, 'https://api.watasuke.tk');
+    req.open(this.api_method, process.env.API_URL);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
   }
