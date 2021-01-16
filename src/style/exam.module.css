@@ -94,6 +94,10 @@
   .state_and_answer {
     margin: 50px 0 0;
   }
+
+  .window {
+    padding-bottom: 80px;
+  }
   .window_buttons {
     flex-direction: column;
     height: 100px;
