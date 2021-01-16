@@ -85,6 +85,9 @@
 
 /* 横幅が狭かったらボタンとかを縦に並べる */
 @media screen and (max-width: 700px) {
+  .answer_area #question {
+    width: 100%;
+  }
   .display {
     flex-direction: column;
   }
