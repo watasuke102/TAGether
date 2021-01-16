@@ -189,22 +189,25 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
       // 問題文と答え欄
       obj.push(
-        <div className={css.edit_exam}>
-          <div className={css.delete_button}>
-            {/* 問題削除ボタン */}
-            {
-              this.DeleteButton(i, () => this.RemoveExam(i), true)
-            }
+        <>
+          <div className={css.edit_exam}>
+            <div className={css.delete_button}>
+              {/* 問題削除ボタン */}
+              {
+                this.DeleteButton(i, () => this.RemoveExam(i), true)
+              }
+            </div>
+            <Form {...{
+              label: '問題文', value: e.question, rows: 2,
+              onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
+            }} />
+            
+            <div className={css.answers}>
+              {answer_form}
+            </div>
           </div>
-          <Form {...{
-            label: '問題文', value: e.question, rows: 2,
-            onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
-          }} />
-          
-          <div className={css.answers}>
-            {answer_form}
-          </div>
-        </div>
+          <hr/>
+        </>
       );
     })
     return obj;
