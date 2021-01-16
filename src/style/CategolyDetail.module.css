@@ -31,6 +31,17 @@
   margin: 0 10px;
 }
 
+.shuffle_checkbox {
+  display: flex;
+}
+.shuffle_checkbox input {
+  width: 30px; height: 30px;
+}
+.shuffle_checkbox p {
+  height: 30px;
+  margin: auto 0;
+}
+
 .buttons {
   position: absolute;
   display: flex;

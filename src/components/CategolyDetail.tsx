@@ -45,9 +45,12 @@ export default function categoly_detail(props: CategolyDetailData) {
 
       <h2>{data.desc}</h2>
 
-      {/* シャッフルするかどうかを決めるチェックボックス */}
-      <input type='checkbox' value={isShuffleEnabled}
-        onChange={e => { SetIsShuffleEnabled(e.target.checked? 'true':'false'); console.log(isShuffleEnabled) }}/>
+      {/* シャッフルするかどうかを決めるチェックボックスなど */}
+      <div className={css.shuffle_checkbox}>
+        <input type='checkbox' value={isShuffleEnabled}
+          onChange={e => { SetIsShuffleEnabled(e.target.checked? 'true':'false'); console.log(isShuffleEnabled) }}/>
+        <p>問題の順番をランダムにする</p>
+      </div>
 
       <div className={css.buttons}>
         <Button {...{
