@@ -197,13 +197,13 @@ export default class exam extends React.Component<Props, State> {
     const state = this.state.examState[this.state.index];
     const answer_length = this.exam[this.state.index].answer.length;
     if (!state.checked) return;
-    let className = 'fas fa-times';
+    let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」
     if (answer_length == 1) {
       // 正解だった場合
       if (state.correctAnswerCount == 1) {
-        className = 'far fa-circle';
+        icon = 'far fa-circle';
         result = '正解'
       } else {
         // 不正解だった場合
@@ -213,7 +213,7 @@ export default class exam extends React.Component<Props, State> {
       // 2つ以上だった場合は「n問正解」
       //全問正解で○アイコン
       if (state.correctAnswerCount == answer_length) {
-        className = 'far fa-circle';
+        icon = 'far fa-circle';
       }
       result = state.correctAnswerCount + '問正解'
     }
@@ -225,7 +225,7 @@ export default class exam extends React.Component<Props, State> {
     return (
       <div className={css.state_and_answer}>
         <div className={css.exam_state}>
-          <div className={className}/>
+          <div className={icon}/>
           <p>{result}</p>
         </div>
         <p className={css.answer}>正解: {correct_answer.slice(0, -2)}</p>
