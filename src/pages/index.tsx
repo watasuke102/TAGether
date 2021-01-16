@@ -50,7 +50,6 @@ export default function index() {
         <li>プロフィール</li>
         <li>ログイン処理</li>
         <li>問題の解答履歴（得点など）</li>
-        <li>カテゴリの編集機能</li>
         <li>カテゴリのお気に入り設定</li>
         <li>その他こまかいとこ</li>
       </ul>
