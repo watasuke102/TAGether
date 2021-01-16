@@ -18,8 +18,20 @@ interface CategolyDetailData {
   close: Function
 }
 
+
 export default function categoly_detail(props: CategolyDetailData) {
+  const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState('');
   const data: Categoly = props.data;
+  const Push = (s: string) => {
+    let url: string = ''
+    if (s == 'edit') {
+      url = '/edit?id=' + data.id;
+    } else {
+      url = '/exam?id=' + data.id;
+      url += '&shuffle=' + isShuffleEnabled;
+    }
+    Router.push(url);
+  };
 
   return (
     <div className={css.container}>
@@ -33,6 +45,10 @@ export default function categoly_detail(props: CategolyDetailData) {
 
       <h2>{data.desc}</h2>
 
+      {/* シャッフルするかどうかを決めるチェックボックス */}
+      <input type='checkbox' value={isShuffleEnabled}
+        onChange={e => { SetIsShuffleEnabled(e.target.checked? 'true':'false'); console.log(isShuffleEnabled) }}/>
+
       <div className={css.buttons}>
         <Button {...{
           text: '閉じる', icon: 'fas fa-times',
@@ -40,11 +56,11 @@ export default function categoly_detail(props: CategolyDetailData) {
         }} />
         <Button {...{
           text: '編集する', icon: 'fas fa-pen',
-          onClick: () => Router.push('/edit?id='+data.id), type: 'material'
+          onClick: () => Push('edit'), type: 'material'
         }} />
         <Button {...{
           text: 'この問題を解く', icon: 'fas fa-arrow-right',
-          onClick: () => Router.push('/exam?id='+data.id), type: 'filled'
+          onClick: () => Push('exam'), type: 'filled'
         }} />
       </div>
     </div>

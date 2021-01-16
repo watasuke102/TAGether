@@ -44,7 +44,17 @@ export default class exam extends React.Component<Props, State> {
   private exam: Exam[];
   constructor(props: Props) {
     super(props);
+    // 問題の取得、条件によってはシャッフル
     this.exam = JSON.parse(this.props.data[0].list);
+    // Fisher-Yatesアルゴリズムらしい
+    if (Router.query.shuffle == 'true') {
+      for(let i = this.exam.length-1; i > 0; i--){
+        var r = Math.floor(Math.random() * (i + 1));
+        var tmp = this.exam[i];
+        this.exam[i] = this.exam[r];
+        this.exam[r] = tmp;
+      }
+    }
     // 解答状況の初期化
     const exam_length = this.exam.length;
     let exam_state: ExamState[] = Array<ExamState>();
