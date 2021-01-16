@@ -74,7 +74,7 @@ export default function index() {
         }} /> </div>
       </div>
 
-      <p className={css.version}>TAGether v1.1.1</p>
+      <p className={css.version}>TAGether v1.1.2</p>
 
       <Modal {...modalData} />
     </div>
