@@ -86,7 +86,12 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         this.setState({ isModalOpen: true, res_result: str });
       }
     }
-    req.open(this.api_method, process.env.API_URL);
+    const url = process.env.API_URL;
+    if (url == undefined) {
+      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"失敗しました: URL is undefined"}' })
+      return;
+    }
+    req.open(this.api_method, url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
   }
