@@ -67,3 +67,11 @@
     background-color: #8891a580;
   }
 }
+
+/* アイコンと説明が2段になっていたらマージンを増やす*/
+/* ヘッダの高さが増えて、内容が隠れてしまう */
+@media screen and (min-width: 700px) and (max-width: 900px) {
+  .header {
+    margin-bottom: 100px;
+  }
+}
