@@ -50,6 +50,26 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       isModalOpen: false, res_result: ''
     }
   }
+  // ページ移動時に警告
+  ShowAlertBeforeLeave() {
+    if (!window.confirm("変更は破棄されます。ページを移動してもよろしいですか？")) {
+      throw new Error('canceled');
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('beforeunload', (e) => {
+      e.preventDefault();
+      e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
+    }, true);
+    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', (e) => {
+      e.preventDefault();
+      e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
+    }, true);
+    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave)
+  }
 
   // カテゴリ登録
   RegistExam() {
