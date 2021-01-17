@@ -56,19 +56,17 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       throw new Error('canceled');
     }
   }
+  BeforeUnLoad = e => {
+    e.preventDefault();
+    e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
+  }
   componentDidMount() {
-    window.addEventListener('beforeunload', (e) => {
-      e.preventDefault();
-      e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
-    }, true);
-    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave)
+    window.addEventListener('beforeunload', this.BeforeUnLoad);
+    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
   }
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', (e) => {
-      e.preventDefault();
-      e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
-    }, true);
-    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave)
+    window.removeEventListener('beforeunload', this.BeforeUnLoad);
+    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
   }
 
   // カテゴリ登録
