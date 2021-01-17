@@ -13,17 +13,17 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ModalData from '../types/ModalData';
 
-function SendRequest(s: string, func: Function) {
-  if (s == '') return;
-  const req = new XMLHttpRequest();
-  req.open('POST', process.env.API_URL + '/request.php?body='+s);
-  req.send();
-  func();
-}
-
 export default function index() {
   const [request, SetRequest] = React.useState('');
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
+
+  const SendRequest = () => {
+    if (request == '') return;
+    const req = new XMLHttpRequest();
+    req.open('POST', process.env.API_URL + '/request.php?body='+request);
+    req.send();
+    SetIsModalOpen(false);
+  }
 
   const modalData: ModalData = {
     isOpen: isModalOpen,
@@ -70,7 +70,7 @@ export default function index() {
         }} />
         <div className={css.button}> <Button {...{
           icon: 'fas fa-paper-plane', text: '送信', type: 'filled',
-          onClick: () => SendRequest(request, () => SetIsModalOpen(true))
+          onClick: SendRequest
         }} /> </div>
       </div>
 
