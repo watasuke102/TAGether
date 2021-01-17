@@ -64,14 +64,12 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
   }
   componentDidMount() {
-    const f = this.state.showConfirmBeforeLeave;
     window.addEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.on('routeChangeStart', () => this.ShowAlertBeforeLeave(f));
+    Router.events.on('routeChangeStart', () => this.ShowAlertBeforeLeave(this.state.showConfirmBeforeLeave));
   }
   componentWillUnmount() {
-    const f = this.state.showConfirmBeforeLeave;
     window.removeEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.off('routeChangeStart', () => this.ShowAlertBeforeLeave(f));
+    Router.events.off('routeChangeStart', () => this.ShowAlertBeforeLeave(this.state.showConfirmBeforeLeave));
   }
 
   // カテゴリ登録
