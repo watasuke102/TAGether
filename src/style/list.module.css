@@ -8,7 +8,12 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
-.card_create {
+.form {
+  width: 80vw;
+  margin: 25px auto;
+}
+
+.card {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,13 +26,13 @@
   background-color: #dbdbdb00;
   transition: 0.3s;
 }
-.card_create:hover {
+.card:hover {
   cursor: pointer;
   color: #1a1a1a;
   background-color: #dbdbdbaa;
   transition: 0.3s;
 }
-.card_create div{
+.card div{
   margin: 0 15px 0 0;
 }
 

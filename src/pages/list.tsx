@@ -9,29 +9,58 @@
 import css from '../style/list.module.css'
 import React from 'react';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps } from 'next';
+import Form from '../components/Form';
 import CategolyCard from '../components/Card';
-import Categoly from '../types/Categoly'
+import Categoly from '../types/Categoly';
 
 interface Props { data: Categoly[] }
 
 export default function list(props: Props) {
+  const [searchStr, SetSearchStr] = React.useState('');
   let cards: object[] = [];
   const list: Categoly[] = props.data;
+  
+  const CreateCards = () => {
+    let searchResult: Categoly[] = [];
+    // 検索欄になにか記入されていたら、検索
+    if (searchStr != '') {
+      list.forEach(e => {
+        // 検索欄に入力された文字と一致したら検索結果に追加
+        if (e.title.indexOf(searchStr) != -1)
+          searchResult.push(e);
+      });
+    } else {
+      searchResult = list;
+    }
+    // 検索結果からカードを生成
+    if (searchResult == undefined) {
+      cards.push(<p>見つかりませんでした</p>);
+      return;
+    }
+    searchResult.forEach(element => {
+      cards.push(<CategolyCard {...element} />);
+    });
+  }
+  
   // カテゴリ作成ページへ飛ぶカードを追加
   cards.push(
-    <div className={css.card_create} onClick={() => Router.push('/create')}>
+    <div className={css.card} onClick={() => Router.push('/create')}>
       <div className='fas fa-plus' />
       <p>新規作成</p>
     </div>
   );
-  // リストから
-  list.forEach(element => {
-    cards.push(<CategolyCard {...element} />);
-  });
+  CreateCards();
+
   return (
     <>
-    <h1>カテゴリ一覧</h1>
+      <h1>カテゴリ一覧</h1>
+      <div className={css.form}>
+        <Form {...{
+          label: 'タイトルを検索', value: searchStr, rows: 1,
+          onChange: (ev) => SetSearchStr(ev.target.value)
+        }} />
+      </div>
     <div className={css.list}> {cards} </div>
     </>
   );
