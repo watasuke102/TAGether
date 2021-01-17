@@ -66,6 +66,9 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.4</h3>
+      <p>ビルドできない問題を修正</p>
+
       <h3>v1.1.3</h3>
       <ul>
         <li>カテゴリの作成/編集ページで、カテゴリの追加/編集に成功したら
@@ -79,7 +82,7 @@ export default function index() {
         <li>問題の順番をシャッフルできるようにした</li>
       </ul>
 
-      <p className={css.version}>TAGether v1.1.3</p>
+      <p className={css.version}>TAGether v1.1.4</p>
 
       <Modal {...modalData} />
     </div>
