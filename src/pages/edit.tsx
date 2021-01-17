@@ -23,7 +23,8 @@ export default class edit extends Create {
     this.state = {
       categoly: this.props.data[0],
       exam: JSON.parse(this.props.data[0].list),
-      isModalOpen: false, res_result: ''
+      isModalOpen: false, res_result: '',
+      showConfirmBeforeLeave: true
     }
   }
 }
