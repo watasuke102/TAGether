@@ -16,18 +16,41 @@ import Categoly from '../types/Categoly';
 
 interface Props { data: Categoly[] }
 
+
 export default function list(props: Props) {
   const [searchStr, SetSearchStr] = React.useState('');
+  const [radioState, SetRadioState] = React.useState('タイトル');
   let cards: object[] = [];
   const list: Categoly[] = props.data;
   
+  const RadioButton = (s: string) => {
+    return (
+      <div className={css.radiobutton}>
+        <input type='radio' value={s} checked={radioState == s}
+          onChange={() => SetRadioState(s)} />
+        <p>{s}</p>
+      </div>
+    );
+  }
+
+  // カードの生成
   const CreateCards = () => {
     let searchResult: Categoly[] = [];
     // 検索欄になにか記入されていたら、検索
     if (searchStr != '') {
       list.forEach(e => {
+        let text: string = '';
+        switch (radioState) {
+          case 'ID':
+            if (e.id?.toString() != undefined)
+              text = e.id.toString();
+            break;
+          case 'タイトル': text = e.title; break;
+          case 'タグ'    : text = e.tag;   break;
+          case '説明'    : text = e.desc;  break;
+        }
         // 検索欄に入力された文字と一致したら検索結果に追加
-        if (e.title.indexOf(searchStr) != -1)
+        if (text.indexOf(searchStr) != -1)
           searchResult.push(e);
       });
     } else {
@@ -52,14 +75,21 @@ export default function list(props: Props) {
   );
   CreateCards();
 
+
   return (
     <>
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
         <Form {...{
-          label: 'タイトルを検索', value: searchStr, rows: 1,
+          label: '検索', value: searchStr, rows: 1,
           onChange: (ev) => SetSearchStr(ev.target.value)
         }} />
+        <div className={css.radiobutton_container}>
+          {RadioButton('タイトル')}
+          {RadioButton('タグ')}
+          {RadioButton('説明')}
+          {RadioButton('ID')}
+        </div>
       </div>
     <div className={css.list}> {cards} </div>
     </>

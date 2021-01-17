@@ -13,6 +13,22 @@
   margin: 25px auto;
 }
 
+.radiobutton_container {
+  display: flex;
+  margin-top: 20px;
+}
+
+.radiobutton {
+  display: flex;
+}
+.radiobutton input {
+  width: 40px; height: 40px;
+}
+.radiobutton p {
+  height: 30px;
+  margin: auto 30px 0 5px;
+}
+
 .card {
   display: flex;
   justify-content: center;
