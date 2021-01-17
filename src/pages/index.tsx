@@ -42,17 +42,7 @@ export default function index() {
     <div>
       <h1>ようこそ</h1>
       <p>「カテゴリ一覧」を選択して問題を解いてみましょう。</p>
-      <p>不満があれば、以下の「機能要望」へお願いします。</p>
-
-      <h2>機能について</h2>
-      <p>以下の機能は未実装ですが、（やる気があれば）実装される予定です。</p>
-      <ul>
-        <li>プロフィール</li>
-        <li>ログイン処理</li>
-        <li>問題の解答履歴（得点など）</li>
-        <li>カテゴリのお気に入り設定</li>
-        <li>その他こまかいとこ</li>
-      </ul>
+      <p>不満があれば、下の「機能要望」へお願いします。</p>
 
       <h2>既知の不具合</h2>
       <ul>
@@ -62,7 +52,7 @@ export default function index() {
       <h2>機能要望</h2>
       <p>Webサービスなんもわからないので、意見がほしいです</p>
       <p>スマホでここが押しづらいとか、表示がわかりにくい等、不満があれば<b>全部</b>書いてください</p>
-      <p>連絡が必要であればTeamsアカウントなりTwitter IDなりを書いといてください</p>
+      <p>機能要望は<a href="https://api.watasuke.tk/show_request.php">こちら</a>から閲覧可能です</p>
       <div className={css.form}>
         <Form {...{
           label: '意見', value: request, rows: 10,
@@ -73,6 +63,14 @@ export default function index() {
           onClick: SendRequest
         }} /> </div>
       </div>
+
+      <h2>更新履歴</h2>
+
+      <h3>v1.1.2</h3>
+      <ul>
+        <li>スマホでのヘッダー周りの挙動を修正</li>
+        <li>問題の順番をシャッフルできるようにした</li>
+      </ul>
 
       <p className={css.version}>TAGether v1.1.2</p>
 
