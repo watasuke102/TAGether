@@ -66,13 +66,20 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.3</h3>
+      <ul>
+        <li>カテゴリの作成/編集ページで、カテゴリの追加/編集に成功したら
+          ページ移動確認ダイアログを表示しないようにした</li>
+        <li>カテゴリの検索機能を追加</li>
+      </ul>
+
       <h3>v1.1.2</h3>
       <ul>
         <li>スマホでのヘッダー周りの挙動を修正</li>
         <li>問題の順番をシャッフルできるようにした</li>
       </ul>
 
-      <p className={css.version}>TAGether v1.1.2</p>
+      <p className={css.version}>TAGether v1.1.3</p>
 
       <Modal {...modalData} />
     </div>
