@@ -48,7 +48,7 @@ export default function categoly_detail(props: CategolyDetailData) {
       {/* シャッフルするかどうかを決めるチェックボックスなど */}
       <div className={css.shuffle_checkbox}>
         <input type='checkbox' value={isShuffleEnabled}
-          onChange={e => { SetIsShuffleEnabled(e.target.checked? 'true':'false'); console.log(isShuffleEnabled) }}/>
+          onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
         <p>問題の順番をランダムにする</p>
       </div>
 
