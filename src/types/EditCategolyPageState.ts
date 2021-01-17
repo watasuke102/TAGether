@@ -13,5 +13,6 @@ export default interface EditCategolyPageState{
   isModalOpen: boolean,
   res_result:  string,
   categoly: Categoly,
-  exam: Exam[]
+  exam: Exam[],
+  showConfirmBeforeLeave: boolean
 }

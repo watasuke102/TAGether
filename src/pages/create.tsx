@@ -47,26 +47,31 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     this.state = {
       categoly: categoly_default(),
       exam: exam_default(),
-      isModalOpen: false, res_result: ''
+      isModalOpen: false, res_result: '',
+      showConfirmBeforeLeave: true
     }
   }
   // ページ移動時に警告
-  ShowAlertBeforeLeave() {
+  ShowAlertBeforeLeave(f: boolean) {
+    if (!f) return;
     if (!window.confirm("変更は破棄されます。ページを移動してもよろしいですか？")) {
       throw new Error('canceled');
     }
   }
   BeforeUnLoad = e => {
+    if (!this.state.showConfirmBeforeLeave) return;
     e.preventDefault();
     e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
   }
   componentDidMount() {
+    const f = this.state.showConfirmBeforeLeave;
     window.addEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
+    Router.events.on('routeChangeStart', () => this.ShowAlertBeforeLeave(f));
   }
   componentWillUnmount() {
+    const f = this.state.showConfirmBeforeLeave;
     window.removeEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
+    Router.events.off('routeChangeStart', () => this.ShowAlertBeforeLeave(f));
   }
 
   // カテゴリ登録
@@ -101,7 +106,12 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
         const str = req.responseText;
-        this.setState({ isModalOpen: true, res_result: str });
+        // エラーだったらページ移動確認ダイアログを表示
+        const f = (JSON.parse(str).status == 'error');
+        this.setState({
+          isModalOpen: true, res_result: str,
+          showConfirmBeforeLeave: f
+        });
       }
     }
     const url = process.env.API_URL;
@@ -256,8 +266,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
         onClick: () => Router.push('/list')
       });
-    // 失敗した場合、閉じるボタンのみ
     } else {
+      // 失敗した場合、閉じるボタンのみ
       message = 'エラー: ' + result.message;
       button_info.push({
         type: 'filled', icon: 'fas fa-times', text: '閉じる',
