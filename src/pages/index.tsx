@@ -69,6 +69,13 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.5</h3>
+      <ul>
+        <li>要望送信後にウィンドウ表示、入力内容の消去をするようにした</li>
+        <li>問題欄に改行があった際動作しなかったのを修正</li>
+        <li>ページ移動確認ダイアログの挙動がおかしかったのを修正</li>
+      </ul>
+
       <h3>v1.1.4</h3>
       <p>ビルドできない問題を修正</p>
 
@@ -85,7 +92,7 @@ export default function index() {
         <li>問題の順番をシャッフルできるようにした</li>
       </ul>
 
-      <p className={css.version}>TAGether v1.1.4</p>
+      <p className={css.version}>TAGether v1.1.5</p>
 
       <Modal {...modalData} />
     </div>
