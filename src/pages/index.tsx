@@ -20,9 +20,12 @@ export default function index() {
   const SendRequest = () => {
     if (request == '') return;
     const req = new XMLHttpRequest();
+    req.onreadystatechange = () => {
+      SetRequest('');
+      SetIsModalOpen(true);
+    }
     req.open('POST', process.env.API_URL + '/request.php?body='+request);
     req.send();
-    SetIsModalOpen(false);
   }
 
   const modalData: ModalData = {
