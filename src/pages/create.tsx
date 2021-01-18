@@ -52,8 +52,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
   }
   // ページ移動時に警告
-  ShowAlertBeforeLeave(f: boolean) {
-    if (!f) return;
+  ShowAlertBeforeLeave() {
     if (!window.confirm("変更は破棄されます。ページを移動してもよろしいですか？")) {
       throw new Error('canceled');
     }
@@ -65,11 +64,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
   componentDidMount() {
     window.addEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.on('routeChangeStart', () => this.ShowAlertBeforeLeave(this.state.showConfirmBeforeLeave));
+    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
   }
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.off('routeChangeStart', () => this.ShowAlertBeforeLeave(this.state.showConfirmBeforeLeave));
+    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
   }
 
   // カテゴリ登録
