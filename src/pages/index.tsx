@@ -79,18 +79,11 @@ export default function index() {
       <h3>v1.1.4</h3>
       <p>ビルドできない問題を修正</p>
 
-      <h3>v1.1.3</h3>
-      <ul>
-        <li>カテゴリの作成/編集ページで、カテゴリの追加/編集に成功したら
-          ページ移動確認ダイアログを表示しないようにした</li>
-        <li>カテゴリの検索機能を追加</li>
-      </ul>
-
-      <h3>v1.1.2</h3>
-      <ul>
-        <li>スマホでのヘッダー周りの挙動を修正</li>
-        <li>問題の順番をシャッフルできるようにした</li>
-      </ul>
+      <p>
+        以前のリリースは
+        <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
+        から確認可能です。
+      </p>
 
       <p className={css.version}>TAGether v1.1.5</p>
 
