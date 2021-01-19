@@ -50,6 +50,7 @@ export default function index() {
       <h2>既知の不具合</h2>
       <ul>
         <li>画面切り替えがおかしくなる</li>
+        <li>カテゴリ新規作成および編集ページで、編集完了ウィンドウが表示されている状態でページを移動しようとした時、確認ダイアログが表示される</li>
       </ul>
 
       <h2>機能要望</h2>
@@ -69,6 +70,15 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.6</h3>
+      <ul>
+        <li>ラジオボタンがはみ出て表示されてしまう不具合を修正</li>
+        <li>カテゴリのタイトル/説明欄をスクロールできるようにした</li>
+        <li>問題解答ページで、カテゴリ登録時に入力された改行をちゃんと反映させるようにした</li>
+        <li>問題文で、改行のひとつ前の文字が消えてしまう問題を修正</li>
+        <li>タグの登録数に制限を設けた（最大8個）</li>
+      </ul>
+
       <h3>v1.1.5</h3>
       <ul>
         <li>要望送信後にウィンドウ表示、入力内容の消去をするようにした</li>
@@ -85,7 +95,7 @@ export default function index() {
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.1.5</p>
+      <p className={css.version}>TAGether v1.1.6</p>
 
       <Modal {...modalData} />
     </div>
