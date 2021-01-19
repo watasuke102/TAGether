@@ -283,7 +283,7 @@ export default class exam extends React.Component<Props, State> {
               <div><h2 id={css.mondai}>問題</h2></div>
               <div><p>{
                 this.exam[this.state.index].question.split('\n').map(str => {
-                  return (<> {str}<br /> </>)
+                  return (<> {str}<br/> </>)
                 })
               }</p></div>
             </div>

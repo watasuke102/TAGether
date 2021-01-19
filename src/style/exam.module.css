@@ -11,7 +11,7 @@
 .display {
   display: flex;
   justify-content: flex-start;
-  padding-bottom: 70px;
+  padding-bottom: 90px;
 }
 
 /* 問題文と解答欄 */
@@ -43,10 +43,11 @@
 .state_and_answer {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 .answer{
   font-size: 25px;
-  padding: 0 100px 0 0;
+  margin-left: 0;
 }
 
 .exam_state {
@@ -55,6 +56,9 @@
   margin: 0;
   font-size: 40px;
   height: 40px;
+}
+.exam_state p {
+  margin-left: 20px;
 }
 
 /* ボタン */
@@ -95,14 +99,14 @@
 
 /* 横幅が狭かったらボタンとかを縦に並べる */
 @media screen and (max-width: 700px) {
-  .answer_area #mondai {
-    width: 100%;
+  .question {
+    width: 90vw;
   }
   .display {
     flex-direction: column;
   }
   .state_and_answer {
-    margin: 50px 0 0;
+    margin-top: 50px;
   }
 
   .window {
