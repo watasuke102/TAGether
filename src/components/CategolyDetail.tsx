@@ -70,7 +70,6 @@ export default function categoly_detail(props: CategolyDetailData) {
       </div>
     ) 
   };
-  console.log(data.desc);
 
 
   return (

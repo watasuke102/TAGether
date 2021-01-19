@@ -73,6 +73,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
   // カテゴリ登録
   RegistExam() {
+    if (this.state.categoly.tag.split(',').length > 8) {
+      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タグは合計8個以下にしてください"}' })
+      return;
+    }
     if (this.state.categoly.title == '') {
       this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タイトルを設定してください"}' })
       return;
