@@ -13,7 +13,7 @@
   width: 100% + 15px;
   height: 90px;
   font-size: 24px;
-  background-color: #8891a580;
+  background-color: #8891a5dd;
   color: #b9ccbe;
   box-sizing: border-box;
 }
@@ -62,7 +62,7 @@
     width: 100%;
     top: 90px;
     margin: auto 0;
-    background-color: #8891a580;
+    background-color: #8891a5dd;
   }
 }
 
@@ -72,13 +72,13 @@
     position: absolute;
     width: 100%;
     top: 90px;
-    background-color: #8891a580;
+    background-color: #8891a5dd;
   }
   .buttons_container_fixed {
     position: fixed;
     width: 100%;
     left: 0; top: 0;
-    background-color: #8891a580;
+    background-color: #8891a5dd;
   }
 }
 
