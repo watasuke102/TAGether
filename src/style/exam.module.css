@@ -21,12 +21,13 @@
 .question {
   display: flex;
   align-items: flex-start;
+  font-size: 20px;
   width: 50vw;
-  margin-bottom: 20px;
   border-bottom: 3px solid;
 }
 .answer_area #mondai {
   font-size: 30px;
+  margin-top: 15px;
   margin-right: 20px;
   padding-bottom: 10px;
 }
