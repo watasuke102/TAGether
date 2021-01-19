@@ -11,6 +11,7 @@ import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
+import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import Categoly from '../types/Categoly';
 
@@ -83,6 +84,10 @@ export default function list(props: Props) {
         <Form {...{
           label: '検索', value: searchStr, rows: 1,
           onChange: (ev) => SetSearchStr(ev.target.value)
+        }} />
+        <Button {...{
+          text: '入力のクリア', icon: 'fas fa-times',
+          onClick: () => SetSearchStr(''), type: 'filled'
         }} />
         <div className={css.radiobutton_container}>
           {RadioButton('タイトル')}
