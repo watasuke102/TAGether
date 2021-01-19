@@ -15,11 +15,15 @@
 
 .radiobutton_container {
   display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
   margin-top: 20px;
 }
 
 .radiobutton {
   display: flex;
+  width: 150px;
 }
 .radiobutton input {
   width: 40px; height: 40px;
