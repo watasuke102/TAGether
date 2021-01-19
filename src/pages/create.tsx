@@ -259,7 +259,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     if (result.status == 'ok') {
       message = this.text.api_success;
       button_info.push({
-        type: 'material', icon: 'fas fa-arrow-right', text: '続けて追加',
+        type: 'material', icon: 'fas fa-arrow-right', text: '新規カテゴリを追加',
         onClick: () => this.setState({
           isModalOpen: false,
           categoly: categoly_default(), exam: exam_default()
