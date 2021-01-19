@@ -151,6 +151,7 @@ export default class exam extends React.Component<Props, State> {
   }
 
 
+  //解答欄
   AnswerArea() {
     const length = this.exam[this.state.index].answer.length;
     let obj: object[] = [];
@@ -160,11 +161,11 @@ export default class exam extends React.Component<Props, State> {
       // 入力欄のラベル
       label = '解答' + ( (length == 1)? '' : '('+(i+1)+')' );
       obj.push(
-        <Form {...{
+        <div className={css.form}> <Form {...{
           label: label, value: tmp, rows: 1,
           onChange: (ev) => this.UpdateUsersResponse(ev, i),
           disabled: this.state.examState[this.state.index].checked
-        }} />
+          }} /> </div>
       );
     }
     return obj;
@@ -220,8 +221,8 @@ export default class exam extends React.Component<Props, State> {
         result = '不正解'
       }
     } else {
-      // 2つ以上だった場合は「n問正解」
-      //全問正解で○アイコン
+      // 問題が2つ以上だった場合は「n問正解」
+      // 全問正解で○アイコン
       if (state.correctAnswerCount == answer_length) {
         icon = 'far fa-circle';
       }
@@ -278,8 +279,16 @@ export default class exam extends React.Component<Props, State> {
         <div className={css.display}>
           {/* 問題文、解答欄 */}
           <div className={css.answer_area}>
-            <p id={css.question}>問題: {this.exam[this.state.index].question}</p>
-            <form className={css.form}>
+            <div className={css.question}>
+              <div><h2 id={css.mondai}>問題</h2></div>
+              <div><p>{
+                this.exam[this.state.index].question.split('\n').map(str => {
+                  return (<> {str}<br /> </>)
+                })
+              }</p></div>
+            </div>
+
+            <form>
               {this.AnswerArea()}
               {/* 入力中エンターを押して送信を無効化 */}
               <input id={css.dummy} />

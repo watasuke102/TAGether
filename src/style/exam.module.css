@@ -16,13 +16,22 @@
 
 /* 問題文と解答欄 */
 .answer_area {
-  margin: 0 50px 0 0;
+  margin-right: 50px;
 }
-.answer_area #question {
-  font-size: 30px;
-  padding: 0 0 10px 0;
+.question {
+  display: flex;
+  align-items: flex-start;
   width: 50vw;
-  border-bottom: 3px solid ;
+  margin-bottom: 20px;
+  border-bottom: 3px solid;
+}
+.answer_area #mondai {
+  font-size: 30px;
+  margin-right: 20px;
+  padding-bottom: 10px;
+}
+.form {
+  margin-top: 15px;
 }
 /* Enter送信防止用 */
 #dummy {
@@ -85,7 +94,7 @@
 
 /* 横幅が狭かったらボタンとかを縦に並べる */
 @media screen and (max-width: 700px) {
-  .answer_area #question {
+  .answer_area #mondai {
     width: 100%;
   }
   .display {
