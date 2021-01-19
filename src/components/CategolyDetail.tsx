@@ -70,44 +70,47 @@ export default function categoly_detail(props: CategolyDetailData) {
       </div>
     ) 
   };
+  console.log(data.desc);
+
 
   return (
     <>
       <div className={css.container}>
-        <h1>{data.title}</h1>
+        <textarea disabled={true} value={data.title} id={css.title}/>
 
         <div className={css.updated_at}>
           <div className='fas fa-clock'></div>
           <p>{data.updated_at}</p>
         </div>
         <Tag tag={data.tag} />
+        <textarea disabled={true} value={data.desc} id={css.desc} />
 
-        <h2>{data.desc}</h2>
+        <div className={css.bottom}>
+          {/* シャッフルするかどうかを決めるチェックボックスなど */}
+          <div className={css.shuffle_checkbox}>
+            <input type='checkbox' value={isShuffleEnabled}
+              onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
+            <p>問題の順番をランダムにする</p>
+          </div>
 
-        {/* シャッフルするかどうかを決めるチェックボックスなど */}
-        <div className={css.shuffle_checkbox}>
-          <input type='checkbox' value={isShuffleEnabled}
-            onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
-          <p>問題の順番をランダムにする</p>
-        </div>
-
-        <div className={css.buttons}>
-          <Button {...{
-            text: '閉じる', icon: 'fas fa-times',
-            onClick: () => props.close(), type: 'material'
-          }} />
-          <Button {...{
-            text: 'カテゴリの削除', icon: 'fas fa-trash',
-            onClick: () => SetIsModalOpen(true), type: 'material'
-          }} />
-          <Button {...{
-            text: '編集する', icon: 'fas fa-pen',
-            onClick: () => Push('edit'), type: 'material'
-          }} />
-          <Button {...{
-            text: 'この問題を解く', icon: 'fas fa-arrow-right',
-            onClick: () => Push('exam'), type: 'filled'
-          }} />
+          <div className={css.buttons}>
+            <Button {...{
+              text: '閉じる', icon: 'fas fa-times',
+              onClick: () => props.close(), type: 'material'
+            }} />
+            <Button {...{
+              text: 'カテゴリの削除', icon: 'fas fa-trash',
+              onClick: () => SetIsModalOpen(true), type: 'material'
+            }} />
+            <Button {...{
+              text: '編集する', icon: 'fas fa-pen',
+              onClick: () => Push('edit'), type: 'material'
+            }} />
+            <Button {...{
+              text: 'この問題を解く', icon: 'fas fa-arrow-right',
+              onClick: () => Push('exam'), type: 'filled'
+            }} />
+          </div>
         </div>
       </div>
         

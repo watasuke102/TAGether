@@ -18,6 +18,22 @@
 .container h1, .container h2  {
   margin: 20px auto 10px 0;
 }
+.container textarea {
+  width: 100%;
+  font-family: 'M PLUS 1p', sans-serif;
+  color: #e1e2dc;
+  border: none;
+  background-color: #00000000;
+}
+#title {
+  font-size: 30px;
+  font-weight: bold;
+}
+#desc {
+  /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
+  height: calc(80vh - 300px);
+  font-size: 18px;
+}
 
 .updated_at {
   display: inline-flex;
@@ -33,6 +49,7 @@
 
 .shuffle_checkbox {
   display: flex;
+  margin-bottom: 15px;
 }
 .shuffle_checkbox input {
   width: 30px; height: 30px;
@@ -42,12 +59,14 @@
   margin: auto 0;
 }
 
-.buttons {
+.bottom {
   position: absolute;
+  bottom: 30px;
+}
+.buttons {
   display: flex;
   justify-content: space-between;
   width: 80vw;
-  bottom: 30px;
 }
 
 .window {
@@ -71,6 +90,6 @@
   .buttons {
     flex-direction: column;
     justify-content: space-between;
-    height: 150px;
+    height: 220px;
   }
 }
