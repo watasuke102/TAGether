@@ -70,6 +70,14 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.7</h3>
+      <ul>
+        <li>スマホでカテゴリ詳細とボタンが重なる問題を修正（たぶん）</li>
+        <li>問題解答ページのレイアウトを修正、見やすくした</li>
+        <li>検索欄のクリアボタンを追加</li>
+        <li>その他ちょっとした見た目の修正</li>
+      </ul>
+
       <h3>v1.1.6</h3>
       <ul>
         <li>ラジオボタンがはみ出て表示されてしまう不具合を修正</li>
@@ -86,16 +94,13 @@ export default function index() {
         <li>ページ移動確認ダイアログの挙動がおかしかったのを修正</li>
       </ul>
 
-      <h3>v1.1.4</h3>
-      <p>ビルドできない問題を修正</p>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.1.6</p>
+      <p className={css.version}>TAGether v1.1.7</p>
 
       <Modal {...modalData} />
     </div>
