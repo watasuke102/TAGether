@@ -9,7 +9,7 @@
 */
 .container {
   position: fixed;
-  width: 80vw; height: 80vh;
+  width: 80vw; /*height: 80vh;*/
   top: 50%; left: 50%;
   padding: 10px 50px;
   background-color: #646772;
@@ -59,10 +59,6 @@
   margin: auto 0;
 }
 
-.bottom {
-  position: absolute;
-  bottom: 30px;
-}
 .buttons {
   display: flex;
   justify-content: space-between;
@@ -90,6 +86,6 @@
   .buttons {
     flex-direction: column;
     justify-content: space-between;
-    height: 220px;
+    height: 200px;
   }
 }

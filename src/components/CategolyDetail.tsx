@@ -84,33 +84,33 @@ export default function categoly_detail(props: CategolyDetailData) {
         <Tag tag={data.tag} />
         <textarea disabled={true} value={data.desc} id={css.desc} />
 
-        <div className={css.bottom}>
-          {/* シャッフルするかどうかを決めるチェックボックスなど */}
-          <div className={css.shuffle_checkbox}>
-            <input type='checkbox' value={isShuffleEnabled}
-              onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
-            <p>問題の順番をランダムにする</p>
-          </div>
 
-          <div className={css.buttons}>
-            <Button {...{
-              text: '閉じる', icon: 'fas fa-times',
-              onClick: () => props.close(), type: 'material'
-            }} />
-            <Button {...{
-              text: 'カテゴリの削除', icon: 'fas fa-trash',
-              onClick: () => SetIsModalOpen(true), type: 'material'
-            }} />
-            <Button {...{
-              text: '編集する', icon: 'fas fa-pen',
-              onClick: () => Push('edit'), type: 'material'
-            }} />
-            <Button {...{
-              text: 'この問題を解く', icon: 'fas fa-arrow-right',
-              onClick: () => Push('exam'), type: 'filled'
-            }} />
-          </div>
+        {/* シャッフルするかどうかを決めるチェックボックスなど */}
+        <div className={css.shuffle_checkbox}>
+          <input type='checkbox' value={isShuffleEnabled}
+            onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
+          <p>問題の順番をランダムにする</p>
         </div>
+
+        <div className={css.buttons}>
+          <Button {...{
+            text: '閉じる', icon: 'fas fa-times',
+            onClick: () => props.close(), type: 'material'
+          }} />
+          <Button {...{
+            text: 'カテゴリの削除', icon: 'fas fa-trash',
+            onClick: () => SetIsModalOpen(true), type: 'material'
+          }} />
+          <Button {...{
+            text: '編集する', icon: 'fas fa-pen',
+            onClick: () => Push('edit'), type: 'material'
+          }} />
+          <Button {...{
+            text: 'この問題を解く', icon: 'fas fa-arrow-right',
+            onClick: () => Push('exam'), type: 'filled'
+          }} />
+        </div>
+
       </div>
         
       <Modal {...modalData} />
