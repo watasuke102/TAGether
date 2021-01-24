@@ -89,7 +89,7 @@ export default function categoly_detail(props: CategolyDetailData) {
         <div className={css.shuffle_checkbox}>
           <input type='checkbox' value={isShuffleEnabled}
             onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
-          <p>問題の順番をランダムにする</p>
+          <p>問題順をシャッフル</p>
         </div>
 
         <div className={css.buttons}>
