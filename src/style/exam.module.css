@@ -21,6 +21,7 @@
 .question {
   display: flex;
   align-items: flex-start;
+  word-wrap: normal;
   font-size: 20px;
   width: 50vw;
   border-bottom: 3px solid;
