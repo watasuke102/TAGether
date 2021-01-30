@@ -269,7 +269,8 @@ export default class exam extends React.Component<Props, State> {
     // Modalに渡す用のデータ
     const modalData: ModalData = {
       body: this.FinishWindow(),
-      isOpen: this.state.isModalOpen
+      isOpen: this.state.isModalOpen,
+      close: () => this.setState({isModalOpen: false}),
     };
     
     return (

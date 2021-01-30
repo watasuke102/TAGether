@@ -30,6 +30,7 @@ export default function index() {
 
   const modalData: ModalData = {
     isOpen: isModalOpen,
+    close:  () => SetIsModalOpen(false),
     body: (
       <div className={css.window}>
         <p>送信しました。<br/>ご協力ありがとうございます。</p>

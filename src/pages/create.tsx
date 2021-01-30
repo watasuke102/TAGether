@@ -295,7 +295,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const modalData: ModalData = {
       //body: <p>{this.state.res_result}</p>,
       body: this.RegistResult(),
-      isOpen: this.state.isModalOpen
+      isOpen: this.state.isModalOpen,
+      close:  () => this.setState({isModalOpen: false}),
     };
     return (
       <>

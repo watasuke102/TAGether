@@ -20,6 +20,7 @@ export default function ExamCard(props: Categoly) {
   const modalData: ModalData = {
     body: <Detail {...{ data: props, close: () => setIsModalOpen(false) }} />,
     isOpen: isModalOpen,
+    close: () => setIsModalOpen(false),
   };
 
   // タイトルを25文字以内に

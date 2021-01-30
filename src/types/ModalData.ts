@@ -8,5 +8,6 @@
 //
 export default interface ModalData {
   body:   object,
-  isOpen: boolean
+  isOpen: boolean,
+  close:  Function
 }

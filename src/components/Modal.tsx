@@ -16,10 +16,10 @@ export default function Modal(props: ModalData) {
     return (<></>);
   }
   return (
-    <div className={css.background}>
-      <div className={css.detail}>
-        {props.body}
-      </div>
+      <div className={css.background} onClick={() => props.close()}>
+        <div className={css.window} onClick={(e) => e.stopPropagation()}>
+          {props.body}
+        </div>
     </div>
   );
 }

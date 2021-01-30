@@ -51,6 +51,7 @@ export default function CategolyDetail(props: CategolyDetailData) {
   // モーダルに渡すデータ
   const modalData: ModalData = {
     isOpen: isModalOpen,
+    close: () => SetIsModalOpen(false),
     body: (
       <div className={css.window}>
         <p>
