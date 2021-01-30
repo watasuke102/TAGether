@@ -10,7 +10,7 @@ import css from '../style/Modal.module.css';
 import React from 'react';
 import ModalData from '../types/ModalData';
 
-export default function ExamCard(props: ModalData) {
+export default function Modal(props: ModalData) {
   //開かれていない場合は空要素を渡す
   if (!props.isOpen) {
     return (<></>);

@@ -21,7 +21,7 @@ interface CategolyDetailData {
 }
 
 
-export default function categoly_detail(props: CategolyDetailData) {
+export default function CategolyDetail(props: CategolyDetailData) {
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState('false');
   const data: Categoly = props.data;
