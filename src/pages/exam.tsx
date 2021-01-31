@@ -42,6 +42,7 @@ interface State {
 
 export default class exam extends React.Component<Props, State> {
   private exam: Exam[];
+  private didPressedShortcutBefore: boolean = false;
   constructor(props: Props) {
     super(props);
     // 問題の取得、条件によってはシャッフル
@@ -77,6 +78,26 @@ export default class exam extends React.Component<Props, State> {
       answers: answers,
       examState: exam_state
     };
+  }
+
+  // ショートカットキー
+  Shortcut(e) {
+    // Ctrl+Shift+矢印キー等で動かす
+    // キーリピートでの入力とウィンドウが表示されている場合は無効
+    if (e.ctrlKey && e.shiftKey && !e.repeat && !this.state.isModalOpen) {
+      if (e.code == 'KeyH' || e.code == 'ArrowLeft') {
+        this.DecrementIndex();
+      }
+      else if (e.code == 'KeyL' || e.code == 'ArrowRight') {
+        this.IncrementIndex();
+      }
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('keydown', e=>this.Shortcut(e));
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', e=>this.Shortcut(e));
   }
 
   // 解答が合っているかどうか確認してstateに格納
