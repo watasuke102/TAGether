@@ -8,7 +8,6 @@
 //
 import css from '../style/exam.module.css'
 import React from 'react';
-import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
@@ -29,7 +28,8 @@ interface ExamState {
 }
 
 interface Props {
-  data: Categoly[]
+  data: Categoly[],
+  shuffle: boolean
 }
 interface State {
   index:           number,
@@ -48,7 +48,7 @@ export default class exam extends React.Component<Props, State> {
     // 問題の取得、条件によってはシャッフル
     this.exam = JSON.parse(this.props.data[0].list);
     // Fisher-Yatesアルゴリズムらしい
-    if (Router.query.shuffle == 'true') {
+    if (this.props.shuffle) {
       for(let i = this.exam.length-1; i > 0; i--){
         var r = Math.floor(Math.random() * (i + 1));
         var tmp = this.exam[i];
@@ -339,5 +339,9 @@ export default class exam extends React.Component<Props, State> {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
   const data = await res.json();
-  return {props:{data}};
+  const props: Props = {
+    data: data,
+    shuffle: (context.query.shuffle == 'true') ? true:false
+  };
+  return {props: props};
 }
