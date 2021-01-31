@@ -8,6 +8,7 @@
 //
 import css from '../style/exam.module.css'
 import React from 'react';
+import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
