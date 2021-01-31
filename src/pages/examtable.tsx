@@ -20,7 +20,6 @@ interface Props {
 }
 export default class examtable extends React.Component<Props> {
   private exam: Exam[];
-  private didPressedShortcutBefore: boolean = false;
   constructor(props: Props) {
     super(props);
     // 問題の取得、条件によってはシャッフル

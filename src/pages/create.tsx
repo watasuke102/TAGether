@@ -297,7 +297,6 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   render() {
     // Modalに渡す用のデータ
     const modalData: ModalData = {
-      //body: <p>{this.state.res_result}</p>,
       body: this.RegistResult(),
       isOpen: this.state.isModalOpen,
       close:  () => this.setState({isModalOpen: false}),
