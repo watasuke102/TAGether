@@ -30,9 +30,11 @@ export default function CategolyDetail(props: CategolyDetailData) {
     let url: string = ''
     if (s == 'edit') {
       url = '/edit?id=' + data.id;
-    } else {
+    } else if(s == 'exam') {
       url = '/exam?id=' + data.id;
       url += '&shuffle=' + isShuffleEnabled;
+    } else {
+      url = '/examtable?id=' + data.id;
     }
     Router.push(url);
   };
@@ -105,6 +107,10 @@ export default function CategolyDetail(props: CategolyDetailData) {
           <Button {...{
             text: '編集する', icon: 'fas fa-pen',
             onClick: () => Push('edit'), type: 'material'
+          }} />
+          <Button {...{
+            text: '問題の一覧表示', icon: 'fas fa-list',
+            onClick: () => Push('table'), type: 'material'
           }} />
           <Button {...{
             text: 'この問題を解く', icon: 'fas fa-arrow-right',

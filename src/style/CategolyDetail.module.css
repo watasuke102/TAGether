@@ -29,7 +29,7 @@
 }
 #desc {
   /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
-  height: calc(80vh - 300px);
+  height: calc(80vh - 345px);
   font-size: 18px;
 }
 
@@ -82,8 +82,8 @@
 /* 横幅が狭かったらボタンを縦に並べる */
 @media screen and (max-width: 700px) {
   .buttons {
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: space-between;
-    height: 180px;
+    height: 225px;
   }
 }
