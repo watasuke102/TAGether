@@ -53,7 +53,7 @@ export default class Header extends React.Component<any, State> {
 
     return (
       <header className={css.header}>
-        <h1>Tagether</h1>
+        <h1>TAGether</h1>
         <nav className={this.ButtonContainersCSS()}>
           <div className={css.buttons}>
             {button_list}
