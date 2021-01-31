@@ -128,12 +128,16 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   // 問題を追加
-  AddExam() {
+  AddExam(before: boolean) {
     let tmp = this.state.exam;
-    tmp.push({ question: '', answer: Array<string>(1).fill('') });
+    if (before) {
+      tmp.unshift({ question: '', answer: Array<string>(1).fill('') });
+    } else {
+      tmp.push({ question: '', answer: Array<string>(1).fill('') });
+      // 追加した問題欄が表示されるようにする
+      this.bottom.scrollIntoView({ behavior: 'smooth' });
+    }
     this.setState({ exam: tmp });
-    // 追加した問題欄が表示されるようにする
-    this.bottom.scrollIntoView({ behavior: 'smooth' });
   }
   // 答え欄を追加
   AddAnswer(i: number) {
@@ -325,8 +329,12 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
-              text: "問題の追加", icon: "fas fa-plus",
-              onClick: () => this.AddExam(), type: "material"
+              text: "問題を追加", icon: "fas fa-plus",
+              onClick: () => this.AddExam(false), type: "material"
+            }} />
+            <Button {...{
+              text: "先頭に問題を追加", icon: "fas fa-plus",
+              onClick: () => this.AddExam(true), type: "material"
             }} />
             <Button {...{
               text: this.text.apply_button, icon: "fas fa-check",
