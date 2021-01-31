@@ -48,6 +48,13 @@ export default function index() {
       <p>「カテゴリ一覧」を選択して問題を解いてみましょう。</p>
       <p>不満があれば、下の「機能要望」へお願いします。</p>
 
+      <h2>新機能</h2>
+      <p>ショートカットキーに対応しました。</p>
+      <ul>
+        <li>Ctrl + Shift + (Lもしくは右矢印キー)： 答え合わせ・次の問題</li>
+        <li>Ctrl + Shift + (Hもしくは左矢印キー)： 前の問題</li>
+      </ul>
+
       <h2>既知の不具合</h2>
       <ul>
         <li>画面切り替えがおかしくなる</li>
@@ -71,6 +78,15 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.8</h3>
+      <ul>
+        <li>問題文が画面外にはみ出る問題が修正されたかもしれない</li>
+        <li>ウィンドウの暗くなった部分をクリックして閉じることができるように</li>
+        <li>問題編集ページで、先頭に追加できるように</li>
+        <li>ショートカットキーに対応</li>
+        <li>問題と解答の一覧ページを実装</li>
+      </ul>
+
       <h3>v1.1.7</h3>
       <ul>
         <li>スマホでカテゴリ詳細とボタンが重なる問題を修正（たぶん）</li>
@@ -88,20 +104,13 @@ export default function index() {
         <li>タグの登録数に制限を設けた（最大8個）</li>
       </ul>
 
-      <h3>v1.1.5</h3>
-      <ul>
-        <li>要望送信後にウィンドウ表示、入力内容の消去をするようにした</li>
-        <li>問題欄に改行があった際動作しなかったのを修正</li>
-        <li>ページ移動確認ダイアログの挙動がおかしかったのを修正</li>
-      </ul>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.1.7</p>
+      <p className={css.version}>TAGether v1.1.8</p>
 
       <Modal {...modalData} />
     </div>
