@@ -78,6 +78,9 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.1.9</h3>
+      <p>ビルドできない問題を修正</p>
+
       <h3>v1.1.8</h3>
       <ul>
         <li>問題文が画面外にはみ出る問題が修正されたかもしれない</li>
@@ -110,7 +113,7 @@ export default function index() {
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.1.8</p>
+      <p className={css.version}>TAGether v1.1.9</p>
 
       <Modal {...modalData} />
     </div>
