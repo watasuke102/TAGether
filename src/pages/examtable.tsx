@@ -42,7 +42,11 @@ export default class examtable extends React.Component<Props> {
       e.answer.forEach(e => answers += e+', ');
       list.push(
         <tr>
-          <td>{e.question}</td>
+          <td>{
+            e.question.split('\n').map(str => {
+              return (<> {str}<br /> </>)
+            })
+          }</td>
           <td>{answers.slice(0, -2)}</td>
         </tr>
       )
