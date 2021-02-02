@@ -62,6 +62,9 @@ export default class examtable extends React.Component<Props> {
             {list}
           </table>
         </div>
+
+        <div className={css.bottom} />
+
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
