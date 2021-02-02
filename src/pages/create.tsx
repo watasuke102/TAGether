@@ -37,7 +37,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   private bottom;
   public text = {
     heading: '新規カテゴリの追加',
-    api_success: 'カテゴリの追加に成功しました'
+    api_success: 'カテゴリの追加に成功しました',
+    AddNewCategoly: () => this.setState({
+      isModalOpen: false,
+      categoly: categoly_default(), exam: exam_default()
+    })
   }
   public api_method = 'POST';
 
@@ -258,15 +262,16 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     let message;
     let button_info: ButtonInfo[] = [];
-    // 成功した場合、続けて追加/カテゴリ一覧へ戻るボタンを表示
+    // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
     if (result.status == 'ok') {
       message = this.text.api_success;
       button_info.push({
-        type: 'material', icon: 'fas fa-arrow-right', text: '新規カテゴリを追加',
-        onClick: () => this.setState({
-          isModalOpen: false,
-          categoly: categoly_default(), exam: exam_default()
-        })
+        type: 'material', icon: 'fas fa-arrow-right', text: '編集を続ける',
+        onClick: () => this.setState({ isModalOpen: false })
+      });
+      button_info.push({
+        type: 'material', icon: 'fas fa-plus', text: '新規カテゴリを追加',
+        onClick: this.text.AddNewCategoly
       });
       button_info.push({
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',

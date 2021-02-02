@@ -7,13 +7,15 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import { GetServerSideProps } from 'next';
+import Router from 'next/router';
 import Create from './create';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 
 export default class edit extends Create {
   public text = {
     heading: 'カテゴリの編集',
-    api_success: '編集結果を適用しました'
+    api_success: '編集結果を適用しました',
+    AddNewCategoly: () => Router.push('/create')
   }
   public api_method = 'PUT';
 
