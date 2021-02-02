@@ -37,7 +37,6 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   private bottom;
   public text = {
     heading: '新規カテゴリの追加',
-    apply_button: 'カテゴリの登録',
     api_success: 'カテゴリの追加に成功しました'
   }
   public api_method = 'POST';
@@ -328,15 +327,15 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
-              text: "問題を追加", icon: "fas fa-plus",
+              text: "下に追加", icon: "fas fa-arrow-up",
               onClick: () => this.AddExam(false), type: "material"
             }} />
             <Button {...{
-              text: "先頭に問題を追加", icon: "fas fa-plus",
+              text: "上に追加", icon: "fas fa-arrow-down",
               onClick: () => this.AddExam(true), type: "material"
             }} />
             <Button {...{
-              text: this.text.apply_button, icon: "fas fa-check",
+              text: '適用', icon: "fas fa-check",
               onClick: () => this.RegistExam(), type: "filled"
             }} />
           </div>
