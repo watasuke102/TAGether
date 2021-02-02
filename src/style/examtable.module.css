@@ -8,14 +8,15 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .table table{
-  width: 90vw;
+  table-layout: fixed;
+  width: 90%;
   margin: 0 auto;
 }
 .table th{
   border-bottom: solid 2px;
 }
 .table td {
-  padding: 8px 0;
+  padding: 8px 5px;
   border-bottom: solid 1px;
 }
 
