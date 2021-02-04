@@ -332,11 +332,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
-              text: "下に追加", icon: "fas fa-arrow-up",
+              text: "下に追加", icon: "fas fa-arrow-down",
               onClick: () => this.AddExam(false), type: "material"
             }} />
             <Button {...{
-              text: "上に追加", icon: "fas fa-arrow-down",
+              text: "上に追加", icon: "fas fa-arrow-up",
               onClick: () => this.AddExam(true), type: "material"
             }} />
             <Button {...{
