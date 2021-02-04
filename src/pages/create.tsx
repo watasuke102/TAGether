@@ -146,6 +146,15 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     this.setState({ exam: tmp });
   }
+  // exam[i]とexam[i+moveto]を入れ替え
+  SwapExam(i: number, moveto: number) {
+    let result = this.state.exam;
+    const tmp = result[i];
+    result[i] = result[i+moveto];
+    result[i + moveto] = tmp;
+    this.setState({ exam: result });
+  }
+
   // 答え欄を追加
   AddAnswer(i: number) {
     let tmp = this.state.exam;
@@ -230,6 +239,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       // 問題文と答え欄
       obj.push(
         <>
+          <div className={css.move_button}>{
+            (i != 0) && <Button {...{
+              text: '1つ上に移動', icon: "fas fa-caret-up",
+              onClick: () => this.SwapExam(i, -1), type: "material"
+            }} />
+          }</div>
+
           <div className={css.edit_exam}>
             <div className={css.delete_button}>
               {/* 問題削除ボタン */}
@@ -241,11 +257,20 @@ export default class create extends React.Component<any, EditCategolyPageState> 
               label: '問題文', value: e.question, rows: 2,
               onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
             }} />
-            
+
             <div className={css.answers}>
               {answer_form}
             </div>
+
           </div>
+
+          <div className={css.move_button}>{
+            (i != this.state.exam.length-1) && <Button {...{
+              text: '1つ下に移動', icon: "fas fa-caret-down",
+              onClick: () => this.SwapExam(i, 1), type: "material"
+            }} />
+          }</div>
+
           <hr/>
         </>
       );
