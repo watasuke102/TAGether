@@ -6,13 +6,11 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import Exam from './Exam';
-import Categoly from './Categoly';
+import CategolyManager from '../components/CategolyManager';
 
 export default interface EditCategolyPageState{
-  isModalOpen: boolean,
   res_result:  string,
-  categoly: Categoly,
-  exam: Exam[],
+  isModalOpen: boolean,
+  categolyManager: CategolyManager,
   showConfirmBeforeLeave: boolean
 }
