@@ -151,8 +151,6 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     let tmp = this.state.exam;
     tmp[i].answer.push('');
     this.setState({ exam: tmp });
-    // 追加した答え欄が表示されるようにする
-    this.bottom.scrollIntoView({ behavior: 'smooth' });
   }
   RemoveExam(i: number) {
     let tmp = this.state.exam;
