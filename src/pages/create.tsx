@@ -185,8 +185,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
   
   // 問題編集欄
-  DeleteButton(i: number, f: Function, returnDummy: boolean) {
-    if (i == 0) {
+  DeleteButton(f: Function, returnDummy: boolean) {
+    if (this.state.exam.length == 1) {
       if (returnDummy)
         return <div className={css.dummy_button} />;
       else return;
@@ -218,7 +218,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
               }} />
               {/* 答え欄削除ボタン */}
               {
-                this.DeleteButton(j, () => this.RemoveAnswer(i, j), false)
+                this.DeleteButton(() => this.RemoveAnswer(i, j), false)
               }
             </div>
           </div>
@@ -232,7 +232,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
             <div className={css.delete_button}>
               {/* 問題削除ボタン */}
               {
-                this.DeleteButton(i, () => this.RemoveExam(i), true)
+                this.DeleteButton(() => this.RemoveExam(i), true)
               }
             </div>
             <Form {...{
