@@ -35,6 +35,8 @@ function exam_default() {
 
 export default class create extends React.Component<any, EditCategolyPageState> {
   private bottom;
+  private top;
+
   public text = {
     heading: '新規カテゴリの追加',
     api_success: 'カテゴリの追加に成功しました',
@@ -135,9 +137,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     let tmp = this.state.exam;
     if (before) {
       tmp.unshift({ question: '', answer: Array<string>(1).fill('') });
+      // 追加した問題欄が表示されるように上にスクロール
+      this.top.scrollIntoView({ behavior: 'smooth' });
     } else {
       tmp.push({ question: '', answer: Array<string>(1).fill('') });
-      // 追加した問題欄が表示されるようにする
+      // 追加した問題欄が表示されるように下にスクロール
       this.bottom.scrollIntoView({ behavior: 'smooth' });
     }
     this.setState({ exam: tmp });
@@ -324,7 +328,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           }}/>
         </div>
 
+        <div className={css.top} ref={e => this.top = e} />
+
         <h2>問題</h2>
+
         {this.ExamEditForm()}
 
         <div className={css.bottom} ref={e => this.bottom = e} />
