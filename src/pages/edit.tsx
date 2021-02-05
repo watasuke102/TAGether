@@ -15,7 +15,20 @@ export default class edit extends Create {
   public text = {
     heading: 'カテゴリの編集',
     api_success: '編集結果を適用しました',
-    AddNewCategoly: () => Router.push('/create')
+    buttons: [
+        {
+          type: 'material', icon: 'fas fa-arrow-right', text: '編集を続ける',
+          onClick: () => this.setState({ isModalOpen: false })
+        },
+        {
+          type: 'material', icon: 'fas fa-plus', text: '新規カテゴリを追加',
+          onClick: () => Router.push('/create')
+        },
+        {
+          type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
+          onClick: () => Router.push('/list')
+        },
+    ]
   }
   public api_method = 'PUT';
 
