@@ -301,10 +301,10 @@ export default class exam extends React.Component<Props, State> {
 
         <div className={css.display}>
           {/* 問題文、解答欄 */}
-          <div className={css.answer_area}>
-            <div className={css.question}>
+          <div className={css.exam}>
+            <div className={css.question_area}>
               <div><h2 id={css.mondai}>問題</h2></div>
-              <div><p>{
+              <div className={css.question_text}><p>{
                 this.exam[this.state.index].question.split('\n').map(str => {
                   return (<> {str}<br/> </>)
                 })
