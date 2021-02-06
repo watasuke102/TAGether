@@ -80,6 +80,9 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.2.2</h3>
+      <p>問題回答ページにおいて一番最初の入力欄以外に入力しづらかった問題を修正</p>
+
       <h3>v1.2.1</h3>
       <ul>
         <li>問題一覧で文字列が長すぎた場合は折り返すように</li>
@@ -98,25 +101,13 @@ export default function index() {
         <li>問題順の入れ替えが可能に</li>
       </ul>
 
-      <h3>v1.1.9</h3>
-      <p>ビルドできない問題を修正</p>
-
-      <h3>v1.1.8</h3>
-      <ul>
-        <li>問題文が画面外にはみ出る問題が修正されたかもしれない</li>
-        <li>ウィンドウの暗くなった部分をクリックして閉じることができるように</li>
-        <li>問題編集ページで、先頭に追加できるように</li>
-        <li>ショートカットキーに対応</li>
-        <li>問題と解答の一覧ページを実装</li>
-      </ul>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.2.1</p>
+      <p className={css.version}>TAGether v1.2.2</p>
 
       <Modal {...modalData} />
     </div>
