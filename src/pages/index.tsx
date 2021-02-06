@@ -80,6 +80,14 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.2.1</h3>
+      <ul>
+        <li>問題一覧で文字列が長すぎた場合は折り返すように</li>
+        <li>問題解答ページで問題文が画面外にはみ出る問題を修正</li>
+        <li>ボタンをbuttonタグで実装、tabキーで選択できるようになったよ</li>
+        <li>次の問題へ進んだ時にテキストボックスにフォーカスするように</li>
+      </ul>
+
       <h3>v1.2.0</h3>
       <ul>
         <li>問題一覧ページで、表の幅を均等に</li>
@@ -102,21 +110,13 @@ export default function index() {
         <li>問題と解答の一覧ページを実装</li>
       </ul>
 
-      <h3>v1.1.7</h3>
-      <ul>
-        <li>スマホでカテゴリ詳細とボタンが重なる問題を修正（たぶん）</li>
-        <li>問題解答ページのレイアウトを修正、見やすくした</li>
-        <li>検索欄のクリアボタンを追加</li>
-        <li>その他ちょっとした見た目の修正</li>
-      </ul>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.2.0</p>
+      <p className={css.version}>TAGether v1.2.1</p>
 
       <Modal {...modalData} />
     </div>
