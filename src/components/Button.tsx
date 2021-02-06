@@ -9,6 +9,7 @@
 import filled from '../style/Button/Filled.module.css'
 import material from '../style/Button/MaterialLike.module.css'
 import icon_and_text from '../style/Button/IconAndText.module.css'
+import common from '../style/Button/Common.module.css'
 import React from 'react';
 import ButtonInfo from '../types/ButtonInfo'
 
@@ -23,7 +24,7 @@ export default function Button(props: ButtonInfo) {
   // アイコンと説明テキストのボタン
     return (
       <button
-        className={css.button}
+        className={css.button+' '+common.button}
         onClick={() => props.onClick()}
       >
         <div className={css.button_icon}>
