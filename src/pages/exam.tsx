@@ -43,9 +43,10 @@ interface State {
 
 export default class exam extends React.Component<Props, State> {
   private exam: Exam[];
-  private didPressedShortcutBefore: boolean = false;
+  private ref;
   constructor(props: Props) {
     super(props);
+    this.ref = React.createRef();
     // 問題の取得、条件によってはシャッフル
     this.exam = JSON.parse(this.props.data[0].list);
     // Fisher-Yatesアルゴリズムらしい
@@ -101,6 +102,12 @@ export default class exam extends React.Component<Props, State> {
     window.removeEventListener('keydown', e=>this.Shortcut(e));
   }
 
+  componentDidUpdate() {
+    console.log('!!!UPDATED!!!');
+    // 入力欄にフォーカスする
+    this.ref.current.focus();
+  }
+
   // 解答が合っているかどうか確認してstateに格納
   CheckAnswer() {
     const index = this.state.index;
@@ -149,9 +156,9 @@ export default class exam extends React.Component<Props, State> {
         
         // 次の問題へ進む
         case NextButtonState.next_question:
-        // indexの変更
-        this.SetIndex(this.state.index + 1);
-        break;
+          // indexの変更
+          this.SetIndex(this.state.index + 1);
+          break;
     
       // 終了ボタンを押したらモーダルウィンドウを表示
       case NextButtonState.finish_exam:
@@ -184,7 +191,7 @@ export default class exam extends React.Component<Props, State> {
       label = '解答' + ( (length == 1)? '' : '('+(i+1)+')' );
       obj.push(
         <div className={css.form}> <Form {...{
-          label: label, value: tmp, rows: 1,
+          label: label, value: tmp, rows: 1, ref: (i==0)? this.ref : null,
           onChange: (ev) => this.UpdateUsersResponse(ev, i),
           disabled: this.state.examState[this.state.index].checked
           }} /> </div>

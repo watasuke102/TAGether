@@ -10,14 +10,28 @@ import css from '../style/Form.module.css'
 import React from 'react';
 import FormInfo from '../types/FormInfo'
 
+// なんで動くのかよくわからん
+// focus()を消すと動作しなくなる
+export default class Form extends React.Component<FormInfo> {
+  private ref;
 
-export default function Form(props: FormInfo) {
-  return (
-    <div>
-      <label className={css.label}>{props.label}</label>
-      <textarea className={css.form} value={props.value} rows={props.rows}
-        onChange={(e) => props.onChange(e)} disabled={props.disabled}
-      />
-    </div>
-  )
+  constructor(props: FormInfo) {
+    super(props);
+    this.ref = React.createRef();
+  }
+
+  focus() {
+    this.ref.current.focus();
+  }
+
+  render() {
+    return (
+      <div>
+        <label className={css.label}>{this.props.label}</label>
+        <textarea className={css.form} value={this.props.value} rows={this.props.rows} ref={this.ref}
+          onChange={(e) => this.props.onChange(e)} disabled={this.props.disabled}
+        />
+      </div>
+    )
+  }
 }
