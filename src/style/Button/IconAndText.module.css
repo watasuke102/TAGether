@@ -11,8 +11,10 @@
 /* アイコンと説明、ヘッダに使用 */
 .button {
   padding: 5px 15px;
-  border-radius: 25px;
   margin: 0px auto 5px;
+  border: none;
+  border-radius: 25px;
+  color: #b9ccbe;
   background-color: #ffffff00;
   transition: 0.3s;
 }

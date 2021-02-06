@@ -16,6 +16,7 @@
   /*width: 120px;*/
   padding: 5px;
   border-radius: 3px;
+  background-color: #ffffff00     ;
   border: 1px solid  #7766d8;
   transition: 0.3s;
 }

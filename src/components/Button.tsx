@@ -22,7 +22,7 @@ export default function Button(props: ButtonInfo) {
   }
   // アイコンと説明テキストのボタン
     return (
-      <div
+      <button
         className={css.button}
         onClick={() => props.onClick()}
       >
@@ -30,6 +30,6 @@ export default function Button(props: ButtonInfo) {
           <span className={props.icon}></span>
         </div>
         <span className={css.button_text}>{props.text}</span>
-      </div>
+      </button>
     );
 }
