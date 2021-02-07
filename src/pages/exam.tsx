@@ -30,7 +30,8 @@ interface ExamState {
 
 interface Props {
   data: Categoly[],
-  shuffle: boolean
+  shuffle: boolean,
+  id: number
 }
 interface State {
   index:           number,
@@ -318,6 +319,10 @@ export default class exam extends React.Component<Props, State> {
           onClick: () => this.setState({isModalOpen: false}), type: 'material'
         }} />
         <Button {...{
+          text: '編集する', icon: 'fas fa-pen',
+          onClick: () => Router.push('/edit?id='+this.props.id), type: 'material'
+        }} />
+        <Button {...{
           text: 'カテゴリ一覧へ戻る', icon: 'fas fa-undo',
           onClick: () => Router.push('/list'), type: 'filled'
         }} />
@@ -382,7 +387,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await res.json();
   const props: Props = {
     data: data,
-    shuffle: (context.query.shuffle == 'true') ? true:false
+    shuffle: (context.query.shuffle == 'true') ? true : false,
+    id: context.query.id
   };
   return {props: props};
 }
