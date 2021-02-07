@@ -240,6 +240,25 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 
+  // 正しい答えの一覧
+  CorrectAnswerList() {
+    const answer = this.exam[this.state.index].answer;
+    let correct_answer: object[] = [];
+    if (answer.length == 1) {
+      return (
+        <p className={css.answer}>正解: {answer[0]}</p>
+      )
+    } else {
+      answer.forEach(e => {
+        correct_answer.push(<li>{e}</li>);
+      });
+    }
+    return (
+      <div className={css.answer_list}>
+        <p>正解</p> <ol> {correct_answer} </ol>
+      </div>
+    )
+  }
   // 正解状況の表示
   ShowExamState() {
     const state = this.state.examState[this.state.index];
@@ -265,18 +284,15 @@ export default class exam extends React.Component<Props, State> {
       }
       result = state.correctAnswerCount + '問正解'
     }
-    // 正しい答えの一覧
-    let correct_answer = '';
-    this.exam[this.state.index].answer.forEach(e => {
-      correct_answer += e + ', '
-    });
     return (
       <div className={css.state_and_answer}>
         <div className={css.exam_state}>
           <div className={icon}/>
           <p>{result}</p>
         </div>
-        <p className={css.answer}>正解: {correct_answer.slice(0, -2)}</p>
+
+        {this.CorrectAnswerList()}
+
       </div>
     );
   }
