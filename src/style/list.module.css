@@ -12,6 +12,11 @@
   width: 80vw;
   margin: 25px auto;
 }
+.sort {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+}
 
 .radiobutton_container {
   display: flex;

@@ -14,6 +14,7 @@ import Form from '../components/Form';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import Categoly from '../types/Categoly';
+import ButtonInfo from '../types/ButtonInfo';
 
 interface Props { data: Categoly[] }
 
@@ -21,6 +22,8 @@ interface Props { data: Categoly[] }
 export default function list(props: Props) {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
+  const [newer_first, SetNewerFirst] = React.useState(true);
+
   let cards: object[] = [];
   const list: Categoly[] = props.data;
   
@@ -37,6 +40,7 @@ export default function list(props: Props) {
   // カードの生成
   const CreateCards = () => {
     let searchResult: Categoly[] = [];
+    cards = [];
     // 検索欄になにか記入されていたら、検索
     if (searchStr != '') {
       list.forEach(e => {
@@ -65,17 +69,30 @@ export default function list(props: Props) {
     searchResult.forEach(element => {
       cards.push(<CategolyCard {...element} />);
     });
+    if (newer_first) {
+      cards.reverse();
+    }
+
+    // カテゴリ作成ページへ飛ぶカードを追加
+    cards.unshift(
+      <div className={css.card} onClick={() => Router.push('/create')}>
+        <div className='fas fa-plus' />
+        <p>新規作成</p>
+      </div>
+    );
   }
-  
-  // カテゴリ作成ページへ飛ぶカードを追加
-  cards.push(
-    <div className={css.card} onClick={() => Router.push('/create')}>
-      <div className='fas fa-plus' />
-      <p>新規作成</p>
-    </div>
-  );
+
   CreateCards();
 
+  const info: ButtonInfo = {
+    type: 'material',
+    text: newer_first ? '古い順に並べる' : '新しい順に並べる',
+    icon: 'fas fa-sort-numeric-' + (newer_first ? 'down-alt' : 'down'),
+    onClick: () => {
+      CreateCards();
+      SetNewerFirst(!newer_first);
+    }
+  }
 
   return (
     <>
@@ -95,7 +112,13 @@ export default function list(props: Props) {
           {RadioButton('説明')}
           {RadioButton('ID')}
         </div>
+
+        <div className={css.sort}>
+          <p>{newer_first? '新しい順' : '古い順'}に並べています。</p>
+          <Button {...info} />
+        </div>
       </div>
+
     <div className={css.list}> {cards} </div>
     </>
   );
