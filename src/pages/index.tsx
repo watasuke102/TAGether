@@ -80,6 +80,13 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.2.3</h3>
+      <ul>
+        <li>正しい答えが複数ある場合、箇条書きリストで表示するように</li>
+        <li>問題終了後、正答数と正答率を表示するように</li>
+        <li>カテゴリ一覧で新しい順/古い順でソートできるようにした</li>
+      </ul>
+
       <h3>v1.2.2</h3>
       <p>問題回答ページにおいて一番最初の入力欄以外に入力しづらかった問題を修正</p>
 
@@ -107,7 +114,7 @@ export default function index() {
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.2.2</p>
+      <p className={css.version}>TAGether v1.2.3</p>
 
       <Modal {...modalData} />
     </div>
