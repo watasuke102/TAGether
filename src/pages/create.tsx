@@ -227,7 +227,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         answer_form.push(
           <div className={css.answer_area}>
             <Form {...{
-              label: '答え', value: answer, rows: 2,
+              label: '答え('+(j+1)+')', value: answer, rows: 2,
               onChange: (ev) => this.UpdateExam('answer', ev.target.value, i, j)
             }} />
             <div className={css.answer_area_buttons}>
