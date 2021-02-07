@@ -44,6 +44,9 @@ interface State {
 export default class exam extends React.Component<Props, State> {
   private exam: Exam[];
   private ref;
+  private correct_answers = 0;
+  private total_questions = 0;
+
   constructor(props: Props) {
     super(props);
     this.ref = React.createRef();
@@ -123,7 +126,9 @@ export default class exam extends React.Component<Props, State> {
     this.exam[index].answer.forEach((e, i) => {
       if (this.state.answers[index][i] == e) {
         result.correctAnswerCount++;
+        this.correct_answers++;
       }
+      this.total_questions++;
     });
     let tmp = this.state.examState;
     tmp[index] = result;
@@ -246,7 +251,7 @@ export default class exam extends React.Component<Props, State> {
     let correct_answer: object[] = [];
     if (answer.length == 1) {
       return (
-        <p className={css.answer}>正解: {answer[0]}</p>
+        <p className={css.answer_single}>正解: {answer[0]}</p>
       )
     } else {
       answer.forEach(e => {
@@ -303,6 +308,10 @@ export default class exam extends React.Component<Props, State> {
       <div className={css.window}>
         <h1>🎉問題終了🎉</h1>
         <p>お疲れさまでした。</p>
+        <p className={css.correct_rate}>
+          <b>正答率{(this.correct_answers/this.total_questions)*100}%</b><br />
+          （{this.total_questions}問中{this.correct_answers}問正解）
+        </p>
         <div className={css.window_buttons}>
         <Button {...{
           text: 'ウィンドウを閉じる', icon: 'fas fa-times',
