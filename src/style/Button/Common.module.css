@@ -8,6 +8,10 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
+.button {
+  font-family: 'M PLUS 1p', sans-serif;
+}
+
 .button:focus {
   outline: none;
   box-shadow: 0 0 0 2px #ffffff;
