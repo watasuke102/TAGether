@@ -342,7 +342,7 @@ export default class exam extends React.Component<Props, State> {
     
     return (
       <>
-        <h1>exam</h1>
+        <h1>{this.state.index+1}/{this.exam.length}</h1>
 
         <div className={css.display}>
           {/* 問題文、解答欄 */}
