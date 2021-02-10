@@ -305,12 +305,13 @@ export default class exam extends React.Component<Props, State> {
 
   // 問題をとき終わったときに表示するウィンドウ
   FinishWindow() {
+    const correct_rate = Math.round((this.correct_answers / this.total_questions)*10000)/100;
     return (
       <div className={css.window}>
         <h1>🎉問題終了🎉</h1>
         <p>お疲れさまでした。</p>
         <p className={css.correct_rate}>
-          <b>正答率{(this.correct_answers/this.total_questions)*100}%</b><br />
+          <b>正答率{correct_rate}%</b><br />
           （{this.total_questions}問中{this.correct_answers}問正解）
         </p>
         <div className={css.window_buttons}>
