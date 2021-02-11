@@ -106,11 +106,14 @@ export default class exam extends React.Component<Props, State> {
 
   componentDidUpdate() {
     if (this.state.showExamStateTable) return;
+    let b: boolean = false;
     this.state.answers[this.state.index].map(e => {
       if (e != '') {
-        return;
+        b = true;
+        break;
       }
     });
+    if (b) return;
     // 入力欄にフォーカスする
     this.ref.current.focus();
   }
