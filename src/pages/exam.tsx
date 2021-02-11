@@ -423,12 +423,13 @@ export default class exam extends React.Component<Props, State> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
+  const id = (context.query.id == undefined)? -1 : Number(context.query.id)
+  const res = await fetch(process.env.API_URL + '?id=' + id);
   const data = await res.json();
   const props: Props = {
     data: data,
     shuffle: (context.query.shuffle == 'true') ? true : false,
-    id: context.query.id
+    id: id
   };
   return {props: props};
 }
