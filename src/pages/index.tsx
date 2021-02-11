@@ -79,6 +79,9 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.2.6</h3>
+      <p>ビルドできない問題を修正</p>
+
       <h3>v1.2.5</h3>
       <p>問題回答ページにおいて一番最初の入力欄以外に入力しづらかった問題が再発したので修正</p>
 
@@ -106,7 +109,7 @@ export default function index() {
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.2.5</p>
+      <p className={css.version}>TAGether v1.2.6</p>
 
       <Modal {...modalData} />
     </div>
