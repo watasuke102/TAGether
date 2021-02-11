@@ -79,6 +79,9 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.2.5</h3>
+      <p>問題回答ページにおいて一番最初の入力欄以外に入力しづらかった問題が再発したので修正</p>
+
       <h3>v1.2.4</h3>
       <ul>
         <li>問題編集ページで、答えの入力欄に数字を表示するように</li>
@@ -97,24 +100,13 @@ export default function index() {
         <li>カテゴリ一覧で新しい順/古い順でソートできるようにした</li>
       </ul>
 
-      <h3>v1.2.2</h3>
-      <p>問題回答ページにおいて一番最初の入力欄以外に入力しづらかった問題を修正</p>
-
-      <h3>v1.2.1</h3>
-      <ul>
-        <li>問題一覧で文字列が長すぎた場合は折り返すように</li>
-        <li>問題解答ページで問題文が画面外にはみ出る問題を修正</li>
-        <li>ボタンをbuttonタグで実装、tabキーで選択できるようになったよ</li>
-        <li>次の問題へ進んだ時にテキストボックスにフォーカスするように</li>
-      </ul>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.2.4</p>
+      <p className={css.version}>TAGether v1.2.5</p>
 
       <Modal {...modalData} />
     </div>
