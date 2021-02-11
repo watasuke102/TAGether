@@ -110,7 +110,7 @@ export default class exam extends React.Component<Props, State> {
     this.state.answers[this.state.index].map(e => {
       if (e != '') {
         b = true;
-        break;
+        return;
       }
     });
     if (b) return;
