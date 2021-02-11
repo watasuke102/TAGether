@@ -13,19 +13,16 @@ import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
-import ModalData from '../types/ModalData';
+import ExamTable from '../components/ExamTableComponent';
 import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
+import ExamState from '../types/ExamState';
+import ModalData from '../types/ModalData';
 
 enum NextButtonState {
   show_answer,
   next_question,
   finish_exam
-}
-
-interface ExamState {
-  checked: boolean,
-  correctAnswerCount: number
 }
 
 interface Props {
@@ -34,12 +31,13 @@ interface Props {
   id: number
 }
 interface State {
-  index:           number,
-  isModalOpen:     boolean,
-  nextButtonState: NextButtonState,
+  index:              number,
+  isModalOpen:        boolean,
+  nextButtonState:    NextButtonState,
+  showExamStateTable: boolean
   // answers[index][問題番号]
-  answers:         string[][],
-  examState:       ExamState[],
+  answers:            string[][],
+  examState:          ExamState[],
 }
 
 export default class exam extends React.Component<Props, State> {
@@ -79,7 +77,7 @@ export default class exam extends React.Component<Props, State> {
     }
     // stateの初期化
     this.state = {
-      index: 0, isModalOpen: false,
+      index: 0, isModalOpen: false, showExamStateTable: false,
       nextButtonState: NextButtonState.show_answer,
       answers: answers,
       examState: exam_state
@@ -107,15 +105,12 @@ export default class exam extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    let b: boolean = false;
+    if (this.state.showExamStateTable) return;
     this.state.answers[this.state.index].map(e => {
-      console.log(e)
       if (e != '') {
-        b = true;
         return;
       }
     });
-    if (b) return;
     // 入力欄にフォーカスする
     this.ref.current.focus();
   }
@@ -316,16 +311,20 @@ export default class exam extends React.Component<Props, State> {
         </p>
         <div className={css.window_buttons}>
         <Button {...{
-          text: 'ウィンドウを閉じる', icon: 'fas fa-times',
-          onClick: () => this.setState({isModalOpen: false}), type: 'material'
+          text: 'ウィンドウを閉じる', icon: 'fas fa-times', type: 'material',
+          onClick: () => this.setState({isModalOpen: false}),
         }} />
         <Button {...{
-          text: '編集する', icon: 'fas fa-pen',
-          onClick: () => Router.push('/edit?id='+this.props.id), type: 'material'
+          text: '編集する', icon: 'fas fa-pen', type: 'material',
+          onClick: () => Router.push('/edit?id='+this.props.id), 
         }} />
         <Button {...{
-          text: 'カテゴリ一覧へ戻る', icon: 'fas fa-undo',
-          onClick: () => Router.push('/list'), type: 'filled'
+          text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
+          onClick: () => this.setState({isModalOpen: false, showExamStateTable: true}),
+        }} />
+        <Button {...{
+          text: 'カテゴリ一覧へ', icon: 'fas fa-undo', type: 'filled',
+          onClick: () => Router.push('/list'),
         }} />
         </div>
       </div>
@@ -340,6 +339,46 @@ export default class exam extends React.Component<Props, State> {
       isOpen: this.state.isModalOpen,
       close: () => this.setState({isModalOpen: false}),
     };
+
+    if (this.state.showExamStateTable) {
+      let list: Object[] = [];
+      let answers: string = '';
+      this.exam.forEach(e => {
+        answers = '';
+        e.answer.forEach(e => answers += e+', ');
+        list.push(
+          <tr>
+            <td>{
+              e.question.split('\n').map(str => {
+                return (<> {str}<br /> </>)
+              })
+            }</td>
+            <td>{answers.slice(0, -2)}</td>
+            <td></td>
+          </tr>
+        )
+      });
+      return(
+        <>
+          <ExamTable {...{
+            exam: this.exam, answers: this.state.answers,
+            examState: this.state.examState
+          }} />
+          <div className={css.button_container}>
+            <div className={css.buttons}>
+              <Button {...{
+                text: 'もう一度', icon: 'fas fa-undo',
+                onClick: Router.reload, type: 'material'
+              }} />
+              <Button {...{
+                text: 'カテゴリ一覧へ', icon: 'fas fa-arrow-left',
+                onClick: () => Router.push('/list'), type: 'filled'
+              }} />
+            </div>
+          </div>
+        </>
+      );
+    }
     
     return (
       <>
