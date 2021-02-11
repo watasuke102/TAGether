@@ -205,13 +205,19 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
   
   // 問題編集欄
-  DeleteButton(f: Function, returnDummy: boolean) {
-    if (this.state.exam.length == 1) {
-      if (returnDummy)
+  DeleteButton(f: Function, isDeleteExam: boolean, i?: number) {
+    // 問題欄の削除ボタンであれば、全体の問題数の合計が1のときは非表示
+    if (isDeleteExam) {
+      if (this.state.exam.length == 1)
         return <div className={css.dummy_button} />;
-      else return;
+    } else {
+      // 解答欄の削除ボタンであれば、解答欄の合計が1のときは非表示
+      if (i != undefined) {
+        if (this.state.exam[i].answer.length == 1)
+          return;
+      }
     }
-    else return (
+    return (
       <Button {...{
         type: 'material', icon: 'fas fa-trash', text: '削除',
         onClick: () => f()
@@ -238,7 +244,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
               }} />
               {/* 答え欄削除ボタン */}
               {
-                this.DeleteButton(() => this.RemoveAnswer(i, j), false)
+                this.DeleteButton(() => this.RemoveAnswer(i, j), false, i)
               }
             </div>
           </div>
