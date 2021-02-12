@@ -17,8 +17,6 @@ interface Props {
   answers?:   string[][]
 }
 export default class ExamTable extends React.Component<Props> {
-  private list: Object[] = [];
-
   ParseAnswers(e: string[], i: number) {
     let answers: string = '';
     console.log(this.props.exam);
@@ -56,9 +54,10 @@ export default class ExamTable extends React.Component<Props> {
   }
   
   render() {
+    let list: Object[] = [];
     this.props.exam.forEach((e,i) => {
       const ans = this.ParseAnswers(e.answer, i);
-      this.list.push(
+      list.push(
         <tr>
           <td>{
             e.question.split('\n').map(str => {
@@ -87,7 +86,7 @@ export default class ExamTable extends React.Component<Props> {
               <th>解答</th>
               {state_th}
             </tr>
-            {this.list}
+            {list}
           </table>
         </div>
 
