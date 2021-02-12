@@ -19,7 +19,6 @@ interface Props {
 export default class ExamTable extends React.Component<Props> {
   ParseAnswers(e: string[], i: number) {
     let answers: string = '';
-    console.log(this.props.exam);
     if (this.props.exam[i].answer.length == 1) {
       return e[0] + '\n';
     }
