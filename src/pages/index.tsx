@@ -78,6 +78,13 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.2.7</h3>
+      <ul>
+        <li>問題一覧で同じ問題が重複して追加されていたのを修正</li>
+        <li>不要なログ出力を削除</li>
+        <li>修正済みの不具合を「既知の不具合」から削除</li>
+      </ul>
+
       <h3>v1.2.6</h3>
       <p>ビルドできない問題を修正</p>
 
@@ -95,20 +102,13 @@ export default function index() {
         <li>編集画面で解答欄が1つのときにも削除ボタンが出ていた問題を修正</li>
       </ul>
 
-      <h3>v1.2.3</h3>
-      <ul>
-        <li>正しい答えが複数ある場合、箇条書きリストで表示するように</li>
-        <li>問題終了後、正答数と正答率を表示するように</li>
-        <li>カテゴリ一覧で新しい順/古い順でソートできるようにした</li>
-      </ul>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.2.6</p>
+      <p className={css.version}>TAGether v1.2.7</p>
 
       <Modal {...modalData} />
     </div>
