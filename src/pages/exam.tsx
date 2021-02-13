@@ -314,10 +314,6 @@ export default class exam extends React.Component<Props, State> {
         </p>
         <div className={css.window_buttons}>
         <Button {...{
-          text: 'ウィンドウを閉じる', icon: 'fas fa-times', type: 'material',
-          onClick: () => this.setState({isModalOpen: false}),
-        }} />
-        <Button {...{
           text: '編集する', icon: 'fas fa-pen', type: 'material',
           onClick: () => Router.push('/edit?id='+this.props.id), 
         }} />
