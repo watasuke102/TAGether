@@ -25,9 +25,9 @@ a {
 }
 .page-transition-enter-active {
   opacity: 1;
-  transition: opacity 500ms;
+  transition: opacity 200ms;
 }
 .page-transition-exit-active {
   opacity: 0;
-  transition: opacity 500ms;
+  transition: opacity 200ms;
 }

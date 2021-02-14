@@ -24,17 +24,17 @@
 }
 
 .window {
-  animation: window_fade 1s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: window_fade 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @keyframes window_fade {
   from {
     opacity: 0;
-    transform: translateY(80vh);
+    transform: translateY(80%);
     scrollbar-width: none;
   }
   to {
     opacity: 1;
-    transform: translateY(50vh);
+    transform: translateY(50%);
     scrollbar-width: auto;
   }
 }
