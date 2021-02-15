@@ -19,12 +19,13 @@ interface Props {
 export default class ExamTable extends React.Component<Props> {
   ParseAnswers(e: string[], i: number) {
     let answers: string = '';
-    if (this.props.exam[i].answer.length == 1) {
+    const length = this.props.exam[i].answer.length;
+    if (length == 1) {
       return e[0] + '\n';
     }
-    e.forEach((ans,j) => {
-      answers += (j+1)+'問目: '+ans+'\n';
-    });
+    for (let j = 0; j < length; j++) {
+      answers += (j+1)+'問目: '+e[j]+'\n';
+    }
     return answers;
   }
 
