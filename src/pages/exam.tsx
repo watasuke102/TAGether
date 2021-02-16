@@ -122,24 +122,24 @@ export default class exam extends React.Component<Props, State> {
   CheckAnswer() {
     const index = this.state.index;
     let result: ExamState = { checked: true, correctAnswerCount: 0, realAnswerList: [] };
+    let correct: boolean = false;
     this.exam[index].answer.forEach((e, i) => {
-      // 合ってたら正解数と全体の正解数をインクリメント
-      if (this.state.answers[index][i] == e) {
-        result.correctAnswerCount++;
-        this.correct_answers++;
-        // 正しい解答をリストに追加
-        if (this.exam[index].answer.length == 1) {
-          result.realAnswerList.push(<p>{e}</p>);
-        } else {
-          result.realAnswerList.push(<p>{i+1}問目: {e}</p>);
+      correct = false;
+      // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
+      e.split('&').map(ans => {
+        // 合ってたら正解数と全体の正解数をインクリメント
+        if (this.state.answers[index][i] == ans && !correct) {
+          correct = true;
+          result.correctAnswerCount++;
+          this.correct_answers++;
         }
+      })
+      // 正しい解答をリストに追加
+      const classname = (correct) ? '' : css.wrong;
+      if (this.exam[index].answer.length == 1) {
+        result.realAnswerList.push(<p className={classname}>{e}</p>);
       } else {
-        // 正しい解答をリストに追加
-        if (this.exam[index].answer.length == 1) {
-          result.realAnswerList.push(<p className={css.wrong}>{e}</p>);
-        } else {
-          result.realAnswerList.push(<p className={css.wrong}>{i+1}問目: {e}</p>);
-        }
+        result.realAnswerList.push(<p className={classname}>{i+1}問目: {e}</p>);
       }
       this.total_questions++;
     });
