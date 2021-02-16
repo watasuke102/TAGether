@@ -52,11 +52,23 @@ export default class ExamTable extends React.Component<Props> {
       </>
     )
   }
+
+  RealAnswerList(e: Exam, i: number) {
+    if (this.props.examState) {
+      return this.props.examState[i].realAnswerList
+    }
+    const ans = this.ParseAnswers(e.answer, i);
+    let list: Object[] = [];
+    // 一番最後に改行文字があるので、それを削除してから
+    ans.slice(0, -1).split('\n').map(str => {
+      list.push(<> {str}<br /> </>);
+    });
+    return list;
+  }
   
   render() {
     let list: Object[] = [];
     this.props.exam.forEach((e,i) => {
-      const ans = this.ParseAnswers(e.answer, i);
       list.push(
         <tr>
           <td>{
@@ -64,12 +76,7 @@ export default class ExamTable extends React.Component<Props> {
               return (<> {str}<br /> </>);
             })
           }</td>
-          <td>{
-            // 一番最後に改行文字があるので、それを削除してから
-            ans.slice(0, -1).split('\n').map(str => {
-              return (<> {str}<br /> </>);
-            })
-          }</td>
+          <td>{this.RealAnswerList(e, i)}</td>
           {this.Status(i)}
         </tr>
       )

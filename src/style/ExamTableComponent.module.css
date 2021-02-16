@@ -20,6 +20,9 @@
   padding: 8px 5px;
   border-bottom: solid 1px;
 }
+.table p {
+  margin: 0 0;
+}
 
 .bottom {
   height: 250px;
