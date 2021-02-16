@@ -65,7 +65,7 @@ export default class exam extends React.Component<Props, State> {
     let exam_state: ExamState[] = Array<ExamState>();
     let max_answer = 1;
     for (let i = 0; i < exam_length; i++) {
-      exam_state[i] = { checked: false, correctAnswerCount: 0 };
+      exam_state[i] = { checked: false, correctAnswerCount: 0, realAnswerList: [] };
       if (this.exam[i].answer.length > max_answer) {
         max_answer = this.exam[i].answer.length;
       }
@@ -121,11 +121,25 @@ export default class exam extends React.Component<Props, State> {
   // 解答が合っているかどうか確認してstateに格納
   CheckAnswer() {
     const index = this.state.index;
-    let result: ExamState = { checked: true, correctAnswerCount: 0 };
+    let result: ExamState = { checked: true, correctAnswerCount: 0, realAnswerList: [] };
     this.exam[index].answer.forEach((e, i) => {
+      // 合ってたら正解数と全体の正解数をインクリメント
       if (this.state.answers[index][i] == e) {
         result.correctAnswerCount++;
         this.correct_answers++;
+        // 正しい解答をリストに追加
+        if (this.exam[index].answer.length == 1) {
+          result.realAnswerList.push(<p>{e}</p>);
+        } else {
+          result.realAnswerList.push(<p>{i+1}問目: {e}</p>);
+        }
+      } else {
+        // 正しい解答をリストに追加
+        if (this.exam[index].answer.length == 1) {
+          result.realAnswerList.push(<p className={css.wrong}>{e}</p>);
+        } else {
+          result.realAnswerList.push(<p className={css.wrong}>{i+1}問目: {e}</p>);
+        }
       }
       this.total_questions++;
     });
@@ -244,25 +258,6 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 
-  // 正しい答えの一覧
-  CorrectAnswerList() {
-    const answer = this.exam[this.state.index].answer;
-    let correct_answer: object[] = [];
-    if (answer.length == 1) {
-      return (
-        <p className={css.answer_single}>正解: {answer[0]}</p>
-      )
-    } else {
-      answer.forEach(e => {
-        correct_answer.push(<li>{e}</li>);
-      });
-    }
-    return (
-      <div className={css.answer_list}>
-        <p>正解</p> <ol> {correct_answer} </ol>
-      </div>
-    )
-  }
   // 正解状況の表示
   ShowExamState() {
     const state = this.state.examState[this.state.index];
@@ -294,9 +289,10 @@ export default class exam extends React.Component<Props, State> {
           <div className={icon}/>
           <p>{result}</p>
         </div>
-
-        {this.CorrectAnswerList()}
-
+        <div className={css.answer_list}>
+          <p id={css.seikai}>正解:</p>
+          {this.state.examState[this.state.index].realAnswerList}
+        </div>
       </div>
     );
   }

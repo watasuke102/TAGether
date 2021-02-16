@@ -13,6 +13,9 @@
   justify-content: flex-start;
   padding-bottom: 90px;
 }
+.display p{
+  margin: 0;
+}
 
 /* 問題文と解答欄 */
 .exam {
@@ -30,9 +33,8 @@
 }
 .exam #mondai {
   font-size: 30px;
-  margin-top: 15px;
+  margin: 0 0;
   margin-right: 20px;
-  padding-bottom: 10px;
 }
 .form {
   margin-top: 15px;
@@ -48,25 +50,20 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-
-.answer_single{
-  width: 100%;
-  font-size: 20px;
-  margin-left: 0;
-  word-break: break-all;
+.wrong {
+  color: #ff3939;
 }
+
 .answer_list {
   display: flex;
+  flex-direction: column;
   width: 100%;
   word-break: break-all;
-}
-.answer_list li{
-  padding-bottom: 15px;
   font-size: 20px;
-}
-.answer_list p {
-  font-size: 25px;
   margin-left: 0;
+}
+.answer_list #seikai {
+  font-size: 27px;
 }
 
 .exam_state {

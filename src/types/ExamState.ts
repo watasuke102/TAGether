@@ -8,5 +8,6 @@
 //
 export default interface ExamState {
   checked: boolean,
-  correctAnswerCount: number
+  correctAnswerCount: number,
+  realAnswerList: object[]
 }
