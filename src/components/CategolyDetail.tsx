@@ -22,7 +22,6 @@ interface CategolyDetailData {
 
 
 export default function CategolyDetail(props: CategolyDetailData) {
-  const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState('false');
   const data: Categoly = props.data;
 
@@ -38,42 +37,6 @@ export default function CategolyDetail(props: CategolyDetailData) {
     }
     Router.push(url);
   };
-
-  const DeleteCategoly = () => {
-    const req = new XMLHttpRequest();
-    req.onreadystatechange = () => {
-      if (req.readyState == 4) {
-        Router.reload();
-      }
-    }
-    req.open('DELETE', process.env.API_URL+'?id='+data.id);
-    req.send();
-  }
-
-  // モーダルに渡すデータ
-  const modalData: ModalData = {
-    isOpen: isModalOpen,
-    close: () => SetIsModalOpen(false),
-    body: (
-      <div className={css.window}>
-        <p>
-          本当に "{data.title}" を削除しますか？<br/>
-          この操作を取り消すことは出来ません。
-        </p>
-        <div className={css.window_buttons}>
-          <Button {...{
-            text: '閉じる', icon: 'fas fa-times',
-            onClick: () => SetIsModalOpen(false), type: 'material'
-          }} />
-          <Button {...{
-            text: '削除する', icon: 'fas fa-trash',
-            onClick: DeleteCategoly, type: 'filled'
-          }} />
-        </div>
-      </div>
-    ) 
-  };
-
 
   return (
     <>
@@ -101,10 +64,6 @@ export default function CategolyDetail(props: CategolyDetailData) {
             onClick: () => props.close(), type: 'material'
           }} />
           <Button {...{
-            text: 'カテゴリの削除', icon: 'fas fa-trash',
-            onClick: () => SetIsModalOpen(true), type: 'material'
-          }} />
-          <Button {...{
             text: '編集する', icon: 'fas fa-pen',
             onClick: () => Push('edit'), type: 'material'
           }} />
@@ -119,8 +78,6 @@ export default function CategolyDetail(props: CategolyDetailData) {
         </div>
 
       </div>
-        
-      <Modal {...modalData} />
     </>
   );
 }
