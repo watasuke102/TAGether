@@ -340,6 +340,18 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       <>
         <h1>{this.text.heading}</h1>
 
+        <ul>
+          <li>記号 " は使用できません </li>
+          <li>
+            記号 \ を表示したいときは \\ のように入力してください<br />
+            \\ 以外で記号 \ を使用しないでください。問題を開けなくなります
+          </li>
+          <li>
+            「答え」の欄に&を入れると、複数の正解を作ることが出来ます<br />
+            例: 「A&B&C」→解答欄にAもしくはBもしくはCのどれかが入力されたら正解
+          </li>
+        </ul>
+
         <div className={css.edit_area}>
           <Form {...{
             label: 'タイトル', value: this.state.categoly.title, rows: 1,
