@@ -65,7 +65,7 @@ export default class exam extends React.Component<Props, State> {
     let exam_state: ExamState[] = Array<ExamState>();
     let max_answer = 1;
     for (let i = 0; i < exam_length; i++) {
-      exam_state[i] = { checked: false, correctAnswerCount: 0, realAnswerList: [] };
+      exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
       if (this.exam[i].answer.length > max_answer) {
         max_answer = this.exam[i].answer.length;
       }
@@ -121,7 +121,7 @@ export default class exam extends React.Component<Props, State> {
   // 解答が合っているかどうか確認してstateに格納
   CheckAnswer() {
     const index = this.state.index;
-    let result: ExamState = { checked: true, correctAnswerCount: 0, realAnswerList: [] };
+    let result: ExamState = { order: 0, checked: true, correctAnswerCount: 0, realAnswerList: [] };
     let correct: boolean = false;
     this.exam[index].answer.forEach((e, i) => {
       correct = false;
@@ -143,6 +143,17 @@ export default class exam extends React.Component<Props, State> {
       }
       this.total_questions++;
     });
+
+    // 全問不正解の場合
+    if (result.correctAnswerCount == 0) {
+      result.order = 2;
+    } else if (result.correctAnswerCount == this.exam[index].answer.length) {
+      // 全問正解
+      result.order = 0;
+    } else {
+      // 部分正解
+      result.order = 1
+    }
     let tmp = this.state.examState;
     tmp[index] = result;
     this.setState({ examState: tmp });
@@ -260,9 +271,10 @@ export default class exam extends React.Component<Props, State> {
 
   // 正解状況の表示
   ShowExamState() {
-    const state = this.state.examState[this.state.index];
-    const answer_length = this.exam[this.state.index].answer.length;
+    let state: ExamState = this.state.examState[this.state.index];
     if (!state.checked) return;
+
+    const answer_length = this.exam[this.state.index].answer.length;
     let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」

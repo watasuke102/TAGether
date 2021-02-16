@@ -7,7 +7,9 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 export default interface ExamState {
+  // 0=全問正解、1=部分正解、2=全問不正解
+  order: number,
   checked: boolean,
   correctAnswerCount: number,
-  realAnswerList: object[]
+  realAnswerList: object[],
 }

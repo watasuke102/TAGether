@@ -16,7 +16,36 @@ interface Props {
   examState?: ExamState[],
   answers?:   string[][]
 }
-export default class ExamTable extends React.Component<Props> {
+interface State {
+  array: number[];
+}
+export default class ExamTable extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    // 連番配列を作成
+    let array: number[] = [];
+    for (let i = 0; i < this.props.exam.length; i++)
+      array.push(i);
+    // examStateのorder順にソート
+    if (this.props.examState) {
+      let first:  number[] = [];
+      let second: number[] = [];
+      let third: number[]  = array;
+    
+      this.props.examState.forEach((e, i) => {
+        switch (e.order) {
+          case 2: first.push(third[i]);  third[i] = -1; break;
+          case 1: second.push(third[i]); third[i] = -1; break;
+          case 0: break;
+        }
+      });
+      // 連結する
+      // 条件に合うorderがなかった場合、配列がundefinedになるため、それをfilterで削除
+      array = first.concat(second.concat(third)).filter(e => (e != undefined && e != -1));
+    }
+    this.state = { array: array };
+  }
+
   ParseAnswers(e: string[], i: number) {
     let answers: string = '';
     const length = this.props.exam[i].answer.length;
@@ -68,15 +97,16 @@ export default class ExamTable extends React.Component<Props> {
   
   render() {
     let list: Object[] = [];
-    this.props.exam.forEach((e,i) => {
+    const exam = this.props.exam;
+    this.state.array.forEach(i => {
       list.push(
         <tr>
           <td>{
-            e.question.split('\n').map(str => {
+            exam[i].question.split('\n').map(str => {
               return (<> {str}<br /> </>);
             })
           }</td>
-          <td>{this.RealAnswerList(e, i)}</td>
+          <td>{this.RealAnswerList(exam[i], i)}</td>
           {this.Status(i)}
         </tr>
       )
