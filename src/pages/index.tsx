@@ -83,6 +83,12 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.3.1</h3>
+      <ul>
+        <li>カテゴリ削除を出来ないようにした</li>
+        <li>開発状況（ToDo）を公開</li>
+      </ul>
+
       <h3>v1.3.0</h3>
       <ul>
         <li>アニメーションの時間を少し短くした</li>
@@ -104,16 +110,13 @@ export default function index() {
       <h3>v1.2.6</h3>
       <p>ビルドできない問題を修正</p>
 
-      <h3>v1.2.5</h3>
-      <p>問題回答ページにおいて一番最初の入力欄以外に入力しづらかった問題が再発したので修正</p>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.3.0</p>
+      <p className={css.version}>TAGether v1.3.1</p>
 
       <Modal {...modalData} />
     </div>
