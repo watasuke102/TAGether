@@ -26,6 +26,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
 
   constructor(props: Props) {
     super(props);
+    this.UpdateContainersHeight();
     this.data = this.props.data;
     this.state = { isShuffleEnabled: 'false' };
   }
