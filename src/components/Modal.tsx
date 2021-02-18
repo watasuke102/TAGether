@@ -11,6 +11,7 @@ import React from 'react';
 import ModalData from '../types/ModalData';
 
 export default function Modal(props: ModalData) {
+  document.documentElement.style.setProperty('--vh', (window.innerHeight / 100) + 'px');
   //開かれていない場合は空要素を渡す
   if (!props.isOpen) {
     return (<></>);

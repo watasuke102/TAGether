@@ -29,12 +29,12 @@
 @keyframes window_fade {
   from {
     opacity: 0;
-    transform: translateY(80vh);
+    transform: translateY( calc(var(--vh)*80) );
     scrollbar-width: none;
   }
   to {
     opacity: 1;
-    transform: translateY(50vh);
+    transform: translateY( calc(var(--vh)*50) );
     scrollbar-width: auto;
   }
 }
