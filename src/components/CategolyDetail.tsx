@@ -10,74 +10,93 @@ import css from '../style/CategolyDetail.module.css'
 import React from 'react';
 import Router from 'next/router';
 import Tag from './Tag'
-import Modal from './Modal';
 import Button from './Button';
 import Categoly from '../types/Categoly';
-import ModalData from '../types/ModalData';
 
-interface CategolyDetailData {
+interface Props {
   data: Categoly,
   close: Function
 }
+interface state {
+  isShuffleEnabled: string
+}
 
+export default class CategolyDetail extends React.Component<Props, state> {
+  private data: Categoly;
 
-export default function CategolyDetail(props: CategolyDetailData) {
-  const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState('false');
-  const data: Categoly = props.data;
+  constructor(props: Props) {
+    super(props);
+    this.data = this.props.data;
+    this.state = { isShuffleEnabled: 'false' };
+  }
+  
+  // スマホ対策
+  UpdateContainersHeight() {
+    document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100 * 80) + 'px');
+  }
 
-  const Push = (s: string) => {
+  componentDidMount() {
+    window.addEventListener('resize', this.UpdateContainersHeight);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.UpdateContainersHeight);
+  }
+
+  Push(s: string) {
     let url: string = ''
     if (s == 'edit') {
-      url = '/edit?id=' + data.id;
+      url = '/edit?id=' + this.data.id;
     } else if(s == 'exam') {
-      url = '/exam?id=' + data.id;
-      url += '&shuffle=' + isShuffleEnabled;
+      url = '/exam?id=' + this.data.id;
+      url += '&shuffle=' + this.state.isShuffleEnabled;
     } else {
-      url = '/examtable?id=' + data.id;
+      url = '/examtable?id=' + this.data.id;
     }
     Router.push(url);
   };
 
-  return (
-    <>
-      <div className={css.container}>
-        <textarea disabled={true} value={data.title} id={css.title}/>
-
-        <div className={css.updated_at}>
-          <div className='fas fa-clock'></div>
-          <p>{data.updated_at}</p>
+  render() {
+    return (
+      <>
+        <div className={css.container}>
+          <textarea disabled={true} value={this.data.title} id={css.title}/>
+  
+          <div className={css.updated_at}>
+            <div className='fas fa-clock'></div>
+            <p>{this.data.updated_at}</p>
+          </div>
+          <Tag tag={this.data.tag} />
+          <textarea disabled={true} value={this.data.desc} id={css.desc} />
+  
+  
+          {/* シャッフルするかどうかを決めるチェックボックスなど */}
+          <div className={css.shuffle_checkbox}>
+            <input type='checkbox' value={this.state.isShuffleEnabled}
+              onChange={e => this.setState({isShuffleEnabled: e.target.checked? 'true':'false'})}/>
+            <p>問題順をシャッフル</p>
+          </div>
+  
+          <div className={css.buttons}>
+            <Button {...{
+              text: '閉じる', icon: 'fas fa-times',
+              onClick: () => this.props.close(), type: 'material'
+            }} />
+            <Button {...{
+              text: '編集する', icon: 'fas fa-pen',
+              onClick: () => this.Push('edit'), type: 'material'
+            }} />
+            <Button {...{
+              text: '問題一覧', icon: 'fas fa-list',
+              onClick: () => this.Push('table'), type: 'material'
+            }} />
+            <Button {...{
+              text: 'この問題を解く', icon: 'fas fa-arrow-right',
+              onClick: () => this.Push('exam'), type: 'filled'
+            }} />
+          </div>
+  
         </div>
-        <Tag tag={data.tag} />
-        <textarea disabled={true} value={data.desc} id={css.desc} />
-
-
-        {/* シャッフルするかどうかを決めるチェックボックスなど */}
-        <div className={css.shuffle_checkbox}>
-          <input type='checkbox' value={isShuffleEnabled}
-            onChange={e => SetIsShuffleEnabled(e.target.checked? 'true':'false')}/>
-          <p>問題順をシャッフル</p>
-        </div>
-
-        <div className={css.buttons}>
-          <Button {...{
-            text: '閉じる', icon: 'fas fa-times',
-            onClick: () => props.close(), type: 'material'
-          }} />
-          <Button {...{
-            text: '編集する', icon: 'fas fa-pen',
-            onClick: () => Push('edit'), type: 'material'
-          }} />
-          <Button {...{
-            text: '問題の一覧表示', icon: 'fas fa-list',
-            onClick: () => Push('table'), type: 'material'
-          }} />
-          <Button {...{
-            text: 'この問題を解く', icon: 'fas fa-arrow-right',
-            onClick: () => Push('exam'), type: 'filled'
-          }} />
-        </div>
-
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
