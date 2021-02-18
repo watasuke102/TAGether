@@ -117,6 +117,12 @@
   font-size: 22px;
 }
 
+.correct_rate_statuslist {
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+}
+
 /* 横幅が狭かったらボタンとかを縦に並べる */
 @media screen and (max-width: 700px) {
   .question_area {

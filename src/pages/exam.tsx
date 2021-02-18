@@ -32,6 +32,7 @@ interface Props {
 }
 interface State {
   index:              number,
+  correct_rate:       number
   isModalOpen:        boolean,
   nextButtonState:    NextButtonState,
   showExamStateTable: boolean
@@ -42,6 +43,7 @@ interface State {
 
 export default class exam extends React.Component<Props, State> {
   private exam: Exam[];
+  private title: string;
   private ref;
   private correct_answers = 0;
   private total_questions = 0;
@@ -49,9 +51,10 @@ export default class exam extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.ref = React.createRef();
-    // 問題の取得、条件によってはシャッフル
+    // 問題の取得
+    this.title = this.props.data[0].title;
     this.exam = JSON.parse(this.props.data[0].list);
-    // Fisher-Yatesアルゴリズムらしい
+    // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
       for(let i = this.exam.length-1; i > 0; i--){
         var r = Math.floor(Math.random() * (i + 1));
@@ -77,10 +80,10 @@ export default class exam extends React.Component<Props, State> {
     }
     // stateの初期化
     this.state = {
-      index: 0, isModalOpen: false, showExamStateTable: false,
+      index: 0, isModalOpen: false,
+      correct_rate: 0, showExamStateTable: false,
       nextButtonState: NextButtonState.show_answer,
-      answers: answers,
-      examState: exam_state
+      answers: answers, examState: exam_state
     };
   }
 
@@ -199,7 +202,8 @@ export default class exam extends React.Component<Props, State> {
     
       // 終了ボタンを押したらモーダルウィンドウを表示
       case NextButtonState.finish_exam:
-        this.setState({ isModalOpen: true });
+        const rate = Math.round((this.correct_answers / this.total_questions)*10000)/100;
+        this.setState({ isModalOpen: true, correct_rate: rate });
         break;
     }
   }
@@ -311,13 +315,12 @@ export default class exam extends React.Component<Props, State> {
 
   // 問題をとき終わったときに表示するウィンドウ
   FinishWindow() {
-    const correct_rate = Math.round((this.correct_answers / this.total_questions)*10000)/100;
     return (
       <div className={css.window}>
         <h1>🎉問題終了🎉</h1>
         <p>お疲れさまでした。</p>
         <p className={css.correct_rate}>
-          <b>正答率{correct_rate}%</b><br />
+          <b>正答率{this.state.correct_rate}%</b><br />
           （{this.total_questions}問中{this.correct_answers}問正解）
         </p>
         <div className={css.window_buttons}>
@@ -347,6 +350,7 @@ export default class exam extends React.Component<Props, State> {
       close: () => this.setState({isModalOpen: false}),
     };
 
+    // 解答状況一覧を表示する
     if (this.state.showExamStateTable) {
       let list: Object[] = [];
       let answers: string = '';
@@ -367,6 +371,11 @@ export default class exam extends React.Component<Props, State> {
       });
       return(
         <>
+          <h2>{this.title}</h2>
+          <div className={css.correct_rate_statuslist}>
+              <p>{this.total_questions}問中{this.correct_answers}問正解</p>
+              <p>正答率{this.state.correct_rate}%</p>
+          </div>
           <ExamTable {...{
             exam: this.exam, answers: this.state.answers,
             examState: this.state.examState
