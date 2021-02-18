@@ -10,17 +10,34 @@ import css from '../style/Modal.module.css';
 import React from 'react';
 import ModalData from '../types/ModalData';
 
-export default function Modal(props: ModalData) {
-  document.documentElement.style.setProperty('--vh', (window.innerHeight / 100) + 'px');
-  //開かれていない場合は空要素を渡す
-  if (!props.isOpen) {
-    return (<></>);
+export default class Modal extends React.Component<ModalData> {
+  constructor(props: ModalData) {
+    super(props);
   }
-  return (
-      <div className={css.background} onClick={() => props.close()}>
-        <div className={css.window} onClick={(e) => e.stopPropagation()}>
-          {props.body}
-        </div>
-    </div>
-  );
+  // スマホ対策
+  UpdateContainersHeight() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight/100) + 'px');
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.UpdateContainersHeight);
+    this.UpdateContainersHeight();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.UpdateContainersHeight);
+  }
+
+  render() {
+    //開かれていない場合は空要素を渡す
+    if (!this.props.isOpen) {
+      return (<></>);
+    }
+    return (
+        <div className={css.background} onClick={() => this.props.close()}>
+          <div className={css.window} onClick={(e) => e.stopPropagation()}>
+            {this.props.body}
+          </div>
+      </div>
+    );
+  }
 }
