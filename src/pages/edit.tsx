@@ -16,18 +16,21 @@ export default class edit extends Create {
     heading: 'カテゴリの編集',
     api_success: '編集結果を適用しました',
     buttons: [
-        {
-          type: 'material', icon: 'fas fa-undo', text: '編集を続ける',
-          onClick: () => this.setState({ isModalOpen: false, showConfirmBeforeLeave: true })
-        },
-        {
-          type: 'material', icon: 'fas fa-arrow-right', text: 'この問題を解く',
-          onClick: () => Router.push('/exam?id='+this.state.categoly.id+'&shuffle=false')
-        },
-        {
-          type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
-          onClick: () => Router.push('/list')
-        },
+      {
+        type: 'material', icon: 'fas fa-undo', text: '編集を続ける',
+        onClick: () => {
+          this.RouterEventOn();
+          this.setState({ isModalOpen: false, showConfirmBeforeLeave: true })
+        }
+      },
+      {
+        type: 'material', icon: 'fas fa-arrow-right', text: 'この問題を解く',
+        onClick: () => Router.push('/exam?id='+this.state.categoly.id+'&shuffle=false')
+      },
+      {
+        type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
+        onClick: () => Router.push('/list')
+      },
     ]
   }
   public api_method = 'PUT';

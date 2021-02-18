@@ -76,13 +76,20 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     e.preventDefault();
     e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
   }
+
+  RouterEventOn() {
+    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
+  }
+  RouterEventOff() {
+    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
+  }
   componentDidMount() {
     window.addEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
+    this.RouterEventOn();
   }
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.BeforeUnLoad);
-    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
+    this.RouterEventOff();
   }
 
   // カテゴリ登録
@@ -121,12 +128,12 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
         const str = req.responseText;
-        // エラーだったらページ移動確認ダイアログを表示
-        const f = (JSON.parse(str).status == 'error');
-        this.setState({
-          isModalOpen: true, res_result: str,
-          showConfirmBeforeLeave: f
-        });
+        this.setState({ isModalOpen: true, res_result: str });
+        // エラーだったらページ移動確認ダイアログを無効化しない
+        if (JSON.parse(str).status != 'error') {
+          this.RouterEventOff();
+          this.setState({ showConfirmBeforeLeave: false });
+        }
       }
     }
     const url = process.env.API_URL;
