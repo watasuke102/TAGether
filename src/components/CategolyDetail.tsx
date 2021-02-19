@@ -33,7 +33,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
   
   // スマホ対策
   UpdateContainersHeight() {
-    document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100 * 80) + 'px');
+    document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100 * 85) + 'px');
   }
 
   componentDidMount() {

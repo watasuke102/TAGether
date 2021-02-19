@@ -58,10 +58,11 @@
 }
 
 .buttons {
+  position: absolute;
+  bottom: 15px;
   display: flex;
   justify-content: space-between;
   width: 80vw;
-  margin-bottom: 20px;
 }
 
 .window {
@@ -84,7 +85,7 @@
 @media screen and (max-width: 720px) {
   #desc {
     /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
-    height: calc(var(--container_height) - 370px);
+    height: calc(var(--container_height) - 380px);
   }
   .buttons {
     flex-direction: column-reverse;
