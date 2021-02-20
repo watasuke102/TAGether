@@ -48,7 +48,6 @@
 
 .shuffle_checkbox {
   display: flex;
-  margin-bottom: 15px;
 }
 .shuffle_checkbox input {
   width: 30px; height: 30px;
@@ -85,7 +84,7 @@
 @media screen and (max-width: 720px) {
   #desc {
     /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
-    height: calc(var(--container_height) - 380px);
+    height: calc(var(--container_height) - 400px);
   }
   .buttons {
     flex-direction: column-reverse;
