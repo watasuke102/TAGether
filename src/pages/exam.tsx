@@ -31,14 +31,14 @@ interface Props {
   id: number
 }
 interface State {
-  index:              number,
-  correct_rate:       number
-  isModalOpen:        boolean,
-  nextButtonState:    NextButtonState,
+  index: number,
+  correct_rate: number
+  isModalOpen: boolean,
+  nextButtonState: NextButtonState,
   showExamStateTable: boolean
   // answers[index][問題番号]
-  answers:            string[][],
-  examState:          ExamState[],
+  answers: string[][],
+  examState: ExamState[],
 }
 
 export default class exam extends React.Component<Props, State> {
@@ -56,7 +56,7 @@ export default class exam extends React.Component<Props, State> {
     this.exam = JSON.parse(this.props.data[0].list);
     // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
-      for(let i = this.exam.length-1; i > 0; i--){
+      for (let i = this.exam.length - 1; i > 0; i--) {
         var r = Math.floor(Math.random() * (i + 1));
         var tmp = this.exam[i];
         this.exam[i] = this.exam[r];
@@ -101,10 +101,10 @@ export default class exam extends React.Component<Props, State> {
     }
   }
   componentDidMount() {
-    window.addEventListener('keydown', e=>this.Shortcut(e));
+    window.addEventListener('keydown', e => this.Shortcut(e));
   }
   componentWillUnmount() {
-    window.removeEventListener('keydown', e=>this.Shortcut(e));
+    window.removeEventListener('keydown', e => this.Shortcut(e));
   }
 
   componentDidUpdate() {
@@ -142,7 +142,7 @@ export default class exam extends React.Component<Props, State> {
       if (this.exam[index].answer.length == 1) {
         result.realAnswerList.push(<p className={classname}>{e}</p>);
       } else {
-        result.realAnswerList.push(<p className={classname}>{i+1}問目: {e}</p>);
+        result.realAnswerList.push(<p className={classname}>{i + 1}問目: {e}</p>);
       }
       this.total_questions++;
     });
@@ -193,16 +193,16 @@ export default class exam extends React.Component<Props, State> {
           this.setState({ nextButtonState: NextButtonState.next_question });
         }
         break;
-        
-        // 次の問題へ進む
-        case NextButtonState.next_question:
-          // indexの変更
-          this.SetIndex(this.state.index + 1);
-          break;
-    
+
+      // 次の問題へ進む
+      case NextButtonState.next_question:
+        // indexの変更
+        this.SetIndex(this.state.index + 1);
+        break;
+
       // 終了ボタンを押したらモーダルウィンドウを表示
       case NextButtonState.finish_exam:
-        const rate = Math.round((this.correct_answers / this.total_questions)*10000)/100;
+        const rate = Math.round((this.correct_answers / this.total_questions) * 10000) / 100;
         this.setState({ isModalOpen: true, correct_rate: rate });
         break;
     }
@@ -210,14 +210,14 @@ export default class exam extends React.Component<Props, State> {
   DecrementIndex() {
     if (this.state.index == 0) return;
     // indexの変更
-    this.SetIndex(this.state.index - 1); 
+    this.SetIndex(this.state.index - 1);
   }
 
   // ユーザーの入力（問題への解答）を配列に入れる
   UpdateUsersResponse(event, i: number) {
     let tmp = this.state.answers;
     tmp[this.state.index][i] = event.target.value;
-    this.setState({ answers: tmp});
+    this.setState({ answers: tmp });
   }
 
 
@@ -229,13 +229,13 @@ export default class exam extends React.Component<Props, State> {
     for (let i = 0; i < length; i++) {
       let tmp = this.state.answers[this.state.index][i];
       // 入力欄のラベル
-      label = '解答' + ( (length == 1)? '' : '('+(i+1)+')' );
+      label = '解答' + ((length == 1) ? '' : '(' + (i + 1) + ')');
       obj.push(
         <div className={css.form}> <Form {...{
-          label: label, value: tmp, rows: 1, ref: (i==0)? this.ref : null,
+          label: label, value: tmp, rows: 1, ref: (i == 0) ? this.ref : null,
           onChange: (ev) => this.UpdateUsersResponse(ev, i),
           disabled: this.state.examState[this.state.index].checked
-          }} /> </div>
+        }} /> </div>
       );
     }
     return obj;
@@ -244,7 +244,7 @@ export default class exam extends React.Component<Props, State> {
   // 最初の要素だった場合はボタンを非表示に
   // 次へボタンを右に寄せて表示するため、divを返す
   BackButton() {
-    if (this.state.index == 0) return(<div></div>);
+    if (this.state.index == 0) return (<div></div>);
     else return (
       <Button {...{
         text: '戻る', icon: 'fas fa-arrow-left',
@@ -253,7 +253,7 @@ export default class exam extends React.Component<Props, State> {
     );
   }
   NextButton() {
-    let text: string, icon: string, type='material'
+    let text: string, icon: string, type = 'material'
     switch (this.state.nextButtonState) {
       case NextButtonState.show_answer:
         text = '答え合わせ'; icon = 'far fa-circle';
@@ -302,7 +302,7 @@ export default class exam extends React.Component<Props, State> {
     return (
       <div className={css.state_and_answer}>
         <div className={css.exam_state}>
-          <div className={icon}/>
+          <div className={icon} />
           <p>{result}</p>
         </div>
         <div className={css.answer_list}>
@@ -324,18 +324,18 @@ export default class exam extends React.Component<Props, State> {
           （{this.total_questions}問中{this.correct_answers}問正解）
         </p>
         <div className={css.window_buttons}>
-        <Button {...{
-          text: '編集する', icon: 'fas fa-pen', type: 'material',
-          onClick: () => Router.push('/edit?id='+this.props.id), 
-        }} />
-        <Button {...{
-          text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
-          onClick: () => this.setState({isModalOpen: false, showExamStateTable: true}),
-        }} />
-        <Button {...{
-          text: 'カテゴリ一覧へ', icon: 'fas fa-undo', type: 'filled',
-          onClick: () => Router.push('/list'),
-        }} />
+          <Button {...{
+            text: '編集する', icon: 'fas fa-pen', type: 'material',
+            onClick: () => Router.push('/edit?id=' + this.props.id),
+          }} />
+          <Button {...{
+            text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
+            onClick: () => this.setState({ isModalOpen: false, showExamStateTable: true }),
+          }} />
+          <Button {...{
+            text: 'カテゴリ一覧へ', icon: 'fas fa-undo', type: 'filled',
+            onClick: () => Router.push('/list'),
+          }} />
         </div>
       </div>
     );
@@ -347,7 +347,7 @@ export default class exam extends React.Component<Props, State> {
     const modalData: ModalData = {
       body: this.FinishWindow(),
       isOpen: this.state.isModalOpen,
-      close: () => this.setState({isModalOpen: false}),
+      close: () => this.setState({ isModalOpen: false }),
     };
 
     // 解答状況一覧を表示する
@@ -356,7 +356,7 @@ export default class exam extends React.Component<Props, State> {
       let answers: string = '';
       this.exam.forEach(e => {
         answers = '';
-        e.answer.forEach(e => answers += e+', ');
+        e.answer.forEach(e => answers += e + ', ');
         list.push(
           <tr>
             <td>{
@@ -369,13 +369,18 @@ export default class exam extends React.Component<Props, State> {
           </tr>
         )
       });
-      return(
+      return (
         <>
-          <h2>{this.title}</h2>
-          <div className={css.correct_rate_statuslist}>
-              <p>{this.total_questions}問中{this.correct_answers}問正解</p>
-              <p>正答率{this.state.correct_rate}%</p>
+          <div className={css.examdata_container}>
+            <h2>{this.title}</h2>
+            <div className={css.correct_rate_statuslist}>
+              <p>
+                {this.total_questions}問中{this.correct_answers}問正解、
+                正答率{this.state.correct_rate}%
+              </p>
+            </div>
           </div>
+
           <ExamTable {...{
             exam: this.exam, answers: this.state.answers,
             examState: this.state.examState
@@ -395,10 +400,10 @@ export default class exam extends React.Component<Props, State> {
         </>
       );
     }
-    
+
     return (
       <>
-        <h1>{this.state.index+1}/{this.exam.length}</h1>
+        <h1>{this.state.index + 1}/{this.exam.length}</h1>
 
         <div className={css.display}>
           {/* 問題文、解答欄 */}
@@ -407,7 +412,7 @@ export default class exam extends React.Component<Props, State> {
               <div><h2 id={css.mondai}>問題</h2></div>
               <div className={css.question_text}><p>{
                 this.exam[this.state.index].question.split('\n').map(str => {
-                  return (<> {str}<br/> </>)
+                  return (<> {str}<br /> </>)
                 })
               }</p></div>
             </div>
@@ -431,7 +436,7 @@ export default class exam extends React.Component<Props, State> {
         </div>
 
         <Modal {...modalData} />
- 
+
       </>
     );
   }
@@ -439,7 +444,7 @@ export default class exam extends React.Component<Props, State> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = (context.query.id == undefined)? -1 : Number(context.query.id)
+  const id = (context.query.id == undefined) ? -1 : Number(context.query.id)
   const res = await fetch(process.env.API_URL + '?id=' + id);
   const data = await res.json();
   const props: Props = {
@@ -447,5 +452,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     shuffle: (context.query.shuffle == 'true') ? true : false,
     id: id
   };
-  return {props: props};
+  return { props: props };
 }

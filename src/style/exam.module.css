@@ -91,6 +91,14 @@
   justify-content: space-between;
 }
 
+.examdata_container {
+  width: 90%;
+  margin: auto;
+}
+.correct_rate_statuslist {
+  font-size: 22px;
+}
+
 /* モーダルウィンドウ */
 .window {
   position: fixed;
@@ -114,12 +122,6 @@
 }
 
 .correct_rate {
-  font-size: 22px;
-}
-
-.correct_rate_statuslist {
-  display: flex;
-  justify-content: space-between;
   font-size: 22px;
 }
 
