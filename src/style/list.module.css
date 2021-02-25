@@ -67,7 +67,10 @@
   flex-flow: row wrap;
 }
 
-/* 最後の行だけ左揃え */
+/* 
+ * 最後の行だけ左揃え 
+ * list_containerみたいなやつを使うと、いい感じに中央にならないので 
+ */
 .list::before {
   display: block;
   content: "";

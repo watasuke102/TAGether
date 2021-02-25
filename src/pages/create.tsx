@@ -123,7 +123,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const categoly = {
       id: tmp.id, title: tmp.title, desc: tmp.desc, tag: tmp.tag, list: exam
     }
-    
+
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
@@ -141,11 +141,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"失敗しました: URL is undefined"}' })
       return;
     }
-    categoly.list = categoly.list.replace(/(?<!\\)\\n/g, '\\\\n');
+    console.info(categoly.list);
+    categoly.list = categoly.list.replace(/\\n/g, '\\\\n');
+    console.info(categoly.list);
     req.open(this.api_method, url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
-    console.log('DEBUG: '+JSON.stringify(categoly));
+    console.log('DEBUG: ' + JSON.stringify(categoly));
   }
 
   // 問題を追加
@@ -166,7 +168,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   SwapExam(i: number, moveto: number) {
     let result = this.state.exam;
     const tmp = result[i];
-    result[i] = result[i+moveto];
+    result[i] = result[i + moveto];
     result[i + moveto] = tmp;
     this.setState({ exam: result });
   }
@@ -195,8 +197,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     let tmp = this.state.categoly;
     switch (type) {
       case 'title': tmp.title = str; break;
-      case 'desc':  tmp.desc  = str; break;
-      case 'tag':   tmp.tag   = str; break;
+      case 'desc': tmp.desc = str; break;
+      case 'tag': tmp.tag = str; break;
     }
     this.setState({ categoly: tmp });
   }
@@ -204,13 +206,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     let tmp = this.state.exam;
     if (type == 'question') {
       tmp[i].question = str;
-    } 
+    }
     if (type == 'answer') {
       tmp[i].answer[j] = str;
-    } 
+    }
     this.setState({ exam: tmp });
   }
-  
+
   // 問題編集欄
   DeleteButton(f: Function, isDeleteExam: boolean, i?: number) {
     // 問題欄の削除ボタンであれば、全体の問題数の合計が1のときは非表示
@@ -240,7 +242,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         answer_form.push(
           <div className={css.answer_area}>
             <Form {...{
-              label: '答え('+(j+1)+')', value: answer, rows: 2,
+              label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
               onChange: (ev) => this.UpdateExam('answer', ev.target.value, i, j)
             }} />
             <div className={css.answer_area_buttons}>
@@ -287,13 +289,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           </div>
 
           <div className={css.move_button}>{
-            (i != this.state.exam.length-1) && <Button {...{
+            (i != this.state.exam.length - 1) && <Button {...{
               text: '1つ下に移動', icon: "fas fa-caret-down",
               onClick: () => this.SwapExam(i, 1), type: "material"
             }} />
           }</div>
 
-          <hr/>
+          <hr />
         </>
       );
     })
@@ -320,7 +322,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       message = 'エラー: ' + result.message;
       button_info.push({
         type: 'filled', icon: 'fas fa-times', text: '閉じる',
-        onClick: () => this.setState({isModalOpen: false})
+        onClick: () => this.setState({ isModalOpen: false })
       });
     }
 
@@ -341,7 +343,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const modalData: ModalData = {
       body: this.RegistResult(),
       isOpen: this.state.isModalOpen,
-      close:  () => this.setState({isModalOpen: false}),
+      close: () => this.setState({ isModalOpen: false }),
     };
     return (
       <>
@@ -363,15 +365,15 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           <Form {...{
             label: 'タイトル', value: this.state.categoly.title, rows: 1,
             onChange: (e) => this.UpdateCategoly('title', e.target.value)
-          }}/>
+          }} />
           <Form {...{
             label: '説明', value: this.state.categoly.desc, rows: 3,
             onChange: (e) => this.UpdateCategoly('desc', e.target.value)
-          }}/>
+          }} />
           <Form {...{
             label: 'タグ (半角コンマ , で区切る)', value: this.state.categoly.tag, rows: 1,
             onChange: (e) => this.UpdateCategoly('tag', e.target.value)
-          }}/>
+          }} />
         </div>
 
         <div className={css.top} ref={e => this.top = e} />
@@ -381,7 +383,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         {this.ExamEditForm()}
 
         <div className={css.bottom} ref={e => this.bottom = e} />
-        
+
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
