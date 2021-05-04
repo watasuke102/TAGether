@@ -91,9 +91,14 @@
   justify-content: space-between;
 }
 
+/* 解答状況一覧 */
 .examdata_container {
+  position: sticky;
+  top: 60px;
   width: 90%;
   margin: auto;
+  padding: 0 15px;
+  background-color: #646464dd;
 }
 .correct_rate_statuslist {
   font-size: 22px;
@@ -143,5 +148,9 @@
   .window_buttons {
     flex-direction: column;
     height: 100px;
+  }
+  /* スクロールに追従しない */
+  .examdata_container {
+    position: static
   }
 }
