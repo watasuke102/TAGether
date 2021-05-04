@@ -48,7 +48,6 @@ export default class edit extends Create {
 
   FinishedRegist(str: string) {
     this.setState({ isToastOpen: true, res_result: str });
-    setTimeout(() => this.setState({ isToastOpen: false }), 5000);
   }
 }
 
