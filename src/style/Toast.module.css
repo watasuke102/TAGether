@@ -1,0 +1,30 @@
+/*
+ TAGether - Share self-made exam for classmates
+ Toast.module.css
+
+ CopyRight (c) 2020 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+
+#container {
+  position: fixed;
+  right: 10px; top: 65px;
+  padding: 5px 10px;
+  max-width: 85vw;
+  border-radius: 5px;
+  background-color: #3e3f44dd;
+  animation: fadein 0.5s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateX( 120% );
+  }
+  to {
+    opacity: 1;
+    transform: translateY( 0% );
+  }
+}

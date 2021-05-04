@@ -15,6 +15,7 @@
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "gsap": "^3.6.1",
     "next": "^10.0.4",
     "prop-types": "^15.6.1",
     "react": "^17.0.1",

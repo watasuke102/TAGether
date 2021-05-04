@@ -10,6 +10,7 @@ import css from '../style/create.module.css';
 import React from 'react';
 import Router from 'next/router';
 import Form from '../components/Form';
+import Toast from '../components/Toast';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Exam from '../types/Exam';
@@ -59,6 +60,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
+      isToastOpen: false,
       categoly: categoly_default(),
       exam: exam_default(),
       isModalOpen: false, res_result: '',
@@ -128,7 +130,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
         const str = req.responseText;
-        this.setState({ isModalOpen: true, res_result: str });
+        this.FinishedRegist(str);
         // エラーだったらページ移動確認ダイアログを無効化しない
         if (JSON.parse(str).status != 'error') {
           this.RouterEventOff();
@@ -141,13 +143,14 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"失敗しました: URL is undefined"}' })
       return;
     }
-    console.info(categoly.list);
     categoly.list = categoly.list.replace(/\\n/g, '\\\\n');
-    console.info(categoly.list);
     req.open(this.api_method, url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
     console.log('DEBUG: ' + JSON.stringify(categoly));
+  }
+  FinishedRegist(str: string) {
+    this.setState({ isModalOpen: true, res_result: str });
   }
 
   // 問題を追加
@@ -303,7 +306,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   // モーダルウィンドウの中身
-  RegistResult() {
+  RegistResult(string_only?: boolean) {
     let result;
     if (this.state.res_result != '') {
       result = JSON.parse(this.state.res_result);
@@ -324,6 +327,9 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         type: 'filled', icon: 'fas fa-times', text: '閉じる',
         onClick: () => this.setState({ isModalOpen: false })
       });
+    }
+    if (string_only) {
+      return message;
     }
 
     let button: object[] = [];
@@ -402,6 +408,15 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         </div>
 
         <Modal {...modalData} />
+        <Toast
+          isOpen={this.state.isToastOpen}
+          stateChange={() => this.setState({isToastOpen: false})}
+        >
+          <div className={css.toast_body}>
+            <span className='fas fa-bell' />
+            {this.RegistResult(true)}
+          </div>
+        </Toast>
       </>
     );
   }

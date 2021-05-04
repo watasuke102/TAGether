@@ -25,7 +25,7 @@ export default class edit extends Create {
       },
       {
         type: 'material', icon: 'fas fa-arrow-right', text: 'この問題を解く',
-        onClick: () => Router.push('/exam?id='+this.state.categoly.id+'&shuffle=false')
+        onClick: () => Router.push('/exam?id=' + this.state.categoly.id + '&shuffle=false')
       },
       {
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
@@ -38,11 +38,17 @@ export default class edit extends Create {
   constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
+      isToastOpen: false,
       categoly: this.props.data[0],
       exam: JSON.parse(this.props.data[0].list),
       isModalOpen: false, res_result: '',
       showConfirmBeforeLeave: true
     }
+  }
+
+  FinishedRegist(str: string) {
+    this.setState({ isToastOpen: true, res_result: str });
+    setTimeout(() => this.setState({ isToastOpen: false }), 5000);
   }
 }
 
@@ -51,5 +57,5 @@ export default class edit extends Create {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
   const data = await res.json();
-  return {props:{data}};
+  return { props: { data } };
 }

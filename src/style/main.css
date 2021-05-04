@@ -13,6 +13,7 @@ body {
   font-family: 'M PLUS 1p', sans-serif;
   background-color: #282c34;
   color: #e1e2dc;
+  overflow-x: hidden;
 }
 a {
   color: #8181ff;

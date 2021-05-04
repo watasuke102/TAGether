@@ -10,6 +10,7 @@ import Exam from './Exam';
 import Categoly from './Categoly';
 
 export default interface EditCategolyPageState{
+  isToastOpen: boolean,
   isModalOpen: boolean,
   res_result:  string,
   categoly: Categoly,
