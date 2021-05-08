@@ -30,7 +30,7 @@
 }
 #desc {
   /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
-  height: calc(var(--container_height) - 230px);
+  height: calc(var(--container_height) - 245px);
   font-size: 18px;
 }
 
@@ -44,13 +44,6 @@
 }
 .updated_at>p {
   margin: 0 10px;
-}
-
-.shuffle_checkbox {
-  display: flex;
-}
-.shuffle_checkbox p {
-  margin: auto 0;
 }
 
 .buttons {

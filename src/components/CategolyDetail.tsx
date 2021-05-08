@@ -70,13 +70,10 @@ export default class CategolyDetail extends React.Component<Props, state> {
           <Tag tag={this.data.tag} />
           <textarea disabled={true} value={this.data.desc} id={css.desc} />
 
-
-          {/* シャッフルするかどうかを決めるチェックボックスなど */}
-          <div className={css.shuffle_checkbox}>
-            <CheckBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'
-              onChange={e => this.setState({ isShuffleEnabled: e })}
-            />
-          </div>
+          {/* シャッフルするかどうかを決めるチェックボックス */}
+          <CheckBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'
+            onChange={e => this.setState({ isShuffleEnabled: e })}
+          />
 
           <div className={css.buttons}>
             <Button {...{
