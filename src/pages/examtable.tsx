@@ -19,7 +19,9 @@ interface Props {
   data: Categoly[],
   shuffle: boolean
 }
-export default class examtable extends React.Component<Props> {
+interface States { showCorrectAnswer: boolean }
+
+export default class examtable extends React.Component<Props, States> {
   private exam: Exam[];
   constructor(props: Props) {
     super(props);
@@ -34,12 +36,13 @@ export default class examtable extends React.Component<Props> {
         this.exam[r] = tmp;
       }
     }
+    this.state = { showCorrectAnswer: false }
   }
   render() {
     return (
       <>
         <div className={css.table}>
-          <ExamTable {...{exam: this.exam}} />
+          <ExamTable exam={this.exam} showCorrectAnswer={this.state.showCorrectAnswer} />
         </div>
 
         <div className={css.button_container}>
@@ -47,6 +50,15 @@ export default class examtable extends React.Component<Props> {
             <Button {...{
               text: "戻る", icon: "fas fa-undo",
               onClick: () => Router.push('/list'), type: "material"
+            }} />
+            {/* 正しい答えの表示/非表示切り替え */}
+            <Button {...{
+              onClick: () => this.setState(state => {
+                return { showCorrectAnswer: !state.showCorrectAnswer }
+              }),
+              type: 'material',
+              text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
+              icon: this.state.showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
             }} />
           </div>
         </div>
@@ -61,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await res.json();
   const props: Props = {
     data: data,
-    shuffle: (context.query.shuffle == 'true') ? true:false
+    shuffle: (context.query.shuffle == 'true') ? true : false
   };
-  return {props: props};
+  return { props: props };
 }

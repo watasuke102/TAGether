@@ -39,6 +39,8 @@ interface State {
   // answers[index][問題番号]
   answers: string[][],
   examState: ExamState[],
+  // 解答一覧で、正解を表示するかどうか
+  showCorrectAnswer: boolean
 }
 
 export default class exam extends React.Component<Props, State> {
@@ -83,7 +85,8 @@ export default class exam extends React.Component<Props, State> {
       index: 0, isModalOpen: false,
       correct_rate: 0, showExamStateTable: false,
       nextButtonState: NextButtonState.show_answer,
-      answers: answers, examState: exam_state
+      answers: answers, examState: exam_state,
+      showCorrectAnswer: false
     };
   }
 
@@ -383,13 +386,23 @@ export default class exam extends React.Component<Props, State> {
 
           <ExamTable {...{
             exam: this.exam, answers: this.state.answers,
-            examState: this.state.examState
+            examState: this.state.examState,
+            showCorrectAnswer: this.state.showCorrectAnswer
           }} />
           <div className={css.button_container}>
             <div className={css.buttons}>
               <Button {...{
                 text: 'もう一度', icon: 'fas fa-undo',
                 onClick: Router.reload, type: 'material'
+              }} />
+              {/* 正しい答えの表示/非表示切り替え */}
+              <Button {...{
+                onClick: () => this.setState(state => {
+                  return { showCorrectAnswer: !state.showCorrectAnswer }
+                }),
+                type: 'material',
+                text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
+                icon: this.state.showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
               }} />
               <Button {...{
                 text: 'カテゴリ一覧へ', icon: 'fas fa-arrow-left',

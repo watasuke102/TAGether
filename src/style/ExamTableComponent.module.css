@@ -27,3 +27,7 @@
 .bottom {
   height: 250px;
 }
+
+.hide_correct_answer p {
+  opacity: 0;
+}

@@ -12,13 +12,15 @@ import Exam from '../types/Exam';
 import ExamState from '../types/ExamState';
 
 interface Props {
-  exam:       Exam[],
+  showCorrectAnswer: boolean,
+  exam: Exam[],
   examState?: ExamState[],
-  answers?:   string[][]
+  answers?: string[][],
 }
 interface State {
   array: number[];
 }
+
 export default class ExamTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -28,13 +30,13 @@ export default class ExamTable extends React.Component<Props, State> {
       array.push(i);
     // examStateのorder順にソート
     if (this.props.examState) {
-      let first:  number[] = [];
+      let first: number[] = [];
       let second: number[] = [];
-      let third: number[]  = array;
-    
+      let third: number[] = array;
+
       this.props.examState.forEach((e, i) => {
         switch (e.order) {
-          case 2: first.push(third[i]);  third[i] = -1; break;
+          case 2: first.push(third[i]); third[i] = -1; break;
           case 1: second.push(third[i]); third[i] = -1; break;
           case 0: break;
         }
@@ -53,7 +55,7 @@ export default class ExamTable extends React.Component<Props, State> {
       return e[0] + '\n';
     }
     for (let j = 0; j < length; j++) {
-      answers += (j+1)+'問目: '+e[j]+'\n';
+      answers += (j + 1) + '問目: ' + e[j] + '\n';
     }
     return answers;
   }
@@ -94,7 +96,7 @@ export default class ExamTable extends React.Component<Props, State> {
     });
     return list;
   }
-  
+
   render() {
     let list: Object[] = [];
     const exam = this.props.exam;
@@ -106,7 +108,9 @@ export default class ExamTable extends React.Component<Props, State> {
               return (<> {str}<br /> </>);
             })
           }</td>
-          <td>{this.RealAnswerList(exam[i], i)}</td>
+          <td className={this.props.showCorrectAnswer ? '' : css.hide_correct_answer}>
+            <p>{this.RealAnswerList(exam[i], i)}</p>
+          </td>
           {this.Status(i)}
         </tr>
       )
