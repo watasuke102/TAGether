@@ -11,6 +11,7 @@ import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
+import RadioBox from '../components/RadioBox';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import Categoly from '../types/Categoly';
@@ -26,16 +27,6 @@ export default function list(props: Props) {
 
   let cards: object[] = [];
   const list: Categoly[] = props.data;
-  
-  const RadioButton = (s: string) => {
-    return (
-      <div className={css.radiobutton}>
-        <input type='radio' value={s} checked={radioState == s}
-          onChange={() => SetRadioState(s)} />
-        <p>{s}</p>
-      </div>
-    );
-  }
 
   // カードの生成
   const CreateCards = () => {
@@ -51,8 +42,8 @@ export default function list(props: Props) {
               text = e.id.toString();
             break;
           case 'タイトル': text = e.title; break;
-          case 'タグ'    : text = e.tag;   break;
-          case '説明'    : text = e.desc;  break;
+          case 'タグ': text = e.tag; break;
+          case '説明': text = e.desc; break;
         }
         // 検索欄に入力された文字と一致したら検索結果に追加
         if (text.indexOf(searchStr) != -1)
@@ -98,6 +89,7 @@ export default function list(props: Props) {
     <>
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
+        {/* 検索欄 */}
         <Form {...{
           label: '検索', value: searchStr, rows: 1,
           onChange: (ev) => SetSearchStr(ev.target.value)
@@ -106,20 +98,19 @@ export default function list(props: Props) {
           text: '入力のクリア', icon: 'fas fa-times',
           onClick: () => SetSearchStr(''), type: 'filled'
         }} />
+        {/* 何を検索するか選択 */}
         <div className={css.radiobutton_container}>
-          {RadioButton('タイトル')}
-          {RadioButton('タグ')}
-          {RadioButton('説明')}
-          {RadioButton('ID')}
+          <RadioBox onChange={txt => SetRadioState(txt)} status={radioState}
+            list={['タイトル', 'タグ', '説明', 'ID']} />
         </div>
 
         <div className={css.sort}>
-          <p>{newer_first? '新しい順' : '古い順'}に並べています。</p>
+          <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
           <Button {...info} />
         </div>
       </div>
 
-    <div className={css.list}> {cards} </div>
+      <div className={css.list}> {cards} </div>
     </>
   );
 }
@@ -128,9 +119,9 @@ export default function list(props: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let query: string = '';
   if (context.query.id) {
-    query = '?id='+context.query.id;
+    query = '?id=' + context.query.id;
   }
-  const res = await fetch(process.env.API_URL+query);
+  const res = await fetch(process.env.API_URL + query);
   const data = await res.json();
-  return {props:{data}};
+  return { props: { data } };
 }
