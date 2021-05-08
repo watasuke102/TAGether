@@ -49,9 +49,6 @@
 .shuffle_checkbox {
   display: flex;
 }
-.shuffle_checkbox input {
-  width: 30px; height: 30px;
-}
 .shuffle_checkbox p {
   margin: auto 0;
 }

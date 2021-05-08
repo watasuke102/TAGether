@@ -1,0 +1,36 @@
+/*
+ TAGether - Share self-made exam for classmates
+ SelectBox.module.css
+
+ CopyRight (c) 2020-2021 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+.container {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  user-select: none;
+}
+.container:hover {
+  cursor: pointer;
+}
+
+.box {
+  width: 25px; height: 25px;
+  border-radius: 5px;
+  background-color: #eee;
+  margin: 5px 10px;
+}
+
+.box_not_checked span {
+  display: none;
+}
+
+.box_checked {
+  background-color: #77e9f8;
+  color: #353535;
+  text-align: center;
+  align-items: center;
+}

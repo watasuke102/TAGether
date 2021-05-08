@@ -12,16 +12,16 @@ import Router from 'next/router';
 import Button from './Button';
 import ButtonInfo from '../types/ButtonInfo';
 
-interface State {isFixedButtons: boolean}
+interface State { isFixedButtons: boolean }
 
 export default class Header extends React.Component<any, State> {
   constructor(props: State) {
     super(props);
     this.state = { isFixedButtons: false }
   }
-  
+
   componentDidMount() {
-    window.addEventListener('scroll', () => this.SetIsFixedButtons() , true);
+    window.addEventListener('scroll', () => this.SetIsFixedButtons(), true);
   }
   componentWillUnmount() {
     window.removeEventListener('scroll', () => this.SetIsFixedButtons(), true);
