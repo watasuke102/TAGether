@@ -10,7 +10,7 @@ import css from '../style/CategolyDetail.module.css'
 import React from 'react';
 import Router from 'next/router';
 import Tag from './Tag';
-import SelectBox from './SelectBox';
+import CheckBox from './CheckBox';
 import Button from './Button';
 import Categoly from '../types/Categoly';
 
@@ -73,7 +73,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
 
           {/* シャッフルするかどうかを決めるチェックボックスなど */}
           <div className={css.shuffle_checkbox}>
-            <SelectBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'
+            <CheckBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'
               onChange={e => this.setState({ isShuffleEnabled: e })}
             />
           </div>

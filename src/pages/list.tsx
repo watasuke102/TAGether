@@ -11,7 +11,7 @@ import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
-import RadioBox from '../components/RadioBox';
+import SelectBox from '../components/SelectBox';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import Categoly from '../types/Categoly';
@@ -100,7 +100,7 @@ export default function list(props: Props) {
         }} />
         {/* 何を検索するか選択 */}
         <div className={css.radiobutton_container}>
-          <RadioBox onChange={txt => SetRadioState(txt)} status={radioState}
+          <SelectBox onChange={txt => SetRadioState(txt)} status={radioState}
             list={['タイトル', 'タグ', '説明', 'ID']} />
         </div>
 

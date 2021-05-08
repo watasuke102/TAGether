@@ -6,22 +6,26 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/SelectBox.module.css';
 import React from 'react';
+import CheckBox from './CheckBox'
 
 interface Props {
-  status: boolean,
-  desc: string,
+  status: string,
+  list: string[],
   onChange: Function,
 }
 
 export default function SelectBox(props: Props) {
   return (
-    <div className={css.container} onClick={() => props.onChange(!props.status)}>
-      <div className={`${css.box} ${props.status ? css.box_checked : css.box_not_checked}`} >
-        <span className='fas fa-check' />
-      </div>
-      <span>{props.desc}</span>
-    </div>
+    <>
+      {
+        props.list.map(str => {
+          return (
+            <CheckBox status={props.status === str} desc={str}
+              onChange={() => props.onChange(str)} />
+          )
+        })
+      }
+    </>
   );
 }
