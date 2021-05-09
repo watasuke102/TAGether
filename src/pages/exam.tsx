@@ -336,7 +336,7 @@ export default class exam extends React.Component<Props, State> {
             onClick: () => this.setState({ isModalOpen: false, showExamStateTable: true }),
           }} />
           <Button {...{
-            text: 'カテゴリ一覧へ', icon: 'fas fa-undo', type: 'filled',
+            text: 'カテゴリ一覧へ', icon: 'fas fa-arrow-left', type: 'filled',
             onClick: () => Router.push('/list'),
           }} />
         </div>
