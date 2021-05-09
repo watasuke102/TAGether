@@ -8,6 +8,8 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .card {
+  display: flex;
+  flex-direction: column;
   width: 300px;
   height: auto;
   margin: 10px 25px;
@@ -37,11 +39,14 @@
 .title {
   overflow-wrap: break-word;
   font-weight: bold;
-  border-bottom: 2px solid #dbdbdb;
   font-size: 25px;
   margin: 5px 0 0;
+  border-bottom: 2px solid #dbdbdb;
 }
 
+.desc_container {
+  margin-top: auto;
+}
 .desc {
   overflow-wrap: break-word;
   font-size: 15px
