@@ -9,8 +9,6 @@
 import css from '../style/profile.module.scss';
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import Link from 'next/link';
-import Button from '../components/Button';
 import HistoryTable from '../components/ExamHistoryTableItem';
 import { GetExamHistory } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
@@ -30,18 +28,16 @@ export default function profile(props: Props) {
       <div className={css.container}>
         <h1>解答履歴</h1>
         <table>
-          <tbody>
-            <tr>
-              <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th>
-            </tr>
-            {
-              list.map(item => {
-                const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
-                if (categoly === undefined) return <></>;
-                return <HistoryTable categoly={categoly} item={item} />
-              })
-            }
-          </tbody>
+          <tr>
+            <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th>
+          </tr>
+          {
+            list.map(item => {
+              const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
+              if (categoly === undefined) return <></>;
+              return <HistoryTable categoly={categoly} item={item} />
+            })
+          }
         </table>
       </div>
 
