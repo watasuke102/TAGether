@@ -37,6 +37,7 @@
 }
 
 .title {
+  height: 100%;
   overflow-wrap: break-word;
   font-weight: bold;
   font-size: 25px;
@@ -53,9 +54,11 @@
 }
 
 .favorite_button {
+  // お気に入りボタンがでかくなるのを防ぐ
+  width: 0;
   margin-top: auto;
-  font-size: 1.4em;
-  &:hover {
-    color: #c2eb2f;
+  font-size: 1.6em;
+  span:hover {
+    color: #d5f719;
   }
 }
