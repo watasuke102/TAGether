@@ -6,13 +6,53 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
+import css from '../style/profile.module.scss';
 import React from 'react';
+import { GetServerSideProps } from 'next';
+import Link from 'next/link';
+import Button from '../components/Button';
+import HistoryTable from '../components/ExamHistoryTableItem';
+import { GetExamHistory } from '../ts/ManageDB';
+import Categoly from '../types/Categoly';
+import ExamHistory from '../types/ExamHistory';
 
-export default function profile() {
+interface Props { data: Categoly[] }
+
+export default function profile(props: Props) {
+  const empty: ExamHistory[] = [];
+  const [list, SetList] = React.useState(empty);
+  React.useEffect(() => {
+    GetExamHistory().then(res => SetList(res))
+  }, []);
+
   return (
-    <div>
-      <h1>profile</h1>
-      <p>整備中</p>
-    </div>
+    <>
+      <div className={css.container}>
+        <h1>解答履歴</h1>
+        <table>
+          <tbody>
+            <tr>
+              <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th>
+            </tr>
+            {
+              list.map(item => {
+                const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
+                if (categoly === undefined) return <></>;
+                return <HistoryTable categoly={categoly} item={item} />
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+
+    </>
   );
+}
+
+
+// APIで問題を取得
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await fetch(process.env.API_URL ?? '');
+  const data = await res.json();
+  return { props: { data } };
 }

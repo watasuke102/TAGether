@@ -9,15 +9,18 @@
 import css from '../style/exam.module.scss'
 import React from 'react';
 import Router from 'next/router';
+import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ExamTable from '../components/ExamTableComponent';
+import { AddExamHistory } from '../ts/ManageDB';
 import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
 import ModalData from '../types/ModalData';
+import ExamHistory from '../types/ExamHistory';
 
 enum NextButtonState {
   show_answer,
@@ -49,9 +52,15 @@ export default class exam extends React.Component<Props, State> {
   private ref;
   private correct_answers = 0;
   private total_questions = 0;
+  private exam_history: ExamHistory;
 
   constructor(props: Props) {
     super(props);
+    this.exam_history = {
+      id: this.props.id,
+      date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      correct_count: 0, total_question: 0
+    }
     this.ref = React.createRef();
     // 問題の取得
     this.title = this.props.data[0].title;
@@ -108,6 +117,10 @@ export default class exam extends React.Component<Props, State> {
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', e => this.Shortcut(e));
+    // 問題の結果を保存する
+    this.exam_history.total_question = this.total_questions;
+    this.exam_history.correct_count = this.correct_answers;
+    AddExamHistory(this.exam_history);
   }
 
   componentDidUpdate() {
@@ -343,7 +356,6 @@ export default class exam extends React.Component<Props, State> {
       </div>
     );
   }
-
 
   render() {
     // Modalに渡す用のデータ
