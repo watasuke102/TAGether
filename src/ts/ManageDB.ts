@@ -24,7 +24,10 @@ export function AddExamHistory(item: ExamHistory) {
 export function GetExamHistory() {
   let result: ExamHistory[] = [];
   return ExamHisotryInstance().iterate((value: ExamHistory) => { result.push(value); })
-    .then(() => { return result; })
+  .then(() => { return result; })
+}
+export function ClearExamHistory() {
+  return ExamHisotryInstance().clear();
 }
 
 

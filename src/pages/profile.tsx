@@ -9,21 +9,50 @@
 import css from '../style/profile.module.scss';
 import React from 'react';
 import { GetServerSideProps } from 'next';
+import Modal from '../components/Modal';
+import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import HistoryTable from '../components/ExamHistoryTableItem';
-import { GetExamHistory, GetFavorite } from '../ts/ManageDB';
+import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
+import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
 
 interface Props { data: Categoly[] }
 
 export default function profile(props: Props) {
+  const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
   React.useEffect(() => {
     GetExamHistory().then(res => SetHistoryList(res))
     GetFavorite().then(res => SetFavoriteList(res))
   }, []);
+
+  const modalData: ModalData = {
+    isOpen: isModalOpen,
+    close: () => SetIsModalOpen(false),
+    body: (
+      <div className={css.window}>
+        <p>解答履歴をすべて削除しますか？</p>
+        <div className={css.window_buttons}>
+        <Button {...{
+          type: 'material-like', icon: 'fas fa-times', text: '閉じる',
+          onClick: () => SetIsModalOpen(false)
+        }} />
+        <Button {...{
+          onClick: () => { 
+            ClearExamHistory().then(() =>
+              GetExamHistory().then(res => SetHistoryList(res))
+            );
+            SetIsModalOpen(false); 
+          },
+          type: 'filled', icon: 'fas fa-trash-alt', text: '削除する',
+        }} />
+      </div>
+      </div>
+    )
+  };
 
   return (
     <>
@@ -38,7 +67,12 @@ export default function profile(props: Props) {
               })
           }
         </div>
+
         <h2>解答履歴</h2>
+        <Button {...{
+          text: '履歴を全消去', icon: 'fas fa-trash-alt',
+          onClick: () => SetIsModalOpen(true), type: 'material-like'
+        }} />
         <table>
           <tr>
             <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th>
@@ -53,6 +87,7 @@ export default function profile(props: Props) {
         </table>
       </div>
 
+      <Modal {...modalData} />
     </>
   );
 }
