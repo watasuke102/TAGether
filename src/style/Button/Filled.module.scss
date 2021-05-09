@@ -8,7 +8,7 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
-/* 塗りつぶされたボタン */
+// 塗りつぶされたボタン 
 .button {
   display: inline-flex;
   justify-content: center;
@@ -33,7 +33,7 @@
   transition: 0.3s;
 }
 
-/* ボタンのなかみ */
+// ボタンのなかみ 
 .button_icon {
   margin: auto 5px;
   text-align: center;

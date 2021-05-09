@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-/* タイトル等の説明 */
+// タイトル等の説明 
 .edit_area {
   width: 70vw;
   margin: 30px auto;
@@ -16,7 +16,7 @@
   margin: 0 0 15px;
 }
 
-/* 問題文などの編集 */
+// 問題文などの編集 
 .edit_exam {
   display: flex;
   justify-content: space-around;
@@ -91,7 +91,7 @@
   height: 250px;
 }
 
-/* トースト通知の中身 */
+// トースト通知の中身 
 .toast_body {
   display: flex;
   font-size: 1.25em;
@@ -101,7 +101,7 @@
   margin-right: 10px;
 }
 
-/* 横幅が狭かったらボタンと問題編集欄を縦に並べる */
+// 横幅が狭かったらボタンと問題編集欄を縦に並べる 
 @media screen and (max-width: 800px) {
   .edit_exam {
     flex-direction: column;

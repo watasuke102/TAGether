@@ -8,7 +8,7 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
-/* アイコンと説明、ヘッダに使用 */
+// アイコンと説明、ヘッダに使用 
 .button {
   padding: 5px 15px;
   margin: 0px auto 5px;
@@ -31,7 +31,7 @@
   transition: 0.3s;
 }
 
-/* ボタンのなかみ */
+// ボタンのなかみ 
 .button_icon {
   margin: auto 5px;
   text-align: center;
@@ -50,13 +50,13 @@
   font-size: 20px;
 }
 
-/* 横幅が狭かったら説明テキストを非表示に */
+// 横幅が狭かったら説明テキストを非表示に 
 @media screen and (max-width: 700px) {
   .button_text {
     display: none;
   }
 }
-/* 横幅が広かったらアイコンと説明を横に並べる */
+// 横幅が広かったらアイコンと説明を横に並べる 
 @media screen and (min-width: 900px) {
   .button {
     display: flex;
@@ -66,7 +66,7 @@
   }
 }
 
-/* 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に */
+// 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に 
 @media screen and (max-height: 600px) {
   .button {
     margin: auto;

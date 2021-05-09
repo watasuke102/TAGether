@@ -29,7 +29,7 @@
   font-weight: bold;
 }
 #desc {
-  /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
+  // ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) 
   height: calc(var(--container_height) - 245px);
   font-size: 18px;
 }
@@ -70,10 +70,10 @@
   margin: 50px 0 0;
 }
 
-/* 横幅が狭かったらボタンを縦に並べる */
+// 横幅が狭かったらボタンを縦に並べる 
 @media screen and (max-width: 720px) {
   #desc {
-    /* ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) */
+    // ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) 
     height: calc(var(--container_height) - 400px);
   }
   .buttons {

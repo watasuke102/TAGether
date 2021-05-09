@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-/* 全体の親 */
+// 全体の親 
 .display {
   display: flex;
   justify-content: flex-start;
@@ -17,7 +17,7 @@
   margin: 0;
 }
 
-/* 問題文と解答欄 */
+// 問題文と解答欄 
 .exam {
   margin-right: 50px;
 }
@@ -39,12 +39,12 @@
 .form {
   margin-top: 15px;
 }
-/* Enter送信防止用 */
+// Enter送信防止用 
 #dummy {
   display: none;
 }
 
-/* 正誤表示 */
+// 正誤表示 
 .state_and_answer {
   display: flex;
   flex-direction: column;
@@ -77,7 +77,7 @@
   margin-left: 20px;
 }
 
-/* ボタン */
+// ボタン 
 .button_container {
   position:fixed;
   width: 100%;
@@ -91,7 +91,7 @@
   justify-content: space-between;
 }
 
-/* 解答状況一覧 */
+// 解答状況一覧 
 .examdata_container {
   position: sticky;
   top: 60px;
@@ -104,7 +104,7 @@
   font-size: 22px;
 }
 
-/* モーダルウィンドウ */
+// モーダルウィンドウ 
 .window {
   position: fixed;
   width: 60vw;
@@ -130,7 +130,7 @@
   font-size: 22px;
 }
 
-/* 横幅が狭かったらボタンとかを縦に並べる */
+// 横幅が狭かったらボタンとかを縦に並べる 
 @media screen and (max-width: 700px) {
   .question_area {
     width: 92vw;
@@ -149,7 +149,7 @@
     flex-direction: column;
     height: 100px;
   }
-  /* スクロールに追従しない */
+  // スクロールに追従しない 
   .examdata_container {
     position: static
   }

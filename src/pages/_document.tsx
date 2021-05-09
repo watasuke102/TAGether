@@ -16,7 +16,7 @@ export default class Doc extends Document {
         <Head>
           <meta charSet="utf8"></meta>
           <link rel="icon" href="/static/icon.ico" />
-          <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.scss" rel="stylesheet"></link>
+          <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet"></link>
         </Head>
         <body>
           <Main />
