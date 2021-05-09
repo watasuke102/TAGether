@@ -7,10 +7,10 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import LocalForage from 'localforage';
-import { format } from 'date-fns';
 import ExamHistory from '../types/ExamHistory';
 
-export function ExamHisotryInstance() {
+// 解答履歴
+function ExamHisotryInstance() {
   return LocalForage.createInstance({
     driver: LocalForage.INDEXEDDB,
     name: 'TAGether',
@@ -18,18 +18,38 @@ export function ExamHisotryInstance() {
     description: '問題の解答履歴'
   })
 }
-
-// format(new Date(), 'YYYY-MM-DD HH:mm:ss')
 export function AddExamHistory(item: ExamHistory) {
   ExamHisotryInstance().setItem(item.date, item);
 }
-
 export function GetExamHistory() {
   let result: ExamHistory[] = [];
   return ExamHisotryInstance().iterate((value: ExamHistory) => { result.push(value); })
     .then(() => { return result; })
 }
 
-export function ClearExamHistory() {
-  ExamHisotryInstance().clear();
+
+// お気に入りカテゴリ
+function FavoriteInstance() {
+  return LocalForage.createInstance({
+    driver: LocalForage.INDEXEDDB,
+    name: 'TAGether',
+    storeName: 'favorite',
+    description: 'お気に入り登録したカテゴリ'
+  })
+}
+export function GetFavorite() {
+  let result: number[] = [];
+  return FavoriteInstance().iterate((value: number) => { result.push(value); })
+    .then(() => { return result; })
+}
+export function AddFavorite(item: number) {
+  GetFavorite().then(res => {
+    res.push(item);
+    FavoriteInstance().setItem('main', res);
+  })
+}
+export function RemoveExamHistory(target: number) {
+  GetFavorite().then(res => {
+    FavoriteInstance().setItem('main', res.filter(item => (item !== target)));
+  })
 }

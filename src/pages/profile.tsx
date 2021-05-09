@@ -26,7 +26,11 @@ export default function profile(props: Props) {
   return (
     <>
       <div className={css.container}>
-        <h1>解答履歴</h1>
+        <h2>お気に入りカテゴリ</h2>
+        <div className={css.favorite_categoly}>
+          
+        </div>
+        <h2>解答履歴</h2>
         <table>
           <tr>
             <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th>
