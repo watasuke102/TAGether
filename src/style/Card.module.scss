@@ -14,17 +14,24 @@
   padding: 5px 10px;
   box-shadow: 5px 5px 5px #1e1e1e;
   background-color: #6b6b6baa;
-  color: #dbdbdb;
   transition: 300ms;
-}
-.card:hover{
-  cursor: pointer;
-  background-color: #dbdbdbaa;
-  color: #353535;
-  transition: 300ms;
-}
-.card:hover .tag_container{
-  background-color: #ffffff;
+  p {
+    color: #dbdbdb;
+    transition: 300ms;
+  }
+
+  &:hover{
+    cursor: pointer;
+    background-color: #dbdbdbaa;
+    transition: 300ms;
+    p {
+      color: #353535;
+      transition: 300ms;
+    }
+    .tag_container{
+      background-color: #ffffff;
+    }
+  }
 }
 
 .title {
@@ -38,4 +45,12 @@
 .desc {
   overflow-wrap: break-word;
   font-size: 15px
+}
+
+.favorite_button {
+  margin-top: auto;
+  font-size: 1.4em;
+  &:hover {
+    color: #c2eb2f;
+  }
 }

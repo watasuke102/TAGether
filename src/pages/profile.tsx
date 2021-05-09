@@ -28,7 +28,7 @@ export default function profile(props: Props) {
       <div className={css.container}>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_categoly}>
-          
+
         </div>
         <h2>解答履歴</h2>
         <table>

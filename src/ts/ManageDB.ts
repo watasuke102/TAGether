@@ -38,18 +38,23 @@ function FavoriteInstance() {
   })
 }
 export function GetFavorite() {
-  let result: number[] = [];
-  return FavoriteInstance().iterate((value: number) => { result.push(value); })
-    .then(() => { return result; })
+  return FavoriteInstance().getItem('main')
+    .then((value) => {
+      const result: number[] = value ?? [];
+      return result;
+    });
 }
-export function AddFavorite(item: number) {
+export function UpdateFavorite(target: number) {
   GetFavorite().then(res => {
-    res.push(item);
-    FavoriteInstance().setItem('main', res);
-  })
-}
-export function RemoveExamHistory(target: number) {
-  GetFavorite().then(res => {
-    FavoriteInstance().setItem('main', res.filter(item => (item !== target)));
+    const place = res.indexOf(target);
+    let result = res;
+    // 見つからなかったときは追加
+    if (place === -1) {
+      result.push(target);
+    } else {
+      // 見つかった場合は削除
+      result = res.filter(n => n !== target);
+    }
+    FavoriteInstance().setItem('main', result);
   })
 }

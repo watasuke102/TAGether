@@ -11,11 +11,13 @@ import React from 'react';
 import Tag from './Tag';
 import Modal from './Modal';
 import Detail from './CategolyDetail';
+import { UpdateFavorite } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 
 export default function ExamCard(props: Categoly) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [favorite_status, SetFavoriteStatus] = React.useState(false);
   // Modalに渡す用のデータ
   const modalData: ModalData = {
     body: <Detail {...{ data: props, close: () => setIsModalOpen(false) }} />,
@@ -40,6 +42,12 @@ export default function ExamCard(props: Categoly) {
         <p className={css.title}>{title}</p>
         <p className={css.desc}> {desc} </p>
         <Tag tag={props.tag} />
+        <div
+          className={css.favorite_button}
+          onClick={(e) => { e.stopPropagation(); UpdateFavorite(props.id ?? -1); }}
+        >
+          <span className='fas fa-star' />
+        </div>
       </div>
 
       <Modal {...modalData} />
