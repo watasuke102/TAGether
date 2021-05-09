@@ -1,6 +1,6 @@
 /*
  TAGether - Share self-made exam for classmates
- Common.module.css
+ Common.module.scss
 
  CopyRight (c) 2020-2021 Watasuke
  Email  : <watasuke102@gmail.com>
@@ -10,9 +10,8 @@
 
 .button {
   font-family: 'M PLUS 1p', sans-serif;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffffff;
+  } 
 }
-
-.button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #ffffff;
-} 

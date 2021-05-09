@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Modal.module.css';
+import css from '../style/Modal.module.scss';
 import React from 'react';
 import ModalData from '../types/ModalData';
 
@@ -16,7 +16,7 @@ export default class Modal extends React.Component<ModalData> {
   }
   // スマホ対策
   UpdateContainersHeight() {
-    document.documentElement.style.setProperty('--vh', (window.innerHeight/100) + 'px');
+    document.documentElement.style.setProperty('--vh', (window.innerHeight / 100) + 'px');
   }
 
   componentDidMount() {
@@ -33,10 +33,10 @@ export default class Modal extends React.Component<ModalData> {
       return (<></>);
     }
     return (
-        <div className={css.background} onClick={() => this.props.close()}>
-          <div className={css.window} onClick={(e) => e.stopPropagation()}>
-            {this.props.body}
-          </div>
+      <div className={css.background} onClick={() => this.props.close()}>
+        <div className={css.window} onClick={(e) => e.stopPropagation()}>
+          {this.props.body}
+        </div>
       </div>
     );
   }

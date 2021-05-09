@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/create.module.css';
+import css from '../style/create.module.scss';
 import React from 'react';
 import Router from 'next/router';
 import Form from '../components/Form';
@@ -410,7 +410,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <Modal {...modalData} />
         <Toast
           isOpen={this.state.isToastOpen}
-          stateChange={() => this.setState({isToastOpen: false})}
+          stateChange={() => this.setState({ isToastOpen: false })}
         >
           <div className={css.toast_body}>
             <span className='fas fa-bell' />

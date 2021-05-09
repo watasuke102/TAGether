@@ -6,12 +6,12 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Tag.module.css';
+import css from '../style/Tag.module.scss';
 import React from 'react';
 
-interface TagData {tag: string}
+interface TagData { tag: string }
 
-export default function Tag(props: TagData) {  
+export default function Tag(props: TagData) {
   let tags: object[] = [];
   props.tag.split(',').forEach(e => {
     tags.push(<div className={css.tag}>{e}</div>);

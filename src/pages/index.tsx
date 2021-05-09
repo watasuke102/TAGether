@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/index.module.css';
+import css from '../style/index.module.scss';
 import React from 'react';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
@@ -24,16 +24,16 @@ export default function index() {
       SetRequest('');
       SetIsModalOpen(true);
     }
-    req.open('POST', process.env.API_URL + '/request.php?body='+request);
+    req.open('POST', process.env.API_URL + '/request.php?body=' + request);
     req.send();
   }
 
   const modalData: ModalData = {
     isOpen: isModalOpen,
-    close:  () => SetIsModalOpen(false),
+    close: () => SetIsModalOpen(false),
     body: (
       <div className={css.window}>
-        <p>送信しました。<br/>ご協力ありがとうございます。</p>
+        <p>送信しました。<br />ご協力ありがとうございます。</p>
         <Button {...{
           type: 'filled', icon: 'fas fa-times', text: '閉じる',
           onClick: () => SetIsModalOpen(false)
@@ -42,7 +42,7 @@ export default function index() {
     )
   }
 
-  return(
+  return (
     <div>
       <h1>ようこそ</h1>
       <p>

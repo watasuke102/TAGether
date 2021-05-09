@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Card.module.css';
+import css from '../style/Card.module.scss';
 import React from 'react';
 import Tag from './Tag';
 import Modal from './Modal';

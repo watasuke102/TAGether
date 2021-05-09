@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import '../style/main.css'
+import '../style/main.scss'
 import React from 'react';
-import Head  from 'next/head';
+import Head from 'next/head';
 import App, { Container } from 'next/app';
 import PageTransition from '../next-page-transisions/PageTransition';
 
@@ -19,15 +19,15 @@ export default class MyApp extends App {
     const { Component, pageProps, router } = this.props
     return (
       <>
-      <Head>
-        <title>TAGether</title>
-      </Head>
-      <Header />
-      <Container>
-        <PageTransition timeout={500} classNames="page-transition">
-          <Component {...pageProps} key={router.route} />
-        </PageTransition>
-      </Container>
+        <Head>
+          <title>TAGether</title>
+        </Head>
+        <Header />
+        <Container>
+          <PageTransition timeout={500} classNames="page-transition">
+            <Component {...pageProps} key={router.route} />
+          </PageTransition>
+        </Container>
       </>
     )
   }

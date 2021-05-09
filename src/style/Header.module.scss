@@ -1,6 +1,6 @@
 /*
  TAGether - Share self-made exam for classmates
- Header.module.css
+ Header.module.scss
 
  CopyRight (c) 2020-2021 Watasuke
  Email  : <watasuke102@gmail.com>
@@ -10,18 +10,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 .header {
   margin: -15px -15px 70px;
-  width: 100% + 15px;
+  width: calc(100% + 30px);
   height: 90px;
   font-size: 24px;
   background-color: #8891a5dd;
   color: #bbf5cb;
   box-sizing: border-box;
-}
-.header>h1 {
-  font-family: 'Montserrat', sans-serif;
-  text-align: center;
-  margin: 0 auto 15px;
-  padding: 10px 0 0;
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin: 0 auto 15px;
+    padding: 10px 0 0;
+  }
 }
 #first {
   margin-right: auto;
@@ -41,9 +41,9 @@
     justify-content: flex-end;
     margin-bottom: 0;
     padding: 0 15px;
-  }
-  .header>h1 {
-    margin: auto auto auto 0;
+    h1 {
+      margin: auto auto auto 0;
+    }
   }
   .buttons {
     margin: 0;
