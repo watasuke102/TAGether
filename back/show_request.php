@@ -44,11 +44,10 @@ if (mysqli_connect_error()) {
   print 'error: ' . $mysqli->connect_error;
 }
 
-$query = 'SELECT * FROM request ORDER BY id DESC';
+$query = 'SELECT * FROM request';
 
 $result = $mysqli->query($query);
 if ($result) {
-  $rows = $result->fetch_array();
   while ($row = $result->fetch_assoc()) {
     print '<tr>';
     print '<td>' . $row['id']         . '</td>';
