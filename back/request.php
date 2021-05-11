@@ -26,7 +26,7 @@ function error($mes) {
   exit(1);
 }
 
-$mysqli = new mysqli('localhost', $_ENV['SQL_USER'], $_ENV['SQL_PASS'], $_ENV['SQL_DATABASE']);
+$mysqli = new mysqli($_ENV['SQL_HOST'], $_ENV['SQL_USER'], $_ENV['SQL_PASS'], $_ENV['SQL_DATABASE']);
 if (mysqli_connect_error()) {
   error($mysqli->connect_error);
 }

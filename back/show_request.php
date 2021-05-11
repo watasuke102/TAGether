@@ -39,7 +39,7 @@ require_once __DIR__.'/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$mysqli = new mysqli('localhost', $_ENV['SQL_USER'], $_ENV['SQL_PASS'], $_ENV['SQL_DATABASE']);
+$mysqli = new mysqli($_ENV['SQL_HOST'], $_ENV['SQL_USER'], $_ENV['SQL_PASS'], $_ENV['SQL_DATABASE']);
 if (mysqli_connect_error()) {
   print 'error: ' . $mysqli->connect_error;
 }
