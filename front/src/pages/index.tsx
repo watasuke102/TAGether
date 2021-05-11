@@ -82,6 +82,14 @@ export default function index() {
 
       <h2>更新履歴</h2>
 
+      <h3>v1.4.0</h3>
+      <ul>
+        <li>カテゴリをお気に入り登録できるようにした</li>
+        <li>解答したカテゴリの履歴（日付、正答率）が見れるように</li>
+        <li>環境をdocker-composeへ移行</li>
+      </ul>
+      <p>お気に入り登録したカテゴリや解答履歴は、プロフィールから見ることが出来ます。</p>
+
       <h3>v1.3.3</h3>
       <ul>
         <li>WebKitで新規追加・編集画面を開けない問題を修正</li>
@@ -102,19 +110,13 @@ export default function index() {
         </li>
       </ul>
 
-      <h3>v1.3.1</h3>
-      <ul>
-        <li>カテゴリ削除を出来ないようにした</li>
-        <li>開発状況（ToDo）を公開</li>
-      </ul>
-
       <p>
         以前のリリースは
         <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
         から確認可能です。
       </p>
 
-      <p className={css.version}>TAGether v1.3.3</p>
+      <p className={css.version}>TAGether v1.4.0</p>
 
       <Modal {...modalData} />
     </div>
