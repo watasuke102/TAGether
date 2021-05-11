@@ -3,8 +3,18 @@
 ## What's this
 誰かが作った問題をクラスの人と共有できるようなサービスです。  
 
-今の所これをパブリックなサービスとして公開するつもりはないので、使用したい場合はクローンして`npm install`してビルドなり何なりして公開してください  
-環境構築に関しては今後詳細を記載するかもしれません
+## How to use
+1. /backのsample.envを.envにリネーム
+1. /frontのsample-next.config.jsをnext.config.jsにリネーム
+1. `docker-compose up -d --build`
+
+## docker-composeについて
+| 名前                     | ポート |
+| ------------------------ | ------ |
+| フロントエンド (Next.js) |  3000  |
+| バックエンド (PHP)       |  8080  |
+| phpMyAdmin               |  8888  |
+| MySQL                    |  3334  |
 
 ## LICENSE
 MIT SUSHI-WARE LICENSE
