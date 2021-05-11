@@ -1,21 +1,5 @@
 # API for TAGether
 
-以下URLを`http://localhost:8000`とします
-
-## 事前準備
-以下のようにデータベースを作成 (データベース名はXXXとします)
-```
-$ CREATE DATABASE XXX;
-$ CREATE TABLE XXX.exam (id INT PRIMARY KEY AUTO_INCREMENT, updated_at TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, title TEXT, description TEXT, tag TEXT, list JSON);
-```
-index.phpと同じディレクトリに.envを作成し、以下のように記述
-```
-ALLOW_ORIGIN="リクエスト元のURL"
-SQL_USER="ユーザー名"
-SQL_PASS="SQLパスワード"
-SQL_DATABASE="XXX (データベース名)"
-```
-
 ## 共通
 GET以外は以下のようなレスポンスが帰ってきます
 | Name    | Type   | Description                        |
@@ -55,7 +39,6 @@ curl -X GET "http://localhost:8000"
 | list       | json   | 問題の中身                                  |
 ### 注意事項
 id及びupdated_atを含まないjsonを送信してください  
-未実装です（常に`{"status":"ok"}`が返ってきます）
 ### 例 (curl)
 ```
 curl -X POST -H "Content-Type: application/json" "http://localhost:8000" -d '{"title": "TITLE","desc": "THIS IS DESCRIPTION","tag": "tag1,tag2","list": "[{\\"question\\": \\"1+1=?\\",\\"answer\\": [\\"2\\"]},{\\"question\\": \\"5+5=?\\",\\"answer\\": [\\"10\\"]}]"}'
