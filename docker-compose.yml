@@ -1,22 +1,51 @@
 version: '3'
 
 services:
-  front:
-    build: ./
-    ports:
-      - '3000:3000'
-    volumes:
-      - .:/front
-
   mysql:
     image: mysql
     command: mysqld --default-authentication-plugin=mysql_native_password
     volumes:
-      - ./docker/mysql:/var/lib/mysql
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+      - ./docker/data:/var/lib/mysql
     ports:
       - '3334:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: strapi
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tagether
     cap_add:
       - SYS_NICE
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    ports: 
+      - '8888:80'
+    depends_on: 
+      - mysql
+
+  back:
+    build: ./back
+    volumes:
+      - ./back:/usr/share/nginx/html
+    depends_on:
+      - mysql
+
+  front:
+    build: ./front
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./front:/front
+    depends_on:
+      - back
+
+  nginx:
+    image: nginx
+    ports:
+      - '8080:80'
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+#      - ./back:/usr/share/nginx/html
+    depends_on:
+      - back
