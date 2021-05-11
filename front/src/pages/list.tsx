@@ -121,7 +121,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (context.query.id) {
     query = '?id=' + context.query.id;
   }
-  const res = await fetch(process.env.API_URL + query);
-  const data = await res.json();
+  let data;
+  try {
+    const res = await fetch(process.env.API_URL + query);
+    data = await res.json();
+  } catch {
+    data = []
+  }
   return { props: { data } };
 }

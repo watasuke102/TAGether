@@ -36,20 +36,20 @@ export default function profile(props: Props) {
       <div className={css.window}>
         <p>解答履歴をすべて削除しますか？</p>
         <div className={css.window_buttons}>
-        <Button {...{
-          type: 'material-like', icon: 'fas fa-times', text: '閉じる',
-          onClick: () => SetIsModalOpen(false)
-        }} />
-        <Button {...{
-          onClick: () => { 
-            ClearExamHistory().then(() =>
-              GetExamHistory().then(res => SetHistoryList(res))
-            );
-            SetIsModalOpen(false); 
-          },
-          type: 'filled', icon: 'fas fa-trash-alt', text: '削除する',
-        }} />
-      </div>
+          <Button {...{
+            type: 'material-like', icon: 'fas fa-times', text: '閉じる',
+            onClick: () => SetIsModalOpen(false)
+          }} />
+          <Button {...{
+            onClick: () => {
+              ClearExamHistory().then(() =>
+                GetExamHistory().then(res => SetHistoryList(res))
+              );
+              SetIsModalOpen(false);
+            },
+            type: 'filled', icon: 'fas fa-trash-alt', text: '削除する',
+          }} />
+        </div>
       </div>
     )
   };
@@ -95,7 +95,12 @@ export default function profile(props: Props) {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(process.env.API_URL ?? '');
-  const data = await res.json();
+  let data;
+  try {
+    const res = await fetch(process.env.API_URL ?? '');
+    data = await res.json();
+  } catch {
+    data = []
+  }
   return { props: { data } };
 }
