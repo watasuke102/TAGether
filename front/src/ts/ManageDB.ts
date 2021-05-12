@@ -24,7 +24,7 @@ export function AddExamHistory(item: ExamHistory) {
 export function GetExamHistory() {
   let result: ExamHistory[] = [];
   return ExamHisotryInstance().iterate((value: ExamHistory) => { result.push(value); })
-  .then(() => { return result; })
+    .then(() => { return result; })
 }
 export function ClearExamHistory() {
   return ExamHisotryInstance().clear();
@@ -41,9 +41,9 @@ function FavoriteInstance() {
   })
 }
 export function GetFavorite() {
-  return FavoriteInstance().getItem('main')
+  return FavoriteInstance().getItem<number[]>('main')
     .then((value) => {
-      const result: number[] = value ?? [];
+      const result = value ?? [];
       return result;
     });
 }
