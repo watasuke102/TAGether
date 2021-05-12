@@ -12,7 +12,9 @@ services:
       - ./back:/usr/share/nginx/html
 
   front:
-    build: ./front/Dockerfile-product
+    build: 
+      context: ./front
+      dockerfile: "Dockerfile-product"
     ports:
       - '3000:3000'
     volumes:
