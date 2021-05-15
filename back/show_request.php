@@ -44,7 +44,7 @@ if (mysqli_connect_error()) {
   print 'error: ' . $mysqli->connect_error;
 }
 
-$query = 'SELECT * FROM request';
+$query = 'SELECT * FROM request ORDER BY id DESC';
 
 $result = $mysqli->query($query);
 if ($result) {
