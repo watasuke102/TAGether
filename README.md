@@ -9,10 +9,11 @@
 1. `docker-compose up -d --build`
 
 ## docker-composeについて
+最新情報はdocker-compose.ymlをチェックしてね
 | 名前                     | ポート |
 | ------------------------ | ------ |
-| フロントエンド (Next.js) |  3000  |
-| バックエンド (PHP)       |  8080  |
+| フロントエンド (Next.js) |  3009  |
+| バックエンド (PHP)       |  8079  |
 | phpMyAdmin               |  8888  |
 | MySQL                    |  3334  |
 

@@ -32,18 +32,20 @@ services:
       - mysql
 
   front:
-    build: ./front
+    image: node
     ports:
-      - '3000:3000'
+      - '3009:3009'
     volumes:
       - ./front:/front
+    working_dir: /front
+    entrypoint: "npm run dev"
     depends_on:
       - back
 
   nginx:
     image: nginx
     ports:
-      - '8080:80'
+      - '8079:80'
     volumes:
       - ./docker/nginx:/etc/nginx/conf.d
     depends_on:
