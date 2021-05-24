@@ -49,7 +49,7 @@ export default class examtable extends React.Component<Props, States> {
           <div className={css.buttons}>
             <Button {...{
               text: "戻る", icon: "fas fa-undo",
-              onClick: () => Router.push('/list'), type: "material"
+              onClick: Router.back, type: "material"
             }} />
             {/* 正しい答えの表示/非表示切り替え */}
             <Button {...{
