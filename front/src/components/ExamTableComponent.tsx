@@ -124,7 +124,7 @@ export default class ExamTable extends React.Component<Props, State> {
           <table>
             <tr>
               <th>問題</th>
-              <th>解答</th>
+              <th>正解</th>
               {state_th}
             </tr>
             {list}
