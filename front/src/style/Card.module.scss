@@ -22,16 +22,19 @@
     transition: 300ms;
   }
 
-  &:hover{
-    cursor: pointer;
-    background-color: #dbdbdbaa;
-    transition: 300ms;
-    p {
-      color: #353535;
+  // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
+  @media screen and (min-width: 800px) {
+    &:hover{
+      cursor: pointer;
+      background-color: #dbdbdbaa;
       transition: 300ms;
-    }
-    .tag_container{
-      background-color: #ffffff;
+      p {
+        color: #353535;
+        transition: 300ms;
+      }
+      .tag_container{
+        background-color: #ffffff;
+      }
     }
   }
 }
@@ -58,7 +61,10 @@
   width: 0;
   margin-top: auto;
   font-size: 1.6em;
-  span:hover {
-    color: #d5f719;
+  // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
+  @media screen and (min-width: 800px) {
+    span:hover {
+      color: #d5f719;
+    }
   }
 }
