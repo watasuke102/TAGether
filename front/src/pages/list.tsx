@@ -69,7 +69,7 @@ export default function list(props: Props) {
     cards.unshift(
       <div className={css.card} onClick={() => Router.push('/create')}>
         <div className='fas fa-plus' />
-        <p>新規作成</p>
+        <p id={css.create_new}>新規作成</p>
       </div>
     );
   }
