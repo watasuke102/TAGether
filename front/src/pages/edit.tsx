@@ -13,6 +13,7 @@ import EditCategolyPageState from '../types/EditCategolyPageState';
 
 export default class edit extends Create {
   public text = {
+    document_title: '編集',
     heading: 'カテゴリの編集',
     api_success: '編集結果を適用しました',
     buttons: [

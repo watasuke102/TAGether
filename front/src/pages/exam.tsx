@@ -8,6 +8,7 @@
 //
 import css from '../style/exam.module.scss'
 import React from 'react';
+import Helmet from 'react-helmet';
 import Router from 'next/router';
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
@@ -426,9 +427,13 @@ export default class exam extends React.Component<Props, State> {
       );
     }
 
+    const current_status = `${this.state.index + 1}/${this.exam.length}`;
+
     return (
       <>
-        <h1>{this.state.index + 1}/{this.exam.length}</h1>
+        <Helmet title={`(${current_status}) : ${this.title} - TAGether`} />
+
+        <h1>{current_status}</h1>
 
         <div className={css.display}>
           {/* 問題文、解答欄 */}

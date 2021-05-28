@@ -8,6 +8,7 @@
 //
 import css from '../style/create.module.scss';
 import React from 'react';
+import Helmet from 'react-helmet';
 import Router from 'next/router';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
@@ -39,6 +40,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   private top;
 
   public text = {
+    document_title: '新規作成',
     heading: '新規カテゴリの追加',
     api_success: 'カテゴリの追加に成功しました',
     buttons: [
@@ -353,6 +355,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     };
     return (
       <>
+        <Helmet title={`${this.text.document_title} - TAGether`} />
+
         <h1>{this.text.heading}</h1>
 
         <ul>

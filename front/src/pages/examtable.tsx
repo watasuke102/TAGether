@@ -8,6 +8,7 @@
 //
 import css from '../style/examtable.module.scss';
 import React from 'react';
+import Helmet from 'react-helmet';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Button from '../components/Button';
@@ -41,6 +42,7 @@ export default class examtable extends React.Component<Props, States> {
   render() {
     return (
       <>
+        <Helmet title={`問題一覧 : ${this.props.data[0].title} - TAGether`} />
         <div className={css.table}>
           <ExamTable exam={this.exam} showCorrectAnswer={this.state.showCorrectAnswer} />
         </div>

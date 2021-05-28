@@ -8,6 +8,7 @@
 //
 import css from '../style/profile.module.scss';
 import React from 'react';
+import Helmet from 'react-helmet';
 import { GetServerSideProps } from 'next';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
@@ -56,6 +57,8 @@ export default function profile(props: Props) {
 
   return (
     <>
+      <Helmet title='プロフィール - TAGether' />
+      
       <div className={css.container}>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_categoly}>

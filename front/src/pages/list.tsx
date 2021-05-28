@@ -8,6 +8,7 @@
 //
 import css from '../style/list.module.scss'
 import React from 'react';
+import Helmet from 'react-helmet';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
@@ -87,6 +88,7 @@ export default function list(props: Props) {
 
   return (
     <>
+      <Helmet title='カテゴリ一覧 - TAGether' />
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
         {/* 検索欄 */}
