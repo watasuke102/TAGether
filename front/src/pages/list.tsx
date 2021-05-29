@@ -68,7 +68,7 @@ export default function list(props: Props) {
     // カテゴリ作成ページへ飛ぶカードを追加
     cards.unshift(
       <div className={css.card} onClick={() => Router.push('/create')}>
-        <div className='fas fa-plus' />
+        <span className='fas fa-plus' />
         <p id={css.create_new}>新規作成</p>
       </div>
     );

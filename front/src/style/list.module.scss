@@ -53,15 +53,16 @@
   color: #e1e2dc;
   background-color: #dbdbdb00;
   transition: 0.3s;
-}
-.card:hover {
-  cursor: pointer;
-  color: #1a1a1a;
-  background-color: #dbdbdbaa;
-  transition: 0.3s;
-}
-.card div{
-  margin: 0 15px 0 0;
+  span {
+    margin-right: 15px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: #1a1a1a;
+    background-color: #dbdbdbaa;
+    transition: 0.3s;
+  }
 }
 
 .list {
