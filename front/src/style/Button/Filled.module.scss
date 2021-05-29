@@ -28,16 +28,13 @@
   border-radius: 3px;
   background-color: #524a80;
   transition: 0.3s;
-  span {
-    color: #e7e7e7;
-    transition: 0.3s;
-  }
   
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     &:hover{ @include bg-animation(#625899); }
   }
   &:active{ @include bg-animation(#726b97); }
+
 }
 
 // ボタンのなかみ 
@@ -57,4 +54,14 @@
   text-align: center;
   margin: auto;
   font-size: 22px;
+}
+
+// 横幅が狭かったらフォントサイズを小さく
+@media screen and (max-width: 750px) {
+  .button_icon span{
+    font-size: 1em;
+  }
+  .button_text {
+    font-size: 1em;
+  }
 }

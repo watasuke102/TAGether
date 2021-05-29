@@ -30,7 +30,7 @@
   background-color: #ffffff00;
   border: 1px solid  #7766d8;
   transition: 0.3s;
-  >span {
+  span {
     color: #e7e7e7;
     transition: 0.3s;
   }
@@ -59,4 +59,14 @@
   text-align: center;
   margin: auto;
   font-size: 22px;
+}
+
+// 横幅が狭かったらフォントサイズを小さく
+@media screen and (max-width: 750px) {
+  .button_icon span{
+    font-size: 1em;
+  }
+  .button_text {
+    font-size: 1em;
+  }
 }
