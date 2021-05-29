@@ -36,6 +36,8 @@ interface Props {
   history_id?: string
 }
 interface State {
+  exam: Exam[],
+  title: string,
   index: number,
   correct_rate: number
   isModalOpen: boolean,
@@ -49,8 +51,6 @@ interface State {
 }
 
 export default class exam extends React.Component<Props, State> {
-  private exam: Exam[];
-  private title: string;
   private ref;
   private correct_answers = 0;
   private total_questions = 0;
@@ -59,26 +59,20 @@ export default class exam extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.exam = [];
-    this.title = '';
+    let exam: Exam[] = [];
+    let title = '';
     // 間違えた問題のやり直しであれば
     if (props.history_id) {
-      GetSpecifiedExamHistory(props.history_id).then((result) => {
-        if (result) {
-          this.title = `やり直し: ${result.title}`;
-          this.exam = result.wrong_exam;
-        }
-      })
+      this.InitWrongExamList();
     } else {
       // 通常カテゴリであれば
-      this.title = this.props.data[0].title;
-      this.exam = JSON.parse(this.props.data[0].list);
+      title = this.props.data[0].title;
+      exam = JSON.parse(this.props.data[0].list);
     }
-    console.log(this.exam);
 
     this.exam_history = {
       id: this.props.id,
-      title: this.title,
+      title: title,
       date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       correct_count: 0, total_question: 0,
       wrong_exam: []
@@ -86,21 +80,21 @@ export default class exam extends React.Component<Props, State> {
     this.ref = React.createRef();
     // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
-      for (let i = this.exam.length - 1; i > 0; i--) {
+      for (let i = exam.length - 1; i > 0; i--) {
         var r = Math.floor(Math.random() * (i + 1));
-        var tmp = this.exam[i];
-        this.exam[i] = this.exam[r];
-        this.exam[r] = tmp;
+        var tmp = exam[i];
+        exam[i] = exam[r];
+        exam[r] = tmp;
       }
     }
     // 解答状況の初期化
-    const exam_length = this.exam.length;
+    const exam_length = exam.length;
     let exam_state: ExamState[] = Array<ExamState>();
     let max_answer = 1;
     for (let i = 0; i < exam_length; i++) {
       exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
-      if (this.exam[i].answer.length > max_answer) {
-        max_answer = this.exam[i].answer.length;
+      if (exam[i].answer.length > max_answer) {
+        max_answer = exam[i].answer.length;
       }
     }
     // 解答欄の初期化
@@ -110,12 +104,52 @@ export default class exam extends React.Component<Props, State> {
     }
     // stateの初期化
     this.state = {
-      index: 0, isModalOpen: false,
+      exam: exam, title: title, index: 0, isModalOpen: false,
       correct_rate: 0, showExamStateTable: false,
       nextButtonState: NextButtonState.show_answer,
       answers: answers, examState: exam_state,
       showCorrectAnswer: false
     };
+  }
+
+  InitWrongExamList() {
+    if (!process.browser) return;
+    GetSpecifiedExamHistory(this.props.history_id ?? '').then((result) => {
+      if (result) {
+        // ここから下はコンストラクタとほぼ同じ処理をしてる //
+
+        // Fisher-Yatesアルゴリズムで問題順シャッフル
+        let exam = result.wrong_exam;
+        if (this.props.shuffle) {
+          for (let i = exam.length - 1; i > 0; i--) {
+            var r = Math.floor(Math.random() * (i + 1));
+            var tmp = exam[i];
+            exam[i] = exam[r];
+            exam[r] = tmp;
+          }
+        }
+        // 解答状況の初期化
+        const exam_length = result.wrong_exam.length;
+        let exam_state: ExamState[] = Array<ExamState>();
+        let max_answer = 1;
+        for (let i = 0; i < exam_length; i++) {
+          exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
+          if (exam[i].answer.length > max_answer) {
+            max_answer = exam[i].answer.length;
+          }
+        }
+        // 解答欄の初期化
+        let answers: string[][] = Array<Array<string>>(exam_length);
+        for (let i = 0; i < exam_length; i++) {
+          answers[i] = Array<string>(max_answer).fill('');
+        }
+        // 同じ処理おわり //
+        this.setState({
+          exam: exam, title: `やり直し: ${result.title}`,
+          answers: answers, examState: exam_state
+        });
+      }
+    })
   }
 
   // ショートカットキー
@@ -136,14 +170,20 @@ export default class exam extends React.Component<Props, State> {
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', e => this.Shortcut(e));
-    // 問題の結果を保存する
-    this.exam_history.total_question = this.total_questions;
-    this.exam_history.correct_count = this.correct_answers;
-    AddExamHistory(this.exam_history);
+    // 間違えた問題のやり直しでなければ、結果を保存する
+    if (!this.props.history_id) {
+      this.exam_history.total_question = this.total_questions;
+      this.exam_history.correct_count = this.correct_answers;
+      AddExamHistory(this.exam_history);
+    }
   }
 
   componentDidUpdate() {
-    if (this.state.showExamStateTable) return;
+    // 結果表示、もしくは間違えた問題の読み込みが終了していなければ終了
+    if (
+      this.state.showExamStateTable ||
+      (this.props.history_id && this.state.exam.length === 0)
+    ) return;
     let b: boolean = false;
     this.state.answers[this.state.index].map(e => {
       if (e != '') {
@@ -161,7 +201,7 @@ export default class exam extends React.Component<Props, State> {
     const index = this.state.index;
     let result: ExamState = { order: 0, checked: true, correctAnswerCount: 0, realAnswerList: [] };
     let correct: boolean = false;
-    this.exam[index].answer.forEach((e, i) => {
+    this.state.exam[index].answer.forEach((e, i) => {
       correct = false;
       // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
       e.split('&').map(ans => {
@@ -174,7 +214,7 @@ export default class exam extends React.Component<Props, State> {
       })
       // 正しい解答をリストに追加
       const classname = (correct) ? '' : css.wrong;
-      if (this.exam[index].answer.length == 1) {
+      if (this.state.exam[index].answer.length == 1) {
         result.realAnswerList.push(<p className={classname}>{e}</p>);
       } else {
         result.realAnswerList.push(<p className={classname}>{i + 1}問目: {e}</p>);
@@ -183,11 +223,11 @@ export default class exam extends React.Component<Props, State> {
     });
 
     // 全問正解
-    if (result.correctAnswerCount == this.exam[index].answer.length) {
+    if (result.correctAnswerCount == this.state.exam[index].answer.length) {
       result.order = 0;
     } else {
       // 1問でも間違っていたら、間違えた問題リストに追加
-      this.exam_history.wrong_exam.push(this.exam[index]);
+      this.exam_history.wrong_exam.push(this.state.exam[index]);
       // 全問不正解の場合
       if (result.correctAnswerCount == 0) {
         result.order = 2;
@@ -207,7 +247,7 @@ export default class exam extends React.Component<Props, State> {
     // 解答済みの問題だった場合
     if (this.state.examState[i].checked) {
       // 最後の問題であれば終了ボタン
-      if (i == this.exam.length - 1) {
+      if (i == this.state.exam.length - 1) {
         button_state = NextButtonState.finish_exam;
       } else {
         //そうでないなら次へボタン
@@ -225,7 +265,7 @@ export default class exam extends React.Component<Props, State> {
       case NextButtonState.show_answer:
         this.CheckAnswer();
         // 最後の問題であれば、ボタンを終了ボタンに
-        if (this.state.index == this.exam.length - 1) {
+        if (this.state.index == this.state.exam.length - 1) {
           this.setState({ nextButtonState: NextButtonState.finish_exam });
         } else {
           //そうでないなら次へボタン
@@ -262,7 +302,7 @@ export default class exam extends React.Component<Props, State> {
 
   //解答欄
   AnswerArea() {
-    const length = this.exam[this.state.index].answer.length;
+    const length = this.state.exam[this.state.index].answer.length;
     let obj: object[] = [];
     let label = '';
     for (let i = 0; i < length; i++) {
@@ -317,7 +357,7 @@ export default class exam extends React.Component<Props, State> {
     let state: ExamState = this.state.examState[this.state.index];
     if (!state.checked) return;
 
-    const answer_length = this.exam[this.state.index].answer.length;
+    const answer_length = this.state.exam[this.state.index].answer.length;
     let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」
@@ -392,7 +432,7 @@ export default class exam extends React.Component<Props, State> {
     if (this.state.showExamStateTable) {
       let list: Object[] = [];
       let answers: string = '';
-      this.exam.forEach(e => {
+      this.state.exam.forEach(e => {
         answers = '';
         e.answer.forEach(e => answers += e + ', ');
         list.push(
@@ -410,7 +450,7 @@ export default class exam extends React.Component<Props, State> {
       return (
         <>
           <div className={css.examdata_container}>
-            <h2>{this.title}</h2>
+            <h2>{this.state.title}</h2>
             <div className={css.correct_rate_statuslist}>
               <p>
                 {this.total_questions}問中{this.correct_answers}問正解、
@@ -420,7 +460,7 @@ export default class exam extends React.Component<Props, State> {
           </div>
 
           <ExamTable {...{
-            exam: this.exam, answers: this.state.answers,
+            exam: this.state.exam, answers: this.state.answers,
             examState: this.state.examState,
             showCorrectAnswer: this.state.showCorrectAnswer
           }} />
@@ -449,11 +489,18 @@ export default class exam extends React.Component<Props, State> {
       );
     }
 
-    const current_status = `${this.state.index + 1}/${this.exam.length}`;
+    // 読み込みが終わっていなかった場合
+    if (this.state.exam.length === 0 && this.props.history_id) {
+      console.log("よみこみちゅう");
+      return (<p>読み込み中...</p>);
+    }
+    console.log("NOT よみこみちゅう", this.state.exam);
+
+    const current_status = `${this.state.index + 1}/${this.state.exam.length}`;
 
     return (
       <>
-        <Helmet title={`(${current_status}) : ${this.title} - TAGether`} />
+        <Helmet title={`(${current_status}) : ${this.state.title} - TAGether`} />
 
         <h1>{current_status}</h1>
 
@@ -463,7 +510,7 @@ export default class exam extends React.Component<Props, State> {
             <div className={css.question_area}>
               <div><h2 id={css.mondai}>問題</h2></div>
               <div className={css.question_text}><p>{
-                this.exam[this.state.index].question.split('\n').map(str => {
+                this.state.exam[this.state.index].question.split('\n').map(str => {
                   return (<> {str}<br /> </>)
                 })
               }</p></div>
