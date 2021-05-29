@@ -169,6 +169,15 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     this.setState({ exam: tmp });
   }
+  // 指定した位置に問題を追加
+  InsertExam(i: number) {
+    // 追加する空要素
+    const item = { question: '', answer: Array<string>(1).fill('') };
+
+    let result = this.state.exam;
+    result.splice(i, 0, item);
+    this.setState({ exam: result });
+  }
   // exam[i]とexam[i+moveto]を入れ替え
   SwapExam(i: number, moveto: number) {
     let result = this.state.exam;
@@ -267,13 +276,20 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
       // 問題文と答え欄
       obj.push(
-        <>
-          <div className={css.move_button}>{
-            (i != 0) && <Button {...{
-              text: '1つ上に移動', icon: "fas fa-caret-up",
-              onClick: () => this.SwapExam(i, -1), type: "material"
+        <div className={css.exam_editform}>
+          {/* 移動・追加ボタン */}
+          <div className={css.move_button}>
+            {
+              (i != 0) && <Button {...{
+                text: '1つ上に移動', icon: "fas fa-caret-up",
+                onClick: () => this.SwapExam(i, -1), type: "material"
+              }} />
+            }
+            <Button {...{
+              text: '1つ上に追加', icon: "fas fa-plus",
+              onClick: () => this.InsertExam(i), type: "material"
             }} />
-          }</div>
+          </div>
 
           <div className={css.edit_exam}>
             <div className={css.delete_button}>
@@ -293,15 +309,22 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
           </div>
 
-          <div className={css.move_button}>{
-            (i != this.state.exam.length - 1) && <Button {...{
-              text: '1つ下に移動', icon: "fas fa-caret-down",
-              onClick: () => this.SwapExam(i, 1), type: "material"
+          {/* 移動・追加ボタン */}
+          <div className={css.move_button}>
+            {
+              (i != this.state.exam.length - 1) && <Button {...{
+                text: '1つ下に移動', icon: "fas fa-caret-down",
+                onClick: () => this.SwapExam(i, 1), type: "material"
+              }} />
+            }
+            <Button {...{
+              text: '1つ下に追加', icon: "fas fa-plus",
+              onClick: () => this.InsertExam(i + 1), type: "material"
             }} />
-          }</div>
+          </div>
 
           <hr />
-        </>
+        </div>
       );
     })
     return obj;
