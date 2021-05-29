@@ -29,10 +29,9 @@
   border-radius: 3px;
   background-color: #ffffff00;
   border: 1px solid  #7766d8;
-  transition: 0.3s;
+  transition: background-color 0.3s;
   span {
     color: #e7e7e7;
-    transition: 0.3s;
   }
   
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
@@ -51,14 +50,13 @@
     color: #ffffff;
     width:  auto;
     margin: 0px auto;
-    transition: 0.3s;
   }
 }
 
 .button_text {
   text-align: center;
   margin: auto;
-  font-size: 22px;
+  font-size: 1.4em;
 }
 
 // 横幅が狭かったらフォントサイズを小さく

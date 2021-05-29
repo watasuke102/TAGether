@@ -27,7 +27,7 @@
   border: none;
   border-radius: 3px;
   background-color: #524a80;
-  transition: 0.3s;
+  transition: background-color 0.3s;
   
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
@@ -46,14 +46,13 @@
     color: #ffffff;
     width:  auto;
     margin: 0px auto;
-    transition: 0.3s;
   }
 }
 
 .button_text {
   text-align: center;
   margin: auto;
-  font-size: 22px;
+  font-size: 1.4em;
 }
 
 // 横幅が狭かったらフォントサイズを小さく
