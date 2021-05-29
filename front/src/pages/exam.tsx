@@ -403,10 +403,12 @@ export default class exam extends React.Component<Props, State> {
           （{this.total_questions}問中{this.correct_answers}問正解）
         </p>
         <div className={css.window_buttons}>
-          <Button {...{
-            text: '編集する', icon: 'fas fa-pen', type: 'material',
-            onClick: () => Router.push('/edit?id=' + this.props.id),
-          }} />
+          {(!this.props.history_id) &&
+            <Button {...{
+              text: '編集する', icon: 'fas fa-pen', type: 'material',
+              onClick: () => Router.push('/edit?id=' + this.props.id),
+            }} />
+          }
           <Button {...{
             text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
             onClick: () => this.setState({ isModalOpen: false, showExamStateTable: true }),
@@ -480,8 +482,8 @@ export default class exam extends React.Component<Props, State> {
                 icon: this.state.showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
               }} />
               <Button {...{
-                text: 'カテゴリ一覧へ', icon: 'fas fa-arrow-left',
-                onClick: () => Router.push('/list'), type: 'filled'
+                text: '前のページへ', icon: 'fas fa-arrow-left',
+                onClick: Router.back, type: 'filled'
               }} />
             </div>
           </div>
@@ -491,10 +493,8 @@ export default class exam extends React.Component<Props, State> {
 
     // 読み込みが終わっていなかった場合
     if (this.state.exam.length === 0 && this.props.history_id) {
-      console.log("よみこみちゅう");
       return (<p>読み込み中...</p>);
     }
-    console.log("NOT よみこみちゅう", this.state.exam);
 
     const current_status = `${this.state.index + 1}/${this.state.exam.length}`;
 
