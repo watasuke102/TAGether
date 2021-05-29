@@ -19,18 +19,30 @@ function ExamHisotryInstance() {
   })
 }
 export function AddExamHistory(item: ExamHistory) {
-  ExamHisotryInstance().setItem(item.date, item);
+  const instance = ExamHisotryInstance();
+  instance.keys().then(keys => {
+    let key = Math.max(...keys.map(Number)) + 1;
+    if (isNaN(key) || key == -Infinity) key = 0;
+    instance.setItem(String(key), item);
+  });
 }
 export function GetExamHistory() {
   let result: ExamHistory[] = [];
-  // 日付が新しい順にして返す
   return ExamHisotryInstance().iterate((value: ExamHistory) => { result.push(value); })
-    .then(() => { return result.reverse(); })
+    .then(() => {
+      // 日付が新しい順にして返す
+      return result.reverse();
+    })
 }
 export function ClearExamHistory() {
   return ExamHisotryInstance().clear();
 }
 
+export function GetSpecifiedExamHistory(key: string) {
+  return ExamHisotryInstance().getItem(key).then(result => {
+    return result;
+  })
+}
 
 // お気に入りカテゴリ
 function FavoriteInstance() {

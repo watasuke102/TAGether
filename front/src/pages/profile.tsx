@@ -38,7 +38,7 @@ export default function profile(props: Props) {
         <p>解答履歴をすべて削除しますか？</p>
         <div className={css.window_buttons}>
           <Button {...{
-            type: 'material-like', icon: 'fas fa-times', text: '閉じる',
+            type: 'material', icon: 'fas fa-times', text: '閉じる',
             onClick: () => SetIsModalOpen(false)
           }} />
           <Button {...{
@@ -58,7 +58,7 @@ export default function profile(props: Props) {
   return (
     <>
       <Helmet title='プロフィール - TAGether' />
-      
+
       <div className={css.container}>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_categoly}>
