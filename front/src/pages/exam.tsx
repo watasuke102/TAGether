@@ -170,8 +170,9 @@ export default class exam extends React.Component<Props, State> {
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', e => this.Shortcut(e));
-    // 間違えた問題のやり直しでなければ、結果を保存する
-    if (!this.props.history_id) {
+    // 間違えた問題のやり直しでない and 最後まで解いた
+    // この条件を満たしているとき結果を保存する
+    if (!this.props.history_id && this.state.examState.slice(-1)[0].checked) {
       this.exam_history.total_question = this.total_questions;
       this.exam_history.correct_count = this.correct_answers;
       AddExamHistory(this.exam_history);
