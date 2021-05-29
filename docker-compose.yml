@@ -28,6 +28,7 @@ services:
     build: ./back
     volumes:
       - ./back:/usr/share/nginx/html
+      - ./back/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - mysql
 
