@@ -12,7 +12,12 @@
   width: 90vw;
   height: var(--container_height);
   top: 50%; left: 50%;
-  padding: 20px 40px;
+  padding: 25px 20px;
+
+  display: grid;
+  // タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
+  grid-template-rows: 90px 30px auto 1fr 60px;
+
   background-color: #646772;
   transform: translateY(-50%) translateX(-50%);
   textarea {
@@ -32,8 +37,6 @@
   font-weight: bold;
 }
 #desc {
-  // ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) 
-  height: calc(var(--container_height) - 280px);
   font-size: 18px;
 }
 
@@ -41,20 +44,20 @@
   display: inline-flex;
   height: 25px;
   margin: auto 0;
-  div {
-    margin: auto 0;
+  padding: 0 12px;
+  span {
+    margin-top: 4px;
   }
   p {
-    margin: 0 10px;
+    margin-left: 5px;
   }
 }
 
 .buttons {
-  position: absolute;
   bottom: 15px;
   display: flex;
   justify-content: space-between;
-  width: 85vw;
+  width: 100%;
 }
 
 .window {
@@ -74,14 +77,10 @@
 }
 
 // 横幅が狭かったらボタンを縦に並べる 
-@media screen and (max-width: 720px) {
-  #desc {
-    // ウィンドウそのものの縦幅-(タイトルの縦幅+ボタンの縦幅) 
-    height: calc(var(--container_height) - 400px);
-  }
+@media screen and (max-width: 650px) {
   .buttons {
-    flex-direction: column-reverse;
-    justify-content: space-between;
-    height: 190px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
   }
 }

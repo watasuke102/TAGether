@@ -64,10 +64,12 @@ export default class CategolyDetail extends React.Component<Props, state> {
           <textarea disabled={true} value={this.data.title} id={css.title} />
 
           <div className={css.updated_at}>
-            <div className='fas fa-clock'></div>
+            <span className='fas fa-clock'></span>
             <p>{this.data.updated_at}</p>
           </div>
+
           <Tag tag={this.data.tag} />
+
           <textarea disabled={true} value={this.data.desc} id={css.desc} />
 
           {/* シャッフルするかどうかを決めるチェックボックス */}
