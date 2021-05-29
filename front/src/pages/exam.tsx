@@ -16,7 +16,7 @@ import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ExamTable from '../components/ExamTableComponent';
-import { AddExamHistory } from '../ts/ManageDB';
+import { AddExamHistory, GetSpecifiedExamHistory } from '../ts/ManageDB';
 import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
@@ -32,7 +32,8 @@ enum NextButtonState {
 interface Props {
   data: Categoly[],
   shuffle: boolean,
-  id: number
+  id: number,
+  history_id?: string
 }
 interface State {
   index: number,
@@ -57,16 +58,32 @@ export default class exam extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+
+    this.exam = [];
+    this.title = '';
+    // 間違えた問題のやり直しであれば
+    if (props.history_id) {
+      GetSpecifiedExamHistory(props.history_id).then((result) => {
+        if (result) {
+          this.title = `やり直し: ${result.title}`;
+          this.exam = result.wrong_exam;
+        }
+      })
+    } else {
+      // 通常カテゴリであれば
+      this.title = this.props.data[0].title;
+      this.exam = JSON.parse(this.props.data[0].list);
+    }
+    console.log(this.exam);
+
     this.exam_history = {
       id: this.props.id,
+      title: this.title,
       date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       correct_count: 0, total_question: 0,
       wrong_exam: []
     }
     this.ref = React.createRef();
-    // 問題の取得
-    this.title = this.props.data[0].title;
-    this.exam = JSON.parse(this.props.data[0].list);
     // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
       for (let i = this.exam.length - 1; i > 0; i--) {
@@ -479,12 +496,21 @@ export default class exam extends React.Component<Props, State> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  if (context.query.history_id != undefined) {
+    return {
+      props: {
+        data: [], id: -1,
+        shuffle: (context.query.shuffle === 'true'),
+        history_id: context.query.history_id
+      }
+    }
+  }
   const id = (context.query.id == undefined) ? -1 : Number(context.query.id)
   const res = await fetch(process.env.API_URL + '?id=' + id);
   const data = await res.json();
   const props: Props = {
     data: data,
-    shuffle: (context.query.shuffle == 'true') ? true : false,
+    shuffle: (context.query.shuffle === 'true'),
     id: id
   };
   return { props: props };

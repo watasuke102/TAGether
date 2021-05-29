@@ -40,7 +40,7 @@ export function ClearExamHistory() {
 }
 
 export function GetSpecifiedExamHistory(key: string) {
-  return ExamHisotryInstance().getItem(key).then(result => {
+  return ExamHisotryInstance().getItem<ExamHistory>(key).then(result => {
     return result;
   })
 }
