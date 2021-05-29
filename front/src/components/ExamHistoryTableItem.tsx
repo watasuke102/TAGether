@@ -31,6 +31,9 @@ export default function ExamHistoryTableItem(props: Props) {
     close: () => setIsModalOpen(false),
   };
   const rate = Math.round((props.item.correct_count / props.item.total_question) * 10000) / 100;
+
+
+
   return (
     <tr>
       <td>{props.item.date}</td>
@@ -44,10 +47,14 @@ export default function ExamHistoryTableItem(props: Props) {
       <td>{isNaN(rate) ? 0 : rate}%</td>
 
       <div className={css.button}>
-        <Button {...{
-          text: '解き直し', icon: 'fas fa-edit', type: 'material',
-          onClick: () => Router.push(`/exam?history_id=${props.item.history_key ?? null}`)
-        }} />
+        {(props.item.wrong_exam.length === 0) ?
+          <p>全問正解しています</p>
+          :
+          <Button {...{
+            text: '解き直し', icon: 'fas fa-edit', type: 'material',
+            onClick: () => Router.push(`/exam?history_id=${props.item.history_key ?? null}`)
+          }} />
+        }
       </div>
 
       <Modal {...modalData} />
