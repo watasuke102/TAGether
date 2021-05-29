@@ -143,6 +143,7 @@ export default class exam extends React.Component<Props, State> {
         for (let i = 0; i < exam_length; i++) {
           answers[i] = Array<string>(max_answer).fill('');
         }
+
         // 同じ処理おわり //
         this.setState({
           exam: exam, title: `やり直し: ${result.title}`,

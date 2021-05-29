@@ -30,10 +30,7 @@ export function GetExamHistory() {
   let result: ExamHistory[] = [];
   return ExamHisotryInstance().iterate((value: ExamHistory, key: string) => {
     result.push({ history_key: key, ...value });
-  }).then(() => {
-    // 日付が新しい順にして返す
-    return result.reverse();
-  })
+  }).then(() => { return result; })
 }
 export function ClearExamHistory() {
   return ExamHisotryInstance().clear();

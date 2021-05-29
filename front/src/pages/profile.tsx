@@ -25,8 +25,22 @@ export default function profile(props: Props) {
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
+
+  const InitExamHistory = () => {
+    GetExamHistory().then(res => {
+      res.sort((_a, _b) => {
+        const a = Number(_a.history_key);
+        const b = Number(_b.history_key);
+        if (a < b) return 1;
+        if (a > b) return -1;
+        return 0;
+      });
+      SetHistoryList(res)
+    })
+  }
+
   React.useEffect(() => {
-    GetExamHistory().then(res => SetHistoryList(res))
+    InitExamHistory();
     GetFavorite().then(res => SetFavoriteList(res))
   }, []);
 
@@ -43,9 +57,7 @@ export default function profile(props: Props) {
           }} />
           <Button {...{
             onClick: () => {
-              ClearExamHistory().then(() =>
-                GetExamHistory().then(res => SetHistoryList(res))
-              );
+              ClearExamHistory().then(InitExamHistory);
               SetIsModalOpen(false);
             },
             type: 'filled', icon: 'fas fa-trash-alt', text: '削除する',
