@@ -9,6 +9,7 @@
 import Exam from './Exam';
 
 export default interface ExamHistory {
+  history_key?: string
   id: number,
   date: string,
   total_question: number,

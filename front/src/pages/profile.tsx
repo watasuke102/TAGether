@@ -72,13 +72,16 @@ export default function profile(props: Props) {
         </div>
 
         <h2>解答履歴</h2>
-        <Button {...{
-          text: '履歴を全消去', icon: 'fas fa-trash-alt',
-          onClick: () => SetIsModalOpen(true), type: 'material-like'
-        }} />
+        <div className={css.allclear_button}>
+          <Button {...{
+            text: '履歴を全消去', icon: 'fas fa-trash-alt',
+            onClick: () => SetIsModalOpen(true), type: 'filled'
+          }} />
+        </div>
+
         <table>
           <tr>
-            <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th>
+            <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th> <th>間違えた問題を解く</th>
           </tr>
           {
             history_list.map(item => {

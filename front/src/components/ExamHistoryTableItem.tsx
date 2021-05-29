@@ -10,10 +10,12 @@
 import css from '../style/ExamHistoryTableItem.module.scss';
 import React from 'react';
 import Modal from '../components/Modal';
+import Button from '../components/Button';
 import Detail from '../components/CategolyDetail';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
+import Router from 'next/router';
 
 interface Props {
   categoly: Categoly,
@@ -32,11 +34,22 @@ export default function ExamHistoryTableItem(props: Props) {
   return (
     <tr>
       <td>{props.item.date}</td>
+
       <p className={css.categoly_link} onClick={() => { console.log('categoly is', props.categoly); setIsModalOpen(true) }}>
         {props.categoly.title}
       </p>
+
       <td>{props.item.total_question}問中{props.item.correct_count}問正解</td>
+
       <td>{isNaN(rate) ? 0 : rate}%</td>
+
+      <div className={css.button}>
+        <Button {...{
+          text: '解き直し', icon: 'fas fa-edit', type: 'material',
+          onClick: () => Router.push(`/exam?history_id=${props.item.history_key ?? null}`)
+        }} />
+      </div>
+
       <Modal {...modalData} />
     </tr>
   );

@@ -46,13 +46,16 @@ export default class CategolyDetail extends React.Component<Props, state> {
 
   Push(s: string) {
     let url: string = ''
-    if (s == 'edit') {
-      url = '/edit?id=' + this.data.id;
-    } else if (s == 'exam') {
-      url = '/exam?id=' + this.data.id;
-      url += '&shuffle=' + this.state.isShuffleEnabled;
-    } else {
-      url = '/examtable?id=' + this.data.id;
+    switch (s) {
+      case 'edit':
+        url = `/edit?id=${this.data.id}`;
+        break;
+      case 'exam':
+        url = `/exam?id=${this.data.id}&shuffle=${this.state.isShuffleEnabled}`;
+        break;
+      default:
+        url = `/examtable?id=${this.data.id}`;
+        break;
     }
     Router.push(url);
   };

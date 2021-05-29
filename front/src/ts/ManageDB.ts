@@ -28,11 +28,12 @@ export function AddExamHistory(item: ExamHistory) {
 }
 export function GetExamHistory() {
   let result: ExamHistory[] = [];
-  return ExamHisotryInstance().iterate((value: ExamHistory) => { result.push(value); })
-    .then(() => {
-      // 日付が新しい順にして返す
-      return result.reverse();
-    })
+  return ExamHisotryInstance().iterate((value: ExamHistory, key: string) => {
+    result.push({ history_key: key, ...value });
+  }).then(() => {
+    // 日付が新しい順にして返す
+    return result.reverse();
+  })
 }
 export function ClearExamHistory() {
   return ExamHisotryInstance().clear();
