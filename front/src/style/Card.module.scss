@@ -7,6 +7,11 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+
+.container {
+  display: flex;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -40,31 +45,31 @@
 }
 
 .title {
-  height: 100%;
   overflow-wrap: break-word;
   font-weight: bold;
   font-size: 25px;
   margin: 5px 0 0;
-  border-bottom: 2px solid #dbdbdb;
 }
 
-.desc_container {
+.bottom_items {
   margin-top: auto;
-}
-.desc {
-  overflow-wrap: break-word;
-  font-size: 15px
-}
+  border-top: 2px solid #dbdbdb;
 
-.favorite_button {
-  // お気に入りボタンがでかくなるのを防ぐ
-  width: 0;
-  margin-top: auto;
-  font-size: 1.6em;
-  // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
-  @media screen and (min-width: 800px) {
-    span:hover {
-      color: #d5f719;
+  .desc {
+    overflow-wrap: break-word;
+    font-size: 15px
+  }
+  
+  .favorite_button {
+    // お気に入りボタンがでかくなるのを防ぐ
+    width: 0;
+    margin-top: auto;
+    font-size: 1.6em;
+    // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
+    @media screen and (min-width: 800px) {
+      span:hover {
+        color: #d5f719;
+      }
     }
   }
 }

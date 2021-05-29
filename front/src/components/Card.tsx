@@ -41,20 +41,26 @@ export default function ExamCard(props: Categoly) {
 
   return (
     <>
-      <div className={css.card} onClick={() => { setIsModalOpen(true) }}>
-        <p className={css.title}>{title}</p>
-        <p className={css.desc}> {desc} </p>
-        <Tag tag={props.tag} />
-        <div
-          className={css.favorite_button}
-          style={{ color: favorite_status ? '#c2eb2f' : '#eee' }}
-          onClick={(e) => {
-            e.stopPropagation();
-            UpdateFavorite(props.id ?? -1);
-            SetFavoriteStatus(!favorite_status);
-          }}
-        >
-          <span className='fas fa-star' />
+      <div className={css.container}>
+        <div className={css.card} onClick={() => { setIsModalOpen(true) }}>
+          <p className={css.title}>{title}</p>
+
+          <div className={css.bottom_items}>
+            <p className={css.desc}> {desc} </p>
+            <Tag tag={props.tag} />
+            <div
+              className={css.favorite_button}
+              style={{ color: favorite_status ? '#c2eb2f' : '#eee' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                UpdateFavorite(props.id ?? -1);
+                SetFavoriteStatus(!favorite_status);
+              }}
+            >
+              <span className='fas fa-star' />
+            </div>
+          </div>
+
         </div>
       </div>
 
