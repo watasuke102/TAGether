@@ -29,8 +29,8 @@ export default function profile(props: Props) {
   const InitExamHistory = () => {
     GetExamHistory().then(res => {
       res.sort((_a, _b) => {
-        const a = Number(_a.history_key);
-        const b = Number(_b.history_key);
+        const a = Number(_a.history_key ?? '');
+        const b = Number(_b.history_key ?? '');
         if (a < b) return 1;
         if (a > b) return -1;
         return 0;
