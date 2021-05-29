@@ -60,7 +60,8 @@ export default class exam extends React.Component<Props, State> {
     this.exam_history = {
       id: this.props.id,
       date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-      correct_count: 0, total_question: 0
+      correct_count: 0, total_question: 0,
+      wrong_exam: []
     }
     this.ref = React.createRef();
     // 問題の取得
@@ -164,15 +165,19 @@ export default class exam extends React.Component<Props, State> {
       this.total_questions++;
     });
 
-    // 全問不正解の場合
-    if (result.correctAnswerCount == 0) {
-      result.order = 2;
-    } else if (result.correctAnswerCount == this.exam[index].answer.length) {
-      // 全問正解
+    // 全問正解
+    if (result.correctAnswerCount == this.exam[index].answer.length) {
       result.order = 0;
     } else {
-      // 部分正解
-      result.order = 1
+      // 1問でも間違っていたら、間違えた問題リストに追加
+      this.exam_history.wrong_exam.push(this.exam[index]);
+      // 全問不正解の場合
+      if (result.correctAnswerCount == 0) {
+        result.order = 2;
+      } else {
+        // 部分正解
+        result.order = 1
+      }
     }
     let tmp = this.state.examState;
     tmp[index] = result;
