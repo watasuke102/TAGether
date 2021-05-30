@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import React from 'react';
-import CheckBox from './CheckBox'
+import CheckBox from './CheckBox';
 
 interface Props {
   status: string,
@@ -15,15 +15,15 @@ interface Props {
   onChange: Function,
 }
 
-export default function SelectBox(props: Props) {
+export default function SelectBox(props: Props): React.ReactElement {
   return (
     <>
       {
         props.list.map(str => {
           return (
-            <CheckBox status={props.status === str} desc={str}
+            <CheckBox key={str} status={props.status === str} desc={str}
               onChange={() => props.onChange(str)} />
-          )
+          );
         })
       }
     </>

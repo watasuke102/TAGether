@@ -23,18 +23,20 @@ import EditCategolyPageState from '../types/EditCategolyPageState';
 
 // デフォルト値
 function categoly_default() {
-  let tmp: Categoly = {
+  const tmp: Categoly = {
     id: 0, updated_at: '', title: '',
     desc: '', tag: '', list: ''
-  }
+  };
   return tmp;
 }
 function exam_default() {
-  let tmp: Exam[] = [];
+  const tmp: Exam[] = [];
   tmp.push({ question: '', answer: Array<string>(1).fill('') });
   return tmp;
 }
 
+// TODO: どうにかならないかなぁ
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 export default class create extends React.Component<any, EditCategolyPageState> {
   private bottom;
   private top;
@@ -46,14 +48,14 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     buttons: [
       {
         type: 'material', icon: 'fas fa-plus', text: '新規カテゴリを追加',
-        onClick: () => this.setState({
+        onClick: (): void => this.setState({
           isModalOpen: false,
           categoly: categoly_default(), exam: exam_default()
         })
       },
       {
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
-        onClick: () => Router.push('/list')
+        onClick: (): Promise<boolean> => Router.push('/list')
       }
     ]
   }
@@ -67,56 +69,56 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       exam: exam_default(),
       isModalOpen: false, res_result: '',
       showConfirmBeforeLeave: true
-    }
+    };
   }
   // ページ移動時に警告
-  ShowAlertBeforeLeave() {
-    if (!window.confirm("変更は破棄されます。ページを移動してもよろしいですか？")) {
+  ShowAlertBeforeLeave(): void {
+    if (!window.confirm('変更は破棄されます。ページを移動してもよろしいですか？')) {
       throw new Error('canceled');
     }
   }
-  BeforeUnLoad = e => {
+  BeforeUnLoad = (e: BeforeUnloadEvent): void => {
     if (!this.state.showConfirmBeforeLeave) return;
     e.preventDefault();
-    e.returnValue = "変更は破棄されます。ページを移動してもよろしいですか？";
+    e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
   }
 
-  RouterEventOn() {
+  RouterEventOn(): void {
     Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
   }
-  RouterEventOff() {
+  RouterEventOff(): void {
     Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
   }
-  componentDidMount() {
+  componentDidMount(): void {
     window.addEventListener('beforeunload', this.BeforeUnLoad);
     this.RouterEventOn();
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     window.removeEventListener('beforeunload', this.BeforeUnLoad);
     this.RouterEventOff();
   }
 
   // カテゴリ登録
-  RegistExam() {
+  RegistExam(): void {
     if (this.state.categoly.tag.split(',').length > 8) {
-      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タグは合計8個以下にしてください"}' })
+      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タグは合計8個以下にしてください"}' });
       return;
     }
     if (this.state.categoly.title == '') {
-      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タイトルを設定してください"}' })
+      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タイトルを設定してください"}' });
       return;
     }
     let f: boolean = false;
     this.state.exam.forEach(e => {
       if (e.question == '') {
         f = true;
-        this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"問題文が入力されていない欄があります"}' })
+        this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"問題文が入力されていない欄があります"}' });
         return;
       }
       e.answer.forEach(answer => {
         if (answer == '') {
           f = true;
-          this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"答えが入力されていない欄があります"}' })
+          this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"答えが入力されていない欄があります"}' });
           return;
         }
       });
@@ -126,7 +128,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const tmp: Categoly = this.state.categoly;
     const categoly = {
       id: tmp.id, title: tmp.title, desc: tmp.desc, tag: tmp.tag, list: exam
-    }
+    };
 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
@@ -139,10 +141,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           this.setState({ showConfirmBeforeLeave: false });
         }
       }
-    }
+    };
     const url = process.env.API_URL;
     if (url == undefined) {
-      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"失敗しました: URL is undefined"}' })
+      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"失敗しました: URL is undefined"}' });
       return;
     }
     categoly.list = categoly.list.replace(/\\n/g, '\\\\n');
@@ -151,13 +153,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     req.send(JSON.stringify(categoly));
     console.log('DEBUG: ' + JSON.stringify(categoly));
   }
-  FinishedRegist(str: string) {
+  FinishedRegist(str: string): void {
     this.setState({ isModalOpen: true, res_result: str });
   }
 
   // 問題を追加
-  AddExam(before: boolean) {
-    let tmp = this.state.exam;
+  AddExam(before: boolean): void {
+    const tmp = this.state.exam;
     if (before) {
       tmp.unshift({ question: '', answer: Array<string>(1).fill('') });
       // 追加した問題欄が表示されるように上にスクロール
@@ -170,17 +172,17 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     this.setState({ exam: tmp });
   }
   // 指定した位置に問題を追加
-  InsertExam(i: number) {
+  InsertExam(i: number): void {
     // 追加する空要素
     const item = { question: '', answer: Array<string>(1).fill('') };
 
-    let result = this.state.exam;
+    const result = this.state.exam;
     result.splice(i, 0, item);
     this.setState({ exam: result });
   }
   // exam[i]とexam[i+moveto]を入れ替え
-  SwapExam(i: number, moveto: number) {
-    let result = this.state.exam;
+  SwapExam(i: number, moveto: number): void {
+    const result = this.state.exam;
     const tmp = result[i];
     result[i] = result[i + moveto];
     result[i + moveto] = tmp;
@@ -188,27 +190,27 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   // 答え欄を追加
-  AddAnswer(i: number) {
-    let tmp = this.state.exam;
+  AddAnswer(i: number): void {
+    const tmp = this.state.exam;
     tmp[i].answer.push('');
     this.setState({ exam: tmp });
   }
-  RemoveExam(i: number) {
-    let tmp = this.state.exam;
+  RemoveExam(i: number): void {
+    const tmp = this.state.exam;
     // tmp[i]から要素を1つ削除
     tmp.splice(i, 1);
     this.setState({ exam: tmp });
   }
-  RemoveAnswer(i: number, j: number) {
-    let tmp = this.state.exam;
+  RemoveAnswer(i: number, j: number): void {
+    const tmp = this.state.exam;
     // tmp[i]から要素を1つ削除
     tmp[i].answer.splice(j, 1);
     this.setState({ exam: tmp });
   }
 
   // state更新
-  UpdateCategoly(type: string, str: string) {
-    let tmp = this.state.categoly;
+  UpdateCategoly(type: string, str: string): void {
+    const tmp = this.state.categoly;
     switch (type) {
       case 'title': tmp.title = str; break;
       case 'desc': tmp.desc = str; break;
@@ -216,8 +218,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     this.setState({ categoly: tmp });
   }
-  UpdateExam(type: string, str: string, i: number, j: number) {
-    let tmp = this.state.exam;
+  UpdateExam(type: string, str: string, i: number, j: number): void {
+    const tmp = this.state.exam;
     if (type == 'question') {
       tmp[i].question = str;
     }
@@ -228,7 +230,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   // 問題編集欄
-  DeleteButton(f: Function, isDeleteExam: boolean, i?: number) {
+  DeleteButton(f: Function, isDeleteExam: boolean, i?: number): React.ReactElement | undefined {
     // 問題欄の削除ボタンであれば、全体の問題数の合計が1のときは非表示
     if (isDeleteExam) {
       if (this.state.exam.length == 1)
@@ -247,11 +249,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       }} />
     );
   }
-  ExamEditForm() {
-    let obj: object[] = [];
+  ExamEditForm(): React.ReactElement[] {
+    const obj: React.ReactElement[] = [];
     this.state.exam.forEach((e, i) => {
       // 答え欄の生成
-      let answer_form: object[] = [];
+      const answer_form: React.ReactElement[] = [];
       e.answer.forEach((answer, j) => {
         answer_form.push(
           <div className={css.answer_area}>
@@ -262,8 +264,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
             <div className={css.answer_area_buttons}>
               {/* 問題の追加/削除 */}
               <Button {...{
-                text: '追加', icon: "fas fa-plus",
-                onClick: () => this.AddAnswer(i), type: "material"
+                text: '追加', icon: 'fas fa-plus',
+                onClick: () => this.AddAnswer(i), type: 'material'
               }} />
               {/* 答え欄削除ボタン */}
               {
@@ -271,8 +273,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
               }
             </div>
           </div>
-        )
-      })
+        );
+      });
 
       // 問題文と答え欄
       obj.push(
@@ -281,13 +283,13 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           <div className={css.move_button}>
             {
               (i != 0) && <Button {...{
-                text: '1つ上に移動', icon: "fas fa-caret-up",
-                onClick: () => this.SwapExam(i, -1), type: "material"
+                text: '1つ上に移動', icon: 'fas fa-caret-up',
+                onClick: () => this.SwapExam(i, -1), type: 'material'
               }} />
             }
             <Button {...{
-              text: '1つ上に追加', icon: "fas fa-plus",
-              onClick: () => this.InsertExam(i), type: "material"
+              text: '1つ上に追加', icon: 'fas fa-plus',
+              onClick: () => this.InsertExam(i), type: 'material'
             }} />
           </div>
 
@@ -313,25 +315,25 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           <div className={css.move_button}>
             {
               (i != this.state.exam.length - 1) && <Button {...{
-                text: '1つ下に移動', icon: "fas fa-caret-down",
-                onClick: () => this.SwapExam(i, 1), type: "material"
+                text: '1つ下に移動', icon: 'fas fa-caret-down',
+                onClick: () => this.SwapExam(i, 1), type: 'material'
               }} />
             }
             <Button {...{
-              text: '1つ下に追加', icon: "fas fa-plus",
-              onClick: () => this.InsertExam(i + 1), type: "material"
+              text: '1つ下に追加', icon: 'fas fa-plus',
+              onClick: () => this.InsertExam(i + 1), type: 'material'
             }} />
           </div>
 
           <hr />
         </div>
       );
-    })
+    });
     return obj;
   }
 
   // モーダルウィンドウの中身
-  RegistResult(string_only?: boolean) {
+  RegistResult(string_only?: boolean): React.ReactElement {
     let result;
     if (this.state.res_result != '') {
       result = JSON.parse(this.state.res_result);
@@ -357,8 +359,8 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       return message;
     }
 
-    let button: object[] = [];
-    button_info.forEach(e => { button.push(<Button {...e} />) });
+    const button: React.ReactElement[] = [];
+    button_info.forEach(e => { button.push(<Button {...e} />); });
     return (
       <div className={css.window}>
         <p>{message}</p>
@@ -369,7 +371,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     );
   }
 
-  render() {
+  render(): React.ReactElement {
     // Modalに渡す用のデータ
     const modalData: ModalData = {
       body: this.RegistResult(),
@@ -383,7 +385,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <h1>{this.text.heading}</h1>
 
         <ul>
-          <li>記号 " は使用できません </li>
+          <li>記号 &quot; は使用できません </li>
           <li>
             記号 \ を表示したいときは \\ のように入力してください<br />
             \\ 以外で記号 \ を使用しないでください。問題を開けなくなります
@@ -420,16 +422,16 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
-              text: "下に追加", icon: "fas fa-arrow-down",
-              onClick: () => this.AddExam(false), type: "material"
+              text: '下に追加', icon: 'fas fa-arrow-down',
+              onClick: () => this.AddExam(false), type: 'material'
             }} />
             <Button {...{
-              text: "上に追加", icon: "fas fa-arrow-up",
-              onClick: () => this.AddExam(true), type: "material"
+              text: '上に追加', icon: 'fas fa-arrow-up',
+              onClick: () => this.AddExam(true), type: 'material'
             }} />
             <Button {...{
-              text: '適用', icon: "fas fa-check",
-              onClick: () => this.RegistExam(), type: "filled"
+              text: '適用', icon: 'fas fa-check',
+              onClick: () => this.RegistExam(), type: 'filled'
             }} />
           </div>
         </div>

@@ -16,9 +16,9 @@ function ExamHisotryInstance() {
     name: 'TAGether',
     storeName: 'history',
     description: '問題の解答履歴'
-  })
+  });
 }
-export function AddExamHistory(item: ExamHistory) {
+export function AddExamHistory(item: ExamHistory): void {
   const instance = ExamHisotryInstance();
   instance.keys().then(keys => {
     let key = Math.max(...keys.map(Number)) + 1;
@@ -26,20 +26,20 @@ export function AddExamHistory(item: ExamHistory) {
     instance.setItem(String(key), item);
   });
 }
-export function GetExamHistory() {
-  let result: ExamHistory[] = [];
+export function GetExamHistory(): Promise<ExamHistory[]> {
+  const result: ExamHistory[] = [];
   return ExamHisotryInstance().iterate((value: ExamHistory, key: string) => {
     result.push({ history_key: key, ...value });
-  }).then(() => { return result; })
+  }).then(() => { return result; });
 }
-export function ClearExamHistory() {
+export function ClearExamHistory(): Promise<void> {
   return ExamHisotryInstance().clear();
 }
 
-export function GetSpecifiedExamHistory(key: string) {
+export function GetSpecifiedExamHistory(key: string): Promise<ExamHistory | null> {
   return ExamHisotryInstance().getItem<ExamHistory>(key).then(result => {
     return result;
-  })
+  });
 }
 
 // お気に入りカテゴリ
@@ -49,16 +49,16 @@ function FavoriteInstance() {
     name: 'TAGether',
     storeName: 'favorite',
     description: 'お気に入り登録したカテゴリ'
-  })
+  });
 }
-export function GetFavorite() {
+export function GetFavorite(): Promise<number[]> {
   return FavoriteInstance().getItem<number[]>('main')
     .then((value) => {
       const result = value ?? [];
       return result;
     });
 }
-export function UpdateFavorite(target: number) {
+export function UpdateFavorite(target: number): void {
   GetFavorite().then(res => {
     const place = res.indexOf(target);
     let result = res;
@@ -70,5 +70,5 @@ export function UpdateFavorite(target: number) {
       result = res.filter(n => n !== target);
     }
     FavoriteInstance().setItem('main', result);
-  })
+  });
 }

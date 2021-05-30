@@ -13,7 +13,7 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ModalData from '../types/ModalData';
 
-export default function index() {
+export default function index(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
 
@@ -23,10 +23,10 @@ export default function index() {
     req.onreadystatechange = () => {
       SetRequest('');
       SetIsModalOpen(true);
-    }
+    };
     req.open('POST', process.env.API_URL + '/request.php?body=' + request);
     req.send();
-  }
+  };
 
   const modalData: ModalData = {
     isOpen: isModalOpen,
@@ -40,7 +40,7 @@ export default function index() {
         }} />
       </div>
     )
-  }
+  };
 
   return (
     <div>

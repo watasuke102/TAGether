@@ -21,7 +21,7 @@ import ExamHistory from '../types/ExamHistory';
 
 interface Props { data: Categoly[] }
 
-export default function profile(props: Props) {
+export default function profile(props: Props): React.ReactElement {
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
@@ -35,13 +35,13 @@ export default function profile(props: Props) {
         if (a > b) return -1;
         return 0;
       });
-      SetHistoryList(res)
-    })
-  }
+      SetHistoryList(res);
+    });
+  };
 
   React.useEffect(() => {
     InitExamHistory();
-    GetFavorite().then(res => SetFavoriteList(res))
+    GetFavorite().then(res => SetFavoriteList(res));
   }, []);
 
   const modalData: ModalData = {
@@ -78,7 +78,7 @@ export default function profile(props: Props) {
             props.data
               .filter(a => favorite_list.includes(a.id ?? -1))
               .map(item => {
-                return <CategolyCard {...item} />
+                return <CategolyCard key={item.title} {...item} />;
               })
           }
         </div>
@@ -99,7 +99,7 @@ export default function profile(props: Props) {
             history_list.map(item => {
               const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
               if (categoly === undefined) return <></>;
-              return <HistoryTable categoly={categoly} item={item} />
+              return <HistoryTable key={item.title} categoly={categoly} item={item} />;
             })
           }
         </table>
@@ -112,13 +112,13 @@ export default function profile(props: Props) {
 
 
 // APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   let data;
   try {
     const res = await fetch(process.env.API_URL ?? '');
     data = await res.json();
   } catch {
-    data = []
+    data = [];
   }
   return { props: { data } };
-}
+};

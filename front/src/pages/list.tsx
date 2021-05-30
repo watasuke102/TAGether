@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/list.module.scss'
+import css from '../style/list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
@@ -21,12 +21,12 @@ import ButtonInfo from '../types/ButtonInfo';
 interface Props { data: Categoly[] }
 
 
-export default function list(props: Props) {
+export default function list(props: Props): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
 
-  let cards: object[] = [];
+  let cards: React.ReactElement[] = [];
   const list: Categoly[] = props.data;
 
   // カードの生成
@@ -72,7 +72,7 @@ export default function list(props: Props) {
         <p id={css.create_new}>新規作成</p>
       </div>
     );
-  }
+  };
 
   CreateCards();
 
@@ -84,7 +84,7 @@ export default function list(props: Props) {
       CreateCards();
       SetNewerFirst(!newer_first);
     }
-  }
+  };
 
   return (
     <>
@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const res = await fetch(process.env.API_URL + query);
     data = await res.json();
   } catch {
-    data = []
+    data = [];
   }
   return { props: { data } };
-}
+};

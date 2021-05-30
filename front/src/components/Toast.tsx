@@ -16,7 +16,7 @@ interface Props {
   stateChange: Function
 }
 
-export default function Toast(props: Props) {
+export default function Toast(props: Props): React.ReactElement {
   React.useEffect(() => {
     if (!props.isOpen) return;
 

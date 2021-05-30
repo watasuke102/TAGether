@@ -11,8 +11,8 @@ import React from 'react';
 
 interface TagData { tag: string }
 
-export default function Tag(props: TagData) {
-  let tags: object[] = [];
+export default function Tag(props: TagData): React.ReactElement {
+  const tags: React.ReactElement[] = [];
   props.tag.split(',').forEach(e => {
     tags.push(<div className={css.tag}>{e}</div>);
   });

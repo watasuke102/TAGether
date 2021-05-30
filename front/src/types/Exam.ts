@@ -6,7 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-export default interface Exam {
-  question: string,
-  answer: string[],
+interface Exam {
+  question: string
+  answer:   string[]
 }
+
+export default Exam;

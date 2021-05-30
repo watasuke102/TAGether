@@ -15,7 +15,7 @@ interface Props {
   onChange: Function,
 }
 
-export default function CheckBox(props: Props) {
+export default function CheckBox(props: Props): React.ReactElement {
   return (
     <div className={css.container} onClick={() => props.onChange(!props.status)}>
       <div className={`${css.box} ${props.status ? css.box_checked : css.box_not_checked}`} >

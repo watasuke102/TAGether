@@ -15,7 +15,7 @@ import FavoriteStar from './FavoriteStar';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 
-export default function ExamCard(props: Categoly) {
+export default function ExamCard(props: Categoly): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   // Modalに渡す用のデータ
   const modalData: ModalData = {
@@ -38,7 +38,7 @@ export default function ExamCard(props: Categoly) {
   return (
     <>
       <div className={css.container}>
-        <div className={css.card} onClick={() => { setIsModalOpen(true) }}>
+        <div className={css.card} onClick={() => setIsModalOpen(true)}>
           <p className={css.title}>{title}</p>
 
           <div className={css.bottom_items}>

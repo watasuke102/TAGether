@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/CategolyDetail.module.scss'
+import css from '../style/CategolyDetail.module.scss';
 import React from 'react';
 import Router from 'next/router';
 import Tag from './Tag';
@@ -33,19 +33,19 @@ export default class CategolyDetail extends React.Component<Props, state> {
   }
 
   // スマホ対策
-  UpdateContainersHeight() {
+  UpdateContainersHeight(): void {
     document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100 * 90) + 'px');
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     window.addEventListener('resize', this.UpdateContainersHeight);
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     window.removeEventListener('resize', this.UpdateContainersHeight);
   }
 
-  Push(s: string) {
-    let url: string = ''
+  Push(s: string): void {
+    let url: string = '';
     switch (s) {
       case 'edit':
         url = `/edit?id=${this.data.id}`;
@@ -58,9 +58,9 @@ export default class CategolyDetail extends React.Component<Props, state> {
         break;
     }
     Router.push(url);
-  };
+  }
 
-  render() {
+  render(): React.ReactElement {
     return (
       <>
         <div className={css.container}>

@@ -6,9 +6,11 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-export default interface ButtonInfo {
-  type:    string,
-  icon:    string,
-  text:    string,
+interface ButtonInfo {
+  type:    string
+  icon:    string
+  text:    string
   onClick: Function
 }
+
+export default ButtonInfo;

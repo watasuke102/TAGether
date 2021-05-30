@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/exam.module.scss'
+import css from '../style/exam.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
@@ -76,20 +76,20 @@ export default class exam extends React.Component<Props, State> {
       date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       correct_count: 0, total_question: 0,
       wrong_exam: []
-    }
+    };
     this.ref = React.createRef();
     // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
       for (let i = exam.length - 1; i > 0; i--) {
-        var r = Math.floor(Math.random() * (i + 1));
-        var tmp = exam[i];
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = exam[i];
         exam[i] = exam[r];
         exam[r] = tmp;
       }
     }
     // 解答状況の初期化
     const exam_length = exam.length;
-    let exam_state: ExamState[] = Array<ExamState>();
+    const exam_state: ExamState[] = Array<ExamState>();
     let max_answer = 1;
     for (let i = 0; i < exam_length; i++) {
       exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
@@ -98,7 +98,7 @@ export default class exam extends React.Component<Props, State> {
       }
     }
     // 解答欄の初期化
-    let answers: string[][] = Array<Array<string>>(exam_length);
+    const answers: string[][] = Array<Array<string>>(exam_length);
     for (let i = 0; i < exam_length; i++) {
       answers[i] = Array<string>(max_answer).fill('');
     }
@@ -112,25 +112,25 @@ export default class exam extends React.Component<Props, State> {
     };
   }
 
-  InitWrongExamList() {
+  InitWrongExamList(): void {
     if (!process.browser) return;
     GetSpecifiedExamHistory(this.props.history_id ?? '').then((result) => {
       if (result) {
         // ここから下はコンストラクタとほぼ同じ処理をしてる //
 
         // Fisher-Yatesアルゴリズムで問題順シャッフル
-        let exam = result.wrong_exam;
+        const exam = result.wrong_exam;
         if (this.props.shuffle) {
           for (let i = exam.length - 1; i > 0; i--) {
-            var r = Math.floor(Math.random() * (i + 1));
-            var tmp = exam[i];
+            const r = Math.floor(Math.random() * (i + 1));
+            const tmp = exam[i];
             exam[i] = exam[r];
             exam[r] = tmp;
           }
         }
         // 解答状況の初期化
         const exam_length = result.wrong_exam.length;
-        let exam_state: ExamState[] = Array<ExamState>();
+        const exam_state: ExamState[] = Array<ExamState>();
         let max_answer = 1;
         for (let i = 0; i < exam_length; i++) {
           exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
@@ -139,7 +139,7 @@ export default class exam extends React.Component<Props, State> {
           }
         }
         // 解答欄の初期化
-        let answers: string[][] = Array<Array<string>>(exam_length);
+        const answers: string[][] = Array<Array<string>>(exam_length);
         for (let i = 0; i < exam_length; i++) {
           answers[i] = Array<string>(max_answer).fill('');
         }
@@ -150,11 +150,11 @@ export default class exam extends React.Component<Props, State> {
           answers: answers, examState: exam_state
         });
       }
-    })
+    });
   }
 
   // ショートカットキー
-  Shortcut(e) {
+  Shortcut(e: KeyboardEvent): void {
     // Ctrl+Shift+矢印キー等で動かす
     // キーリピートでの入力とウィンドウが表示されている場合は無効
     if (e.ctrlKey && e.shiftKey && !e.repeat && !this.state.isModalOpen) {
@@ -166,10 +166,10 @@ export default class exam extends React.Component<Props, State> {
       }
     }
   }
-  componentDidMount() {
+  componentDidMount(): void {
     window.addEventListener('keydown', e => this.Shortcut(e));
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     window.removeEventListener('keydown', e => this.Shortcut(e));
     // 間違えた問題のやり直しでない and 最後まで解いた
     // この条件を満たしているとき結果を保存する
@@ -180,7 +180,7 @@ export default class exam extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     // 結果表示、もしくは間違えた問題の読み込みが終了していなければ終了
     if (
       this.state.showExamStateTable ||
@@ -199,9 +199,9 @@ export default class exam extends React.Component<Props, State> {
   }
 
   // 解答が合っているかどうか確認してstateに格納
-  CheckAnswer() {
+  CheckAnswer(): void {
     const index = this.state.index;
-    let result: ExamState = { order: 0, checked: true, correctAnswerCount: 0, realAnswerList: [] };
+    const result: ExamState = { order: 0, checked: true, correctAnswerCount: 0, realAnswerList: [] };
     let correct: boolean = false;
     this.state.exam[index].answer.forEach((e, i) => {
       correct = false;
@@ -213,7 +213,7 @@ export default class exam extends React.Component<Props, State> {
           result.correctAnswerCount++;
           this.correct_answers++;
         }
-      })
+      });
       // 正しい解答をリストに追加
       const classname = (correct) ? '' : css.wrong;
       if (this.state.exam[index].answer.length == 1) {
@@ -235,17 +235,17 @@ export default class exam extends React.Component<Props, State> {
         result.order = 2;
       } else {
         // 部分正解
-        result.order = 1
+        result.order = 1;
       }
     }
-    let tmp = this.state.examState;
+    const tmp = this.state.examState;
     tmp[index] = result;
     this.setState({ examState: tmp });
   }
 
   // indexを増減する
-  SetIndex(i: number) {
-    let button_state = NextButtonState.show_answer
+  SetIndex(i: number): void {
+    let button_state = NextButtonState.show_answer;
     // 解答済みの問題だった場合
     if (this.state.examState[i].checked) {
       // 最後の問題であれば終了ボタン
@@ -261,7 +261,7 @@ export default class exam extends React.Component<Props, State> {
       nextButtonState: button_state
     });
   }
-  IncrementIndex() {
+  IncrementIndex(): void {
     switch (this.state.nextButtonState) {
       // 答えを表示、答え合わせをする
       case NextButtonState.show_answer:
@@ -283,38 +283,40 @@ export default class exam extends React.Component<Props, State> {
 
       // 終了ボタンを押したらモーダルウィンドウを表示
       case NextButtonState.finish_exam:
-        const rate = Math.round((this.correct_answers / this.total_questions) * 10000) / 100;
-        this.setState({ isModalOpen: true, correct_rate: rate });
+        this.setState({
+          isModalOpen: true,
+          correct_rate: Math.round((this.correct_answers / this.total_questions) * 10000) / 100
+        });
         break;
     }
   }
-  DecrementIndex() {
+  DecrementIndex(): void {
     if (this.state.index == 0) return;
     // indexの変更
     this.SetIndex(this.state.index - 1);
   }
 
   // ユーザーの入力（問題への解答）を配列に入れる
-  UpdateUsersResponse(event, i: number) {
-    let tmp = this.state.answers;
+  UpdateUsersResponse(event: React.ChangeEvent<HTMLTextAreaElement>, i: number): void {
+    const tmp = this.state.answers;
     tmp[this.state.index][i] = event.target.value;
     this.setState({ answers: tmp });
   }
 
 
   //解答欄
-  AnswerArea() {
+  AnswerArea(): React.ReactElement[] {
     const length = this.state.exam[this.state.index].answer.length;
-    let obj: object[] = [];
+    const obj: React.ReactElement[] = [];
     let label = '';
     for (let i = 0; i < length; i++) {
-      let tmp = this.state.answers[this.state.index][i];
+      const tmp = this.state.answers[this.state.index][i];
       // 入力欄のラベル
       label = '解答' + ((length == 1) ? '' : '(' + (i + 1) + ')');
       obj.push(
         <div className={css.form}> <Form {...{
           label: label, value: tmp, rows: 1, ref: (i == 0) ? this.ref : null,
-          onChange: (ev) => this.UpdateUsersResponse(ev, i),
+          onChange: ev => this.UpdateUsersResponse(ev, i),
           disabled: this.state.examState[this.state.index].checked
         }} /> </div>
       );
@@ -324,7 +326,7 @@ export default class exam extends React.Component<Props, State> {
 
   // 最初の要素だった場合はボタンを非表示に
   // 次へボタンを右に寄せて表示するため、divを返す
-  BackButton() {
+  BackButton(): React.ReactElement {
     if (this.state.index == 0) return (<div></div>);
     else return (
       <Button {...{
@@ -333,8 +335,8 @@ export default class exam extends React.Component<Props, State> {
       }} />
     );
   }
-  NextButton() {
-    let text: string, icon: string, type = 'material'
+  NextButton(): React.ReactElement {
+    let text: string, icon: string, type = 'material';
     switch (this.state.nextButtonState) {
       case NextButtonState.show_answer:
         text = '答え合わせ'; icon = 'far fa-circle';
@@ -355,8 +357,8 @@ export default class exam extends React.Component<Props, State> {
   }
 
   // 正解状況の表示
-  ShowExamState() {
-    let state: ExamState = this.state.examState[this.state.index];
+  ShowExamState(): React.ReactElement | undefined {
+    const state: ExamState = this.state.examState[this.state.index];
     if (!state.checked) return;
 
     const answer_length = this.state.exam[this.state.index].answer.length;
@@ -367,10 +369,10 @@ export default class exam extends React.Component<Props, State> {
       // 正解だった場合
       if (state.correctAnswerCount == 1) {
         icon = 'far fa-circle';
-        result = '正解'
+        result = '正解';
       } else {
         // 不正解だった場合
-        result = '不正解'
+        result = '不正解';
       }
     } else {
       // 問題が2つ以上だった場合は「n問正解」
@@ -378,7 +380,7 @@ export default class exam extends React.Component<Props, State> {
       if (state.correctAnswerCount == answer_length) {
         icon = 'far fa-circle';
       }
-      result = state.correctAnswerCount + '問正解'
+      result = state.correctAnswerCount + '問正解';
     }
     return (
       <div className={css.state_and_answer}>
@@ -395,7 +397,7 @@ export default class exam extends React.Component<Props, State> {
   }
 
   // 問題をとき終わったときに表示するウィンドウ
-  FinishWindow() {
+  FinishWindow(): React.ReactElement {
     return (
       <div className={css.window}>
         <h1>🎉問題終了🎉</h1>
@@ -424,7 +426,7 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  render(): React.ReactElement {
     // Modalに渡す用のデータ
     const modalData: ModalData = {
       body: this.FinishWindow(),
@@ -434,7 +436,7 @@ export default class exam extends React.Component<Props, State> {
 
     // 解答状況一覧を表示する
     if (this.state.showExamStateTable) {
-      let list: Object[] = [];
+      const list: React.ReactElement[] = [];
       let answers: string = '';
       this.state.exam.forEach(e => {
         answers = '';
@@ -443,13 +445,13 @@ export default class exam extends React.Component<Props, State> {
           <tr>
             <td>{
               e.question.split('\n').map(str => {
-                return (<> {str}<br /> </>)
+                return (<> {str}<br /> </>);
               })
             }</td>
             <td>{answers.slice(0, -2)}</td>
             <td></td>
           </tr>
-        )
+        );
       });
       return (
         <>
@@ -477,7 +479,7 @@ export default class exam extends React.Component<Props, State> {
               {/* 正しい答えの表示/非表示切り替え */}
               <Button {...{
                 onClick: () => this.setState(state => {
-                  return { showCorrectAnswer: !state.showCorrectAnswer }
+                  return { showCorrectAnswer: !state.showCorrectAnswer };
                 }),
                 type: 'material',
                 text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
@@ -513,7 +515,7 @@ export default class exam extends React.Component<Props, State> {
               <div><h2 id={css.mondai}>問題</h2></div>
               <div className={css.question_text}><p>{
                 this.state.exam[this.state.index].question.split('\n').map(str => {
-                  return (<> {str}<br /> </>)
+                  return (<> {str}<br /> </>);
                 })
               }</p></div>
             </div>
@@ -552,9 +554,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         shuffle: (context.query.shuffle === 'true'),
         history_id: context.query.history_id
       }
-    }
+    };
   }
-  const id = (context.query.id == undefined) ? -1 : Number(context.query.id)
+  const id = (context.query.id == undefined) ? -1 : Number(context.query.id);
   const res = await fetch(process.env.API_URL + '?id=' + id);
   const data = await res.json();
   const props: Props = {
@@ -563,4 +565,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     id: id
   };
   return { props: props };
-}
+};

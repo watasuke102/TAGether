@@ -13,11 +13,11 @@ import { UpdateFavorite, GetFavorite } from '../ts/ManageDB';
 
 interface Props { id: number }
 
-export default function FavoriteStar(props: Props) {
+export default function FavoriteStar(props: Props): React.ReactElement {
   const [favorite_status, SetFavoriteStatus] = React.useState(false);
   React.useEffect(() => {
     GetFavorite().then(res => SetFavoriteStatus(res.includes(props.id ?? -1)));
-  }, [])
+  }, []);
 
   const clicked = (e) => {
     e.stopPropagation();
@@ -54,7 +54,7 @@ export default function FavoriteStar(props: Props) {
           SetFavoriteStatus(!favorite_status);
         }
       });
-  }
+  };
 
   return (
     <div
@@ -64,5 +64,5 @@ export default function FavoriteStar(props: Props) {
     >
       <span className='fas fa-star' id={`icon-${props.id}`} />
     </div>
-  )
+  );
 }

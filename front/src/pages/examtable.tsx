@@ -31,15 +31,15 @@ export default class examtable extends React.Component<Props, States> {
     // Fisher-Yatesアルゴリズムらしい
     if (this.props.shuffle) {
       for (let i = this.exam.length - 1; i > 0; i--) {
-        var r = Math.floor(Math.random() * (i + 1));
-        var tmp = this.exam[i];
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = this.exam[i];
         this.exam[i] = this.exam[r];
         this.exam[r] = tmp;
       }
     }
-    this.state = { showCorrectAnswer: false }
+    this.state = { showCorrectAnswer: false };
   }
-  render() {
+  render(): React.ReactElement {
     return (
       <>
         <Helmet title={`問題一覧 : ${this.props.data[0].title} - TAGether`} />
@@ -50,13 +50,13 @@ export default class examtable extends React.Component<Props, States> {
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button {...{
-              text: "戻る", icon: "fas fa-undo",
-              onClick: Router.back, type: "material"
+              text: '戻る', icon: 'fas fa-undo',
+              onClick: Router.back, type: 'material'
             }} />
             {/* 正しい答えの表示/非表示切り替え */}
             <Button {...{
               onClick: () => this.setState(state => {
-                return { showCorrectAnswer: !state.showCorrectAnswer }
+                return { showCorrectAnswer: !state.showCorrectAnswer };
               }),
               type: 'material',
               text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
@@ -78,4 +78,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     shuffle: (context.query.shuffle == 'true') ? true : false
   };
   return { props: props };
-}
+};

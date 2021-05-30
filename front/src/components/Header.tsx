@@ -14,39 +14,41 @@ import ButtonInfo from '../types/ButtonInfo';
 
 interface State { isFixedButtons: boolean }
 
+// TODO: どうにかならないかなぁ
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 export default class Header extends React.Component<any, State> {
   constructor(props: State) {
     super(props);
-    this.state = { isFixedButtons: false }
+    this.state = { isFixedButtons: false };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     window.addEventListener('scroll', () => this.SetIsFixedButtons(), true);
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     window.removeEventListener('scroll', () => this.SetIsFixedButtons(), true);
   }
 
-  SetIsFixedButtons() {
+  SetIsFixedButtons(): void {
     if (!process.browser) return;
-    let isFixedButtons = false
+    let isFixedButtons = false;
     if (window.pageYOffset > 90) {
       isFixedButtons = true;
     }
     this.setState({ isFixedButtons: isFixedButtons });
   }
 
-  ButtonContainersCSS() {
+  ButtonContainersCSS(): string{
     if (!this.state.isFixedButtons) return css.buttons_container;
     return css.buttons_container_fixed;
   }
 
-  render() {
-    let info: ButtonInfo[] = [];
-    info.push({ text: "ホーム", icon: "fas fa-home", onClick: () => Router.push("/"), type: "icon_desc" });
-    info.push({ text: "カテゴリ一覧", icon: "fas fa-book", onClick: () => Router.push("/list"), type: "icon_desc" });
-    info.push({ text: "プロフィール", icon: "fas fa-user", onClick: () => Router.push("/profile"), type: "icon_desc" });
-    let button_list: object[] = [];
+  render(): React.ReactElement {
+    const info: ButtonInfo[] = [];
+    info.push({ text: 'ホーム', icon: 'fas fa-home', onClick: () => Router.push('/'), type: 'icon_desc' });
+    info.push({ text: 'カテゴリ一覧', icon: 'fas fa-book', onClick: () => Router.push('/list'), type: 'icon_desc' });
+    info.push({ text: 'プロフィール', icon: 'fas fa-user', onClick: () => Router.push('/profile'), type: 'icon_desc' });
+    const button_list: React.ReactElement[] = [];
     info.forEach(element => {
       button_list.push(<Button {...element} />);
     });

@@ -7,19 +7,22 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import React from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
+import { NextPageContext } from 'next';
 
-interface Props {code: number}
+interface Props { code: number | undefined }
 
 export default class Error extends React.Component<Props> {
-  static getInitialProps({ res, err }) {
-    const code = res ? res.statusCode : err ? err.statusCode : null;
-    return { code };
+  static getInitialProps({ res, err }: NextPageContext): Props {
+    const result: Props = {
+      code: res ? res.statusCode : err ? err.statusCode : undefined
+    };
+    return result;
   }
-  render() {
+  render(): React.ReactElement {
     return (
       <div>
-        <h1>エラーが発生しました: {this.props.code}</h1>
+        <h1>エラーが発生しました: {this.props.code ?? -1}</h1>
         <Link href="/">ホームに戻る</Link>
       </div>
     );

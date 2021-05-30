@@ -6,10 +6,12 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-export default interface ExamState {
+interface ExamState {
   // 0=全問正解、1=部分正解、2=全問不正解
-  order: number,
-  checked: boolean,
-  correctAnswerCount: number,
-  realAnswerList: object[],
+  order:              number
+  checked:            boolean
+  correctAnswerCount: number
+  realAnswerList:     React.ReactElement[]
 }
+
+export default ExamState;

@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Form.module.scss'
+import css from '../style/Form.module.scss';
 import React from 'react';
-import FormInfo from '../types/FormInfo'
+import FormInfo from '../types/FormInfo';
 
 // なんで動くのかよくわからん
 // focus()を消すと動作しなくなる
@@ -20,11 +20,11 @@ export default class Form extends React.Component<FormInfo> {
     this.ref = React.createRef();
   }
 
-  focus() {
+  focus(): void {
     this.ref.current.focus();
   }
 
-  render() {
+  render(): React.ReactElement {
     return (
       <div>
         <label className={css.label}>{this.props.label}</label>
@@ -32,6 +32,6 @@ export default class Form extends React.Component<FormInfo> {
           onChange={(e) => this.props.onChange(e)} disabled={this.props.disabled}
         />
       </div>
-    )
+    );
   }
 }

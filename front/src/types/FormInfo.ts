@@ -6,10 +6,12 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-export default interface FormInfo {
-  label:     string,
-  value:     string,
+interface FormInfo {
+  label:     string
+  value:     string
   rows:      number
-  disabled?: boolean,
+  disabled?: boolean
   onChange:  Function
 }
+
+export default FormInfo;

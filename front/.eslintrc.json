@@ -39,6 +39,23 @@
     "semi": [
       "error",
       "always"
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": [
+      "warn",
+      {
+        "allowDirectConstAssertionInArrowFunctions": false
+      }
+    ],
+    // 割り当てる前に～のエラーが出るのが嫌なので
+    "@typescript-eslint/no-inferrable-types": "off",
+    // なんで駄目なんですか
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "types": {
+          "Function": false
+        }
+      }
     ]
   }
 }

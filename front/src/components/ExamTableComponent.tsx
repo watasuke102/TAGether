@@ -30,9 +30,9 @@ export default class ExamTable extends React.Component<Props, State> {
       array.push(i);
     // examStateのorder順にソート
     if (this.props.examState) {
-      let first: number[] = [];
-      let second: number[] = [];
-      let third: number[] = array;
+      const first: number[] = [];
+      const second: number[] = [];
+      const third: number[] = array;
 
       this.props.examState.forEach((e, i) => {
         switch (e.order) {
@@ -48,7 +48,7 @@ export default class ExamTable extends React.Component<Props, State> {
     this.state = { array: array };
   }
 
-  ParseAnswers(e: string[], i: number) {
+  ParseAnswers(e: string[], i: number): string {
     let answers: string = '';
     const length = this.props.exam[i].answer.length;
     if (length == 1) {
@@ -60,7 +60,7 @@ export default class ExamTable extends React.Component<Props, State> {
     return answers;
   }
 
-  Status(i: number) {
+  Status(i: number): React.ReactElement | undefined {
     if (!this.props.examState || !this.props.answers) return;
     const ans = this.ParseAnswers(this.props.answers[i], i);
     // 正解or不正解、もしくはn問正解の表示
@@ -81,15 +81,15 @@ export default class ExamTable extends React.Component<Props, State> {
         }</td>
         <td>{correct_state}</td>
       </>
-    )
+    );
   }
 
-  RealAnswerList(e: Exam, i: number) {
+  RealAnswerList(e: Exam, i: number): React.ReactElement[] {
     if (this.props.examState) {
-      return this.props.examState[i].realAnswerList
+      return this.props.examState[i].realAnswerList;
     }
     const ans = this.ParseAnswers(e.answer, i);
-    let list: Object[] = [];
+    const list: React.ReactElement[] = [];
     // 一番最後に改行文字があるので、それを削除してから
     ans.slice(0, -1).split('\n').map(str => {
       list.push(<> {str}<br /> </>);
@@ -97,8 +97,8 @@ export default class ExamTable extends React.Component<Props, State> {
     return list;
   }
 
-  render() {
-    let list: Object[] = [];
+  render(): React.ReactElement {
+    const list: React.ReactElement[] = [];
     const exam = this.props.exam;
     this.state.array.forEach(i => {
       list.push(
@@ -113,11 +113,11 @@ export default class ExamTable extends React.Component<Props, State> {
           </td>
           {this.Status(i)}
         </tr>
-      )
+      );
     });
-    let state_th: object = <></>;
+    let state_th: React.ReactElement = <></>;
     if (this.props.examState && this.props.answers)
-      state_th = <><th>自分の解答</th> <th>状態</th></>
+      state_th = <><th>自分の解答</th> <th>状態</th></>;
     return (
       <>
         <div className={css.table}>

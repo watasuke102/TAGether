@@ -15,19 +15,19 @@ export default class Modal extends React.Component<ModalData> {
     super(props);
   }
   // スマホ対策
-  UpdateContainersHeight() {
+  UpdateContainersHeight(): void {
     document.documentElement.style.setProperty('--vh', (window.innerHeight / 100) + 'px');
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     window.addEventListener('resize', this.UpdateContainersHeight);
     this.UpdateContainersHeight();
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     window.removeEventListener('resize', this.UpdateContainersHeight);
   }
 
-  render() {
+  render(): React.ReactElement {
     //開かれていない場合は空要素を渡す
     if (!this.props.isOpen) {
       return (<></>);

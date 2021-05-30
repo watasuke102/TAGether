@@ -22,7 +22,7 @@ interface Props {
   item: ExamHistory
 }
 
-export default function ExamHistoryTableItem(props: Props) {
+export default function ExamHistoryTableItem(props: Props): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   // Modalに渡す用のデータ
   const modalData: ModalData = {
@@ -38,7 +38,7 @@ export default function ExamHistoryTableItem(props: Props) {
     <tr>
       <td>{props.item.date}</td>
 
-      <p className={css.categoly_link} onClick={() => { console.log('categoly is', props.categoly); setIsModalOpen(true) }}>
+      <p className={css.categoly_link} onClick={() => { console.log('categoly is', props.categoly); setIsModalOpen(true); }}>
         {props.categoly.title}
       </p>
 
