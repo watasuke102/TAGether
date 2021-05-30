@@ -78,7 +78,7 @@ export default function profile(props: Props): React.ReactElement {
             props.data
               .filter(a => favorite_list.includes(a.id ?? -1))
               .map(item => {
-                return <CategolyCard key={item.title} {...item} />;
+                return <CategolyCard key={`card_${item.id}`} {...item} />;
               })
           }
         </div>
@@ -92,17 +92,20 @@ export default function profile(props: Props): React.ReactElement {
         </div>
 
         <table>
-          <tr>
-            <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th> <th>間違えた問題を解く</th>
-          </tr>
-          {
-            history_list.map(item => {
-              const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
-              if (categoly === undefined) return <></>;
-              return <HistoryTable key={item.title} categoly={categoly} item={item} />;
-            })
-          }
+          <tbody>
+            <tr>
+              <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th> <th>間違えた問題を解く</th>
+            </tr>
+            {
+              history_list.map(item => {
+                const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
+                if (categoly === undefined) return <></>;
+                return <HistoryTable key={`history_${item.history_key}`} categoly={categoly} item={item} />;
+              })
+            }
+          </tbody>
         </table>
+
       </div>
 
       <Modal {...modalData} />

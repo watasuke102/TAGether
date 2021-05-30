@@ -38,7 +38,7 @@ export default class Header extends React.Component<any, State> {
     this.setState({ isFixedButtons: isFixedButtons });
   }
 
-  ButtonContainersCSS(): string{
+  ButtonContainersCSS(): string {
     if (!this.state.isFixedButtons) return css.buttons_container;
     return css.buttons_container_fixed;
   }
@@ -50,7 +50,7 @@ export default class Header extends React.Component<any, State> {
     info.push({ text: 'プロフィール', icon: 'fas fa-user', onClick: () => Router.push('/profile'), type: 'icon_desc' });
     const button_list: React.ReactElement[] = [];
     info.forEach(element => {
-      button_list.push(<Button {...element} />);
+      button_list.push(<Button key={`headerbutton_${element.text}`} {...element} />);
     });
 
     return (

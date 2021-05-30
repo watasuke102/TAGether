@@ -9,8 +9,9 @@
 */
 
 .categoly_link {
+  height: 100%;
   color: #a1a1ff;
-  margin: 0;
+  margin: auto 0;
   padding: 10px 0;
   &:hover {
     cursor: pointer;
@@ -19,5 +20,4 @@
 
 .button {
   text-align: center;
-  margin: 10px auto;
 }

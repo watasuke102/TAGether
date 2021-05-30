@@ -21,7 +21,7 @@ export default function SelectBox(props: Props): React.ReactElement {
       {
         props.list.map(str => {
           return (
-            <CheckBox key={str} status={props.status === str} desc={str}
+            <CheckBox key={`select_${str}`} status={props.status === str} desc={str}
               onChange={() => props.onChange(str)} />
           );
         })

@@ -59,7 +59,7 @@ export default function list(props: Props): React.ReactElement {
       return;
     }
     searchResult.forEach(element => {
-      cards.push(<CategolyCard {...element} />);
+      cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
     });
     if (newer_first) {
       cards.reverse();

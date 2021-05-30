@@ -38,24 +38,28 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
     <tr>
       <td>{props.item.date}</td>
 
-      <p className={css.categoly_link} onClick={() => { console.log('categoly is', props.categoly); setIsModalOpen(true); }}>
-        {props.categoly.title}
-      </p>
+      <td>
+        <p className={css.categoly_link} onClick={() => setIsModalOpen(true)}>
+          {props.categoly.title}
+        </p>
+      </td>
 
       <td>{props.item.total_question}問中{props.item.correct_count}問正解</td>
 
       <td>{isNaN(rate) ? 0 : rate}%</td>
 
-      <div className={css.button}>
-        {(props.item.wrong_exam.length === 0) ?
-          <p>全問正解しています</p>
-          :
-          <Button {...{
-            text: '解き直し', icon: 'fas fa-edit', type: 'material',
-            onClick: () => Router.push(`/exam?history_id=${props.item.history_key ?? null}`)
-          }} />
-        }
-      </div>
+      <td>
+        <div className={css.button}>
+          {(props.item.wrong_exam.length === 0) ?
+            <p>全問正解しています</p>
+            :
+            <Button {...{
+              text: '解き直し', icon: 'fas fa-edit', type: 'material',
+              onClick: () => Router.push(`/exam?history_id=${props.item.history_key ?? null}`)
+            }} />
+          }
+        </div>
+      </td>
 
       <Modal {...modalData} />
     </tr>

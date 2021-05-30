@@ -13,8 +13,8 @@ interface TagData { tag: string }
 
 export default function Tag(props: TagData): React.ReactElement {
   const tags: React.ReactElement[] = [];
-  props.tag.split(',').forEach(e => {
-    tags.push(<div className={css.tag}>{e}</div>);
+  props.tag.split(',').forEach((e, i) => {
+    tags.push(<div key={`tagitem_${i}`} className={css.tag}>{e}</div>);
   });
   return (
     <div className={css.tag_container}> {tags} </div>
