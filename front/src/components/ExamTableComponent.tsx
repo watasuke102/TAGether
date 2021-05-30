@@ -74,12 +74,13 @@ export default class ExamTable extends React.Component<Props, State> {
     return (
       <>
         <td>{
+          // 自分の解答
           // 一番最後に改行文字があるので、それを削除してから
           ans.slice(0, -1).split('\n').map(str => {
-            return (<> {str}<br /> </>);
+            return (<span key={`myans_${i}`}>{str}<br /></span>);
           })
         }</td>
-        <td>{correct_state}</td>
+        <td><span key={`state_${i}`}>{correct_state}</span></td>
       </>
     );
   }
@@ -90,9 +91,10 @@ export default class ExamTable extends React.Component<Props, State> {
     }
     const ans = this.ParseAnswers(e.answer, i);
     const list: React.ReactElement[] = [];
+    // 正しい答え
     // 一番最後に改行文字があるので、それを削除してから
     ans.slice(0, -1).split('\n').map(str => {
-      list.push(<> {str}<br /> </>);
+      list.push(<span key={`realans_${i}`}>{str}<br /></span>);
     });
     return list;
   }
@@ -102,14 +104,15 @@ export default class ExamTable extends React.Component<Props, State> {
     const exam = this.props.exam;
     this.state.array.forEach(i => {
       list.push(
-        <tr>
+        <tr key={`item_${i}`}>
           <td>{
+            // 問題
             exam[i].question.split('\n').map(str => {
-              return (<> {str}<br /> </>);
+              return (<span key={`q_${i}`}>{str}<br /></span>);
             })
           }</td>
           <td className={this.props.showCorrectAnswer ? '' : css.hide_correct_answer}>
-            <p>{this.RealAnswerList(exam[i], i)}</p>
+            <span>{this.RealAnswerList(exam[i], i)}</span>
           </td>
           {this.Status(i)}
         </tr>
@@ -117,17 +120,19 @@ export default class ExamTable extends React.Component<Props, State> {
     });
     let state_th: React.ReactElement = <></>;
     if (this.props.examState && this.props.answers)
-      state_th = <><th>自分の解答</th> <th>状態</th></>;
+      state_th = <><th>自分の解答</th><th>状態</th></>;
     return (
       <>
         <div className={css.table}>
           <table>
-            <tr>
-              <th>問題</th>
-              <th>正解</th>
-              {state_th}
-            </tr>
-            {list}
+            <tbody>
+              <tr>
+                <th>問題</th>
+                <th>正解</th>
+                {state_th}
+              </tr>
+              {list}
+            </tbody>
           </table>
         </div>
 
