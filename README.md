@@ -6,7 +6,7 @@
 ## How to use
 1. /backの `sample.env` を `.env` にリネーム
 1. /frontの `sample-next.config.js` を `next.config.js` にリネーム
-1. `docker-compose up -d --build`
+1. `./start.sh` (本番環境は`./start.sh product`)
 
 ## docker-composeについて
 最新情報はdocker-compose.ymlをチェックしてね
@@ -28,6 +28,7 @@ docker-compose用
   DB初期化の `db_init.sql`
 - nginx/  
   nginxの設定ファイル (`api.conf`)
+
 ### back
 PHPによるバックエンド（API）
 - index.php  
