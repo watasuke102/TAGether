@@ -54,20 +54,20 @@ export default function list(props: Props): React.ReactElement {
       searchResult = list;
     }
     // 検索結果からカードを生成
-    if (searchResult == undefined) {
-      cards.push(<p>見つかりませんでした</p>);
-      return;
+    if (searchResult.length === 0) {
+      cards.push(<p key={'result_404'} className={css.notfound}>見つかりませんでした</p>);
+    } else {
+      searchResult.forEach(element => {
+        cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
+      });
     }
-    searchResult.forEach(element => {
-      cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
-    });
     if (newer_first) {
       cards.reverse();
     }
 
     // カテゴリ作成ページへ飛ぶカードを追加
     cards.unshift(
-      <div className={css.card} onClick={() => Router.push('/create')}>
+      <div key={'newcategoly'} className={css.card} onClick={() => Router.push('/create')}>
         <span className='fas fa-plus' />
         <p id={css.create_new}>新規作成</p>
       </div>
