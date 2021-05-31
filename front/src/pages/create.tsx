@@ -9,7 +9,8 @@
 import css from '../styles/create.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
+import { History as HistoryType } from 'history';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Modal from '../components/Modal';
@@ -38,8 +39,9 @@ function exam_default() {
 // TODO: どうにかならないかなぁ
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 export default class create extends React.Component<any, EditCategolyPageState> {
-  private bottom;
-  private top;
+  protected Router: HistoryType;
+  private bottom: React.RefObject<HTMLDivElement>;
+  private top: React.RefObject<HTMLDivElement>;
 
   public text = {
     document_title: '新規作成',
@@ -55,7 +57,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       },
       {
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
-        onClick: (): Promise<boolean> => Router.push('/list')
+        onClick: (): void => this.Router.push('/list')
       }
     ]
   }
@@ -63,6 +65,9 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
   constructor(props: EditCategolyPageState) {
     super(props);
+    this.Router = useHistory();
+    this.bottom = React.createRef<HTMLDivElement>();
+    this.top = React.createRef<HTMLDivElement>();
     this.state = {
       isToastOpen: false,
       categoly: categoly_default(),
@@ -84,10 +89,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   RouterEventOn(): void {
-    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
+    //Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
   }
   RouterEventOff(): void {
-    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
+    //Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
   }
   componentDidMount(): void {
     window.addEventListener('beforeunload', this.BeforeUnLoad);
@@ -163,11 +168,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     if (before) {
       tmp.unshift({ question: '', answer: Array<string>(1).fill('') });
       // 追加した問題欄が表示されるように上にスクロール
-      this.top.scrollIntoView({ behavior: 'smooth' });
+      this.top.current?.scrollIntoView({ behavior: 'smooth' });
     } else {
       tmp.push({ question: '', answer: Array<string>(1).fill('') });
       // 追加した問題欄が表示されるように下にスクロール
-      this.bottom.scrollIntoView({ behavior: 'smooth' });
+      this.bottom.current?.scrollIntoView({ behavior: 'smooth' });
     }
     this.setState({ exam: tmp });
   }
@@ -259,7 +264,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           <div className={css.answer_area}>
             <Form {...{
               label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
-              onChange: (ev) => this.UpdateExam('answer', ev.target.value, i, j)
+              onChange: (ev: React.ChangeEvent<HTMLTextAreaElement>) => this.UpdateExam('answer', ev.target.value, i, j)
             }} />
             <div className={css.answer_area_buttons}>
               {/* 問題の追加/削除 */}
@@ -302,7 +307,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
             </div>
             <Form {...{
               label: '問題文', value: e.question, rows: 2,
-              onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
+              onChange: (ev: React.ChangeEvent<HTMLTextAreaElement>) => this.UpdateExam('question', ev.target.value, i, -1)
             }} />
 
             <div className={css.answers}>
@@ -333,7 +338,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   // モーダルウィンドウの中身
-  RegistResult(string_only?: boolean): React.ReactElement {
+  RegistResult(string_only?: boolean): React.ReactElement | string {
     let result;
     if (this.state.res_result != '') {
       result = JSON.parse(this.state.res_result);
@@ -373,11 +378,19 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
   render(): React.ReactElement {
     // Modalに渡す用のデータ
+    let regist_body: React.ReactElement;
+    const regist_result = this.RegistResult();
+    if (typeof (regist_result) === 'string') {
+      regist_body = <span>result</span>;
+    } else {
+      regist_body = regist_result;
+    }
     const modalData: ModalData = {
-      body: this.RegistResult(),
+      body: regist_body,
       isOpen: this.state.isModalOpen,
       close: () => this.setState({ isModalOpen: false }),
     };
+
     return (
       <>
         <Helmet title={`${this.text.document_title} - TAGether`} />
@@ -399,25 +412,28 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <div className={css.edit_area}>
           <Form {...{
             label: 'タイトル', value: this.state.categoly.title, rows: 1,
-            onChange: (e) => this.UpdateCategoly('title', e.target.value)
+            onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              this.UpdateCategoly('title', e.target.value)
           }} />
           <Form {...{
             label: '説明', value: this.state.categoly.desc, rows: 3,
-            onChange: (e) => this.UpdateCategoly('desc', e.target.value)
+            onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              this.UpdateCategoly('desc', e.target.value)
           }} />
           <Form {...{
             label: 'タグ (半角コンマ , で区切る)', value: this.state.categoly.tag, rows: 1,
-            onChange: (e) => this.UpdateCategoly('tag', e.target.value)
+            onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              this.UpdateCategoly('tag', e.target.value)
           }} />
         </div>
 
-        <div className={css.top} ref={e => this.top = e} />
+        <div className={css.top} ref={this.top} />
 
         <h2>問題</h2>
 
         {this.ExamEditForm()}
 
-        <div className={css.bottom} ref={e => this.bottom = e} />
+        <div className={css.bottom} ref={this.bottom} />
 
         <div className={css.button_container}>
           <div className={css.buttons}>

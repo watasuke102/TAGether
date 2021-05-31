@@ -13,7 +13,7 @@ import FormInfo from '../types/FormInfo';
 // なんで動くのかよくわからん
 // focus()を消すと動作しなくなる
 export default class Form extends React.Component<FormInfo> {
-  private ref;
+  private ref: React.RefObject<HTMLTextAreaElement> | undefined;
 
   constructor(props: FormInfo) {
     super(props);
@@ -21,7 +21,9 @@ export default class Form extends React.Component<FormInfo> {
   }
 
   focus(): void {
-    this.ref.current.focus();
+    if (this.ref) {
+      this.ref.current?.focus();
+    }
   }
 
   render(): React.ReactElement {

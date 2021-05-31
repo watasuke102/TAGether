@@ -72,7 +72,7 @@ export default function top(): React.ReactElement {
       <div className={css.form}>
         <Form {...{
           label: '意見', value: request, rows: 10,
-          onChange: (e) => SetRequest(e.target.value)
+          onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => SetRequest(e.target.value)
         }} />
         <div className={css.button}> <Button {...{
           icon: 'fas fa-paper-plane', text: '送信', type: 'filled',

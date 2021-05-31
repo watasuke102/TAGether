@@ -8,17 +8,17 @@
 //
 import css from '../styles/Header.module.scss';
 import React from 'react';
-import Router from 'next/router';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Button from './Button';
 import ButtonInfo from '../types/ButtonInfo';
 
 interface State { isFixedButtons: boolean }
 
 // TODO: どうにかならないかなぁ
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-export default class Header extends React.Component<any, State> {
-  constructor(props: State) {
+class Header extends React.Component<RouteComponentProps, State> {
+  constructor(props: RouteComponentProps) {
     super(props);
+    console.log(props);
     this.state = { isFixedButtons: false };
   }
 
@@ -30,7 +30,6 @@ export default class Header extends React.Component<any, State> {
   }
 
   SetIsFixedButtons(): void {
-    if (!process.browser) return;
     let isFixedButtons = false;
     if (window.pageYOffset > 90) {
       isFixedButtons = true;
@@ -44,6 +43,7 @@ export default class Header extends React.Component<any, State> {
   }
 
   render(): React.ReactElement {
+    const Router = this.props.history;
     const info: ButtonInfo[] = [];
     info.push({ text: 'ホーム', icon: 'fas fa-home', onClick: () => Router.push('/'), type: 'icon_desc' });
     info.push({ text: 'カテゴリ一覧', icon: 'fas fa-book', onClick: () => Router.push('/list'), type: 'icon_desc' });
@@ -65,3 +65,5 @@ export default class Header extends React.Component<any, State> {
     );
   }
 }
+
+export default withRouter(Header);

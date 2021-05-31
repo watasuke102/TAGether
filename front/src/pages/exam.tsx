@@ -9,9 +9,9 @@
 import css from '../styles/exam.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
+import { History as HistoryType } from 'history';
 import { format } from 'date-fns';
-import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
@@ -51,13 +51,15 @@ interface State {
 }
 
 export default class exam extends React.Component<Props, State> {
-  private ref;
+  private Router: HistoryType;
+  private ref: React.RefObject<HTMLTextAreaElement>;
   private correct_answers = 0;
   private total_questions = 0;
   private exam_history: ExamHistory;
 
   constructor(props: Props) {
     super(props);
+    this.Router = useHistory();
 
     let exam: Exam[] = [];
     let title = '';
@@ -113,7 +115,6 @@ export default class exam extends React.Component<Props, State> {
   }
 
   InitWrongExamList(): void {
-    if (!process.browser) return;
     GetSpecifiedExamHistory(this.props.history_id ?? '').then((result) => {
       if (result) {
         // ここから下はコンストラクタとほぼ同じ処理をしてる //
@@ -195,7 +196,7 @@ export default class exam extends React.Component<Props, State> {
     });
     if (b) return;
     // 入力欄にフォーカスする
-    this.ref.current.focus();
+    this.ref.current?.focus();
   }
 
   // 解答が合っているかどうか確認してstateに格納
@@ -315,8 +316,9 @@ export default class exam extends React.Component<Props, State> {
       label = '解答' + ((length == 1) ? '' : '(' + (i + 1) + ')');
       obj.push(
         <div className={css.form}> <Form {...{
-          label: label, value: tmp, rows: 1, ref: (i == 0) ? this.ref : null,
-          onChange: ev => this.UpdateUsersResponse(ev, i),
+          label: label, value: tmp, rows: 1,//TODO: ref: (i == 0) ? this.ref.current : undefined,
+          onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            this.UpdateUsersResponse(e, i),
           disabled: this.state.examState[this.state.index].checked
         }} /> </div>
       );
@@ -410,7 +412,7 @@ export default class exam extends React.Component<Props, State> {
           {(!this.props.history_id) &&
             <Button {...{
               text: '編集する', icon: 'fas fa-pen', type: 'material',
-              onClick: () => Router.push('/edit?id=' + this.props.id),
+              onClick: () => this.Router.push('/edit?id=' + this.props.id),
             }} />
           }
           <Button {...{
@@ -419,7 +421,7 @@ export default class exam extends React.Component<Props, State> {
           }} />
           <Button {...{
             text: '前のページへ', icon: 'fas fa-arrow-left', type: 'filled',
-            onClick: Router.back,
+            onClick: this.Router.goBack,
           }} />
         </div>
       </div>
@@ -474,7 +476,7 @@ export default class exam extends React.Component<Props, State> {
             <div className={css.buttons}>
               <Button {...{
                 text: 'もう一度', icon: 'fas fa-undo',
-                onClick: Router.reload, type: 'material'
+                onClick: window.location.reload, type: 'material'
               }} />
               {/* 正しい答えの表示/非表示切り替え */}
               <Button {...{
@@ -487,7 +489,7 @@ export default class exam extends React.Component<Props, State> {
               }} />
               <Button {...{
                 text: '前のページへ', icon: 'fas fa-arrow-left',
-                onClick: Router.back, type: 'filled'
+                onClick: this.Router.goBack, type: 'filled'
               }} />
             </div>
           </div>
@@ -544,7 +546,7 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 }
-
+/*
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   if (context.query.history_id != undefined) {
@@ -566,3 +568,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
   return { props: props };
 };
+*/

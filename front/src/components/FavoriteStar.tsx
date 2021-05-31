@@ -19,7 +19,7 @@ export default function FavoriteStar(props: Props): React.ReactElement {
     GetFavorite().then(res => SetFavoriteStatus(res.includes(props.id ?? -1)));
   }, []);
 
-  const clicked = (e) => {
+  const clicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     // Animation
     const target = `#icon-${props.id}`;

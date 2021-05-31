@@ -8,7 +8,7 @@
 //
 import css from '../styles/CategolyDetail.module.scss';
 import React from 'react';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
 import Tag from './Tag';
 import CheckBox from './CheckBox';
 import Button from './Button';
@@ -57,6 +57,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
         url = `/examtable?id=${this.data.id}`;
         break;
     }
+    const Router = useHistory();
     Router.push(url);
   }
 
@@ -77,7 +78,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
 
           {/* シャッフルするかどうかを決めるチェックボックス */}
           <CheckBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'
-            onChange={e => this.setState({ isShuffleEnabled: e })}
+            onChange={(e: boolean) => this.setState({ isShuffleEnabled: e })}
           />
 
           <div className={css.buttons}>

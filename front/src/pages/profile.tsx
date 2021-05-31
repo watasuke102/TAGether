@@ -9,7 +9,6 @@
 import css from '../styles/profile.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import { GetServerSideProps } from 'next';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
@@ -113,7 +112,7 @@ export default function profile(props: Props): React.ReactElement {
   );
 }
 
-
+/*
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async () => {
   let data;
@@ -125,3 +124,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
   return { props: { data } };
 };
+*/

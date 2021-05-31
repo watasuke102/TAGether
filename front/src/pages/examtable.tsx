@@ -9,8 +9,8 @@
 import css from '../styles/examtable.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import { useHistory } from 'react-router-dom';
+import { History as HistoryType } from 'history';
 import Button from '../components/Button';
 import ExamTable from '../components/ExamTableComponent';
 import Exam from '../types/Exam';
@@ -23,9 +23,12 @@ interface Props {
 interface States { showCorrectAnswer: boolean }
 
 export default class examtable extends React.Component<Props, States> {
+  private Router: HistoryType;
   private exam: Exam[];
+
   constructor(props: Props) {
     super(props);
+    this.Router = useHistory();
     // 問題の取得、条件によってはシャッフル
     this.exam = JSON.parse(this.props.data[0].list);
     // Fisher-Yatesアルゴリズムらしい
@@ -51,7 +54,7 @@ export default class examtable extends React.Component<Props, States> {
           <div className={css.buttons}>
             <Button {...{
               text: '戻る', icon: 'fas fa-undo',
-              onClick: Router.back, type: 'material'
+              onClick: this.Router.goBack, type: 'material'
             }} />
             {/* 正しい答えの表示/非表示切り替え */}
             <Button {...{
@@ -68,7 +71,7 @@ export default class examtable extends React.Component<Props, States> {
     );
   }
 }
-
+/*
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
@@ -78,4 +81,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     shuffle: (context.query.shuffle == 'true') ? true : false
   };
   return { props: props };
-};
+};*/

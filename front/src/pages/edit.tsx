@@ -6,8 +6,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import { GetServerSideProps } from 'next';
-import Router from 'next/router';
 import Create from './create';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 
@@ -26,11 +24,11 @@ export default class edit extends Create {
       },
       {
         type: 'material', icon: 'fas fa-arrow-right', text: 'この問題を解く',
-        onClick: (): Promise<boolean> => Router.push('/exam?id=' + this.state.categoly.id + '&shuffle=false')
+        onClick: (): void => this.Router.push('/exam?id=' + this.state.categoly.id + '&shuffle=false')
       },
       {
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
-        onClick: (): Promise<boolean> => Router.push('/list')
+        onClick: (): void => this.Router.push('/list')
       },
     ]
   }
@@ -52,10 +50,11 @@ export default class edit extends Create {
   }
 }
 
-
+/*
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
   const data = await res.json();
   return { props: { data } };
 };
+*/

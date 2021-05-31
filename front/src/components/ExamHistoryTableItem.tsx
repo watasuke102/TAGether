@@ -15,7 +15,7 @@ import Detail from '../components/CategolyDetail';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   categoly: Categoly,
@@ -24,6 +24,7 @@ interface Props {
 
 export default function ExamHistoryTableItem(props: Props): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const Router = useHistory();
   // Modalに渡す用のデータ
   const modalData: ModalData = {
     body: <Detail {...{ data: props.categoly, close: () => setIsModalOpen(false) }} />,

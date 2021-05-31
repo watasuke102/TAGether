@@ -9,8 +9,7 @@
 import css from '../styles/list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import { useHistory } from 'react-router-dom';
 import Form from '../components/Form';
 import SelectBox from '../components/SelectBox';
 import Button from '../components/Button';
@@ -25,6 +24,7 @@ export default function list(props: Props): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
+  const Router = useHistory();
 
   let cards: React.ReactElement[] = [];
   const list: Categoly[] = props.data;
@@ -94,7 +94,7 @@ export default function list(props: Props): React.ReactElement {
         {/* 検索欄 */}
         <Form {...{
           label: '検索', value: searchStr, rows: 1,
-          onChange: (ev) => SetSearchStr(ev.target.value)
+          onChange: (ev: React.ChangeEvent<HTMLTextAreaElement>) => SetSearchStr(ev.target.value)
         }} />
         <Button {...{
           text: '入力のクリア', icon: 'fas fa-times',
@@ -102,7 +102,7 @@ export default function list(props: Props): React.ReactElement {
         }} />
         {/* 何を検索するか選択 */}
         <div className={css.radiobutton_container}>
-          <SelectBox onChange={txt => SetRadioState(txt)} status={radioState}
+          <SelectBox onChange={(txt: string) => SetRadioState(txt)} status={radioState}
             list={['タイトル', 'タグ', '説明', 'ID']} />
         </div>
 
@@ -116,7 +116,7 @@ export default function list(props: Props): React.ReactElement {
     </>
   );
 }
-
+/*
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let query: string = '';
@@ -131,4 +131,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     data = [];
   }
   return { props: { data } };
-};
+};*/
