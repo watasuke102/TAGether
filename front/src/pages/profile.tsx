@@ -13,7 +13,7 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import HistoryTable from '../components/ExamHistoryTableItem';
-import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/ManageDB';
+import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/LocalForage';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
