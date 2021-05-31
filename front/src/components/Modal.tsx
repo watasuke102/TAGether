@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Modal.module.scss';
+import css from '../styles/Modal.module.scss';
 import React from 'react';
 import ModalData from '../types/ModalData';
 

@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/examtable.module.scss';
+import css from '../styles/examtable.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';

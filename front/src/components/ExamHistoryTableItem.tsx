@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 
-import css from '../style/ExamHistoryTableItem.module.scss';
+import css from '../styles/ExamHistoryTableItem.module.scss';
 import React from 'react';
 import Modal from '../components/Modal';
 import Button from '../components/Button';

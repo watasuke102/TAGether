@@ -6,10 +6,10 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import filled from '../style/Button/Filled.module.scss';
-import material from '../style/Button/MaterialLike.module.scss';
-import icon_and_text from '../style/Button/IconAndText.module.scss';
-import common from '../style/Button/Common.module.scss';
+import filled from '../styles/Button/Filled.module.scss';
+import material from '../styles/Button/MaterialLike.module.scss';
+import icon_and_text from '../styles/Button/IconAndText.module.scss';
+import common from '../styles/Button/Common.module.scss';
 import React from 'react';
 import ButtonInfo from '../types/ButtonInfo';
 

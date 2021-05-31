@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Tag.module.scss';
+import css from '../styles/Tag.module.scss';
 import React from 'react';
 
 interface TagData { tag: string }
