@@ -21,6 +21,7 @@ import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
 import ModalData from '../types/ModalData';
+import CommonProps from '../types/CommonProps';
 import ExamHistory from '../types/ExamHistory';
 
 enum NextButtonState {
@@ -30,6 +31,7 @@ enum NextButtonState {
 }
 
 interface Props {
+  //common: CommonProps,
   data: Categoly[],
   shuffle: boolean,
   id: number,

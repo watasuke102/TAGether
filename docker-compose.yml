@@ -38,6 +38,8 @@ services:
       - '3009:3009'
     volumes:
       - ./front:/front
+    environment:
+      - PORT=3009
     working_dir: /front
     entrypoint: "npm run dev"
     depends_on:
