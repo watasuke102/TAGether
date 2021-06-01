@@ -11,24 +11,26 @@
 @mixin bg-animation($col) {
   cursor: pointer;
   background-color: $col;
-  transition: 0.3s;
+  transition: background-color 0.3s;
   span{
     color: #52f9ff;
-    transition: 0.3s;
+    transition: color 0.3s;
   }
 }
 
 // アイコンと説明、ヘッダに使用
 .button {
   padding: 5px 15px;
-  margin: 0px auto 5px;
+  margin: 0 auto;
+  // 背景がはみ出ない最小限のマージン
+  margin-bottom: 8px;
   border: none;
   border-radius: 25px;
   color: #b9ccbe;
   background-color: #ffffff00;
-  transition: 0.3s;
+  transition: background-color 0.3s;
   span {
-    transition: 0.3s;
+    transition: color 0.3s;
   }
   
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
@@ -45,9 +47,9 @@
   span {
     font-size: 25px;
     color: #ffffff;
-    width:  auto;
+    width: auto;
     margin: 0px auto;
-    transition: 0.3s;
+    transition: color 0.3s;
   }
 }
 

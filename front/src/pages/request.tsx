@@ -15,7 +15,6 @@ import Button from '../components/Button';
 import GetFromApi from '../ts/Api';
 import ModalData from '../types/ModalData';
 import FeatureRequest from '../types/FeatureRequest';
-import ApiResponse from '../types/ApiResponse';
 
 interface Props { requests: FeatureRequest[] }
 
