@@ -9,6 +9,16 @@
 const Config = require('./env.json');
 const MySql = require('mysql');
 
+function Log(mes) {
+  const DateFormat = require('date-fns');
+  const date = new Date;
+  date.setHours(date.getHours() + 9);
+  console.log(
+    DateFormat.format(date, '[yyyy-MM-dd HH:mm:ss]'),
+    mes
+  );
+}
+
 function Success(resp, data) {
   resp.json({ isSuccess: true, result: data });
   resp.status(200);
@@ -19,14 +29,10 @@ function Error(resp, mes) {
 }
 
 function Query(query, req, resp) {
-  if (Config.AllowOrigin != '*') {
-    const allow = Config.AllowOrigin
-      .replace(`${req.protocol}:`, '') // http(s)?: を削除
-      .replace(/\//g, ''); // '/'をすべて削除する
-    if (req.headers.host != allow) {
-      resp.status(444).end();
-      return;
-    }
+  if (Config.AllowOrigin != '*' && req.headers.origin != Config.AllowOrigin) {
+    Log(`BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`);
+    resp.status(444).end();
+    return;
   }
 
   const connection = MySql.createConnection(Config.MySql);
@@ -39,7 +45,7 @@ function Query(query, req, resp) {
     }
   });
   if (isFailed) return;
-  console.log(query);
+  Log(`(Host: ${req.headers.host}) ${query}`);
   connection.query(query, (err, res) => {
     if (err) Error(resp, err.sqlMessage);
     else Success(resp, res);
