@@ -86,3 +86,10 @@ exports.GetRequest = (req, res) => {
     query += ' WHERE id = ' + MySql.escape(req.params.id);
   Query(query, req, res);
 };
+
+exports.AddRequest = (req, res) => {
+  console.log(req.body);
+  let query = 'INSERT INTO request (body) values ';
+  query += `(${MySql.escape(req.body.body)})`;
+  Query(query, req, res);
+};

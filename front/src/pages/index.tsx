@@ -8,40 +8,8 @@
 //
 import css from '../style/index.module.scss';
 import React from 'react';
-import Form from '../components/Form';
-import Modal from '../components/Modal';
-import Button from '../components/Button';
-import ModalData from '../types/ModalData';
 
 export default function index(): React.ReactElement {
-  const [request, SetRequest] = React.useState('');
-  const [isModalOpen, SetIsModalOpen] = React.useState(false);
-
-  const SendRequest = () => {
-    if (request == '') return;
-    const req = new XMLHttpRequest();
-    req.onreadystatechange = () => {
-      SetRequest('');
-      SetIsModalOpen(true);
-    };
-    req.open('POST', process.env.GET_URL + '/request.php?body=' + request);
-    req.send();
-  };
-
-  const modalData: ModalData = {
-    isOpen: isModalOpen,
-    close: () => SetIsModalOpen(false),
-    body: (
-      <div className={css.window}>
-        <p>送信しました。<br />ご協力ありがとうございます。</p>
-        <Button {...{
-          type: 'filled', icon: 'fas fa-times', text: '閉じる',
-          onClick: () => SetIsModalOpen(false)
-        }} />
-      </div>
-    )
-  };
-
   return (
     <div>
       <h1>ようこそ</h1>
@@ -64,21 +32,6 @@ export default function index(): React.ReactElement {
       <ul>
         <li>画面切り替えがおかしくなる</li>
       </ul>
-
-      <h2>機能要望</h2>
-      <p>Webサービスなんもわからないので、意見がほしいです</p>
-      <p>スマホでここが押しづらいとか、表示がわかりにくい等、不満があれば<b>全部</b>書いてください</p>
-      <p>機能要望は<a href="https://api.watasuke.tk/show_request.php">こちら</a>から閲覧可能です</p>
-      <div className={css.form}>
-        <Form {...{
-          label: '意見', value: request, rows: 10,
-          onChange: (e) => SetRequest(e.target.value)
-        }} />
-        <div className={css.button}> <Button {...{
-          icon: 'fas fa-paper-plane', text: '送信', type: 'filled',
-          onClick: SendRequest
-        }} /> </div>
-      </div>
 
       <h2>更新履歴</h2>
 
@@ -117,8 +70,6 @@ export default function index(): React.ReactElement {
       </p>
 
       <p className={css.version}>TAGether v1.4.0</p>
-
-      <Modal {...modalData} />
     </div>
   );
 }
