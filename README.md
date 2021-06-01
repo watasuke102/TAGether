@@ -4,7 +4,7 @@
 誰かが作った問題をクラスの人と共有できるようなサービスです。  
 
 ## How to use
-1. /backの `sample.env` を `.env` にリネーム
+1. /back/srcの `sample-env.json` を `env.json` にリネーム
 1. /frontの `sample-next.config.js` を `next.config.js` にリネーム
 1. `./start.sh` (本番環境は`./start.sh product`)
 
@@ -13,7 +13,7 @@
 | 名前                     | ポート |
 | ------------------------ | ------ |
 | フロントエンド (Next.js) |  3009  |
-| バックエンド (PHP)       |  8079  |
+| バックエンド (Node.js)   |  8079  |
 | phpMyAdmin               |  8888  |
 | MySQL                    |  3334  |
 
@@ -30,15 +30,13 @@ docker-compose用
   nginxの設定ファイル (`api.conf`)
 
 ### back
-PHPによるバックエンド（API）
-- index.php  
-  問題DBに対してGET/POSTなどができる
-- request.php  
-  機能要望を登録する (POST限定)
-- show_request.php  
-  受け取ったリクエストを一覧表示
-- sample.env  
-  .envファイルのテンプレート
+Express (Node.js) によるバックエンド (API)
+- index.js  
+  Expressの初期化など
+- api.js  
+  各リクエストに対するレスポンス
+- sample-env.json  
+  envファイルのテンプレート
 
 ### front
 React (next.js) によるフロントエンド

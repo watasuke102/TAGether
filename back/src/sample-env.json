@@ -1,0 +1,11 @@
+{
+  "Port": 80,
+  "AllowOrigin": "*",
+  "Webhook": "",
+  "MySql": {
+    "host": "mysql",
+    "user": "root",
+    "password": "root",
+    "database": "tagether"
+  }
+}
