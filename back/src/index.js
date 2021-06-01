@@ -1,3 +1,11 @@
+// TAGether (API) - Share self-made exam for classmates
+// index.js
+//
+// CopyRight (c) 2020-2021 Watasuke
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT SUSHI-WARE License.
+//
 const Config = require('./env.json');
 const Express = require('express');
 const Api = require('./api.js');
