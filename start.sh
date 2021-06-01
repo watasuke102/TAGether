@@ -9,7 +9,7 @@ docker-compose run --rm --entrypoint "npm install" front
 echo -e "\e[36;7m[info] Frontend setup completed\e[m"
 
 ## backend setup
-docker-compose run --rm --entrypoint "composer install" back
+docker-compose run --rm --entrypoint "npm install" back
 echo -e "\e[36;7m[info] Backend setup completed\e[m"
 
 ## when product environment

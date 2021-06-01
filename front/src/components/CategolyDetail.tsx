@@ -73,7 +73,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
 
           <Tag tag={this.data.tag} />
 
-          <textarea disabled={true} value={this.data.desc} id={css.desc} />
+          <textarea disabled={true} value={this.data.description} id={css.desc} />
 
           {/* シャッフルするかどうかを決めるチェックボックス */}
           <CheckBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'

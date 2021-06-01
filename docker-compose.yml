@@ -25,10 +25,13 @@ services:
       - mysql
 
   back:
-    build: ./back
+    image: node
     volumes:
-      - ./back:/usr/share/nginx/html
-      - ./back/php.ini:/usr/local/etc/php/php.ini
+      - ./back:/back
+    ports: 
+      - '8079:80'
+    working_dir: /back
+    entrypoint: "npm start"
     depends_on:
       - mysql
 
@@ -40,14 +43,5 @@ services:
       - ./front:/front
     working_dir: /front
     entrypoint: "npm run dev"
-    depends_on:
-      - back
-
-  nginx:
-    image: nginx
-    ports:
-      - '8079:80'
-    volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
     depends_on:
       - back

@@ -44,7 +44,7 @@ export default function list(props: Props): React.ReactElement {
             break;
           case 'タイトル': text = e.title; break;
           case 'タグ': text = e.tag; break;
-          case '説明': text = e.desc; break;
+          case '説明': text = e.description; break;
         }
         // 検索欄に入力された文字と一致したら検索結果に追加
         if (text.indexOf(searchStr) != -1)

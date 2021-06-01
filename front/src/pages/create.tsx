@@ -25,7 +25,7 @@ import EditCategolyPageState from '../types/EditCategolyPageState';
 function categoly_default() {
   const tmp: Categoly = {
     id: 0, updated_at: '', title: '',
-    desc: '', tag: '', list: ''
+    description: '', tag: '', list: ''
   };
   return tmp;
 }
@@ -127,7 +127,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const exam = JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
     const categoly = {
-      id: tmp.id, title: tmp.title, desc: tmp.desc, tag: tmp.tag, list: exam
+      id: tmp.id, title: tmp.title, desc: tmp.description, tag: tmp.tag, list: exam
     };
 
     const req = new XMLHttpRequest();
@@ -213,7 +213,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const tmp = this.state.categoly;
     switch (type) {
       case 'title': tmp.title = str; break;
-      case 'desc': tmp.desc = str; break;
+      case 'desc': tmp.description = str; break;
       case 'tag': tmp.tag = str; break;
     }
     this.setState({ categoly: tmp });
@@ -402,7 +402,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
             onChange: (e) => this.UpdateCategoly('title', e.target.value)
           }} />
           <Form {...{
-            label: '説明', value: this.state.categoly.desc, rows: 3,
+            label: '説明', value: this.state.categoly.description, rows: 3,
             onChange: (e) => this.UpdateCategoly('desc', e.target.value)
           }} />
           <Form {...{

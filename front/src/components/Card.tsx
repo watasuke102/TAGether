@@ -30,9 +30,9 @@ export default function ExamCard(props: Categoly): React.ReactElement {
     title = props.title.slice(0, 25) + '...';
   }
   // 説明を100文字以内に
-  let desc = props.desc;
-  if (props.desc.length > 100) {
-    desc = props.desc.slice(0, 100) + '...';
+  let desc = props.description;
+  if (desc.length > 100) {
+    desc = desc.slice(0, 100) + '...';
   }
 
   return (
