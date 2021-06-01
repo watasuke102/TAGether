@@ -7,6 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 
+import ApiResponse from '../types/ApiResponse';
 import Categoly from '../types/Categoly';
 
 type Query = string | string[] | undefined;
@@ -18,12 +19,14 @@ export async function GetCategoly(query: Query): Promise<Categoly[]> {
   if (Array.isArray(query)) id = query[0];
   else id = query ?? '';
   // APIでカテゴリを取得する
-  let data: Categoly[];
+  let data: ApiResponse = {
+    isSuccess: false, result: []
+  };
   try {
     const res = await fetch(`${process.env.GET_URL ?? ''}/categoly/${id ?? ''}`);
     data = await res.json();
   } catch {
-    data = [];
+    data.result = [];
   }
-  return data;
+  return data.result;
 }

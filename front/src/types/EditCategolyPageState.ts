@@ -8,11 +8,12 @@
 //
 import Exam from './Exam';
 import Categoly from './Categoly';
+import ApiResponse from './ApiResponse';
 
 interface EditCategolyPageState{
   isToastOpen:            boolean
   isModalOpen:            boolean
-  res_result:             string
+  res_result:             ApiResponse
   categoly:               Categoly
   exam:                   Exam[]
   showConfirmBeforeLeave: boolean

@@ -11,6 +11,7 @@ import Router from 'next/router';
 import Create from './create';
 import { GetCategoly } from '../ts/Api';
 import EditCategolyPageState from '../types/EditCategolyPageState';
+import ApiResponse from '../types/ApiResponse';
 
 export default class edit extends Create {
   public text = {
@@ -40,16 +41,16 @@ export default class edit extends Create {
   constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
-      isToastOpen: false,
+      isToastOpen: false, isModalOpen: false,
       categoly: this.props.data[0],
       exam: JSON.parse(this.props.data[0].list),
-      isModalOpen: false, res_result: '',
+      res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
     };
   }
 
-  FinishedRegist(str: string): void {
-    this.setState({ isToastOpen: true, res_result: str });
+  FinishedRegist(result: ApiResponse): void {
+    this.setState({ isToastOpen: true, res_result: result });
   }
 }
 

@@ -19,6 +19,7 @@ import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
 import ButtonInfo from '../types/ButtonInfo';
 import EditCategolyPageState from '../types/EditCategolyPageState';
+import ApiResponse from '../types/ApiResponse';
 
 
 // デフォルト値
@@ -64,10 +65,9 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
-      isToastOpen: false,
-      categoly: categoly_default(),
-      exam: exam_default(),
-      isModalOpen: false, res_result: '',
+      isToastOpen: false, isModalOpen: false, 
+      categoly: categoly_default(), exam: exam_default(),
+      res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
     };
   }
@@ -101,24 +101,40 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   // カテゴリ登録
   RegistExam(): void {
     if (this.state.categoly.tag.split(',').length > 8) {
-      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タグは合計8個以下にしてください"}' });
+      this.setState({
+        isModalOpen: true, res_result: {
+          'isSuccess': false, 'result': 'タグは合計8個以下にしてください'
+        }
+      });
       return;
     }
     if (this.state.categoly.title == '') {
-      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"タイトルを設定してください"}' });
+      this.setState({
+        isModalOpen: true, res_result: {
+          'isSuccess': false, 'result': 'タイトルを設定してください'
+        }
+      });
       return;
     }
     let f: boolean = false;
     this.state.exam.forEach(e => {
       if (e.question == '') {
         f = true;
-        this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"問題文が入力されていない欄があります"}' });
+        this.setState({
+          isModalOpen: true, res_result: {
+            'isSuccess': false, 'result': '問題文が入力されていない欄があります'
+          }
+        });
         return;
       }
       e.answer.forEach(answer => {
         if (answer == '') {
           f = true;
-          this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"答えが入力されていない欄があります"}' });
+          this.setState({
+            isModalOpen: true, res_result: {
+              'isSuccess': false, 'result': '答えが入力されていない欄があります'
+            }
+          });
           return;
         }
       });
@@ -133,28 +149,28 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
-        const str = req.responseText;
-        this.FinishedRegist(str);
+        const result = JSON.parse(req.responseText);
+        this.FinishedRegist(result);
         // エラーだったらページ移動確認ダイアログを無効化しない
-        if (JSON.parse(str).status != 'error') {
+        if (!result.isSuccess) {
           this.RouterEventOff();
           this.setState({ showConfirmBeforeLeave: false });
         }
       }
     };
-    const url = process.env.EDIT_URL;
+    const url = process.env.EDIT_URL + '/categoly';
     if (url == undefined) {
-      this.setState({ isModalOpen: true, res_result: '{"status":"error","message":"失敗しました: URL is undefined"}' });
+      this.setState({ isModalOpen: true, res_result: {'isSuccess':false,'result':'失敗しました: URL is undefined'} });
       return;
     }
     categoly.list = categoly.list.replace(/\\n/g, '\\\\n');
     req.open(this.api_method, url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
-    console.log('DEBUG: ' + JSON.stringify(categoly));
+    console.log('BODY: ' + JSON.stringify(categoly));
   }
-  FinishedRegist(str: string): void {
-    this.setState({ isModalOpen: true, res_result: str });
+  FinishedRegist(result: ApiResponse): void {
+    this.setState({ isModalOpen: true, res_result: result });
   }
 
   // 問題を追加
@@ -335,21 +351,21 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   // モーダルウィンドウの中身
   RegistResult(string_only?: boolean): React.ReactElement {
     let result;
-    if (this.state.res_result != '') {
-      result = JSON.parse(this.state.res_result);
+    if (this.state.res_result.result != '') {
+      result = this.state.res_result;
     } else {
       // 何も中身がなければエラー時の値を代入する
-      result = { status: 'error', message: '失敗しました' };
+      result = { isSuccess: 'error', result: '失敗しました' };
     }
     let message;
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
-    if (result.status == 'ok') {
+    if (result.isSuccess) {
       message = this.text.api_success;
       button_info = this.text.buttons;
     } else {
       // 失敗した場合、閉じるボタンのみ
-      message = 'エラー: ' + result.message;
+      message = 'エラー: ' + result.result;
       button_info.push({
         type: 'filled', icon: 'fas fa-times', text: '閉じる',
         onClick: () => this.setState({ isModalOpen: false })
