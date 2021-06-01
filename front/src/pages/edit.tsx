@@ -58,6 +58,6 @@ export default class edit extends Create {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await GetFromApi<Categoly>(context.query.id);
+  const data = await GetFromApi<Categoly>('categoly', context.query.id);
   return { props: { data } };
 };

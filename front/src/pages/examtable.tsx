@@ -72,7 +72,7 @@ export default class examtable extends React.Component<Props, States> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await GetFromApi<Categoly>(context.query.id);
+  const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const props: Props = {
     data: data,
     shuffle: (context.query.shuffle == 'true') ? true : false

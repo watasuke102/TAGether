@@ -10,7 +10,7 @@ import ApiResponse from '../types/ApiResponse';
 
 type Query = string | string[] | undefined;
 
-export default async function GetFromApi<T>(query: Query): Promise<T[]> {
+export default async function GetFromApi<T>(target: string, query: Query): Promise<T[]> {
   // 渡されたURLクエリ (context.query.id) からidを取得
   let id: string;
   if (Array.isArray(query)) id = query[0];
@@ -20,7 +20,7 @@ export default async function GetFromApi<T>(query: Query): Promise<T[]> {
     isSuccess: false, result: []
   };
   try {
-    const res = await fetch(`${process.env.GET_URL ?? ''}/categoly/${id ?? ''}`);
+    const res = await fetch(`${process.env.GET_URL ?? ''}/${target}/${id ?? ''}`);
     data = await res.json();
   } catch {
     data.result = [];
