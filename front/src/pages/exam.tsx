@@ -557,7 +557,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const id = (context.query.id == undefined) ? -1 : Number(context.query.id);
-  const res = await fetch(process.env.API_URL + '?id=' + id);
+  const res = await fetch(process.env.GET_URL + '?id=' + id);
   const data = await res.json();
   const props: Props = {
     data: data,

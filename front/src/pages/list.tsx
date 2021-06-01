@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   let data;
   try {
-    const res = await fetch(process.env.API_URL + query);
+    const res = await fetch(process.env.GET_URL + query);
     data = await res.json();
   } catch {
     data = [];

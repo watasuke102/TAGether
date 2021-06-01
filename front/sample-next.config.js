@@ -1,5 +1,6 @@
 module.exports = {
   env: {
-    API_URL: 'http://nginx',
+    GET_URL: 'http://nginx',
+    EDIT_URL: 'http://localhost:8079',
   },
 }

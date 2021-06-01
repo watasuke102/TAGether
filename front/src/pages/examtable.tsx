@@ -71,7 +71,7 @@ export default class examtable extends React.Component<Props, States> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(process.env.API_URL + '?id=' + context.query.id);
+  const res = await fetch(process.env.GET_URL + '?id=' + context.query.id);
   const data = await res.json();
   const props: Props = {
     data: data,

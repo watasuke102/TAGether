@@ -118,7 +118,7 @@ export default function profile(props: Props): React.ReactElement {
 export const getServerSideProps: GetServerSideProps = async () => {
   let data;
   try {
-    const res = await fetch(process.env.API_URL ?? '');
+    const res = await fetch(process.env.GET_URL ?? '');
     data = await res.json();
   } catch {
     data = [];

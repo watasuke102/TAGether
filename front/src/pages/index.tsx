@@ -24,7 +24,7 @@ export default function index(): React.ReactElement {
       SetRequest('');
       SetIsModalOpen(true);
     };
-    req.open('POST', process.env.API_URL + '/request.php?body=' + request);
+    req.open('POST', process.env.GET_URL + '/request.php?body=' + request);
     req.send();
   };
 
