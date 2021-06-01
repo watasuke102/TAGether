@@ -11,8 +11,9 @@ app.use((_, res, next) => {
   next();
 });
 
-app.get('/', Api.GetCategoly);
 app.get('/categoly/:id?', Api.GetCategoly);
+app.post('/categoly/:id?', Api.AddCategoly);
+app.put('/categoly/:id?', Api.UpdateCategoly);
 //app.get('request/:id', Api.GetRequest);
 
 app.listen(Config.Port, () =>

@@ -1,7 +1,17 @@
 const Config = require('./env.json');
 const MySql = require('mysql');
 
-function Query(query, resp) {
+function Query(query, req, resp) {
+  if (Config.AllowOrigin != '*') {
+    const allow = Config.AllowOrigin
+      .replace(`${req.protocol}:`, '') // http(s)?: を削除
+      .replace(/\//g, ''); // '/'をすべて削除する
+    if (req.headers.host != allow) {
+      resp.status(444).end();
+      return;
+    }
+  }
+
   const connection = MySql.createConnection(Config.MySql);
   let isFailed = false;
   connection.connect(err => {
@@ -11,16 +21,18 @@ function Query(query, resp) {
     }
   });
   if (isFailed) {
-    resp({});
+    resp.json({});
   }
   connection.query(query, (err, res) => {
-    if (err) resp(err);
-    else resp(res);
+    if (err) resp.json(err);
+    else resp.json(res);
   });
 }
 
-// カテゴリに関して
+// カテゴリ
 exports.GetCategoly = (req, res) => {
-  //console.log(req.headers.host);
-  Query('SELECT * FROM exam', (result) => res.json(result));
+  let query = 'SELECT * FROM exam';
+  if (req.params.id)
+    query += ' WHERE id = ' + MySql.escape(req.params.id);
+  Query(query, req, res);
 };
