@@ -12,9 +12,10 @@ import Helmet from 'react-helmet';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
-import SelectBox from '../components/SelectBox';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
+import SelectBox from '../components/SelectBox';
+import { GetCategoly } from '../ts/Api';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 
@@ -119,16 +120,6 @@ export default function list(props: Props): React.ReactElement {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let query: string = '';
-  if (context.query.id) {
-    query = '?id=' + context.query.id;
-  }
-  let data;
-  try {
-    const res = await fetch(process.env.GET_URL + query);
-    data = await res.json();
-  } catch {
-    data = [];
-  }
+  const data = await GetCategoly(context.query.id);
   return { props: { data } };
 };
