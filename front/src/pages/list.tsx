@@ -15,7 +15,7 @@ import Form from '../components/Form';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import SelectBox from '../components/SelectBox';
-import { GetCategoly } from '../ts/Api';
+import GetFromApi from '../ts/Api';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 
@@ -120,6 +120,6 @@ export default function list(props: Props): React.ReactElement {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await GetCategoly(context.query.id);
+  const data = await GetFromApi<Categoly>(context.query.id);
   return { props: { data } };
 };

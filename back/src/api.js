@@ -78,3 +78,11 @@ exports.UpdateCategoly = (req, res) => {
   query += `WHERE id=${MySql.escape(req.body.id)}`;
   Query(query, req, res);
 };
+
+// カテゴリ
+exports.GetRequest = (req, res) => {
+  let query = 'SELECT * FROM request';
+  if (req.params.id)
+    query += ' WHERE id = ' + MySql.escape(req.params.id);
+  Query(query, req, res);
+};

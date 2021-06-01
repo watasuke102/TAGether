@@ -14,7 +14,7 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import HistoryTable from '../components/ExamHistoryTableItem';
-import { GetCategoly } from '../ts/Api';
+import GetFromApi from '../ts/Api';
 import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
 import ModalData from '../types/ModalData';
@@ -117,6 +117,6 @@ export default function profile(props: Props): React.ReactElement {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await GetCategoly(context.query.id);
-  return { props: { data } };
+  const data = await GetFromApi<Categoly>(context.query.id);
+  return {props: {data} };
 };

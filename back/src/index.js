@@ -24,6 +24,8 @@ app.get('/categoly/:id?', Api.GetCategoly);
 app.post('/categoly', Api.AddCategoly);
 app.put('/categoly', Api.UpdateCategoly);
 
+app.get('/request/:id?', Api.GetRequest);
+
 app.listen(Config.Port, () =>
   console.log('[Info] Listening on port %o...', `http://localhost:${Config.Port}`)
 );

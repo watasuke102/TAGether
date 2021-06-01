@@ -16,7 +16,7 @@ import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import ExamTable from '../components/ExamTableComponent';
-import { GetCategoly } from '../ts/Api';
+import GetFromApi from '../ts/Api';
 import { AddExamHistory, GetSpecifiedExamHistory } from '../ts/ManageDB';
 import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
@@ -557,7 +557,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
     };
   }
-  const data = await GetCategoly(context.query.id);
+  const data = await GetFromApi<Categoly>(context.query.id);
   const props: Props = {
     data: data,
     shuffle: (context.query.shuffle === 'true'),

@@ -9,9 +9,10 @@
 import { GetServerSideProps } from 'next';
 import Router from 'next/router';
 import Create from './create';
-import { GetCategoly } from '../ts/Api';
-import EditCategolyPageState from '../types/EditCategolyPageState';
+import GetFromApi from '../ts/Api';
+import Categoly from '../types/Categoly';
 import ApiResponse from '../types/ApiResponse';
+import EditCategolyPageState from '../types/EditCategolyPageState';
 
 export default class edit extends Create {
   public text = {
@@ -57,6 +58,6 @@ export default class edit extends Create {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await GetCategoly(context.query.id);
+  const data = await GetFromApi<Categoly>(context.query.id);
   return { props: { data } };
 };

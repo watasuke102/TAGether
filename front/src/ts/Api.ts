@@ -6,14 +6,11 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-
 import ApiResponse from '../types/ApiResponse';
-import Categoly from '../types/Categoly';
 
 type Query = string | string[] | undefined;
 
-export async function GetCategoly(query: Query): Promise<Categoly[]> {
-  console.log(query);
+export default async function GetFromApi<T>(query: Query): Promise<T[]> {
   // 渡されたURLクエリ (context.query.id) からidを取得
   let id: string;
   if (Array.isArray(query)) id = query[0];
@@ -28,5 +25,7 @@ export async function GetCategoly(query: Query): Promise<Categoly[]> {
   } catch {
     data.result = [];
   }
-  return data.result;
+  if (data.isSuccess && Array.isArray(data.result))
+    return data.result;
+  else return [];
 }
