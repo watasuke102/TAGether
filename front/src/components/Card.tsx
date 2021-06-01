@@ -13,16 +13,9 @@ import Modal from './Modal';
 import Detail from './CategolyDetail';
 import FavoriteStar from './FavoriteStar';
 import Categoly from '../types/Categoly';
-import ModalData from '../types/ModalData';
 
 export default function ExamCard(props: Categoly): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  // Modalに渡す用のデータ
-  const modalData: ModalData = {
-    body: <Detail {...{ data: props, close: () => setIsModalOpen(false) }} />,
-    isOpen: isModalOpen,
-    close: () => setIsModalOpen(false),
-  };
 
   // タイトルを25文字以内に
   let title = props.title;
@@ -50,7 +43,9 @@ export default function ExamCard(props: Categoly): React.ReactElement {
         </div>
       </div>
 
-      <Modal {...modalData} />
+      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)} >
+        <Detail {...{ data: props, close: () => setIsModalOpen(false) }} />
+      </Modal>
     </>
   );
 }

@@ -17,7 +17,6 @@ import HistoryTable from '../components/ExamHistoryTableItem';
 import GetFromApi from '../ts/Api';
 import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
-import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
 
 interface Props { data: Categoly[] }
@@ -44,29 +43,6 @@ export default function profile(props: Props): React.ReactElement {
     InitExamHistory();
     GetFavorite().then(res => SetFavoriteList(res));
   }, []);
-
-  const modalData: ModalData = {
-    isOpen: isModalOpen,
-    close: () => SetIsModalOpen(false),
-    body: (
-      <div className={css.window}>
-        <p>解答履歴をすべて削除しますか？</p>
-        <div className={css.window_buttons}>
-          <Button {...{
-            type: 'material', icon: 'fas fa-times', text: '閉じる',
-            onClick: () => SetIsModalOpen(false)
-          }} />
-          <Button {...{
-            onClick: () => {
-              ClearExamHistory().then(InitExamHistory);
-              SetIsModalOpen(false);
-            },
-            type: 'filled', icon: 'fas fa-trash-alt', text: '削除する',
-          }} />
-        </div>
-      </div>
-    )
-  };
 
   return (
     <>
@@ -109,7 +85,24 @@ export default function profile(props: Props): React.ReactElement {
 
       </div>
 
-      <Modal {...modalData} />
+      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
+        <div className={css.window}>
+          <p>解答履歴をすべて削除しますか？</p>
+          <div className={css.window_buttons}>
+            <Button {...{
+              type: 'material', icon: 'fas fa-times', text: '閉じる',
+              onClick: () => SetIsModalOpen(false)
+            }} />
+            <Button {...{
+              onClick: () => {
+                ClearExamHistory().then(InitExamHistory);
+                SetIsModalOpen(false);
+              },
+              type: 'filled', icon: 'fas fa-trash-alt', text: '削除する',
+            }} />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

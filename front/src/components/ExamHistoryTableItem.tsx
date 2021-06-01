@@ -13,7 +13,6 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Detail from '../components/CategolyDetail';
 import Categoly from '../types/Categoly';
-import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
 import Router from 'next/router';
 
@@ -24,15 +23,7 @@ interface Props {
 
 export default function ExamHistoryTableItem(props: Props): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  // Modalに渡す用のデータ
-  const modalData: ModalData = {
-    body: <Detail {...{ data: props.categoly, close: () => setIsModalOpen(false) }} />,
-    isOpen: isModalOpen,
-    close: () => setIsModalOpen(false),
-  };
   const rate = Math.round((props.item.correct_count / props.item.total_question) * 10000) / 100;
-
-
 
   return (
     <tr>
@@ -61,7 +52,9 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
         </div>
       </td>
 
-      <Modal {...modalData} />
+      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+        <Detail {...{ data: props.categoly, close: () => setIsModalOpen(false) }} />
+      </Modal>
     </tr>
   );
 }

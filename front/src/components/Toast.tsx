@@ -11,7 +11,7 @@ import React from 'react';
 import { gsap, Power4 } from 'gsap';
 
 interface Props {
-  children: React.ReactNode,
+  children: React.ReactElement | React.ReactElement[],
   isOpen: boolean,
   stateChange: Function
 }

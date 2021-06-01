@@ -21,7 +21,6 @@ import { AddExamHistory, GetSpecifiedExamHistory } from '../ts/ManageDB';
 import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
-import ModalData from '../types/ModalData';
 import ExamHistory from '../types/ExamHistory';
 
 enum NextButtonState {
@@ -397,44 +396,7 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 
-  // 問題をとき終わったときに表示するウィンドウ
-  FinishWindow(): React.ReactElement {
-    return (
-      <div className={css.window}>
-        <h1>🎉問題終了🎉</h1>
-        <p>お疲れさまでした。</p>
-        <p className={css.correct_rate}>
-          <b>正答率{this.state.correct_rate}%</b><br />
-          （{this.total_questions}問中{this.correct_answers}問正解）
-        </p>
-        <div className={css.window_buttons}>
-          {(!this.props.history_id) &&
-            <Button {...{
-              text: '編集する', icon: 'fas fa-pen', type: 'material',
-              onClick: () => Router.push('/edit?id=' + this.props.id),
-            }} />
-          }
-          <Button {...{
-            text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
-            onClick: () => this.setState({ isModalOpen: false, showExamStateTable: true }),
-          }} />
-          <Button {...{
-            text: '前のページへ', icon: 'fas fa-arrow-left', type: 'filled',
-            onClick: Router.back,
-          }} />
-        </div>
-      </div>
-    );
-  }
-
   render(): React.ReactElement {
-    // Modalに渡す用のデータ
-    const modalData: ModalData = {
-      body: this.FinishWindow(),
-      isOpen: this.state.isModalOpen,
-      close: () => this.setState({ isModalOpen: false }),
-    };
-
     // 解答状況一覧を表示する
     if (this.state.showExamStateTable) {
       const list: React.ReactElement[] = [];
@@ -454,6 +416,7 @@ export default class exam extends React.Component<Props, State> {
           </tr>
         );
       });
+
       return (
         <>
           <div className={css.examdata_container}>
@@ -539,7 +502,32 @@ export default class exam extends React.Component<Props, State> {
           </div>
         </div>
 
-        <Modal {...modalData} />
+        <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
+          <div className={css.window}>
+            <h1>🎉問題終了🎉</h1>
+            <p>お疲れさまでした。</p>
+            <p className={css.correct_rate}>
+              <b>正答率{this.state.correct_rate}%</b><br />
+              （{this.total_questions}問中{this.correct_answers}問正解）
+            </p>
+            <div className={css.window_buttons}>
+              {(!this.props.history_id) &&
+                <Button {...{
+                  text: '編集する', icon: 'fas fa-pen', type: 'material',
+                  onClick: () => Router.push('/edit?id=' + this.props.id),
+                }} />
+              }
+              <Button {...{
+                text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
+                onClick: () => this.setState({ isModalOpen: false, showExamStateTable: true }),
+              }} />
+              <Button {...{
+                text: '前のページへ', icon: 'fas fa-arrow-left', type: 'filled',
+                onClick: Router.back,
+              }} />
+            </div>
+          </div>
+        </Modal>
 
       </>
     );

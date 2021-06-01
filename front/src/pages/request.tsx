@@ -13,7 +13,6 @@ import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import GetFromApi from '../ts/Api';
-import ModalData from '../types/ModalData';
 import FeatureRequest from '../types/FeatureRequest';
 
 interface Props { requests: FeatureRequest[] }
@@ -39,30 +38,6 @@ export default function Request({ requests }: Props): React.ReactElement {
     req.open('POST', process.env.EDIT_URL + '/request');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({ body: request }));
-  };
-
-  const modalData: ModalData = {
-    isOpen: isModalOpen,
-    close: () => SetIsModalOpen(false),
-    body: (
-      <div className={css.window}>
-        {result.isSuccess ?
-          <p>
-            送信しました。ご協力ありがとうございます。<br />
-            ページを再読み込みすることで要望一覧が更新されます。
-          </p>
-          :
-          <p>
-            送信に失敗しました: {result.result}<br />
-            しばらく時間を置いてもう一度送信してください。
-          </p>
-        }
-        <Button {...{
-          type: 'filled', icon: 'fas fa-times', text: '閉じる',
-          onClick: () => SetIsModalOpen(false)
-        }} />
-      </div>
-    )
   };
 
   // 要望一覧
@@ -112,7 +87,25 @@ export default function Request({ requests }: Props): React.ReactElement {
         {list}
       </tbody></table>
 
-      <Modal {...modalData} />
+      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
+        <div className={css.window}>
+          {result.isSuccess ?
+            <p>
+              送信しました。ご協力ありがとうございます。<br />
+              ページを再読み込みすることで要望一覧が更新されます。
+            </p>
+            :
+            <p>
+              送信に失敗しました: {result.result}<br />
+              しばらく時間を置いてもう一度送信してください。
+            </p>
+          }
+          <Button {...{
+            type: 'filled', icon: 'fas fa-times', text: '閉じる',
+            onClick: () => SetIsModalOpen(false)
+          }} />
+        </div>
+      </Modal>
     </div>
   );
 }

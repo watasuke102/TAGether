@@ -16,7 +16,6 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
-import ModalData from '../types/ModalData';
 import ButtonInfo from '../types/ButtonInfo';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import ApiResponse from '../types/ApiResponse';
@@ -65,7 +64,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   constructor(props: EditCategolyPageState) {
     super(props);
     this.state = {
-      isToastOpen: false, isModalOpen: false, 
+      isToastOpen: false, isModalOpen: false,
       categoly: categoly_default(), exam: exam_default(),
       res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
@@ -160,7 +159,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     };
     const url = process.env.EDIT_URL + '/categoly';
     if (url == undefined) {
-      this.setState({ isModalOpen: true, res_result: {'isSuccess':false,'result':'失敗しました: URL is undefined'} });
+      this.setState({ isModalOpen: true, res_result: { 'isSuccess': false, 'result': '失敗しました: URL is undefined' } });
       return;
     }
     categoly.list = categoly.list.replace(/\\n/g, '\\\\n');
@@ -388,12 +387,6 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   render(): React.ReactElement {
-    // Modalに渡す用のデータ
-    const modalData: ModalData = {
-      body: this.RegistResult(),
-      isOpen: this.state.isModalOpen,
-      close: () => this.setState({ isModalOpen: false }),
-    };
     return (
       <>
         <Helmet title={`${this.text.document_title} - TAGether`} />
@@ -452,7 +445,9 @@ export default class create extends React.Component<any, EditCategolyPageState> 
           </div>
         </div>
 
-        <Modal {...modalData} />
+        <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
+          {this.RegistResult()}
+        </Modal>
         <Toast
           isOpen={this.state.isToastOpen}
           stateChange={() => this.setState({ isToastOpen: false })}

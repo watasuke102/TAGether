@@ -8,10 +8,15 @@
 //
 import css from '../style/Modal.module.scss';
 import React from 'react';
-import ModalData from '../types/ModalData';
 
-export default class Modal extends React.Component<ModalData> {
-  constructor(props: ModalData) {
+interface Props {
+  children: React.ReactElement | React.ReactElement[]
+  isOpen:   boolean
+  close:    Function
+}
+
+export default class Modal extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
   }
   // スマホ対策
@@ -35,7 +40,7 @@ export default class Modal extends React.Component<ModalData> {
     return (
       <div className={css.background} onClick={() => this.props.close()}>
         <div className={css.window} onClick={(e) => e.stopPropagation()}>
-          {this.props.body}
+          {this.props.children}
         </div>
       </div>
     );
