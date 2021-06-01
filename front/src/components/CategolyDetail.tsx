@@ -68,7 +68,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
 
           <div className={css.updated_at}>
             <span className='fas fa-clock'></span>
-            <p>{this.data.updated_at}</p>
+            <p>{this.data.updated_at?.slice(0, -5).replace('T', ' ')}</p>
           </div>
 
           <Tag tag={this.data.tag} />
