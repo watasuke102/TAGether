@@ -32,7 +32,7 @@ export default class Header extends React.Component<any, State> {
   SetIsFixedButtons(): void {
     if (!process.browser) return;
     let isFixedButtons = false;
-    if (window.pageYOffset > 90) {
+    if (window.pageYOffset > 70) {
       isFixedButtons = true;
     }
     this.setState({ isFixedButtons: isFixedButtons });

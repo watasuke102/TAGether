@@ -20,7 +20,7 @@
 
 // アイコンと説明、ヘッダに使用
 .button {
-  padding: 5px 15px;
+  padding: 0 15px;
   margin: 0 auto;
   // 背景がはみ出ない最小限のマージン
   margin-bottom: 8px;
@@ -43,9 +43,10 @@
 // ボタンのなかみ 
 .button_icon {
   margin: auto 5px;
+  margin-bottom: 4px;
   text-align: center;
   span {
-    font-size: 25px;
+    font-size: 0.8em;
     color: #ffffff;
     width: auto;
     margin: 0px auto;
@@ -54,15 +55,17 @@
 }
 
 .button_text {
-  text-align: center;
-  margin: -10px auto;
-  font-size: 20px;
+  margin: 0;
+  font-size: 0.75em;
 }
 
 // 横幅が狭かったら説明テキストを非表示に 
 @media screen and (max-width: 700px) {
   .button_text {
     display: none;
+  }
+  .button_icon {
+    font-size: 1.2em;
   }
 }
 // 横幅が広かったらアイコンと説明を横に並べる 
@@ -71,17 +74,26 @@
     display: flex;
   }
   .button_text {
-    margin: auto 10px;
+    margin: auto;
+  }
+}
+
+// アイコンと説明が二弾になっていたら少しアイコンサイズを増やす
+@media screen and (min-width: 701px) and (max-width: 900px) {
+  .button_icon {
+    margin-bottom: -12px;
+    font-size: 1.3em;
   }
 }
 
 // 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に 
 @media screen and (max-height: 600px) {
   .button {
-    margin: auto;
+    margin: 0;
   }
   .button_icon {
     margin: 0 10px;
+    font-size: 1.4em;
   }
   .button_text {
     display: none;
