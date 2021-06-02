@@ -57,7 +57,7 @@ export default function Modal(props: Props) {
             className={css.window}
             onClick={(e) => e.stopPropagation()}
             variants={{
-              init: { x: '-50%', y: '10%', opacity: 0 },
+              init: { x: '-50%', y: '-10%', opacity: 0 },
               main: { x: '-50%', y: '-50%', opacity: 1 }
             }}
             transition={transition}

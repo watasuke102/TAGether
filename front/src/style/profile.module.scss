@@ -28,13 +28,13 @@
 }
 
 .window {
-  position: fixed;
   width: 60vw;
-  top: 50%; left: 50%;
   padding: 30px 50px;
   text-align: center;
   background-color: #646772;
-  transform: translateY(-50%) translateX(-50%);
+  p {
+    font-size: 1.2em;
+  }
 }
 
 .window_buttons {

@@ -8,10 +8,8 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .container {
-  position: fixed;
   width: 90vw;
   height: var(--container_height);
-  top: 50%; left: 50%;
   padding: 25px 20px;
 
   display: grid;
@@ -19,7 +17,6 @@
   grid-template-rows: 90px 30px auto 1fr 60px;
 
   background-color: #646772;
-  transform: translateY(-50%) translateX(-50%);
   textarea {
     width: 100%;
     font-family: 'M PLUS 1p', sans-serif;
@@ -61,13 +58,10 @@
 }
 
 .window {
-  position: fixed;
   width: 50vw;
-  top: 50%; left: 50%;
   padding: 20px 50px;
   text-align: center;
   background-color: #646772;
-  transform: translateY(-50%) translateX(-50%);
 }
 
 .window_buttons {
