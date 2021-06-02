@@ -8,41 +8,66 @@
 //
 import css from '../style/Modal.module.scss';
 import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
   children: React.ReactElement | React.ReactElement[]
-  isOpen:   boolean
-  close:    Function
+  isOpen: boolean
+  close: Function
 }
 
-export default class Modal extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
+
+export default function Modal(props: Props) {
+  const [vh, SetVh] = React.useState(0);
   // スマホ対策
-  UpdateContainersHeight(): void {
-    document.documentElement.style.setProperty('--vh', (window.innerHeight / 100) + 'px');
+  function UpdateContainersHeight(): void {
+    if (!process.browser) return;
+    const vh = window.innerHeight / 100;
+    SetVh(vh);
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
-  componentDidMount(): void {
-    window.addEventListener('resize', this.UpdateContainersHeight);
-    this.UpdateContainersHeight();
-  }
-  componentWillUnmount(): void {
-    window.removeEventListener('resize', this.UpdateContainersHeight);
-  }
+  React.useEffect(() => {
+    window.addEventListener('resize', UpdateContainersHeight);
+    return () =>
+      window.removeEventListener('resize', UpdateContainersHeight);
+  });
 
-  render(): React.ReactElement {
-    //開かれていない場合は空要素を渡す
-    if (!this.props.isOpen) {
-      return (<></>);
-    }
-    return (
-      <div className={css.background} onClick={() => this.props.close()}>
-        <div className={css.window} onClick={(e) => e.stopPropagation()}>
-          {this.props.children}
-        </div>
-      </div>
-    );
-  }
+  //開かれていない場合は空要素を渡す
+  //if (!props.isOpen) {
+  //  return (<></>);
+  //}
+  const transition = { duration: 0.3 };
+  return (
+    <AnimatePresence>
+      {props.isOpen &&
+        // 背景（開いているときに暗くする）
+        <motion.div
+          className={css.background}
+          onClick={() => props.close()}
+          variants={{
+            init: { opacity: 0 },
+            main: { opacity: 1 }
+          }}
+          transition={transition}
+          initial='init' animate='main' exit='init'
+        >
+          {/* ウィンドウ本体 */}
+          <motion.div
+            className={css.window}
+            onClick={(e) => e.stopPropagation()}
+            variants={{
+              init: { x: '-50%', y: '10%', opacity: 0 },
+              main: { x: '-50%', y: '-50%', opacity: 1 }
+            }}
+            transition={transition}
+            initial='init' animate='main' exit='init'
+          >
+            {/* 中身 */}
+            {props.children}
+          </motion.div>
+        </motion.div>
+      }
+    </AnimatePresence>
+  );
 }
