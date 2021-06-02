@@ -10,7 +10,7 @@ import '../style/main.scss';
 import React from 'react';
 import Head from 'next/head';
 import App, { Container } from 'next/app';
-import PageTransition from '../ts/next-page-transisions/PageTransition';
+import PageTransition from '../components/Transition';
 
 import Header from '../components/Header';
 
@@ -24,7 +24,7 @@ export default class MyApp extends App {
         </Head>
         <Header />
         <Container>
-          <PageTransition timeout={500} classNames="page-transition">
+          <PageTransition>
             <Component {...pageProps} key={router.route} />
           </PageTransition>
         </Container>
