@@ -17,14 +17,11 @@ interface Props {
 }
 
 
-export default function Modal(props: Props) {
-  const [vh, SetVh] = React.useState(0);
+export default function Modal(props: Props): React.ReactElement {
   // スマホ対策
   function UpdateContainersHeight(): void {
     if (!process.browser) return;
-    const vh = window.innerHeight / 100;
-    SetVh(vh);
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   }
 
   React.useEffect(() => {
@@ -33,11 +30,7 @@ export default function Modal(props: Props) {
       window.removeEventListener('resize', UpdateContainersHeight);
   });
 
-  //開かれていない場合は空要素を渡す
-  //if (!props.isOpen) {
-  //  return (<></>);
-  //}
-  const transition = { duration: 0.3 };
+  const transition = { duration: 0.4 };
   return (
     <AnimatePresence>
       {props.isOpen &&
