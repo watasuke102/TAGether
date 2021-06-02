@@ -45,11 +45,14 @@ function Query(query, req, resp) {
     }
   });
   if (isFailed) return;
+
   Log(`(Host: ${req.headers.host}) ${query}`);
   connection.query(query, (err, res) => {
     if (err) Error(resp, err.sqlMessage);
     else Success(resp, res);
   });
+
+  connection.end();
 }
 
 // カテゴリ

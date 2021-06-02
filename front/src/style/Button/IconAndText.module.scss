@@ -68,7 +68,7 @@
   }
 }
 // 横幅が広かったらアイコンと説明を横に並べる 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 901px) {
   .button {
     display: flex;
   }
@@ -80,7 +80,7 @@
 // アイコンと説明が二弾になっていたら少しアイコンサイズを増やす
 @media screen and (min-width: 701px) and (max-width: 900px) {
   .button_icon {
-    margin-bottom: -12px;
+    margin-bottom: 0px;
     font-size: 1.3em;
   }
 }

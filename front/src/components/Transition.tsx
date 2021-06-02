@@ -21,29 +21,21 @@ export default function Transition(props: Props): React.ReactElement {
   function ChangeStart(): void {
     SetIsTransitioning(true);
     const target = '#TransitionContainer';
+    const duration = 1;
+
     const timeline = gsap.timeline();
     timeline
       .to(target, {
-        duration: 0.3,
+        duration: duration,
         opacity: 0,
         onComplete: () => {
           SetIsTransitioning(false);
         }
       })
       .to(target, {
-        duration: 0.3,
+        duration: duration,
         opacity: 1,
-      }, '+=0.1')
-      // 終了処理
-      .to(target, {
-        duration: 0,
-        opacity: 0
-      })
-      .to(target, {
-        duration: 0,
-        opacity: 1,
-        onComplete: () => SetOldComponent(props.children)
-      });
+      }, '+=0.1'); // 0.1秒待機 (古いコンポーネントが見えないように)
   }
 
   React.useEffect(() => {

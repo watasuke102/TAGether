@@ -8,6 +8,7 @@
 //
 import css from '../style/request.module.scss';
 import React from 'react';
+import Helmet from 'react-helmet';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
@@ -58,6 +59,7 @@ export default function Request({ requests }: Props): React.ReactElement {
 
   return (
     <div className={css.container}>
+      <Helmet title='機能要望 - TAGether' />
       <h1>要望一覧</h1>
       <p>要望一覧を回答付きで表示します。荒らしや迷惑な内容は削除します。</p>
       <p>開発状況（ToDo）は<a href='https://0e0.pw/lusM'>こちら</a></p>

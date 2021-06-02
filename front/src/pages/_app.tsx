@@ -18,17 +18,15 @@ export default class MyApp extends App {
   render(): React.ReactElement {
     const { Component, pageProps, router } = this.props;
     return (
-      <>
+      <main>
         <Head>
           <title>TAGether</title>
         </Head>
         <Header />
         <Container>
-          <PageTransition>
-            <Component {...pageProps} key={router.route} />
-          </PageTransition>
+          <Component {...pageProps} key={router.route} />
         </Container>
-      </>
+      </main>
     );
   }
 }
