@@ -425,6 +425,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         <h2>問題</h2>
 
         {this.ExamEditForm()}
+
         <div className={css.bottom} ref={e => this.bottom = e} />
 
         <div className={css.button_container}>
