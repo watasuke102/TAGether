@@ -27,6 +27,10 @@ app.put('/categoly', Api.UpdateCategoly);
 app.get('/request/:id?', Api.GetRequest);
 app.post('/request', Api.AddRequest);
 
+app.get('/tag/:id?', Api.GetTag);
+app.post('/tag', Api.AddTag);
+app.put('/tag', Api.UpdateTag);
+
 app.listen(Config.Port, () =>
   console.info('[Info] Listening on port %o...', `http://localhost:${Config.Port}`)
 );

@@ -95,3 +95,26 @@ exports.AddRequest = (req, res) => {
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
 };
+
+// タグ
+exports.GetTag = (req, res) => {
+  let query = 'SELECT * FROM tag';
+  if (req.params.id)
+    query += ' WHERE id = ' + MySql.escape(req.params.id);
+  Query(query, req, res);
+};
+
+exports.AddTag = (req, res) => {
+  let query = 'INSERT INTO tag (name, description) values ';
+  query += `(${MySql.escape(req.body.name)},`;
+  query += ` ${MySql.escape(req.body.desc)})`;
+  Query(query, req, res);
+};
+
+exports.UpdateTag = (req, res) => {
+  let query = 'UPDATE tag SET ';
+  query += `name=${MySql.escape(req.body.name)},`;
+  query += `description=${MySql.escape(req.body.desc)} `;
+  query += `WHERE id=${MySql.escape(req.body.id)}`;
+  Query(query, req, res);
+};
