@@ -28,5 +28,5 @@ app.get('/request/:id?', Api.GetRequest);
 app.post('/request', Api.AddRequest);
 
 app.listen(Config.Port, () =>
-  console.log('[Info] Listening on port %o...', `http://localhost:${Config.Port}`)
+  console.info('[Info] Listening on port %o...', `http://localhost:${Config.Port}`)
 );

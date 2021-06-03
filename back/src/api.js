@@ -13,7 +13,7 @@ function Log(mes) {
   const DateFormat = require('date-fns');
   const date = new Date;
   date.setHours(date.getHours() + 9);
-  console.log(
+  console.info(
     DateFormat.format(date, '[yyyy-MM-dd HH:mm:ss]'),
     mes
   );
@@ -91,7 +91,6 @@ exports.GetRequest = (req, res) => {
 };
 
 exports.AddRequest = (req, res) => {
-  console.log(req.body);
   let query = 'INSERT INTO request (body) values ';
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
