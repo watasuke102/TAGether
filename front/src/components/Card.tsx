@@ -8,7 +8,7 @@
 //
 import css from '../style/Card.module.scss';
 import React from 'react';
-import Tag from './Tag';
+import Tag from './TagContainer';
 import Modal from './Modal';
 import Detail from './CategolyDetail';
 import FavoriteStar from './FavoriteStar';
