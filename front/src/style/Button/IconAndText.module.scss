@@ -20,11 +20,14 @@
 
 // アイコンと説明、ヘッダに使用
 .button {
+  display: flex;
   padding: 0 15px;
   // 背景がはみ出ない最小限のマージン
   margin: 8px auto;
+
+  // ボタン本来の見た目を消す
   border: none;
-  border-radius: 25px;
+  border-radius: 25px; // focus時のため
   color: #b9ccbe;
   background-color: #ffffff00;
   transition: background-color 0.3s;
@@ -54,7 +57,7 @@
 }
 
 .button_text {
-  margin: 0;
+  margin: auto;
   font-size: 0.75em;
 }
 
@@ -67,19 +70,15 @@
     font-size: 1.2em;
   }
 }
-// 横幅が広かったらアイコンと説明を横に並べる 
-@media screen and (min-width: 901px) {
-  .button {
-    display: flex;
-  }
-  .button_text {
-    margin: auto;
-  }
-}
 
-// アイコンと説明が二弾になっていたら少しアイコンサイズを増やす
+// アイコンと説明が2段になっていたら少しアイコンサイズを増やす
 @media screen and (min-width: 701px) and (max-width: 900px) {
+  .button {
+    flex-direction: column;
+    text-align: center;
+  }
   .button_icon {
+    margin: auto;
     margin-bottom: 0px;
     font-size: 1.3em;
   }
