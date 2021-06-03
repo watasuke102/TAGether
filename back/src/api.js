@@ -66,7 +66,7 @@ exports.GetCategoly = (req, res) => {
 exports.AddCategoly = (req, res) => {
   let query = 'INSERT INTO exam (title, description, tag, list) values ';
   query += `(${MySql.escape(req.body.title)},`;
-  query += ` ${MySql.escape(req.body.desc)},`;
+  query += ` ${MySql.escape(req.body.description)},`;
   query += ` ${MySql.escape(req.body.tag)},`;
   query += ` ${MySql.escape(req.body.list)})`;
   Query(query, req, res);
@@ -75,7 +75,7 @@ exports.AddCategoly = (req, res) => {
 exports.UpdateCategoly = (req, res) => {
   let query = 'UPDATE exam SET ';
   query += `title=${MySql.escape(req.body.title)},`;
-  query += `description=${MySql.escape(req.body.desc)},`;
+  query += `description=${MySql.escape(req.body.description)},`;
   query += `tag=${MySql.escape(req.body.tag)},`;
   query += `list=${MySql.escape(req.body.list)} `;
   query += `WHERE id=${MySql.escape(req.body.id)}`;
@@ -107,7 +107,7 @@ exports.GetTag = (req, res) => {
 exports.AddTag = (req, res) => {
   let query = 'INSERT INTO tag (name, description) values ';
   query += `(${MySql.escape(req.body.name)},`;
-  query += ` ${MySql.escape(req.body.desc)})`;
+  query += ` ${MySql.escape(req.body.description)})`;
   Query(query, req, res);
 };
 

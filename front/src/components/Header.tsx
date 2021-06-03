@@ -47,6 +47,7 @@ export default class Header extends React.Component<any, State> {
     const info: ButtonInfo[] = [];
     info.push({ text: 'ホーム', icon: 'fas fa-home', onClick: () => Router.push('/'), type: 'icon_desc' });
     info.push({ text: 'カテゴリ一覧', icon: 'fas fa-book', onClick: () => Router.push('/list'), type: 'icon_desc' });
+    info.push({ text: 'タグ一覧', icon: 'fas fa-tag', onClick: () => Router.push('/tag'), type: 'icon_desc' });
     info.push({ text: 'プロフィール', icon: 'fas fa-user', onClick: () => Router.push('/profile'), type: 'icon_desc' });
     info.push({ text: '機能要望', icon: 'fas fa-comment-alt', onClick: () => Router.push('/request'), type: 'icon_desc' });
     const button_list: React.ReactElement[] = [];
