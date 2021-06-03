@@ -115,10 +115,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       });
       return;
     }
-    let f: boolean = false;
+    let failed: boolean = false;
     this.state.exam.forEach(e => {
       if (e.question == '') {
-        f = true;
+        failed = true;
         this.setState({
           isModalOpen: true, res_result: {
             'isSuccess': false, 'result': '問題文が入力されていない欄があります'
@@ -128,7 +128,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       }
       e.answer.forEach(answer => {
         if (answer == '') {
-          f = true;
+          failed = true;
           this.setState({
             isModalOpen: true, res_result: {
               'isSuccess': false, 'result': '答えが入力されていない欄があります'
@@ -138,11 +138,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         }
       });
     });
-    if (f) return;
+    if (failed) return;
     const exam = JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
-    const categoly = {
-      id: tmp.id, title: tmp.title, desc: tmp.description, tag: tmp.tag, list: exam
+    const categoly: Categoly = {
+      id: tmp.id, title: tmp.title, description: tmp.description, tag: tmp.tag, list: exam
     };
 
     const req = new XMLHttpRequest();

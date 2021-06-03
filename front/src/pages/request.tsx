@@ -112,7 +112,7 @@ export default function Request({ requests }: Props): React.ReactElement {
   );
 }
 
-// APIで問題を取得
+// APIで要望一覧を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<FeatureRequest>('request', context.query.id);
   data.sort((a, b) => (b.id??0) - (a.id??0));
