@@ -37,7 +37,7 @@ export default function Modal(props: Props): React.ReactElement {
         // 背景（開いているときに暗くする）
         <motion.div
           className={css.background}
-          onClick={() => props.close()}
+          onClick={e => { e.stopPropagation(); props.close(); }}
           variants={{
             init: { opacity: 0 },
             main: { opacity: 1 }
@@ -61,6 +61,6 @@ export default function Modal(props: Props): React.ReactElement {
           </motion.div>
         </motion.div>
       }
-    </AnimatePresence>
+    </AnimatePresence >
   );
 }
