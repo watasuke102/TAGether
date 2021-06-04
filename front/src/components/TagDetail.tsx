@@ -59,7 +59,7 @@ export default function TagDetail(props: Props): React.ReactElement {
       id: props.tag.id,
       name: edited_name, description: edited_desc
     }));
-  };
+  }
 
   return (
     <>

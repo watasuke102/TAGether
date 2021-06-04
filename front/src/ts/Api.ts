@@ -7,20 +7,11 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import ApiResponse from '../types/ApiResponse';
-import Categoly from '../types/Categoly';
 import TagData from '../types/TagData';
+import Categoly from '../types/Categoly';
+import CategolyResponse from '../types/CategolyResponse';
 
 type Query = string | string[] | undefined;
-
-// APIレスポンスの型
-interface CategolyResponse {
-  id?: number
-  updated_at?: string
-  title: string
-  description: string
-  tag: string
-  list: string
-}
 
 export default async function GetFromApi<T>(target: string, query: Query): Promise<T[]> {
   // 渡されたURLクエリ (context.query.id) からidを取得

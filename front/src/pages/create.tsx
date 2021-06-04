@@ -10,33 +10,41 @@ import css from '../style/create.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
+import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
+import GetFromApi from '../ts/Api';
 import Exam from '../types/Exam';
+import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
-import EditCategolyPageState from '../types/EditCategolyPageState';
 import ApiResponse from '../types/ApiResponse';
+import EditCategolyPageState from '../types/EditCategolyPageState';
 
 // デフォルト値
-function categoly_default() {
+function categoly_default(): Categoly {
   const tmp: Categoly = {
     id: 0, updated_at: '', title: '',
-    description: '', tag: '', list: ''
+    description: '', list: '',
+    tag: [],
   };
   return tmp;
 }
-function exam_default() {
+function exam_default(): Exam[] {
   const tmp: Exam[] = [];
   tmp.push({ question: '', answer: Array<string>(1).fill('') });
   return tmp;
 }
 
+interface Props {
+  tags: TagData[]
+}
+
 // TODO: どうにかならないかなぁ
 /* eslint @typescript-eslint/no-explicit-any: 0 */
-export default class create extends React.Component<any, EditCategolyPageState> {
+export default class create extends React.Component<Props, EditCategolyPageState> {
   private bottom;
   private top;
 
@@ -60,7 +68,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
   public api_method = 'POST';
 
-  constructor(props: EditCategolyPageState) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isToastOpen: false, isModalOpen: false,
@@ -98,7 +106,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
 
   // カテゴリ登録
   RegistExam(): void {
-    if (this.state.categoly.tag.split(',').length > 8) {
+    if (this.state.categoly.tag.length > 8) {
       this.setState({
         isToastOpen: true, res_result: {
           'isSuccess': false, 'result': 'タグは合計8個以下にしてください'
@@ -140,8 +148,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     if (failed) return;
     const exam = JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
+    let tag: string = '';
+    tmp.tag.forEach(e => tag += `${e.id ?? e.name},`);
     const categoly: Categoly = {
-      id: tmp.id, title: tmp.title, description: tmp.description, tag: tmp.tag, list: exam
+      id: tmp.id, title: tmp.title, description: tmp.description, tag: tag, list: exam
     };
 
     const req = new XMLHttpRequest();
@@ -223,12 +233,11 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   }
 
   // state更新
-  UpdateCategoly(type: string, str: string): void {
+  UpdateCategoly(type: 'title' | 'desc', str: string): void {
     const tmp = this.state.categoly;
     switch (type) {
       case 'title': tmp.title = str; break;
       case 'desc': tmp.description = str; break;
-      case 'tag': tmp.tag = str; break;
     }
     this.setState({ categoly: tmp });
   }
@@ -413,10 +422,6 @@ export default class create extends React.Component<any, EditCategolyPageState> 
             label: '説明', value: this.state.categoly.description, rows: 3,
             onChange: (e) => this.UpdateCategoly('desc', e.target.value)
           }} />
-          <Form {...{
-            label: 'タグ (半角コンマ , で区切る)', value: this.state.categoly.tag, rows: 1,
-            onChange: (e) => this.UpdateCategoly('tag', e.target.value)
-          }} />
         </div>
 
         <div className={css.top} ref={e => this.top = e} />
@@ -460,3 +465,10 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     );
   }
 }
+
+
+// APIで問題を取得
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const tags = await GetFromApi<TagData>('tag', context.query.id);
+  return { props: { tags: tags } };
+};
