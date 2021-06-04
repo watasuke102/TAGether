@@ -10,21 +10,29 @@ import css from '../style/TagContainer.module.scss';
 import React from 'react';
 import Router from 'next/router';
 import TagData from '../types/TagData';
+import Modal from './Modal';
+import Button from './Button';
+import TagDetail from './TagDetail';
 
 interface Props { tag: TagData[] }
 
 export default function Tag(props: Props): React.ReactElement {
+  function TagItem(tag_data: TagData) {
+    const [is_modal_open, SetIsModalOpen] = React.useState(false);
+    return (
+      <>
+        <div key={`tagitem_${tag_data.id}`} className={css.tag}
+          onClick={e => { e.stopPropagation(); SetIsModalOpen(true); }}>
+          <span>{tag_data.name}</span>
+        </div>
+        <TagDetail tag={tag_data} isOpen={is_modal_open}
+          close={() => SetIsModalOpen(false)} />
+      </>
+    );
+  }
   return (
     <div className={css.tag_container}>
-      {
-        props.tag.map((e, i) => {
-          return (
-            <div key={`tagitem_${i}`} className={css.tag}
-              onClick={ev => { ev.stopPropagation(); Router.push(`?tag=${e.id ?? `-1&name=${e.name}`}`); }}>
-              <span>{e.name}</span>
-            </div>
-          );
-        })}
+      {props.tag.map(e => TagItem(e))}
     </div>
   );
 }

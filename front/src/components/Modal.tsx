@@ -38,6 +38,7 @@ export default function Modal(props: Props): React.ReactElement {
         <motion.div
           className={css.background}
           onClick={e => { e.stopPropagation(); props.close(); }}
+          onHoverStart={e => e.stopPropagation()}
           variants={{
             init: { opacity: 0 },
             main: { opacity: 1 }

@@ -36,9 +36,7 @@ export default function ExamCard(props: Categoly): React.ReactElement {
 
           <div className={css.bottom_items}>
             <p className={css.desc}> {desc} </p>
-            <div>
-              <Tag tag={props.tag} />
-            </div>
+            <Tag tag={props.tag} />
           </div>
           <FavoriteStar id={props.id ?? -1} />
 

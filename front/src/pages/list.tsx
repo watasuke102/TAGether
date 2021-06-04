@@ -9,16 +9,14 @@
 import css from '../style/list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import { GetServerSideProps } from 'next';
-import Modal from '../components/Modal';
 import Form from '../components/Form';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import SelectBox from '../components/SelectBox';
 import GetFromApi from '../ts/Api';
 import Categoly from '../types/Categoly';
-import ButtonInfo from '../types/ButtonInfo';
 import TagData from '../types/TagData';
 
 interface Props {
@@ -31,7 +29,6 @@ export default function list(props: Props): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
-  const router = useRouter();
   const list: Categoly[] = props.data;
 
   function CardList(): React.ReactElement[] {
@@ -83,7 +80,6 @@ export default function list(props: Props): React.ReactElement {
     return cards;
   }
 
-  console.log(router.query.tag)//, props.tags[Number(router.query.tag)].name);
   return (
     <>
       <Helmet title='カテゴリ一覧 - TAGether' />
@@ -115,29 +111,6 @@ export default function list(props: Props): React.ReactElement {
       </div>
 
       <div className={css.list}> {CardList()} </div>
-
-      {/* タグ詳細 */}
-      <Modal isOpen={(router.query.tag) ? true : false} close={() => Router.push('/list')}>
-        <div className={css.window}>
-          <div className={css.heading}>
-            <span className='fas fa-tag' />
-            <span>タグ詳細</span>
-          </div>
-          <span>
-            {
-              router.query.tag && (
-                props.tags.find(e => e.id === Number(router.query.tag))?.name ??
-                router.query.name ?? '')
-            }
-          </span>
-          <div className={css.window_buttons}>
-            <Button {...{
-              type: 'material', icon: 'fas fa-times', text: '閉じる',
-              onClick: () => Router.push('/list')
-            }} />
-          </div>
-        </div>
-      </Modal>
     </>
   );
 }

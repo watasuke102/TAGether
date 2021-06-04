@@ -22,7 +22,7 @@
   box-shadow: 5px 5px 5px #1e1e1e;
   background-color: #6b6b6baa;
   transition: 300ms;
-  p {
+  .title, .desc {
     color: #dbdbdb;
     transition: 300ms;
   }
@@ -33,7 +33,7 @@
       cursor: pointer;
       background-color: #a5a5a5aa;
       transition: 300ms;
-      p {
+      .title, .desc {
         color: #111111;
         transition: 300ms;
       }
