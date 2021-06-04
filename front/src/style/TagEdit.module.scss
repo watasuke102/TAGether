@@ -11,7 +11,7 @@
 .current_tag {
   display: flex;
   flex-wrap: wrap;
-  font-size: 1.2em;
+  font-size: 1.3em;
   .item {
     user-select: none;
     margin: 5px 10px;
@@ -20,4 +20,10 @@
     div { margin-right: 5px; }
     &:hover { cursor: pointer; }
   }
+}
+
+.tag_picker {
+  position: absolute;
+  height: 90px; width: 290px;
+  background-color: #999d;
 }

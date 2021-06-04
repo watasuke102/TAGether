@@ -18,32 +18,47 @@ interface Props {
 
 export default function TagEdit(props: Props): React.ReactElement {
   const [is_picker_open, SetIsPickerOpen] = React.useState(false);
+  const [picker_pos, SetPickerPos] = React.useState({ top: 0, left: 0 });
   const [tag, SetTagState] = React.useState(props.current_tag);
 
   function UpdateTag(e: TagData[]) {
     SetTagState(e); props.SetTag(e);
   }
 
+  function PickerOpen(e: React.MouseEvent) {
+    SetPickerPos({
+      left: e.clientX,
+      top: e.clientY + window.scrollY + 30 // ボタンと重ならないように
+    });
+    SetIsPickerOpen(true);
+  }
+
   return (
-    <div className={css.current_tag}>
-      <div className={`${css.item} ${css.hover_pointer}`}
-        onClick={() => 
-          /**/
-          UpdateTag([...tag, { name: 'test', updated_at: '', description: '' }])
-          /*/
-          SetIsPickerOpen(true)/**/}>
-        <div className='fas fa-plus' />
-        <span>追加</span>
-      </div>
+    <>
+      <div className={css.current_tag}>
+        <div className={css.item}
+          onClick={(e) => PickerOpen(e)}>
+          <div className='fas fa-plus' />
+          <span>追加</span>
+        </div>
+        {/* タグ一覧（クリックで削除） */}
+        {
+          tag.map((e, i) => (
+            <div key={`current_tag_${/*e.name*/Math.random()}`} className={css.item}
+              onClick={() => UpdateTag(tag.filter((_, j) => j !== i))}>
+              <div className='fas fa-times' />
+              <span>{e.name}</span>
+            </div>
+          ))
+        }
+      </div >
       {
-        tag.map((e, i) => (
-          <div key={`current_tag_${/*e.name*/Math.random()}`} className={css.item}
-            onClick={() => UpdateTag(tag.filter((_, j) => j !== i))}>
-            <div className='fas fa-times' />
-            <span>{e.name}</span>
-          </div>
-        ))
+        is_picker_open &&
+        <div
+          className={css.tag_picker} style={picker_pos}
+          onClick={() => SetIsPickerOpen(false)}
+        />
       }
-    </div >
+    </>
   );
 }
