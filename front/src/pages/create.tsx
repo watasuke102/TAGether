@@ -45,8 +45,6 @@ interface Props {
   data: Categoly[]
 }
 
-// TODO: どうにかならないかなぁ
-/* eslint @typescript-eslint/no-explicit-any: 0 */
 export default class create extends React.Component<Props, EditCategolyPageState> {
   private bottom;
   private top;
@@ -428,7 +426,12 @@ export default class create extends React.Component<Props, EditCategolyPageState
         </div>
 
         <h2>タグ</h2>
-        <TagEdit tags={this.props.tags} current_tag={this.state.categoly.tag} />
+        <TagEdit tags={this.props.tags} current_tag={this.state.categoly.tag}
+          SetTag={(e: TagData[]) => {
+            const tmp = this.state.categoly;
+            tmp.tag = e;
+            this.setState({ categoly: tmp });
+          }} />
 
         <div className={css.top} ref={e => this.top = e} />
 
@@ -476,5 +479,5 @@ export default class create extends React.Component<Props, EditCategolyPageState
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const tags = await GetFromApi<TagData>('tag', context.query.id);
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
-  return { props: { tags: tags, categoly: data } };
+  return { props: { tags: tags, data: data } };
 };

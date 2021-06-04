@@ -64,5 +64,5 @@ export default class edit extends Create {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const tags = await GetFromApi<TagData>('tag', context.query.id);
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
-  return { props: { tags: tags, categoly: data } };
+  return { props: { tags: tags, data: data } };
 };
