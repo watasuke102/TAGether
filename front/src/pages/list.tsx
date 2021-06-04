@@ -33,10 +33,9 @@ export default function list(props: Props): React.ReactElement {
   const [newer_first, SetNewerFirst] = React.useState(true);
   const router = useRouter();
   const list: Categoly[] = props.data;
-  let cards: React.ReactElement[] = [];
 
-  // カードの生成
-  const CreateCards = () => {
+  function CardList(): React.ReactElement[] {
+    let cards: React.ReactElement[] = [];
     let searchResult: Categoly[] = [];
     cards = [];
     // 検索欄になにか記入されていたら、検索
@@ -81,20 +80,10 @@ export default function list(props: Props): React.ReactElement {
         <p id={css.create_new}>新規作成</p>
       </div>
     );
-  };
+    return cards;
+  }
 
-  CreateCards();
-
-  const info: ButtonInfo = {
-    type: 'material',
-    text: newer_first ? '古い順に並べる' : '新しい順に並べる',
-    icon: 'fas fa-sort-numeric-' + (newer_first ? 'down-alt' : 'down'),
-    onClick: () => {
-      CreateCards();
-      SetNewerFirst(!newer_first);
-    }
-  };
-
+  console.log(router.query.tag)//, props.tags[Number(router.query.tag)].name);
   return (
     <>
       <Helmet title='カテゴリ一覧 - TAGether' />
@@ -117,15 +106,30 @@ export default function list(props: Props): React.ReactElement {
 
         <div className={css.sort}>
           <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
-          <Button {...info} />
+          <Button
+            type='material' text={newer_first ? '古い順に並べる' : '新しい順に並べる'}
+            icon={'fas fa-sort-numeric-' + (newer_first ? 'down-alt' : 'down')}
+            onClick={() => SetNewerFirst(!newer_first)}
+          />
         </div>
       </div>
 
-      <div className={css.list}> {cards} </div>
+      <div className={css.list}> {CardList()} </div>
 
+      {/* タグ詳細 */}
       <Modal isOpen={(router.query.tag) ? true : false} close={() => Router.push('/list')}>
         <div className={css.window}>
-          <p>タグ詳細</p>
+          <div className={css.heading}>
+            <span className='fas fa-tag' />
+            <span>タグ詳細</span>
+          </div>
+          <span>
+            {
+              router.query.tag && (
+                props.tags.find(e => e.id === Number(router.query.tag))?.name ??
+                router.query.name ?? '')
+            }
+          </span>
           <div className={css.window_buttons}>
             <Button {...{
               type: 'material', icon: 'fas fa-times', text: '閉じる',
@@ -142,6 +146,5 @@ export default function list(props: Props): React.ReactElement {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const tags = await GetFromApi<TagData>('tag', context.query.id);
-  console.log(data[0]);
   return { props: { data: data, tags: tags } };
 };
