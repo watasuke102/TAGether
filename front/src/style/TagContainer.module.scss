@@ -33,3 +33,17 @@
   }
 }
 
+.window {
+  width: 60vw;
+  padding: 30px 50px;
+  text-align: center;
+  background-color: #646772;
+  p {
+    font-size: 1.2em;
+  }
+}
+.window_buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 50px 0 0;
+}

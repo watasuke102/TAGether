@@ -20,7 +20,10 @@ import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 import TagData from '../types/TagData';
 
-interface Props { data: Categoly[] }
+interface Props {
+  data: Categoly[]
+  tags: TagData[]
+}
 
 
 export default function list(props: Props): React.ReactElement {
@@ -60,6 +63,10 @@ export default function list(props: Props): React.ReactElement {
       cards.push(<p key={'result_404'} className={css.notfound}>見つかりませんでした</p>);
     } else {
       searchResult.forEach(element => {
+        // タグの置き換え
+        props.tags.forEach(tag => {
+          element.tag = element.tag.replace(String(tag.id), tag.name);
+        });
         cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
       });
     }
@@ -123,10 +130,5 @@ export default function list(props: Props): React.ReactElement {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const tags = await GetFromApi<TagData>('tag', context.query.id);
-  for (let i = 0; i < data.length; i++) {
-    tags.forEach(tag => {
-      data[i].tag = data[i].tag.replace(String(tag.id), tag.name);
-    });
-  }
-  return { props: { data } };
+  return { props: { data: data, tags: tags } };
 };
