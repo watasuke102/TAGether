@@ -15,6 +15,7 @@ import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
+import TagEdit from '../components/TagEdit';
 import GetFromApi from '../ts/Api';
 import Exam from '../types/Exam';
 import TagData from '../types/TagData';
@@ -22,6 +23,7 @@ import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
 import EditCategolyPageState from '../types/EditCategolyPageState';
+import CategolyResponse from '../types/CategolyResponse';
 
 // デフォルト値
 function categoly_default(): Categoly {
@@ -40,6 +42,7 @@ function exam_default(): Exam[] {
 
 interface Props {
   tags: TagData[]
+  data: Categoly[]
 }
 
 // TODO: どうにかならないかなぁ
@@ -150,8 +153,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
     const tmp: Categoly = this.state.categoly;
     let tag: string = '';
     tmp.tag.forEach(e => tag += `${e.id ?? e.name},`);
-    const categoly: Categoly = {
-      id: tmp.id, title: tmp.title, description: tmp.description, tag: tag, list: exam
+    const categoly: CategolyResponse = {
+      id: tmp.id, title: tmp.title, description: tmp.description, tag: tag.slice(0, -1), list: exam
     };
 
     const req = new XMLHttpRequest();
@@ -424,6 +427,9 @@ export default class create extends React.Component<Props, EditCategolyPageState
           }} />
         </div>
 
+        <h2>タグ</h2>
+        <TagEdit tags={this.props.tags} current_tag={this.state.categoly.tag} />
+
         <div className={css.top} ref={e => this.top = e} />
 
         <h2>問題</h2>
@@ -466,9 +472,9 @@ export default class create extends React.Component<Props, EditCategolyPageState
   }
 }
 
-
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const tags = await GetFromApi<TagData>('tag', context.query.id);
-  return { props: { tags: tags } };
+  const data = await GetFromApi<Categoly>('categoly', context.query.id);
+  return { props: { tags: tags, categoly: data } };
 };

@@ -10,9 +10,14 @@ import { GetServerSideProps } from 'next';
 import Router from 'next/router';
 import Create from './create';
 import GetFromApi from '../ts/Api';
+import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
 import ApiResponse from '../types/ApiResponse';
-import EditCategolyPageState from '../types/EditCategolyPageState';
+
+interface Props {
+  tags: TagData[]
+  data: Categoly[]
+}
 
 export default class edit extends Create {
   public text = {
@@ -39,7 +44,7 @@ export default class edit extends Create {
   }
   public api_method = 'PUT';
 
-  constructor(props: EditCategolyPageState) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isToastOpen: false, isModalOpen: false,
@@ -55,9 +60,9 @@ export default class edit extends Create {
   }
 }
 
-
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const tags = await GetFromApi<TagData>('tag', context.query.id);
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
-  return { props: { data } };
+  return { props: { tags: tags, categoly: data } };
 };
