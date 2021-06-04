@@ -114,7 +114,7 @@ exports.AddTag = (req, res) => {
 exports.UpdateTag = (req, res) => {
   let query = 'UPDATE tag SET ';
   query += `name=${MySql.escape(req.body.name)},`;
-  query += `description=${MySql.escape(req.body.desc)} `;
+  query += `description=${MySql.escape(req.body.description)} `;
   query += `WHERE id=${MySql.escape(req.body.id)}`;
   Query(query, req, res);
 };

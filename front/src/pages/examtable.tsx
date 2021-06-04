@@ -75,7 +75,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const props: Props = {
     data: data,
-    shuffle: (context.query.shuffle == 'true') ? true : false
+    shuffle: (context.query.shuffle === 'true')
   };
   return { props: props };
 };

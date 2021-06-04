@@ -13,6 +13,7 @@ import Modal from '../components/Modal';
 import Form from '../components/Form';
 import Button from '../components/Button';
 import TagData from '../types/TagData';
+import Toast from './Toast';
 
 interface Props {
   tag: TagData
@@ -22,42 +23,83 @@ interface Props {
 
 
 export default function TagDetail(props: Props): React.ReactElement {
+  const [isToastOpen, SetIsToastOpen] = React.useState(false);
+  const [response, SetResponse] = React.useState('');
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
+
+  function UpdateTag() {
+    console.log(props.tag);
+    if (props.tag.id === undefined) {
+      SetResponse('編集できないタグです');
+      SetIsToastOpen(true);
+      return;
+    }
+    if (edited_name === '') {
+      SetResponse('タグ名を入力してください');
+      SetIsToastOpen(true);
+      return;
+    }
+
+    const req = new XMLHttpRequest();
+    req.onreadystatechange = () => {
+      if (req.readyState == 4) {
+        const result = JSON.parse(req.responseText);
+        if (result.isSuccess) {
+          SetResponse('編集結果を適用しました');
+        } else {
+          SetResponse('適用できませんでした');
+        }
+        SetIsToastOpen(true);
+      }
+    };
+    req.open('PUT', process.env.EDIT_URL + '/tag');
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(JSON.stringify({
+      id: props.tag.id,
+      name: edited_name, description: edited_desc
+    }));
+  };
+
   return (
-    <Modal isOpen={props.isOpen} close={props.close}>
-      <div className={css.window}>
-        <div className={css.heading}>
-          <span className='fas fa-tag' />
-          <span>タグ詳細・編集</span>
-          <hr />
-        </div>
+    <>
+      <Modal isOpen={props.isOpen} close={props.close}>
+        <div className={css.window}>
+          <div className={css.heading}>
+            <span className='fas fa-tag' />
+            <span>タグ詳細・編集</span>
+            <hr />
+          </div>
 
 
-        {/* 編集 */}
-        <div className={css.forms}>
-          <Form {...{
-            label: '名前', rows: 1, value: edited_name,
-            disabled: (!props.tag.id) ? true : false,
-            onChange: e => SetEditedName(e.target.value)
-          }} />
-          <Form {...{
-            label: '説明', rows: 4, value: edited_desc,
-            disabled: (!props.tag.id) ? true : false,
-            onChange: e => SetEditedDesc(e.target.value)
-          }} />
-        </div>
+          {/* 編集 */}
+          <div className={css.forms}>
+            <Form {...{
+              label: 'タグ名', rows: 1, value: edited_name,
+              disabled: (props.tag.id === undefined) ? true : false,
+              onChange: e => SetEditedName(e.target.value)
+            }} />
+            <Form {...{
+              label: '説明', rows: 4, value: edited_desc,
+              disabled: (props.tag.id === undefined) ? true : false,
+              onChange: e => SetEditedDesc(e.target.value)
+            }} />
+          </div>
 
-        {/* ボタン */}
-        <div className={css.window_buttons}>
-          <Button type='material' icon='fas fa-times' text='閉じる'
-            onClick={props.close} />
-          <Button type='material' icon='fas fa-check' text='編集結果を適用'
-            onClick={props.close} />
-          <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
-            onClick={props.close} />
+          {/* ボタン */}
+          <div className={css.window_buttons}>
+            <Button type='material' icon='fas fa-times' text='閉じる'
+              onClick={props.close} />
+            <Button type='material' icon='fas fa-check' text='編集結果を適用'
+              onClick={UpdateTag} />
+            <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
+              onClick={props.close} />
+          </div>
         </div>
-      </div>
-    </Modal >
+      </Modal >
+      <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)}>
+        <span>{response}</span>
+      </Toast>
+    </>
   );
 }

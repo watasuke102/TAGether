@@ -18,11 +18,13 @@ import GetFromApi from '../ts/Api';
 import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
 import ExamHistory from '../types/ExamHistory';
+import CheckBox from '../components/CheckBox';
 
 interface Props { data: Categoly[] }
 
 export default function profile(props: Props): React.ReactElement {
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
+  const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
 
@@ -66,6 +68,10 @@ export default function profile(props: Props): React.ReactElement {
             text: '履歴を全消去', icon: 'fas fa-trash-alt',
             onClick: () => SetIsModalOpen(true), type: 'filled'
           }} />
+          {/* シャッフルするかどうかを決めるチェックボックス */}
+          <CheckBox status={isShuffleEnabled} desc='問題順をシャッフル'
+            onChange={e => SetIsShuffleEnabled(e)}
+          />
         </div>
 
         <table>

@@ -13,7 +13,7 @@ import { gsap, Power4 } from 'gsap';
 interface Props {
   children: React.ReactElement | React.ReactElement[],
   isOpen: boolean,
-  stateChange: Function
+  close: Function
 }
 
 export default function Toast(props: Props): React.ReactElement {
@@ -40,7 +40,7 @@ export default function Toast(props: Props): React.ReactElement {
       .to(target, {
         duration: 0,
         translateX: '0%',
-        onComplete: () => props.stateChange()
+        onComplete: () => props.close()
       });
   }, [props.isOpen]);
   return (

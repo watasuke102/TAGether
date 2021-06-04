@@ -449,7 +449,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         </Modal>
         <Toast
           isOpen={this.state.isToastOpen}
-          stateChange={() => this.setState({ isToastOpen: false })}
+          close={() => this.setState({ isToastOpen: false })}
         >
           <div className={css.toast_body}>
             <span className='fas fa-bell' />
