@@ -7,9 +7,9 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 interface TagData {
-  id:          number
-  updated_at:  string
+  id?:         number
   name:        string
+  updated_at:  string
   description: string
 }
 

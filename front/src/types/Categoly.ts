@@ -5,13 +5,15 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
-//
+
+import TagData from './TagData';
+
 interface Categoly {
   id?: number
   updated_at?: string
   title: string
   description: string
-  tag: string
+  tag: TagData[]
   list: string
 }
 

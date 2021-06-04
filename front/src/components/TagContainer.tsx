@@ -11,23 +11,24 @@ import React from 'react';
 import Modal from './Modal';
 import Router from 'next/router';
 import Button from './Button';
+import TagData from '../types/TagData';
 
-interface TagData { tag: string }
+interface Props { tag: TagData[] }
 
-export default function Tag(props: TagData): React.ReactElement {
+export default function Tag(props: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   return (
     <div className={css.tag_container}>
       {
-        props.tag.split(',').map((e, i) => {
+        props.tag.map((e, i) => {
           return (<>
             <div key={`tagitem_${i}`} className={css.tag}
-              onClick={e => { e.stopPropagation(); SetIsModalOpen(true); }}>
-              <span>{e}</span>
+              onClick={ev => { ev.stopPropagation(); Router.push(`?tag=${e.id ?? `-1&name=${e.name}`}`); }}>
+              <span>{e.name}</span>
             </div>
             <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
               <div className={css.window}>
-                <p>解答履歴をすべて削除しますか？</p>
+                <p>タグ詳細</p>
                 <div className={css.window_buttons}>
                   <Button {...{
                     type: 'material', icon: 'fas fa-times', text: '閉じる',

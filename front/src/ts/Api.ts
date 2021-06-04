@@ -7,14 +7,29 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import ApiResponse from '../types/ApiResponse';
+import Categoly from '../types/Categoly';
+import TagData from '../types/TagData';
 
 type Query = string | string[] | undefined;
+
+// APIレスポンスの型
+interface CategolyResponse {
+  id?: number
+  updated_at?: string
+  title: string
+  description: string
+  tag: string
+  list: string
+}
 
 export default async function GetFromApi<T>(target: string, query: Query): Promise<T[]> {
   // 渡されたURLクエリ (context.query.id) からidを取得
   let id: string;
-  if (Array.isArray(query)) id = query[0];
-  else id = query ?? '';
+  if (Array.isArray(query)) {
+    id = query[0];
+  } else {
+    id = query ?? '';
+  }
   // APIでカテゴリを取得する
   let data: ApiResponse = {
     isSuccess: false, result: []
@@ -25,7 +40,45 @@ export default async function GetFromApi<T>(target: string, query: Query): Promi
   } catch {
     data.result = [];
   }
+  // カテゴリであれば文字列からタグリストを生成する
+  if (target === 'categoly')
+    data.result = await ReplaceTagData(data.result);
+  // 取得したデータを返す
   if (data.isSuccess && Array.isArray(data.result))
     return data.result;
   else return [];
+}
+
+async function ReplaceTagData(list: CategolyResponse[]): Promise<Categoly[]> {
+  const tags: TagData[] = await GetFromApi<TagData>('tag', '');
+  const result: Categoly[] = [];
+  // これ↓はメモ
+  //props.tags.forEach(tag => {
+  //  element.tag = element.tag.replace(String(tag.id), tag.name);
+  //});
+  list.forEach(list_item => {
+    const result_tag: TagData[] = [];
+    // タグをTagDataに置き換える処理
+    list_item.tag.split(',').forEach(list_tag => {
+      const index = tags.findIndex(tag => tag.id === Number(list_tag));
+      // そのタグが存在するならそのTagDataを追加
+      if (index !== -1) {
+        result_tag.push(tags[index]);
+      } else {
+        result_tag.push({
+          name: list_tag,
+          description: '',
+          updated_at: ''
+        });
+      }
+    });
+    // 結果を格納する
+    result.push({
+      title: list_item.title, id: list_item.id ?? -1,
+      updated_at: list_item.updated_at,
+      description: list_item.description, list: list_item.list,
+      tag: result_tag
+    });
+  });
+  return result;
 }

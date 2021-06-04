@@ -48,8 +48,11 @@ export default function list(props: Props): React.ReactElement {
               text = e.id.toString();
             break;
           case 'タイトル': text = e.title; break;
-          case 'タグ': text = e.tag; break;
           case '説明': text = e.description; break;
+          case 'タグ':
+            e.tag.forEach(a => text += `${a.name},`);
+            text = text.slice(0, -1);
+            break;
         }
         // 検索欄に入力された文字と一致したら検索結果に追加
         if (text.indexOf(searchStr) != -1)
@@ -64,9 +67,9 @@ export default function list(props: Props): React.ReactElement {
     } else {
       searchResult.forEach(element => {
         // タグの置き換え
-        props.tags.forEach(tag => {
-          element.tag = element.tag.replace(String(tag.id), tag.name);
-        });
+        //props.tags.forEach(tag => {
+        //  element.tag = element.tag.replace(String(tag.id), tag.name);
+        //});
         cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
       });
     }
@@ -130,5 +133,6 @@ export default function list(props: Props): React.ReactElement {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const tags = await GetFromApi<TagData>('tag', context.query.id);
+  console.log(data[0]);
   return { props: { data: data, tags: tags } };
 };
