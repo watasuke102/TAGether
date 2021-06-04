@@ -14,7 +14,7 @@ import Detail from './CategolyDetail';
 import FavoriteStar from './FavoriteStar';
 import Categoly from '../types/Categoly';
 
-export default function ExamCard(props: Props): React.ReactElement {
+export default function ExamCard(props: Categoly): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   // タイトルを25文字以内に

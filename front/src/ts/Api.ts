@@ -52,10 +52,6 @@ export default async function GetFromApi<T>(target: string, query: Query): Promi
 async function ReplaceTagData(list: CategolyResponse[]): Promise<Categoly[]> {
   const tags: TagData[] = await GetFromApi<TagData>('tag', '');
   const result: Categoly[] = [];
-  // これ↓はメモ
-  //props.tags.forEach(tag => {
-  //  element.tag = element.tag.replace(String(tag.id), tag.name);
-  //});
   list.forEach(list_item => {
     const result_tag: TagData[] = [];
     // タグをTagDataに置き換える処理

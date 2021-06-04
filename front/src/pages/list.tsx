@@ -9,8 +9,9 @@
 import css from '../style/list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
+import Modal from '../components/Modal';
 import Form from '../components/Form';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
@@ -30,9 +31,9 @@ export default function list(props: Props): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
-
-  let cards: React.ReactElement[] = [];
+  const router = useRouter();
   const list: Categoly[] = props.data;
+  let cards: React.ReactElement[] = [];
 
   // カードの生成
   const CreateCards = () => {
@@ -43,12 +44,12 @@ export default function list(props: Props): React.ReactElement {
       list.forEach(e => {
         let text: string = '';
         switch (radioState) {
+          case 'タイトル': text = e.title; break;
+          case '説明': text = e.description; break;
           case 'ID':
             if (e.id?.toString() != undefined)
               text = e.id.toString();
             break;
-          case 'タイトル': text = e.title; break;
-          case '説明': text = e.description; break;
           case 'タグ':
             e.tag.forEach(a => text += `${a.name},`);
             text = text.slice(0, -1);
@@ -66,10 +67,6 @@ export default function list(props: Props): React.ReactElement {
       cards.push(<p key={'result_404'} className={css.notfound}>見つかりませんでした</p>);
     } else {
       searchResult.forEach(element => {
-        // タグの置き換え
-        //props.tags.forEach(tag => {
-        //  element.tag = element.tag.replace(String(tag.id), tag.name);
-        //});
         cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
       });
     }
@@ -125,6 +122,18 @@ export default function list(props: Props): React.ReactElement {
       </div>
 
       <div className={css.list}> {cards} </div>
+
+      <Modal isOpen={(router.query.tag) ? true : false} close={() => Router.push('/list')}>
+        <div className={css.window}>
+          <p>タグ詳細</p>
+          <div className={css.window_buttons}>
+            <Button {...{
+              type: 'material', icon: 'fas fa-times', text: '閉じる',
+              onClick: () => Router.push('/list')
+            }} />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }
