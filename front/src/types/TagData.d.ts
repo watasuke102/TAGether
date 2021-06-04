@@ -8,6 +8,7 @@
 //
 interface TagData {
   id:          number
+  updated_at:  string
   name:        string
   description: string
 }

@@ -20,7 +20,6 @@ import ButtonInfo from '../types/ButtonInfo';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import ApiResponse from '../types/ApiResponse';
 
-
 // デフォルト値
 function categoly_default() {
   const tmp: Categoly = {
@@ -101,7 +100,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
   RegistExam(): void {
     if (this.state.categoly.tag.split(',').length > 8) {
       this.setState({
-        isModalOpen: true, res_result: {
+        isToastOpen: true, res_result: {
           'isSuccess': false, 'result': 'タグは合計8個以下にしてください'
         }
       });
@@ -109,7 +108,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     }
     if (this.state.categoly.title == '') {
       this.setState({
-        isModalOpen: true, res_result: {
+        isToastOpen: true, res_result: {
           'isSuccess': false, 'result': 'タイトルを設定してください'
         }
       });
@@ -120,7 +119,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
       if (e.question == '') {
         failed = true;
         this.setState({
-          isModalOpen: true, res_result: {
+          isToastOpen: true, res_result: {
             'isSuccess': false, 'result': '問題文が入力されていない欄があります'
           }
         });
@@ -130,7 +129,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
         if (answer == '') {
           failed = true;
           this.setState({
-            isModalOpen: true, res_result: {
+            isToastOpen: true, res_result: {
               'isSuccess': false, 'result': '答えが入力されていない欄があります'
             }
           });
@@ -159,7 +158,7 @@ export default class create extends React.Component<any, EditCategolyPageState> 
     };
     const url = process.env.EDIT_URL + '/categoly';
     if (url == undefined) {
-      this.setState({ isModalOpen: true, res_result: { 'isSuccess': false, 'result': '失敗しました: URL is undefined' } });
+      this.setState({ isToastOpen: true, res_result: { 'isSuccess': false, 'result': '失敗しました: URL is undefined' } });
       return;
     }
     categoly.list = categoly.list.replace(/\\n/g, '\\\\n');
