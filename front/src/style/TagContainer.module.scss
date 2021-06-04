@@ -15,10 +15,21 @@
 }
 
 .tag {
-  color: #222222;
-  background-color: #beb7d6;
-  margin: 10px 10px 5px;
-  padding: 0 5px 0 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  padding-left: 12px;
+  padding-right: 5px;
   border-radius: 20px 0 0 20px;
+
+  color: #222222;
+  background-color: #9d92c0;
+  border: 2px solid #eeeeee00;
+  transition: border-color 0.3s;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    border-color: #eee;
+    transition: border-color 0.3s;
+  }
 }
 

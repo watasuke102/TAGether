@@ -18,11 +18,14 @@ export default function tag({ tag }: Props): React.ReactElement {
   return (
     <>
       <h1>タグ一覧</h1>
-      <ul>
+      <div className={css.container}>
         {
-          tag.map(e => <li key={`taglist_${e.id}`}>{e.name}</li>)
+          tag.map(e =>
+            <div className={css.tag_card} key={`taglist_${e.id}`}>
+              <span className={css.name}>{e.name}</span>
+            </div>)
         }
-      </ul>
+      </div>
     </>
   );
 }

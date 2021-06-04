@@ -18,6 +18,7 @@ import SelectBox from '../components/SelectBox';
 import GetFromApi from '../ts/Api';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
+import TagData from '../types/TagData';
 
 interface Props { data: Categoly[] }
 
@@ -121,5 +122,11 @@ export default function list(props: Props): React.ReactElement {
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
+  const tags = await GetFromApi<TagData>('tag', context.query.id);
+  for (let i = 0; i < data.length; i++) {
+    tags.forEach(tag => {
+      data[i].tag = data[i].tag.replace(String(tag.id), tag.name);
+    });
+  }
   return { props: { data } };
 };
