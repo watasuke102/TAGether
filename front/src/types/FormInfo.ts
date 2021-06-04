@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 interface FormInfo {
-  label:     string
+  label?:    string
   value:     string
   rows:      number
   disabled?: boolean
