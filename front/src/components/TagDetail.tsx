@@ -96,10 +96,15 @@ export default function TagDetail(props: Props): React.ReactElement {
               onClick={props.close} />
           </div>
         </div>
+
+        <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
+          <div className={css.toast_body}>
+            <span className='fas fa-bell' />
+            {response}
+          </div>
+        </Toast>
+
       </Modal >
-      <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)}>
-        <span>{response}</span>
-      </Toast>
     </>
   );
 }

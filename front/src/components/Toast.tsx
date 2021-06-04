@@ -14,13 +14,21 @@ interface Props {
   children: React.ReactElement | React.ReactElement[],
   isOpen: boolean,
   close: Function
+  top?: number
 }
 
 export default function Toast(props: Props): React.ReactElement {
   React.useEffect(() => {
-    if (!props.isOpen) return;
-
     const target = '#' + css.container;
+    if (!props.isOpen) {
+      gsap.to(target, {
+        duration: 0,
+        translateX: '0%',
+        opacity: 0,
+      });
+      return;
+    }
+
     const timeline = gsap.timeline();
     timeline
       .to(target, {
@@ -44,7 +52,7 @@ export default function Toast(props: Props): React.ReactElement {
       });
   }, [props.isOpen]);
   return (
-    <div id={css.container}>
+    <div id={css.container} style={{ top: props.top ?? 65 }}>
       {props.children}
     </div>
   );
