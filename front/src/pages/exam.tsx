@@ -34,6 +34,7 @@ interface Props {
   shuffle: boolean,
   id: number,
   history_id?: string
+  tag_filter?: string
 }
 interface State {
   exam: Exam[],
@@ -171,9 +172,12 @@ export default class exam extends React.Component<Props, State> {
   }
   componentWillUnmount(): void {
     window.removeEventListener('keydown', e => this.Shortcut(e));
-    // 間違えた問題のやり直しでない and 最後まで解いた
+    // 間違えた問題のやり直しでない and タグ全部でもない and 最後まで解いた
     // この条件を満たしているとき結果を保存する
-    if (!this.props.history_id && this.state.examState.slice(-1)[0].checked) {
+    if (this.props.history_id === undefined &&
+      this.props.tag_filter === undefined &&
+      this.state.examState.slice(-1)[0].checked
+    ) {
       this.exam_history.total_question = this.total_questions;
       this.exam_history.correct_count = this.correct_answers;
       AddExamHistory(this.exam_history);
@@ -511,7 +515,7 @@ export default class exam extends React.Component<Props, State> {
               （{this.total_questions}問中{this.correct_answers}問正解）
             </p>
             <div className={css.window_buttons}>
-              {(!this.props.history_id) &&
+              {(!this.props.history_id && !this.props.tag_filter) &&
                 <Button {...{
                   text: '編集する', icon: 'fas fa-pen', type: 'material',
                   onClick: () => Router.push('/edit?id=' + this.props.id),
@@ -536,6 +540,7 @@ export default class exam extends React.Component<Props, State> {
 
 // APIで問題を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // 解答履歴からのやり直し
   if (context.query.history_id != undefined) {
     return {
       props: {
@@ -551,5 +556,37 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     shuffle: (context.query.shuffle === 'true'),
     id: (context.query.id == undefined) ? -1 : Number(context.query.id)
   };
+  // 特定のタグを解くのであれば
+  if (context.query.tag) {
+    let filter: string = '';
+    if (Array.isArray(context.query.tag))
+      filter = context.query.tag[0];
+    else filter = context.query.tag;
+    props.tag_filter = filter;
+
+    const data: Categoly = {
+      title: `タグ (${filter})`, description: '', tag: [], list: '[]'
+    };
+
+    props.data.forEach(e => {
+      let tag_included = false;
+      // タグが含まれているかどうかをチェック
+      e.tag.forEach(tag => {
+        if (tag_included) return;
+        tag_included = (tag.name === filter);
+        console.log(tag_included && e.title);
+      });
+      // タグが含まれているカテゴリであれば、問題を追加
+      if (tag_included) {
+        const data_list = JSON.parse(data.list);
+        const elem_list = JSON.parse(e.list);
+        data.list = JSON.stringify(data_list.concat(elem_list));
+      }
+    });
+
+    props.data = [data];
+
+  }
+  console.log(JSON.parse(props.data[0].list));
   return { props: props };
 };

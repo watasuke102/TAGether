@@ -26,19 +26,19 @@ interface Props {
 
 export default function TagDetail(props: Props): React.ReactElement {
   const [isToastOpen, SetIsToastOpen] = React.useState(false);
-  const [response, SetResponse] = React.useState('');
+  const [toast_body, SetToastBody] = React.useState('');
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
   const disabled: boolean = (!props.createMode && props.tag.id === undefined);
 
   function UpdateTag() {
     if (disabled) {
-      SetResponse('編集できないタグです');
+      SetToastBody('編集できないタグです');
       SetIsToastOpen(true);
       return;
     }
     if (edited_name === '') {
-      SetResponse('タグ名を入力してください');
+      SetToastBody('タグ名を入力してください');
       SetIsToastOpen(true);
       return;
     }
@@ -56,9 +56,9 @@ export default function TagDetail(props: Props): React.ReactElement {
             });
             return;
           }
-          SetResponse('編集結果を適用しました');
+          SetToastBody('編集結果を適用しました');
         } else {
-          SetResponse('適用できませんでした');
+          SetToastBody('適用できませんでした');
         }
         SetIsToastOpen(true);
       }
@@ -70,7 +70,6 @@ export default function TagDetail(props: Props): React.ReactElement {
       name: edited_name, description: edited_desc
     }));
   }
-
 
   return (
     <>
@@ -105,7 +104,7 @@ export default function TagDetail(props: Props): React.ReactElement {
               onClick={UpdateTag} />
             {props.createMode ||
               <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
-                onClick={props.close} />
+                onClick={() => Router.push(`/exam?tag=${props.tag.name}`)} />
             }
           </div>
         </div>
@@ -113,7 +112,7 @@ export default function TagDetail(props: Props): React.ReactElement {
         <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
           <div className={css.toast_body}>
             <span className='fas fa-bell' />
-            {response}
+            {toast_body}
           </div>
         </Toast>
 

@@ -8,10 +8,7 @@
 //
 import css from '../style/TagContainer.module.scss';
 import React from 'react';
-import Router from 'next/router';
 import TagData from '../types/TagData';
-import Modal from './Modal';
-import Button from './Button';
 import TagDetail from './TagDetail';
 
 interface Props { tag: TagData[] }
