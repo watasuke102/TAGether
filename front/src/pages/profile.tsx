@@ -63,13 +63,15 @@ export default function profile(props: Props): React.ReactElement {
         </div>
 
         <h2>解答履歴</h2>
-        <div className={css.allclear_button}>
-          <Button {...{
-            text: '履歴を全消去', icon: 'fas fa-trash-alt',
-            onClick: () => SetIsModalOpen(true), type: 'filled'
-          }} />
+        <div className={css.buttons}>
+          <div className={css.allclear_button} >
+            <Button {...{
+              text: '履歴を全消去', icon: 'fas fa-trash-alt',
+              onClick: () => SetIsModalOpen(true), type: 'filled'
+            }} />
+          </div>
           {/* シャッフルするかどうかを決めるチェックボックス */}
-          <CheckBox status={isShuffleEnabled} desc='問題順をシャッフル'
+          <CheckBox status={isShuffleEnabled} desc='解き直しのとき、問題順をシャッフルする'
             onChange={e => SetIsShuffleEnabled(e)}
           />
         </div>

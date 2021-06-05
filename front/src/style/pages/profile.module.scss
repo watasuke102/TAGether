@@ -23,8 +23,12 @@
   flex-flow: row wrap;
 }
 
-.allclear_button {
-  margin: 10px 0;
+.buttons {
+  display: flex;
+  .allclear_button {
+    margin: auto 0;
+  }
+  margin-bottom: 15px;
 }
 
 .window {
