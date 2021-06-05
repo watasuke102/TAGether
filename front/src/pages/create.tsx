@@ -104,6 +104,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
 
   // カテゴリ登録
   RegistExam(): void {
+    // トーストを閉じる
+    this.setState({ isToastOpen: false });
     if (this.state.categoly.tag.length > 8) {
       this.setState({
         isToastOpen: true, res_result: {
