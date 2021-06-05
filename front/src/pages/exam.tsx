@@ -22,6 +22,7 @@ import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
 import ExamHistory from '../types/ExamHistory';
+import ButtonInfo from '../types/ButtonInfo';
 
 enum NextButtonState {
   show_answer,
@@ -340,23 +341,23 @@ export default class exam extends React.Component<Props, State> {
     );
   }
   NextButton(): React.ReactElement {
-    let text: string, icon: string, type = 'material';
+    const info: ButtonInfo = {
+      icon: '', text: '',
+      type: 'material', onClick: () => this.IncrementIndex()
+    };
     switch (this.state.nextButtonState) {
       case NextButtonState.show_answer:
-        text = '答え合わせ'; icon = 'far fa-circle';
+        info.text = '答え合わせ'; info.icon = 'far fa-circle';
         break;
       case NextButtonState.next_question:
-        text = '次へ'; icon = 'fas fa-arrow-right';
+        info.text = '次へ'; info.icon = 'fas fa-arrow-right';
         break;
       case NextButtonState.finish_exam:
-        text = '終了'; icon = 'fas fa-check'; type = 'filled';
+        info.text = '終了'; info.icon = 'fas fa-check'; info.type = 'filled';
         break;
     }
     return (
-      <Button {...{
-        text: text, icon: icon,
-        onClick: () => this.IncrementIndex(), type: type
-      }} />
+      <Button {...info} />
     );
   }
 

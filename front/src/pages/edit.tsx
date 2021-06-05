@@ -12,6 +12,7 @@ import Create from './create';
 import GetFromApi from '../ts/Api';
 import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
+import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
 
 interface Props {
@@ -19,8 +20,15 @@ interface Props {
   data: Categoly[]
 }
 
+interface Text {
+  document_title: string
+  heading: string
+  api_success: string
+  buttons: ButtonInfo[]
+}
+
 export default class edit extends Create {
-  public text = {
+  public text: Text = {
     document_title: '編集',
     heading: 'カテゴリの編集',
     api_success: '編集結果を適用しました',

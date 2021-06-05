@@ -45,11 +45,18 @@ interface Props {
   data: Categoly[]
 }
 
+interface Text {
+  document_title: string
+  heading: string
+  api_success: string
+  buttons: ButtonInfo[]
+}
+
 export default class create extends React.Component<Props, EditCategolyPageState> {
   private bottom;
   private top;
 
-  public text = {
+  public text: Text = {
     document_title: '新規作成',
     heading: '新規カテゴリの追加',
     api_success: 'カテゴリの追加に成功しました',
