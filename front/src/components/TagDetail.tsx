@@ -48,12 +48,14 @@ export default function TagDetail(props: Props): React.ReactElement {
       if (req.readyState == 4) {
         const result = JSON.parse(req.responseText);
         if (result.isSuccess) {
-          // 新規作成モードであれば終了
-          if (props.createMode && props.onComplete !== undefined) {
+          if (props.onComplete) {
             props.onComplete({
-              id: result.result.insertId, name: edited_name,
+              id: props.tag.id ?? result.result.insertId, name: edited_name,
               description: edited_desc
             });
+          }
+          // 新規作成モードであれば終了
+          if (props.createMode) {
             return;
           }
           SetToastBody('編集結果を適用しました');
