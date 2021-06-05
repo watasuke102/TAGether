@@ -83,7 +83,8 @@ export default function profile(props: Props): React.ReactElement {
               history_list.map(item => {
                 const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
                 if (categoly === undefined) return <></>;
-                return <HistoryTable key={`history_${item.history_key}`} categoly={categoly} item={item} />;
+                return <HistoryTable key={`history_${item.history_key}`} item={item}
+                  categoly={categoly} isShuffleEnabled={isShuffleEnabled} />;
               })
             }
           </tbody>

@@ -19,11 +19,18 @@ import Router from 'next/router';
 interface Props {
   categoly: Categoly,
   item: ExamHistory
+  isShuffleEnabled: boolean
 }
 
 export default function ExamHistoryTableItem(props: Props): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const rate = Math.round((props.item.correct_count / props.item.total_question) * 10000) / 100;
+
+  function PushExamPage() {
+    const history_id = props.item.history_key ?? -1;
+    const shuffle = props.isShuffleEnabled;
+    Router.push(`/exam?history_id=${history_id}&shuffle=${shuffle}`);
+  }
 
   return (
     <tr>
@@ -46,7 +53,7 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
             :
             <Button {...{
               text: '解き直し', icon: 'fas fa-edit', type: 'material',
-              onClick: () => Router.push(`/exam?history_id=${props.item.history_key ?? null}`)
+              onClick: PushExamPage
             }} />
           }
         </div>
