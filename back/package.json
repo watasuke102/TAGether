@@ -1,7 +1,7 @@
 {
-  "name": "tagether-back",
-  "version": "1.4.0",
-  "description": "background",
+  "name": "tagether-api",
+  "version": "1.5.0",
+  "description": "backend",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
