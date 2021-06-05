@@ -54,9 +54,11 @@ export default class edit extends Create {
 
   constructor(props: Props) {
     super(props);
+    const categoly = this.props.data[0];
+    categoly.list = JSON.stringify(JSON.parse(categoly.list), undefined, '  ');
     this.state = {
-      isToastOpen: false, isModalOpen: false,
-      categoly: this.props.data[0],
+      isToastOpen: false, isModalOpen: false, jsonEdit: false,
+      categoly: categoly,
       exam: JSON.parse(this.props.data[0].list),
       res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true

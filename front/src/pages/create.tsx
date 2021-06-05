@@ -24,19 +24,20 @@ import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
+import CheckBox from '../components/CheckBox';
 
 // デフォルト値
-function categoly_default(): Categoly {
-  const tmp: Categoly = {
-    id: 0, updated_at: '', title: '',
-    description: '', list: '',
-    tag: [],
-  };
-  return tmp;
-}
 function exam_default(): Exam[] {
   const tmp: Exam[] = [];
   tmp.push({ question: '', answer: Array<string>(1).fill('') });
+  return tmp;
+}
+function categoly_default(): Categoly {
+  const tmp: Categoly = {
+    id: 0, updated_at: '', title: '',
+    description: '', tag: [],
+    list: JSON.stringify(exam_default(), undefined, '  ')
+  };
   return tmp;
 }
 
@@ -76,7 +77,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
   constructor(props: Props) {
     super(props);
     this.state = {
-      isToastOpen: false, isModalOpen: false,
+      isToastOpen: false, isModalOpen: false, jsonEdit: false,
       categoly: categoly_default(), exam: exam_default(),
       res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
@@ -153,7 +154,11 @@ export default class create extends React.Component<Props, EditCategolyPageState
       });
     });
     if (failed) return;
-    const exam = JSON.stringify(this.state.exam);
+    const exam = (this.state.jsonEdit) ?
+      // インデントを削除
+      JSON.stringify(JSON.parse(this.state.categoly.list))
+      :
+      JSON.stringify(this.state.exam);
     const tmp: Categoly = this.state.categoly;
     let tag: string = '';
     tmp.tag.forEach(e => tag += `${e.id ?? e.name},`);
@@ -240,11 +245,12 @@ export default class create extends React.Component<Props, EditCategolyPageState
   }
 
   // state更新
-  UpdateCategoly(type: 'title' | 'desc', str: string): void {
+  UpdateCategoly(type: 'title' | 'desc' | 'list', str: string): void {
     const tmp = this.state.categoly;
     switch (type) {
       case 'title': tmp.title = str; break;
       case 'desc': tmp.description = str; break;
+      case 'list': tmp.list = str; break;
     }
     this.setState({ categoly: tmp });
   }
@@ -442,8 +448,14 @@ export default class create extends React.Component<Props, EditCategolyPageState
         <div className={css.top} ref={e => this.top = e} />
 
         <h2>問題</h2>
+        <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
+          onChange={e => this.setState({ jsonEdit: e })} />
 
-        {this.ExamEditForm()}
+        {this.state.jsonEdit ?
+          <Form label='JSON' value={this.state.categoly.list} rows={30}
+            onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
+          :
+          this.ExamEditForm()}
 
         <div className={css.bottom} ref={e => this.bottom = e} />
 

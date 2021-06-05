@@ -11,6 +11,7 @@ import Categoly from './Categoly';
 import ApiResponse from './ApiResponse';
 
 interface EditCategolyPageState{
+  jsonEdit:               boolean
   isToastOpen:            boolean
   isModalOpen:            boolean
   res_result:             ApiResponse
