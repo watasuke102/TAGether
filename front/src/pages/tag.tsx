@@ -17,9 +17,8 @@ import TagDetail from '../components/TagDetail';
 
 interface Props { tag: TagData[] }
 
-export default function tag(props: Props): React.ReactElement {
+export default function tag({ tag }: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
-  const [tag, SetTag] = React.useState(props.tag);
 
   function TagItem(e: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -37,10 +36,13 @@ export default function tag(props: Props): React.ReactElement {
 
   return (
     <>
-      <h1>タグ一覧</h1>
-
-      <Button type='filled' text='新規作成' icon='fas fa-plus'
-        onClick={() => SetIsModalOpen(true)} />
+      <div className={css.heading}>
+        <h1>タグ一覧</h1>
+        <div className={css.button}>
+          <Button type='filled' text='新規作成' icon='fas fa-plus'
+            onClick={() => SetIsModalOpen(true)} />
+        </div>
+      </div>
 
       <div className={css.container}>
         {tag.map(e => TagItem(e))}

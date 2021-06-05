@@ -100,12 +100,12 @@ export default function TagDetail(props: Props): React.ReactElement {
           <div className={css.window_buttons}>
             <Button type='material' icon='fas fa-times' text='閉じる'
               onClick={props.close} />
-            <Button type='material' icon='fas fa-check' text='編集結果を適用'
-              onClick={UpdateTag} />
             {props.createMode ||
               <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
                 onClick={() => Router.push(`/exam?tag=${props.tag.name}`)} />
             }
+            <Button type='filled' icon='fas fa-check' text='編集結果を適用'
+              onClick={UpdateTag} />
           </div>
         </div>
 

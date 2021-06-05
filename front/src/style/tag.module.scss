@@ -8,6 +8,16 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
+.heading {
+  display: flex;
+  h1 {
+    margin-right: 20px;
+  }
+  .button {
+    margin: auto 0;
+  }
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
