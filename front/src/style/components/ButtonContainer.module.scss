@@ -1,0 +1,33 @@
+/*
+ TAGether - Share self-made exam for classmates
+ ButtonContainer.module.scss
+
+ CopyRight (c) 2020 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  @media screen and (max-width: 850px) {
+    flex-direction: column;
+    button {
+      margin-top: 10px;
+    }
+  }
+}
+
+.grid {
+  // 横幅が狭かったらボタンを2列のグリッドに並べる 
+  @media screen and (max-width: 850px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    button {
+      margin-top: 0;
+    }
+  }
+}
+

@@ -25,6 +25,7 @@ import ApiResponse from '../types/ApiResponse';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
 import CheckBox from '../components/CheckBox';
+import ButtonContainer from '../components/ButtonContainer';
 
 // デフォルト値
 function exam_default(): Exam[] {
@@ -400,9 +401,9 @@ export default class create extends React.Component<Props, EditCategolyPageState
     return (
       <div className={css.window}>
         <p>{message}</p>
-        <div className={css.window_buttons}>
+        <ButtonContainer>
           {button}
-        </div>
+        </ButtonContainer>
       </div>
     );
   }

@@ -13,6 +13,7 @@ import Tag from './TagContainer';
 import CheckBox from './CheckBox';
 import Button from './Button';
 import Categoly from '../types/Categoly';
+import ButtonContainer from './ButtonContainer';
 
 interface Props {
   data: Categoly,
@@ -80,7 +81,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
             onChange={e => this.setState({ isShuffleEnabled: e })}
           />
 
-          <div className={css.buttons}>
+          <ButtonContainer>
             <Button {...{
               text: '閉じる', icon: 'fas fa-times',
               onClick: () => this.props.close(), type: 'material'
@@ -97,7 +98,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
               text: 'この問題を解く', icon: 'fas fa-arrow-right',
               onClick: () => this.Push('exam'), type: 'filled'
             }} />
-          </div>
+          </ButtonContainer>
 
         </div>
       </>

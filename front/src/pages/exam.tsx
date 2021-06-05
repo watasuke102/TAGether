@@ -23,6 +23,7 @@ import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
 import ExamHistory from '../types/ExamHistory';
 import ButtonInfo from '../types/ButtonInfo';
+import ButtonContainer from '../components/ButtonContainer';
 
 enum NextButtonState {
   show_answer,
@@ -515,12 +516,12 @@ export default class exam extends React.Component<Props, State> {
               <b>正答率{this.state.correct_rate}%</b><br />
               （{this.total_questions}問中{this.correct_answers}問正解）
             </p>
-            <div className={css.window_buttons}>
-              {(!this.props.history_id && !this.props.tag_filter) &&
+            <ButtonContainer>
+              {(!this.props.history_id && !this.props.tag_filter) ?
                 <Button {...{
                   text: '編集する', icon: 'fas fa-pen', type: 'material',
                   onClick: () => Router.push('/edit?id=' + this.props.id),
-                }} />
+                }} /> : <></>
               }
               <Button {...{
                 text: '回答状況一覧', icon: 'fas fa-list', type: 'material',
@@ -530,7 +531,7 @@ export default class exam extends React.Component<Props, State> {
                 text: '前のページへ', icon: 'fas fa-arrow-left', type: 'filled',
                 onClick: Router.back,
               }} />
-            </div>
+            </ButtonContainer>
           </div>
         </Modal>
 

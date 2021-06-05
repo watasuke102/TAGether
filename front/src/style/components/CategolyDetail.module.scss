@@ -50,13 +50,6 @@
   }
 }
 
-.buttons {
-  bottom: 15px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
 .window {
   width: 50vw;
   padding: 20px 50px;
@@ -68,13 +61,4 @@
   display: flex;
   justify-content: space-around;
   margin: 50px 0 0;
-}
-
-// 横幅が狭かったらボタンを縦に並べる 
-@media screen and (max-width: 650px) {
-  .buttons {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-  }
 }

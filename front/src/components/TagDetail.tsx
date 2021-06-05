@@ -14,6 +14,7 @@ import Form from '../components/Form';
 import Button from '../components/Button';
 import TagData from '../types/TagData';
 import Toast from './Toast';
+import ButtonContainer from './ButtonContainer';
 
 interface Props {
   tag: TagData
@@ -99,16 +100,17 @@ export default function TagDetail(props: Props): React.ReactElement {
           </div>
 
           {/* ボタン */}
-          <div className={css.window_buttons}>
+          <ButtonContainer>
             <Button type='material' icon='fas fa-times' text='閉じる'
               onClick={props.close} />
-            {props.createMode ||
+            {props.createMode ?
+              <></> :
               <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
                 onClick={() => Router.push(`/exam?tag=${props.tag.name}`)} />
             }
             <Button type='filled' icon='fas fa-check' text='編集結果を適用'
               onClick={UpdateTag} />
-          </div>
+          </ButtonContainer>
         </div>
 
         <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
