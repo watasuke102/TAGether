@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/ExamTableComponent.module.scss';
+import css from '../style/components/ExamTableComponent.module.scss';
 import React from 'react';
 import Exam from '../types/Exam';
 import ExamState from '../types/ExamState';

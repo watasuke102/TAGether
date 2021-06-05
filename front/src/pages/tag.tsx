@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/tag.module.scss';
+import css from '../style/pages/tag.module.scss';
 import React from 'react';
 import Router from 'next/router';
 import { GetServerSideProps } from 'next';

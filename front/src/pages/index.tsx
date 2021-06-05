@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/index.module.scss';
+import css from '../style/pages/index.module.scss';
 import React from 'react';
 
 export default function index(): React.ReactElement {

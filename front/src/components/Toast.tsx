@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/Toast.module.scss';
+import css from '../style/components/Toast.module.scss';
 import React from 'react';
 import { gsap, Power4 } from 'gsap';
 
