@@ -19,6 +19,8 @@ interface Props {
   tag: TagData
   isOpen: boolean
   close: Function
+  createMode?: boolean
+  onComplete?: Function
 }
 
 
@@ -27,10 +29,10 @@ export default function TagDetail(props: Props): React.ReactElement {
   const [response, SetResponse] = React.useState('');
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
+  const disabled: boolean = (!props.createMode && props.tag.id === undefined);
 
   function UpdateTag() {
-    console.log(props.tag);
-    if (props.tag.id === undefined) {
+    if (disabled) {
       SetResponse('編集できないタグです');
       SetIsToastOpen(true);
       return;
@@ -46,6 +48,14 @@ export default function TagDetail(props: Props): React.ReactElement {
       if (req.readyState == 4) {
         const result = JSON.parse(req.responseText);
         if (result.isSuccess) {
+          // 新規作成モードであれば終了
+          if (props.createMode && props.onComplete !== undefined) {
+            props.onComplete({
+              id: result.result.insertId, name: edited_name,
+              description: edited_desc
+            });
+            return;
+          }
           SetResponse('編集結果を適用しました');
         } else {
           SetResponse('適用できませんでした');
@@ -53,7 +63,7 @@ export default function TagDetail(props: Props): React.ReactElement {
         SetIsToastOpen(true);
       }
     };
-    req.open('PUT', process.env.EDIT_URL + '/tag');
+    req.open(props.createMode ? 'POST' : 'PUT', process.env.EDIT_URL + '/tag');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({
       id: props.tag.id,
@@ -61,13 +71,14 @@ export default function TagDetail(props: Props): React.ReactElement {
     }));
   }
 
+
   return (
     <>
       <Modal isOpen={props.isOpen} close={props.close}>
         <div className={css.window}>
           <div className={css.heading}>
             <span className='fas fa-tag' />
-            <span>タグ詳細・編集</span>
+            <span>{props.createMode ? 'タグの新規作成' : 'タグ詳細・編集'}</span>
             <hr />
           </div>
 
@@ -76,12 +87,12 @@ export default function TagDetail(props: Props): React.ReactElement {
           <div className={css.forms}>
             <Form {...{
               label: 'タグ名', rows: 1, value: edited_name,
-              disabled: (props.tag.id === undefined) ? true : false,
+              disabled: disabled,
               onChange: e => SetEditedName(e.target.value)
             }} />
             <Form {...{
               label: '説明', rows: 4, value: edited_desc,
-              disabled: (props.tag.id === undefined) ? true : false,
+              disabled: disabled,
               onChange: e => SetEditedDesc(e.target.value)
             }} />
           </div>
@@ -92,8 +103,10 @@ export default function TagDetail(props: Props): React.ReactElement {
               onClick={props.close} />
             <Button type='material' icon='fas fa-check' text='編集結果を適用'
               onClick={UpdateTag} />
-            <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
-              onClick={props.close} />
+            {props.createMode ||
+              <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
+                onClick={props.close} />
+            }
           </div>
         </div>
 

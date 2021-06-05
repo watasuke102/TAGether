@@ -10,7 +10,7 @@ import css from '../style/TagEdit.module.scss';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import TagData from '../types/TagData';
-import Form from './Form';
+import TagDetail from './TagDetail';
 
 interface Props {
   tags: TagData[]
@@ -29,12 +29,14 @@ const fadeinout = {
 
 export default function TagEdit(props: Props): React.ReactElement {
   const [is_picker_open, SetIsPickerOpen] = React.useState(false);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [picker_pos, SetPickerPos] = React.useState({ top: 0, left: 0 });
   const [search_box, SetSearchBox] = React.useState('');
-  const [tag, SetTagState] = React.useState(props.current_tag);
+  const [current_tag, SetCurrentTag] = React.useState(props.current_tag);
+  const [tag_list, SetTagList] = React.useState(props.tags);
 
   function UpdateTag(e: TagData[]) {
-    SetTagState(e); props.SetTag(e);
+    SetCurrentTag(e); props.SetTag(e);
   }
 
   function PickerOpen(e: React.MouseEvent) {
@@ -46,19 +48,27 @@ export default function TagEdit(props: Props): React.ReactElement {
   }
 
   function TagList() {
-    let tag_list: TagData[];
+    let list: TagData[];
     if (search_box !== '') {
-      tag_list = props.tags.filter(e => e.name.includes(search_box));
+      list = tag_list.filter(e => e.name.includes(search_box));
     } else {
-      tag_list = props.tags;
+      list = tag_list;
     }
-    return tag_list.map(e => (
+    const elements = list.map(e => (
       <div key={`taglist_${e.id}`} className={css.item}
-        onClick={() => UpdateTag([...tag, e])}>
+        onClick={() => UpdateTag([...current_tag, e])}>
         <div className='fas fa-plus' />
         <span>{e.name}</span>
       </div>
     ));
+    // 新規作成欄
+    elements.unshift(
+      <div className={css.item} onClick={() => SetIsModalOpen(true)}>
+        <div className='fas fa-plus' />
+        <span>新規作成...</span>
+      </div>
+    );
+    return elements;
   }
 
   return (
@@ -71,9 +81,9 @@ export default function TagEdit(props: Props): React.ReactElement {
         </div>
         {/* タグ一覧（クリックで削除） */}
         {
-          tag.map((e, i) => (
-            <div key={`current_tag_${/*e.name*/Math.random()}`} className={css.item}
-              onClick={() => UpdateTag(tag.filter((_, j) => j !== i))}>
+          current_tag.map((e, i) => (
+            <div key={`current_tag_${i}`} className={css.item}
+              onClick={() => UpdateTag(current_tag.filter((_, j) => j !== i))}>
               <div className='fas fa-times' />
               <span>{e.name}</span>
             </div>
@@ -107,6 +117,14 @@ export default function TagEdit(props: Props): React.ReactElement {
           </motion.div>
         }
       </AnimatePresence>
+
+      <TagDetail createMode isOpen={is_modal_open}
+        tag={{ name: '', description: '', updated_at: '' }}
+        close={() => SetIsModalOpen(false)}
+        onComplete={(e: TagData) => {
+          SetTagList([...tag_list, e]);
+          SetIsModalOpen(false);
+        }} />
     </>
   );
 }
