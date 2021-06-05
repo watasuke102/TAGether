@@ -32,6 +32,8 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
     Router.push(`/exam?history_id=${history_id}&shuffle=${shuffle}`);
   }
 
+  console.log(props.item);
+
   return (
     <tr>
       <td>{props.item.date}</td>
@@ -48,14 +50,14 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
 
       <td>
         <div className={css.button}>
-          {(props.item.wrong_exam.length === 0) ?
+          {(props.item.wrong_exam) && (props.item.wrong_exam.length === 0 ?
             <p>全問正解しています</p>
             :
             <Button {...{
               text: '解き直し', icon: 'fas fa-edit', type: 'material',
               onClick: PushExamPage
             }} />
-          }
+          )}
         </div>
       </td>
 
