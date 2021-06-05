@@ -56,10 +56,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
     buttons: [
       {
         type: 'material', icon: 'fas fa-plus', text: '新規カテゴリを追加',
-        onClick: (): void => this.setState({
-          isModalOpen: false,
-          categoly: categoly_default(), exam: exam_default()
-        })
+        onClick: (): void => Router.reload()
       },
       {
         type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',

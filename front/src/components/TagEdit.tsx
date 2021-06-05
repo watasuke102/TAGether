@@ -8,7 +8,9 @@
 //
 import css from '../style/TagEdit.module.scss';
 import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import TagData from '../types/TagData';
+import Form from './Form';
 
 interface Props {
   tags: TagData[]
@@ -16,9 +18,19 @@ interface Props {
   SetTag: Function
 }
 
+const fadeinout = {
+  variants: {
+    init: { opacity: 0 },
+    main: { opacity: 1 }
+  },
+  transition: { duration: 0.2 },
+  initial: 'init', animate: 'main', exit: 'init'
+};
+
 export default function TagEdit(props: Props): React.ReactElement {
   const [is_picker_open, SetIsPickerOpen] = React.useState(false);
   const [picker_pos, SetPickerPos] = React.useState({ top: 0, left: 0 });
+  const [search_box, SetSearchBox] = React.useState('');
   const [tag, SetTagState] = React.useState(props.current_tag);
 
   function UpdateTag(e: TagData[]) {
@@ -31,6 +43,22 @@ export default function TagEdit(props: Props): React.ReactElement {
       top: e.clientY + window.scrollY + 30 // ボタンと重ならないように
     });
     SetIsPickerOpen(true);
+  }
+
+  function TagList() {
+    let tag_list: TagData[];
+    if (search_box !== '') {
+      tag_list = props.tags.filter(e => e.name.includes(search_box));
+    } else {
+      tag_list = props.tags;
+    }
+    return tag_list.map(e => (
+      <div key={`taglist_${e.id}`} className={css.item}
+        onClick={() => UpdateTag([...tag, e])}>
+        <div className='fas fa-plus' />
+        <span>{e.name}</span>
+      </div>
+    ));
   }
 
   return (
@@ -52,13 +80,33 @@ export default function TagEdit(props: Props): React.ReactElement {
           ))
         }
       </div >
-      {
-        is_picker_open &&
-        <div
-          className={css.tag_picker} style={picker_pos}
-          onClick={() => SetIsPickerOpen(false)}
-        />
-      }
+
+      <AnimatePresence>
+        {
+          is_picker_open &&
+          <motion.div
+            className={css.tag_picker} style={picker_pos}
+            {...fadeinout}
+          >
+            <form className={css.search}>
+              <input placeholder='検索...' value={search_box}
+                onChange={e => SetSearchBox(e.target.value)} />
+            </form>
+
+            <div className={css.close}
+              onClick={() => SetIsPickerOpen(false)}>
+              <span className='fas fa-times' />
+            </div>
+
+            <div className={css.list}>
+              <div className={css.inner}>
+                {/* タグ一覧（クリックで追加） */}
+                {TagList()}
+              </div>
+            </div>
+          </motion.div>
+        }
+      </AnimatePresence>
     </>
   );
 }
