@@ -45,20 +45,23 @@ async function ReplaceTagData(list: CategolyResponse[]): Promise<Categoly[]> {
   const result: Categoly[] = [];
   list.forEach(list_item => {
     const result_tag: TagData[] = [];
-    // タグをTagDataに置き換える処理
-    list_item.tag.split(',').forEach(list_tag => {
-      const index = tags.findIndex(tag => tag.id === Number(list_tag));
-      // そのタグが存在するならそのTagDataを追加
-      if (index !== -1) {
-        result_tag.push(tags[index]);
-      } else {
-        result_tag.push({
-          name: list_tag,
-          description: '',
-          updated_at: ''
-        });
-      }
-    });
+    // タグが存在するときのみ置き換え処理を実行する
+    if (list_item.tag !== '') {
+      // タグをTagDataに置き換える処理
+      list_item.tag.split(',').forEach(list_tag => {
+        const index = tags.findIndex(tag => tag.id === Number(list_tag));
+        // そのタグが存在するならそのTagDataを追加
+        if (index !== -1) {
+          result_tag.push(tags[index]);
+        } else {
+          result_tag.push({
+            name: list_tag,
+            description: '',
+            updated_at: ''
+          });
+        }
+      });
+    }
     // 結果を格納する
     result.push({
       title: list_item.title, id: list_item.id ?? -1,
