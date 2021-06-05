@@ -11,7 +11,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
-import Modal from '../components/Modal';
+import Toast from '../components/Toast';
 import Button from '../components/Button';
 import GetFromApi from '../ts/Api';
 import FeatureRequest from '../types/FeatureRequest';
@@ -20,7 +20,7 @@ interface Props { requests: FeatureRequest[] }
 
 export default function Request({ requests }: Props): React.ReactElement {
   const [request, SetRequest] = React.useState('');
-  const [isModalOpen, SetIsModalOpen] = React.useState(false);
+  const [isToastOpen, SetIsToastOpen] = React.useState(false);
   const [result, SetResult] = React.useState({ isSuccess: false, result: '' });
 
   const SendRequest = () => {
@@ -33,7 +33,7 @@ export default function Request({ requests }: Props): React.ReactElement {
           SetRequest('');
         }
         SetResult(result);
-        SetIsModalOpen(true);
+        SetIsToastOpen(true);
       }
     };
     req.open('POST', process.env.EDIT_URL + '/request');
@@ -89,25 +89,22 @@ export default function Request({ requests }: Props): React.ReactElement {
         {list}
       </tbody></table>
 
-      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
-        <div className={css.window}>
+
+      <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
+        <div className={css.toast_body}>
           {result.isSuccess ?
-            <p>
+            <span>
               送信しました。ご協力ありがとうございます。<br />
               ページを再読み込みすることで要望一覧が更新されます。
-            </p>
+            </span>
             :
-            <p>
+            <span>
               送信に失敗しました: {result.result}<br />
               しばらく時間を置いてもう一度送信してください。
-            </p>
+            </span>
           }
-          <Button {...{
-            type: 'filled', icon: 'fas fa-times', text: '閉じる',
-            onClick: () => SetIsModalOpen(false)
-          }} />
         </div>
-      </Modal>
+      </Toast>
     </div>
   );
 }
@@ -115,6 +112,6 @@ export default function Request({ requests }: Props): React.ReactElement {
 // APIで要望一覧を取得
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await GetFromApi<FeatureRequest>('request', context.query.id);
-  data.sort((a, b) => (b.id??0) - (a.id??0));
+  data.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
   return { props: { requests: data } };
 };
