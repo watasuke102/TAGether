@@ -91,31 +91,49 @@ export default function TagEdit(props: Props): React.ReactElement {
         }
       </div >
 
+      {/* タグピッカー */}
       <AnimatePresence>
         {
-          is_picker_open &&
-          <motion.div
-            className={css.tag_picker} style={picker_pos}
-            {...fadeinout}
-          >
-            <form className={css.search}>
-              <input placeholder='検索...' value={search_box}
-                onChange={e => SetSearchBox(e.target.value)} />
-            </form>
-
-            <div className={css.close}
-              onClick={() => SetIsPickerOpen(false)}>
-              <span className='fas fa-times' />
-            </div>
-
-            <div className={css.list}>
-              <div className={css.inner}>
-                {/* タグ一覧（クリックで追加） */}
-                {TagList()}
+          is_picker_open && (current_tag.length >= 8 ?
+            // タグ
+            <motion.div
+              className={`${css.tag_picker} ${css.picker_error}`}
+              style={picker_pos} {...fadeinout}
+            >
+              <span>
+                タグの登録上限に達しました<br />
+                8つ未満になるように削除してください
+              </span>
+              <div className={css.close}
+                onClick={() => SetIsPickerOpen(false)}>
+                <span className='fas fa-times' />
               </div>
-            </div>
-          </motion.div>
-        }
+            </motion.div>
+
+            :
+
+            <motion.div
+              className={`${css.tag_picker} ${css.picker_normal}`}
+              style={picker_pos} {...fadeinout}
+            >
+              <form className={css.search}>
+                <input placeholder='検索...' value={search_box}
+                  onChange={e => SetSearchBox(e.target.value)} />
+              </form>
+
+              <div className={css.close}
+                onClick={() => SetIsPickerOpen(false)}>
+                <span className='fas fa-times' />
+              </div>
+
+              <div className={css.list}>
+                <div className={css.inner}>
+                  {/* タグ一覧（クリックで追加） */}
+                  {TagList()}
+                </div>
+              </div>
+            </motion.div>
+          )}
       </AnimatePresence>
 
       <TagDetail createMode isOpen={is_modal_open}

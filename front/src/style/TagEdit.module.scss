@@ -24,10 +24,30 @@
 
 .tag_picker {
   position: absolute;
-  height: 350px; width: 280px;
   background-color: #5b5b66f5;
-  
+  .close {
+    font-size: 1.4em;
+    margin: auto;
+    &:hover { cursor: pointer; }
+  }
+}
+
+.picker_error {
+  display: flex;
+  padding: 2px 10px;
+  span {
+    margin: auto;
+  }
+  div {
+    font-size: 1.5em;
+    padding-left: 20px;
+    padding-right: 5px;
+  }
+}
+
+.picker_normal {
   display: grid;
+  height: 350px; width: 280px;
   grid-template-rows: 37px 1fr;
   grid-template-columns: 1fr 37px;
   .search {
@@ -42,11 +62,6 @@
       border: none;
       &:focus-visible { outline: none; }
     }
-  }
-  .close {
-    font-size: 1.4em;
-    margin: auto;
-    &:hover { cursor: pointer; }
   }
   .list {
     grid-column: 1/3;
