@@ -28,6 +28,19 @@ function Error(resp, mes) {
   resp.status(400);
 }
 
+function WebHook(title, field) {
+  if (Config.Webhook === '') return;
+  const Request = require('request');
+  Request.post({
+    url: Config.Webhook,
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      avatar_url: 'https://data.watasuke.tk/icon.png',
+      embeds: [{ title: title, fields: field }]
+    })
+  });
+}
+
 function Query(query, req, resp) {
   if (Config.AllowOrigin != '*' && req.headers.origin != Config.AllowOrigin) {
     Log(`BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`);
@@ -70,6 +83,11 @@ exports.AddCategoly = (req, res) => {
   query += ` ${MySql.escape(req.body.tag)},`;
   query += ` ${MySql.escape(req.body.list)})`;
   Query(query, req, res);
+
+  WebHook('新規カテゴリ追加', [
+    { name: '名前', value: req.body.title },
+    { name: '説明', value: req.body.description }
+  ]);
 };
 
 exports.UpdateCategoly = (req, res) => {
@@ -82,7 +100,7 @@ exports.UpdateCategoly = (req, res) => {
   Query(query, req, res);
 };
 
-// カテゴリ
+// 機能要望
 exports.GetRequest = (req, res) => {
   let query = 'SELECT * FROM request';
   if (req.params.id)
@@ -94,6 +112,10 @@ exports.AddRequest = (req, res) => {
   let query = 'INSERT INTO request (body) values ';
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
+
+  WebHook('新規要望が投稿されました', [
+    { name: '内容', value: req.body.body }
+  ]);
 };
 
 // タグ
@@ -109,6 +131,11 @@ exports.AddTag = (req, res) => {
   query += `(${MySql.escape(req.body.name)},`;
   query += ` ${MySql.escape(req.body.description)})`;
   Query(query, req, res);
+
+  WebHook('新規タグ追加', [
+    { name: '名前', value: req.body.name },
+    { name: '説明', value: req.body.description }
+  ]);
 };
 
 exports.UpdateTag = (req, res) => {
