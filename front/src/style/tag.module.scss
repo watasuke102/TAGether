@@ -10,6 +10,27 @@
 
 .container {
   display: flex;
-  width: 85vw;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 95vw;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: 15px;
+  padding: 5px 10px;
+  background-color: #535353;
+  .name {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+  }
+  .desc {
+    font-size: 1.1em;
+  }
+  &:hover { 
+    cursor: pointer; 
+    background-color: #686868;
+  }
 }
