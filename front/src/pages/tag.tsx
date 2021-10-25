@@ -55,7 +55,7 @@ export default function tag(props: Props): React.ReactElement {
       </div>
 
       <div className={css.container}>
-        {tag.map(e => TagItem(e))}
+        {tag.length === 0? <p>見つかりませんでした</p> : tag.map(e => TagItem(e))}
       </div>
 
       <TagDetail createMode isOpen={is_modal_open}
