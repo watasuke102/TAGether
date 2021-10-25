@@ -34,6 +34,10 @@ body {
     text-align: center;
   }
 
+  details *:not(summary) {
+    margin-left: 20px;
+  }
+
   //span[class~="fas"] {}
 }
 .page-transition-enter {

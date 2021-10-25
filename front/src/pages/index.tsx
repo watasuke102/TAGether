@@ -19,6 +19,17 @@ export default function index(): React.ReactElement {
         サービス名はTAGether(たげざー)です
       </p>
 
+      <details>
+        <summary>更新履歴</summary>
+        {Releases()}
+      </details>
+
+      <p>
+        以前のリリースは
+        <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
+        から確認可能です。
+      </p>
+
       <h2>ショートカットキーについて</h2>
       <ul>
         <li>Ctrl + Shift + (Lもしくは右矢印キー)： 答え合わせ・次の問題</li>
@@ -30,9 +41,15 @@ export default function index(): React.ReactElement {
         <li>画面切り替えのアニメーション時、スタイルがリセットされる</li>
       </ul>
 
-      <h2>更新履歴</h2>
+      <p className={css.version}>TAGether v1.5.0</p>
+    </div>
+  );
+}
 
-      <h3>v1.5.0</h3>
+function Releases():React.ReactElement {
+  return(
+    <>
+    <h3>v1.5.0</h3>
       <p>
         長いのでまとめると、
         <ul style={{ margin: '0' }}>
@@ -63,30 +80,22 @@ export default function index(): React.ReactElement {
         <li>jsonを直接編集できるようにした</li>
       </ul>
 
-      <h3>v1.4.0</h3>
-      <ul>
-        <li>カテゴリをお気に入り登録できるようにした</li>
-        <li>解答したカテゴリの履歴（日付、正答率）が見れるように</li>
-        <li>環境をdocker-composeへ移行</li>
-      </ul>
-      <p>お気に入り登録したカテゴリや解答履歴は、プロフィールから見ることが出来ます。</p>
+    <h3>v1.4.0</h3>
+    <ul>
+      <li>カテゴリをお気に入り登録できるようにした</li>
+      <li>解答したカテゴリの履歴（日付、正答率）が見れるように</li>
+      <li>環境をdocker-composeへ移行</li>
+    </ul>
+    <p>お気に入り登録したカテゴリや解答履歴は、プロフィールから見ることが出来ます。</p>
 
-      <h3>v1.3.3</h3>
-      <ul>
-        <li>WebKitで新規追加・編集画面を開けない問題を修正</li>
-        <li>問題編集画面で保存したとき、モーダルウィンドウではなくトースト通知を出すように</li>
-        <li>解答状況一覧で、カテゴリ名や正答率がスクロールに追従するように</li>
-        <li>チェックボックスのコンポーネントを自作のものにした</li>
-        <li>問題一覧で、正解を非表示に出来るようにした</li>
-      </ul>
-
-      <p>
-        以前のリリースは
-        <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
-        から確認可能です。
-      </p>
-
-      <p className={css.version}>TAGether v1.5.0</p>
-    </div>
-  );
+    <h3>v1.3.3</h3>
+    <ul>
+      <li>WebKitで新規追加・編集画面を開けない問題を修正</li>
+      <li>問題編集画面で保存したとき、モーダルウィンドウではなくトースト通知を出すように</li>
+      <li>解答状況一覧で、カテゴリ名や正答率がスクロールに追従するように</li>
+      <li>チェックボックスのコンポーネントを自作のものにした</li>
+      <li>問題一覧で、正解を非表示に出来るようにした</li>
+    </ul>
+    </>
+  )
 }
