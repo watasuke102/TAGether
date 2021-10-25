@@ -14,23 +14,18 @@ import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
+import CreatePageConfig from "../types/CreatePageConfig";
 
 interface Props {
   tags: TagData[]
   data: Categoly[]
 }
 
-interface Text {
-  document_title: string
-  heading: string
-  api_success: string
-  buttons: ButtonInfo[]
-}
-
 export default class edit extends Create {
-  public text: Text = {
+  public config: CreatePageConfig = {
     document_title: '編集',
     heading: 'カテゴリの編集',
+    api_method: 'PUT',
     api_success: '編集結果を適用しました',
     buttons: [
       {
@@ -50,7 +45,6 @@ export default class edit extends Create {
       },
     ]
   }
-  public api_method = 'PUT';
 
   constructor(props: Props) {
     super(props);

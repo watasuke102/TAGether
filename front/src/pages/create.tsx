@@ -10,7 +10,7 @@ import css from '../style/pages/create.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Modal from '../components/Modal';
@@ -22,6 +22,7 @@ import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
+import CreatePageConfig from "../types/CreatePageConfig";
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
 import CheckBox from '../components/CheckBox';
@@ -34,12 +35,11 @@ function exam_default(): Exam[] {
   return tmp;
 }
 function categoly_default(): Categoly {
-  const tmp: Categoly = {
+  return {
     id: 0, updated_at: '', title: '',
     description: '', tag: [],
     list: JSON.stringify(exam_default(), undefined, '  ')
   };
-  return tmp;
 }
 
 interface Props {
@@ -47,20 +47,12 @@ interface Props {
   data: Categoly[]
 }
 
-interface Text {
-  document_title: string
-  heading: string
-  api_success: string
-  buttons: ButtonInfo[]
-}
-
 export default class create extends React.Component<Props, EditCategolyPageState> {
-  private bottom;
-  private top;
 
-  public text: Text = {
+  public config: CreatePageConfig = {
     document_title: '新規作成',
     heading: '新規カテゴリの追加',
+    api_method: 'POST',
     api_success: 'カテゴリの追加に成功しました',
     buttons: [
       {
@@ -73,7 +65,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
       }
     ]
   }
-  public api_method = 'POST';
 
   constructor(props: Props) {
     super(props);
