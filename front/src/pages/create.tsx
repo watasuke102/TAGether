@@ -185,53 +185,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
     this.setState({ isModalOpen: true, res_result: result });
   }
 
-  // 問題を追加
-  AddExam(before: boolean): void {
-    const tmp = this.state.exam;
-    if (before) {
-      tmp.unshift({ question: '', answer: Array<string>(1).fill('') });
-    } else {
-      tmp.push({ question: '', answer: Array<string>(1).fill('') });
-    }
-    this.setState({ exam: tmp });
-  }
-  // 指定した位置に問題を追加
-  InsertExam(i: number): void {
-    // 追加する空要素
-    const item = { question: '', answer: Array<string>(1).fill('') };
-
-    const result = this.state.exam;
-    result.splice(i, 0, item);
-    this.setState({ exam: result });
-  }
-  // exam[i]とexam[i+moveto]を入れ替え
-  SwapExam(i: number, moveto: number): void {
-    const result = this.state.exam;
-    const tmp = result[i];
-    result[i] = result[i + moveto];
-    result[i + moveto] = tmp;
-    this.setState({ exam: result });
-  }
-
-  // 答え欄を追加
-  AddAnswer(i: number): void {
-    const tmp = this.state.exam;
-    tmp[i].answer.push('');
-    this.setState({ exam: tmp });
-  }
-  RemoveExam(i: number): void {
-    const tmp = this.state.exam;
-    // tmp[i]から要素を1つ削除
-    tmp.splice(i, 1);
-    this.setState({ exam: tmp });
-  }
-  RemoveAnswer(i: number, j: number): void {
-    const tmp = this.state.exam;
-    // tmp[i]から要素を1つ削除
-    tmp[i].answer.splice(j, 1);
-    this.setState({ exam: tmp });
-  }
-
   // state更新
   UpdateCategoly(type: 'title' | 'desc' | 'list', str: string): void {
     const tmp = this.state.categoly;
@@ -241,16 +194,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
       case 'list': tmp.list = str; break;
     }
     this.setState({ categoly: tmp });
-  }
-  UpdateExam(type: string, str: string, i: number, j: number): void {
-    const tmp = this.state.exam;
-    if (type == 'question') {
-      tmp[i].question = str;
-    }
-    if (type == 'answer') {
-      tmp[i].answer[j] = str;
-    }
-    this.setState({ exam: tmp });
   }
 
   // モーダルウィンドウの中身
@@ -337,7 +280,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
           <Form label='JSON' value={this.state.categoly.list} rows={30}
                 onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
           :
-          <ExamEditForms exam={this.state.exam} />}
+          <ExamEditForms exam={this.state.exam} updater={(e) => this.setState({exam: e})}/>}
 
         <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
           {this.RegistResult()}

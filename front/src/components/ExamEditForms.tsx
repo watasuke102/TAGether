@@ -8,13 +8,14 @@
 //
 import css from '../style/pages/create.module.scss';
 import React from 'react';
-import CheckBox from "./CheckBox";
 import Form from "./Form";
 import Button from "./Button";
 import Exam from "../types/Exam";
+import UpdateExam from "../ts/UpdateExam";
 
 interface Props {
   exam: Exam[]
+  updater: Function
 }
 
 export default function ExamEditForms(props: Props): React.ReactElement {
@@ -23,26 +24,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   let top_div: HTMLDivElement | null;
 
   function ExamEditForm(): React.ReactElement[] {
-    function DeleteButton(f: Function, isDeleteExam: boolean, i?: number): React.ReactElement | undefined {
-      // 問題欄の削除ボタンであれば、全体の問題数の合計が1のときは非表示
-      if (isDeleteExam) {
-        if (props.exam.length == 1)
-          return <div className={css.dummy_button} />;
-      } else {
-        // 解答欄の削除ボタンであれば、解答欄の合計が1のときは非表示
-        if (i != undefined) {
-          if (props.exam[i].answer.length == 1)
-            return;
-        }
-      }
-      return (
-        <Button {...{
-          type: 'material', icon: 'fas fa-trash', text: '削除',
-          onClick: () => f()
-        }} />
-      );
-    }
-
     const obj: React.ReactElement[] = [];
     props.exam.forEach((e, i) => {
       // 答え欄の生成
@@ -52,17 +33,21 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <div className={css.answer_area}>
             <Form {...{
               label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
-              onChange: (ev) => this.UpdateExam('answer', ev.target.value, i, j)
+              onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(i, j, ev.target.value)//this.UpdateExam('answer', ev.target.value, i, j)
             }} />
             <div className={css.answer_area_buttons}>
               {/* 問題の追加/削除 */}
               <Button {...{
                 text: '追加', icon: 'fas fa-plus',
-                onClick: () => this.AddAnswer(i), type: 'material'
+                onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(i, -1), type: 'material'
               }} />
               {/* 答え欄削除ボタン */}
               {
-                DeleteButton(() => this.RemoveAnswer(i, j), false, i)
+                (i !== 0)&&
+                <Button {...{
+                  type: 'material', icon: 'fas fa-trash', text: '削除',
+                  onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(i, j)
+                }} />
               }
             </div>
           </div>
@@ -77,12 +62,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             {
               (i != 0) && <Button {...{
                 text: '1つ上に移動', icon: 'fas fa-caret-up',
-                onClick: () => this.SwapExam(i, -1), type: 'material'
+                onClick: () => UpdateExam(props.updater, props.exam).Exam.Move(i, i), type: 'material'
               }} />
             }
             <Button {...{
               text: '1つ上に追加', icon: 'fas fa-plus',
-              onClick: () => this.InsertExam(i), type: 'material'
+              onClick: () => UpdateExam(props.updater, props.exam).Exam.Insert(i), type: 'material'
             }} />
           </div>
 
@@ -90,12 +75,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <div className={css.delete_button}>
               {/* 問題削除ボタン */}
               {
-                DeleteButton(() => this.RemoveExam(i), true)
+                (props.exam.length !== 1)&&
+                <Button {...{
+                  type: 'material', icon: 'fas fa-trash', text: '削除',
+                  onClick: () => UpdateExam(props.updater, props.exam).Exam.Remove(i)
+                }} />
               }
             </div>
             <Form {...{
               label: '問題文', value: e.question, rows: 2,
-              onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
+              onChange: (ev) => UpdateExam(props.updater, props.exam).Question.Update(i, ev.target.value)
             }} />
 
             <div className={css.answers}>
@@ -109,12 +98,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             {
               (i != props.exam.length - 1) && <Button {...{
                 text: '1つ下に移動', icon: 'fas fa-caret-down',
-                onClick: () => this.SwapExam(i, 1), type: 'material'
+                onClick: () => UpdateExam(props.updater, props.exam).Exam.Move(i, i+1), type: 'material'
               }} />
             }
             <Button {...{
               text: '1つ下に追加', icon: 'fas fa-plus',
-              onClick: () => this.InsertExam(i + 1), type: 'material'
+              onClick: () => UpdateExam(props.updater, props.exam).Exam.Insert(i+1), type: 'material'
             }} />
           </div>
 
@@ -128,13 +117,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   return (
     <>
       <div className={css.top} ref={e => top_div = e} />
-
-      {json_edit ?
-        <Form label='JSON' value={this.state.categoly.list} rows={30}
-              onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
-        :
-        <ExamEditForm />}
-
+      <ExamEditForm />
       <div className={css.bottom} ref={e => bottom_div = e} />
 
       <div className={css.button_container}>
@@ -142,7 +125,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <Button {...{
             text: '下に追加', icon: 'fas fa-arrow-down', type: 'material',
             onClick: () => {
-              this.AddExam(false)
+              UpdateExam(props.updater, props.exam).Exam.Insert(-1);
               // 追加した問題欄が表示されるように下にスクロール
               bottom_div?.scrollIntoView({ behavior: 'smooth' });
             }
@@ -150,9 +133,9 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <Button {...{
             text: '上に追加', icon: 'fas fa-arrow-up', type: 'material',
             onClick: () => {
-              this.AddExam(true)
+              UpdateExam(props.updater, props.exam).Exam.Insert(0);
               // 追加した問題欄が表示されるように上にスクロール
-              top_div?.scrollIntoView({behavior: 'smooth'});
+              top_div?.scrollIntoView({ behavior: 'smooth' });
             }
           }} />
           <Button {...{
