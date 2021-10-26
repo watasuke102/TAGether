@@ -34,7 +34,7 @@ body {
     text-align: center;
   }
 
-  details *:not(summary) {
+  details >*:not(summary) {
     margin-left: 20px;
   }
 

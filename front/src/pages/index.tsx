@@ -21,7 +21,7 @@ export default function index(): React.ReactElement {
 
       <details>
         <summary>更新履歴</summary>
-        {Releases()}
+        <Releases />
       </details>
 
       <p>
@@ -50,7 +50,7 @@ function Releases():React.ReactElement {
   return(
     <>
     <h3>v1.5.0</h3>
-      <p>
+      <div><p>
         長いのでまとめると、
         <ul style={{ margin: '0' }}>
           <li>解答履歴から間違えた問題だけ解けるようになったよ</li>
@@ -78,7 +78,7 @@ function Releases():React.ReactElement {
         <li>カテゴリカードのタグをクリックしたときに、タグの詳細を表示するように</li>
         <li>特定のタグが付与された問題をすべて解けるようになった</li>
         <li>jsonを直接編集できるようにした</li>
-      </ul>
+      </ul></div>
 
     <h3>v1.4.0</h3>
     <ul>
