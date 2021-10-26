@@ -8,13 +8,7 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
-.exam_editform {
-  hr {
-    margin: 50px auto;
-    height: 15px;
-  }
-}
-// タイトル等の説明 
+// タイトル等の説明
 .edit_area {
   width: 70vw;
   margin: 30px auto;
@@ -23,77 +17,13 @@
   margin: 0 0 15px;
 }
 
-// 問題文などの編集 
-.edit_exam {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 20px 0;
-}
-.edit_exam textarea {
-  width: 30vw;
-}
-
-.answers {
-  display: flex;
-  flex-direction: column;
-}
-.answer_area {
-  display: flex;
-  flex-direction: row;
-}
-.answer_area_buttons {
-  margin-left: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-
-.dummy_button {
-  width: 88px;
-}
-.delete_button {
-  margin: 30px 0 0;
-}
-.move_button {
-  display: flex;
-  justify-content: center;
-  margin: 10px auto;
-  button {
-    margin: auto 40px;
-  }
-}
-
-.button_container {
-  position:fixed;
-  width: 100%;
-  left: 0px;
-  bottom: 0px;
-  background-color: #646464ea;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 25px;
-}
-
 .window {
   width: 60vw;
   padding: 30px 50px;
   text-align: center;
   background-color: #646772;
 }
-
-.top {
-  height: 20px;
-}
-.bottom {
-  height: 250px;
-}
-
-// トースト通知の中身 
+// トースト通知の中身
 .toast_body {
   display: flex;
   font-size: 1.25em;
@@ -101,24 +31,4 @@
 }
 .toast_body span {
   margin-right: 10px;
-}
-
-// 横幅が狭かったらボタンと問題編集欄を縦に並べる 
-@media screen and (max-width: 800px) {
-  .edit_exam {
-    flex-direction: column;
-  }
-  .answer_area {
-    flex-direction: column;
-  }
-  .edit_exam textarea,
-  .answer_area textarea {
-    width: 80vw;
-  }
-
-  .answer_area_buttons {
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
 }
