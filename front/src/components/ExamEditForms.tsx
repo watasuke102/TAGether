@@ -57,25 +57,30 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.button_container}>
           <Button type={'material'} icon={'fas fa-chevron-left'} text={''}
                   onClick={PrevPage} />
-          <Button type={'material'} icon={'fas fa-trash'} text={'この問題を削除'}
-                  onClick={NextPage} />
           <span>{current_page+1}/{props.exam.length}</span>
-          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
-                  onClick={props.register} />
           <Button type={'material'} icon={'fas fa-chevron-right'} text={''}
                   onClick={NextPage}/>
+        </div>
+
+        <div className={css.button_container}>
+          <Button type={'material'} icon={'fas fa-trash'} text={'この問題を削除'}
+                  onClick={() => UpdateExam(props.updater, props.exam).Exam.Remove(current_page)} />
+          <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'}
+                  onClick={NextPage} />
+          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
+                  onClick={props.register} />
         </div>
 
         <div className={css.append_exam}>
           <ButtonContainer>
             <Button type={'material'} icon={'fas fa-angle-double-left'} text={'最初に挿入'}
-                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(0); NextPage();}} />
+                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(0); SetCurrentPage(0);}} />
             <Button type={'material'} icon={'fas fa-arrow-left'} text={'1つ前に挿入'}
-                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(current_page); NextPage();}} />
+                    onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(current_page)} />
             <Button type={'material'} icon={'fas fa-arrow-right'} text={'1つ後に挿入'}
-                    onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(current_page+1)} />
+                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(current_page+1); NextPage();}} />
             <Button type={'material'} icon={'fas fa-angle-double-right'} text={'最後に挿入'}
-                    onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(-1)} />
+                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(-1); SetCurrentPage(props.exam.length-1);}} />
           </ButtonContainer>
         </div>
       </div>

@@ -20,7 +20,7 @@
 .button_container {
   display: flex;
   justify-content: space-between;
-  margin: 10px 20px;
+  margin: 10px 20px 15px;
 }
 
 .form_container {
@@ -69,8 +69,11 @@
   }
 }
 // ボタンを1つ前・後、最初・最後で同じ行にまとめたい）
-.append_exam button:first-child {
-  @media screen and (max-width: 850px) {
-    grid-row: 2/3;
+.append_exam {
+  margin: 10px 20px;
+  button:first-child {
+    @media screen and (max-width: 850px) {
+      grid-row: 2/3;
+    }
   }
 }

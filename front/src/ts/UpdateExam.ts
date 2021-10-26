@@ -19,6 +19,7 @@ export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperate
         updater(exam);
       },
       Remove: (i: number) => {
+        if (exam.length === 1) return;
         exam.splice(i, 1);
         updater(exam);
       },
