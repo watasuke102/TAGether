@@ -14,6 +14,7 @@ interface EditCategolyPageState{
   jsonEdit:               boolean
   isToastOpen:            boolean
   isModalOpen:            boolean
+  is_using_old_form:      boolean
   res_result:             ApiResponse
   categoly:               Categoly
   exam:                   Exam[]

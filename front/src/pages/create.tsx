@@ -17,6 +17,7 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import TagEdit from '../components/TagEdit';
 import ExamEditForms from "../components/ExamEditForms";
+import ExamEditFormsOld from "../components/ExamEditFormsOld";
 import GetFromApi from '../ts/Api';
 import Exam from '../types/Exam';
 import TagData from '../types/TagData';
@@ -70,7 +71,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
   constructor(props: Props) {
     super(props);
     this.state = {
-      isToastOpen: false, isModalOpen: false, jsonEdit: false,
+      isToastOpen: false, isModalOpen: false,
+      jsonEdit: false, is_using_old_form: false,
       categoly: categoly_default(), exam: exam_default(),
       res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
@@ -276,14 +278,25 @@ export default class create extends React.Component<Props, EditCategolyPageState
 
         <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
                   onChange={e => this.setState({ jsonEdit: e })} />
+
+        <hr />
+
         {this.state.jsonEdit ?
           <Form label='JSON' value={this.state.categoly.list} rows={30}
                 onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
           :
-          <ExamEditForms exam={this.state.exam}
-                         updater={(e) => this.setState({exam: e})}
-
-          />
+          <>
+            {/*<CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
+                      onChange={e => this.setState({ is_using_old_form: e })} />*/}
+            {
+              this.state.is_using_old_form?
+                <ExamEditFormsOld exam={this.state.exam} register={this.RegistExam}
+                                  updater={(e) => this.setState({exam: e})}/>
+                :
+                <ExamEditForms exam={this.state.exam} register={this.RegistExam}
+                                  updater={(e) => this.setState({exam: e})}/>
+            }
+          </>
         }
 
         <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>

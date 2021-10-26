@@ -24,7 +24,8 @@
   @media screen and (max-width: 850px) {
     width: 100%;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 48% 48%;
+    gap: 15px;
     button {
       margin-top: 0;
     }

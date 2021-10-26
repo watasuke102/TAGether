@@ -28,7 +28,7 @@ export default function Modal(props: Props): React.ReactElement {
     window.addEventListener('resize', UpdateContainersHeight);
     return () =>
       window.removeEventListener('resize', UpdateContainersHeight);
-  });
+  }, []);
 
   const transition = { duration: 0.4 };
   return (

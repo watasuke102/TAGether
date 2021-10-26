@@ -52,7 +52,7 @@ export default class edit extends Create {
     categoly.list = JSON.stringify(JSON.parse(categoly.list), undefined, '  ');
     this.state = {
       isToastOpen: false, isModalOpen: false, jsonEdit: false,
-      categoly: categoly,
+      is_using_old_form: false, categoly: categoly,
       exam: JSON.parse(this.props.data[0].list),
       res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
