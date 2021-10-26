@@ -16,6 +16,7 @@ import Toast from '../components/Toast';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import TagEdit from '../components/TagEdit';
+import ExamEditForms from "../components/ExamEditForms";
 import GetFromApi from '../ts/Api';
 import Exam from '../types/Exam';
 import TagData from '../types/TagData';
@@ -175,7 +176,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       this.setState({ isToastOpen: true, res_result: { 'isSuccess': false, 'result': '失敗しました: URL is undefined' } });
       return;
     }
-    req.open(this.api_method, url);
+    req.open(this.config.api_method, url);
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
     console.log('BODY: ' + JSON.stringify(categoly));
@@ -189,12 +190,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
     const tmp = this.state.exam;
     if (before) {
       tmp.unshift({ question: '', answer: Array<string>(1).fill('') });
-      // 追加した問題欄が表示されるように上にスクロール
-      this.top.scrollIntoView({ behavior: 'smooth' });
     } else {
       tmp.push({ question: '', answer: Array<string>(1).fill('') });
-      // 追加した問題欄が表示されるように下にスクロール
-      this.bottom.scrollIntoView({ behavior: 'smooth' });
     }
     this.setState({ exam: tmp });
   }
@@ -256,109 +253,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
     this.setState({ exam: tmp });
   }
 
-  // 問題編集欄
-  DeleteButton(f: Function, isDeleteExam: boolean, i?: number): React.ReactElement | undefined {
-    // 問題欄の削除ボタンであれば、全体の問題数の合計が1のときは非表示
-    if (isDeleteExam) {
-      if (this.state.exam.length == 1)
-        return <div className={css.dummy_button} />;
-    } else {
-      // 解答欄の削除ボタンであれば、解答欄の合計が1のときは非表示
-      if (i != undefined) {
-        if (this.state.exam[i].answer.length == 1)
-          return;
-      }
-    }
-    return (
-      <Button {...{
-        type: 'material', icon: 'fas fa-trash', text: '削除',
-        onClick: () => f()
-      }} />
-    );
-  }
-  ExamEditForm(): React.ReactElement[] {
-    const obj: React.ReactElement[] = [];
-    this.state.exam.forEach((e, i) => {
-      // 答え欄の生成
-      const answer_form: React.ReactElement[] = [];
-      e.answer.forEach((answer, j) => {
-        answer_form.push(
-          <div className={css.answer_area}>
-            <Form {...{
-              label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
-              onChange: (ev) => this.UpdateExam('answer', ev.target.value, i, j)
-            }} />
-            <div className={css.answer_area_buttons}>
-              {/* 問題の追加/削除 */}
-              <Button {...{
-                text: '追加', icon: 'fas fa-plus',
-                onClick: () => this.AddAnswer(i), type: 'material'
-              }} />
-              {/* 答え欄削除ボタン */}
-              {
-                this.DeleteButton(() => this.RemoveAnswer(i, j), false, i)
-              }
-            </div>
-          </div>
-        );
-      });
-
-      // 問題文と答え欄
-      obj.push(
-        <div className={css.exam_editform}>
-          {/* 移動・追加ボタン */}
-          <div className={css.move_button}>
-            {
-              (i != 0) && <Button {...{
-                text: '1つ上に移動', icon: 'fas fa-caret-up',
-                onClick: () => this.SwapExam(i, -1), type: 'material'
-              }} />
-            }
-            <Button {...{
-              text: '1つ上に追加', icon: 'fas fa-plus',
-              onClick: () => this.InsertExam(i), type: 'material'
-            }} />
-          </div>
-
-          <div className={css.edit_exam}>
-            <div className={css.delete_button}>
-              {/* 問題削除ボタン */}
-              {
-                this.DeleteButton(() => this.RemoveExam(i), true)
-              }
-            </div>
-            <Form {...{
-              label: '問題文', value: e.question, rows: 2,
-              onChange: (ev) => this.UpdateExam('question', ev.target.value, i, -1)
-            }} />
-
-            <div className={css.answers}>
-              {answer_form}
-            </div>
-
-          </div>
-
-          {/* 移動・追加ボタン */}
-          <div className={css.move_button}>
-            {
-              (i != this.state.exam.length - 1) && <Button {...{
-                text: '1つ下に移動', icon: 'fas fa-caret-down',
-                onClick: () => this.SwapExam(i, 1), type: 'material'
-              }} />
-            }
-            <Button {...{
-              text: '1つ下に追加', icon: 'fas fa-plus',
-              onClick: () => this.InsertExam(i + 1), type: 'material'
-            }} />
-          </div>
-
-          <hr />
-        </div>
-      );
-    });
-    return obj;
-  }
-
   // モーダルウィンドウの中身
   RegistResult(string_only?: boolean): React.ReactElement {
     let result;
@@ -372,8 +266,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
     if (result.isSuccess) {
-      message = this.text.api_success;
-      button_info = this.text.buttons;
+      message = this.config.api_success;
+      button_info = this.config.buttons;
     } else {
       // 失敗した場合、閉じるボタンのみ
       message = 'エラー: ' + result.result;
@@ -401,9 +295,9 @@ export default class create extends React.Component<Props, EditCategolyPageState
   render(): React.ReactElement {
     return (
       <>
-        <Helmet title={`${this.text.document_title} - TAGether`} />
+        <Helmet title={`${this.config.document_title} - TAGether`} />
 
-        <h1>{this.text.heading}</h1>
+        <h1>{this.config.heading}</h1>
 
         <ul>
           <li>記号 &quot; は使用できません </li>
@@ -435,37 +329,15 @@ export default class create extends React.Component<Props, EditCategolyPageState
             tmp.tag = e;
             this.setState({ categoly: tmp });
           }} />
-
-        <div className={css.top} ref={e => this.top = e} />
-
         <h2>問題</h2>
-        <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
-          onChange={e => this.setState({ jsonEdit: e })} />
 
+        <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
+                  onChange={e => this.setState({ jsonEdit: e })} />
         {this.state.jsonEdit ?
           <Form label='JSON' value={this.state.categoly.list} rows={30}
-            onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
+                onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
           :
-          this.ExamEditForm()}
-
-        <div className={css.bottom} ref={e => this.bottom = e} />
-
-        <div className={css.button_container}>
-          <div className={css.buttons}>
-            <Button {...{
-              text: '下に追加', icon: 'fas fa-arrow-down',
-              onClick: () => this.AddExam(false), type: 'material'
-            }} />
-            <Button {...{
-              text: '上に追加', icon: 'fas fa-arrow-up',
-              onClick: () => this.AddExam(true), type: 'material'
-            }} />
-            <Button {...{
-              text: '適用', icon: 'fas fa-check',
-              onClick: () => this.RegistExam(), type: 'filled'
-            }} />
-          </div>
-        </div>
+          <ExamEditForms exam={this.state.exam} />}
 
         <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
           {this.RegistResult()}
