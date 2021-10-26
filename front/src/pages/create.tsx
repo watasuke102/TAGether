@@ -280,7 +280,11 @@ export default class create extends React.Component<Props, EditCategolyPageState
           <Form label='JSON' value={this.state.categoly.list} rows={30}
                 onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
           :
-          <ExamEditForms exam={this.state.exam} updater={(e) => this.setState({exam: e})}/>}
+          <ExamEditForms exam={this.state.exam}
+                         updater={(e) => this.setState({exam: e})}
+
+          />
+        }
 
         <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
           {this.RegistResult()}

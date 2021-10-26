@@ -39,6 +39,7 @@ export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperate
       // i: Examのインデックス j: Answerのインデックス
       Update: (i: number, j: number, value: string) => {
         exam[i].answer[j] = value;
+        updater(exam);
       },
       Remove: (i: number, j: number) => {
         exam[i].answer.splice(j, 1);
