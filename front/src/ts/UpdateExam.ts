@@ -14,6 +14,7 @@ export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperate
   const exam_template: Exam = { question: '', answer: [''] }
   return {
     Exam: {
+      Update: () => updater(exam),
       Insert: (at: number) => {
         exam.splice((at === -1)? exam.length : at, 0, exam_template);
         updater(exam);

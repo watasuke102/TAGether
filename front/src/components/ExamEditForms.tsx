@@ -8,7 +8,7 @@
 //
 import css from '../style/components/ExamEditForm.module.scss';
 import React from 'react';
-import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
+import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful-dnd";
 import Exam from "../types/Exam";
 import Form from "./Form";
 import Modal from "./Modal";
@@ -52,7 +52,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     return () =>
       window.removeEventListener('keydown', e => Shortcut(e));
   }, []);
-
 
   return (
     <>
@@ -131,7 +130,14 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
 
-          <DragDropContext onDragEnd={null}>
+          <DragDropContext onDragEnd={(e: DropResult) => {
+            if (!e.destination) return;
+            const from = e.source.index, to = e.destination.index;
+            const tmp = props.exam[from];
+            props.exam[from] = props.exam[to];
+            props.exam[to] = tmp;
+            UpdateExam(props.updater, props.exam).Exam.Update();
+          }}>
 
             <Droppable droppableId={'question_list'}>
               {provided => (

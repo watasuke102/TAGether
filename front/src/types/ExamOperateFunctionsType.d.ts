@@ -10,6 +10,7 @@
 import Exam from './Exam'
 interface ExamOperateFunctionsType {
   Exam: {
+    Update: () => void
     Insert: (at: number) => void
     Remove: (i: number) => void
     Move: (from: number, to: number) => void
