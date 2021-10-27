@@ -15,13 +15,13 @@
   span {
     margin: auto 0;
   }
+  .button_container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 20px 15px;
+  }
 }
 
-.button_container {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 20px 15px;
-}
 
 .form_container {
   display: flex;
@@ -32,29 +32,29 @@
     padding: 15px;
     width: 100%;
   }
-}
-
-.question {
-  width: 47%;
-  padding-bottom: 80px;
-}
-
-.answer_list {
-  width: 47%;
-  display: flex;
-  flex-direction: column;
-}
-
-.answer {
-  width: 100%;
-}
-
-.answer_area_buttons {
-  display: flex;
-  justify-content: left;
-  button {
-    margin: 5px 15px 20px 0;
+  .question {
+    width: 47%;
+    padding-bottom: 80px;
   }
+
+  .answer_list {
+    width: 47%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .answer {
+    width: 100%;
+  }
+
+  .answer_area_buttons {
+    display: flex;
+    justify-content: left;
+    button {
+      margin: 5px 15px 20px 0;
+    }
+  }
+}
 }
 
 // 横幅が狭かったらボタンと問題編集欄を縦に並べる
