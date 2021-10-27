@@ -15,11 +15,11 @@
   span {
     margin: auto 0;
   }
-  .button_container {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 20px 15px;
-  }
+}
+.button_container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 20px 15px;
 }
 
 
@@ -55,6 +55,43 @@
     }
   }
 }
+
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 30px;
+  //width: 70vw;
+  min-width: 50vw;
+  max-height: 80vh;
+  background-color: #4c4e57;
+  .question_list {
+    width: 100%;
+    height: 80%;
+    //overflow-y: scroll;
+    .dragable_question_card {
+      top: auto !important;
+      left: auto !important;
+      display: grid;
+      grid-template-columns: 1fr 50px;
+      user-select: none;
+      padding: 10px 15px;
+      color: #1a1a1a;
+      background-color: #acb7d3;
+      span {margin: auto 0; }
+      .icon {
+        font-size: 1.3em;
+        border: 1px solid #4c4e57;
+        border-radius: 6px;
+        padding: 4px;
+        margin: auto;
+        &:hover {
+          cursor: grab;
+        }
+      }
+    }
+  }
 }
 
 // 横幅が狭かったらボタンと問題編集欄を縦に並べる

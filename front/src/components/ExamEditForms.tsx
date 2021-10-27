@@ -8,11 +8,13 @@
 //
 import css from '../style/components/ExamEditForm.module.scss';
 import React from 'react';
+import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
 import Exam from "../types/Exam";
 import Form from "./Form";
-import UpdateExam from "../ts/UpdateExam";
+import Modal from "./Modal";
 import Button from "./Button";
 import ButtonContainer from "./ButtonContainer";
+import UpdateExam from "../ts/UpdateExam";
 
 interface Props {
   exam: Exam[]
@@ -22,6 +24,7 @@ interface Props {
 
 export default function ExamEditForms(props: Props): React.ReactElement {
   const [current_page, SetCurrentPage] = React.useState(0);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
   // ショートカットキー
   function Shortcut(e: KeyboardEvent): void {
     // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
@@ -66,7 +69,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <Button type={'material'} icon={'fas fa-trash'} text={'この問題を削除'}
                   onClick={() => UpdateExam(props.updater, props.exam).Exam.Remove(current_page)} />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'}
-                  onClick={NextPage} />
+                  onClick={() => SetIsModalOpen(true)} />
           <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
                   onClick={props.register} />
         </div>
@@ -124,6 +127,52 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         })}
         </div>
       </div>
+
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
+        <div className={css.modal}>
+
+          <DragDropContext onDragEnd={null}>
+
+            <Droppable droppableId={'question_list'}>
+              {provided => (
+                <div className={css.question_list}
+                     ref={provided.innerRef}
+                     {...provided.droppableProps}
+                >
+                  {
+                    props.exam.map((e,i) =>{return(
+                      <Draggable key={`${i}-${e.question.slice(0,5)}`}
+                                 draggableId={`${i}-${e.question.slice(0,5)}`}
+                                 index={i}
+                      >
+                        {provided=>(
+                          <div
+                            className={css.dragable_question_card}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <span>{i}: {e.question.slice(0, 50)}</span>
+                            <span className={`fas fa-list ${css.icon}`}/>
+                          </div>
+                          )}
+                      </Draggable>
+                    );})
+                  }
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+
+          </DragDropContext>
+
+          <div className={css.button_container}>
+            <Button type={'filled'} icon={'fas fa-times'} text={'閉じる'}
+                    onClick={() => SetIsModalOpen(false)} />
+          </div>
+
+        </div>
+      </Modal>
     </>
   );
 }
