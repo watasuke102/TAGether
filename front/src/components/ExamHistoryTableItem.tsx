@@ -32,8 +32,6 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
     Router.push(`/exam?history_id=${history_id}&shuffle=${shuffle}`);
   }
 
-  console.log(props.item);
-
   return (
     <tr>
       <td>{props.item.date}</td>

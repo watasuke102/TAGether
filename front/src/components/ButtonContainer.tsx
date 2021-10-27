@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function ButtonContainer({ children }: Props): React.ReactElement {
-  console.log(children.length);
   return (
     <div className={`${css.container} ${children.length >= 4 && css.grid}`}>
       {children}
