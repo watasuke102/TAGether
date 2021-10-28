@@ -13,7 +13,7 @@ interface ExamOperateFunctionsType {
     Update: () => void
     Insert: (at: number) => void
     Remove: (i: number) => void
-    Move: (from: number, to: number) => void
+    Swap: (from: number, to: number) => void
   }
   Question: {
     Update: (i: number, value: string) => void

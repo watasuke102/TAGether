@@ -100,7 +100,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.answer_list}>{
           props.exam[current_page].answer.map((e, i) => {
             return (
-              <div className={css.answer}>
+              <div className={css.answer} key={`anslist_${i}-${e.slice(0,5)}`}>
                 <Form {...{
                   label: '答え(' + (i + 1) + ')', value: e, rows: 3,
                   onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(current_page, i, ev.target.value)
@@ -129,25 +129,28 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
-
+          <p>クリックして問題に移動</p>
+          <p>右のアイコンをドラッグすると並び替えができます</p>
           <DragDropContext onDragEnd={(e: DropResult) => {
             if (!e.destination) return;
             const from = e.source.index, to = e.destination.index;
-            const tmp = props.exam[from];
-            props.exam[from] = props.exam[to];
-            props.exam[to] = tmp;
-            UpdateExam(props.updater, props.exam).Exam.Update();
+            if (from == to) return;
+            const exam = props.exam;
+            exam.splice(to+((from<to)? 1 : 0), 0, exam[from]);
+            exam.splice(from+((from>to)? 1 : 0), 1);
+            UpdateExam(props.updater, exam).Exam.Update();
           }}>
 
             <Droppable droppableId={'question_list'}>
               {provided => (
-                <div className={css.question_list}
-                     ref={provided.innerRef}
-                     {...provided.droppableProps}
+                <div
+                  className={css.question_list}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
                   {
                     props.exam.map((e,i) =>{return(
-                      <Draggable key={`${i}-${e.question.slice(0,5)}`}
+                      <Draggable key={`draggable_${i}-${e.question.slice(0,5)}`}
                                  draggableId={`${i}-${e.question.slice(0,5)}`}
                                  index={i}
                       >
@@ -155,11 +158,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                           <div
                             className={css.dragable_question_card}
                             ref={provided.innerRef}
+                            onClick={() => {SetCurrentPage(i); SetIsModalOpen(false);}}
                             {...provided.draggableProps}
-                            {...provided.dragHandleProps}
                           >
-                            <span>{i}: {e.question.slice(0, 50)}</span>
-                            <span className={`fas fa-list ${css.icon}`}/>
+                            <span>{`${e.question.slice(0, 50)}${(e.question.length>50)?'...':''}`}</span>
+                            <span className={`fas fa-list ${css.icon}`}
+                                  {...provided.dragHandleProps}/>
                           </div>
                           )}
                       </Draggable>

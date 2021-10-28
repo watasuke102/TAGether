@@ -24,7 +24,7 @@ export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperate
         exam.splice(i, 1);
         updater(exam);
       },
-      Move: (from: number, to: number) => {
+      Swap: (from: number, to: number) => {
         const tmp = exam[from];
         exam[from] = exam[to];
         exam[to] = tmp;
