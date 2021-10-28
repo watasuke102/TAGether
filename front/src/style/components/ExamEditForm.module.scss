@@ -69,17 +69,18 @@
   .question_list {
     width: 100%;
     height: 80%;
-    //overflow-y: scroll;
+    overflow-y: auto;
     .dragable_question_card {
       top: auto !important;
       left: auto !important;
+      margin: 10px 5px;
+      padding: 10px 15px;
       display: grid;
       grid-template-columns: 1fr 50px;
       user-select: none;
-      padding: 10px 15px;
       color: #1a1a1a;
       background-color: #acb7d3;
-      span {margin: auto 0; }
+      span { margin: auto 0; }
       .icon {
         font-size: 1.3em;
         border: 1px solid #4c4e57;
@@ -99,10 +100,12 @@
   .form_container {
     flex-direction: column;
   }
-
-  .question,
-  .answer_list {
-    width: 100%;
+  // ここ入れ子にしないと正しく適用されないらしい
+  .form_container {
+    .question,
+    .answer_list {
+      width: 100%;
+    }
   }
 }
 // ボタンを1つ前・後、最初・最後で同じ行にまとめたい）

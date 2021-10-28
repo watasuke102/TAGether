@@ -37,7 +37,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                 {
                   (i != 0) && <Button {...{
                     text: '1つ上に移動', icon: 'fas fa-caret-up',
-                    onClick: () => UpdateExam(props.updater, props.exam).Exam.Move(i, i), type: 'material'
+                    onClick: () => UpdateExam(props.updater, props.exam).Exam.Swap(i, i), type: 'material'
                   }} />
                 }
                 <Button {...{
@@ -101,7 +101,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                 {
                   (i != props.exam.length - 1) && <Button {...{
                     text: '1つ下に移動', icon: 'fas fa-caret-down',
-                    onClick: () => UpdateExam(props.updater, props.exam).Exam.Move(i, i + 1), type: 'material'
+                    onClick: () => UpdateExam(props.updater, props.exam).Exam.Swap(i, i + 1), type: 'material'
                   }} />
                 }
                 <Button {...{
