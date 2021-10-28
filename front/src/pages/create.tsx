@@ -290,10 +290,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
                       onChange={e => this.setState({ is_using_old_form: e })} />*/}
             {
               this.state.is_using_old_form?
-                <ExamEditFormsOld exam={this.state.exam} register={this.RegistExam}
+                <ExamEditFormsOld exam={this.state.exam} register={() => this.RegistExam()}
                                   updater={(e) => this.setState({exam: e})}/>
                 :
-                <ExamEditForms exam={this.state.exam} register={this.RegistExam}
+                <ExamEditForms exam={this.state.exam} register={() => this.RegistExam()}
                                   updater={(e) => this.setState({exam: e})}/>
             }
           </>
