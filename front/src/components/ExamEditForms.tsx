@@ -69,8 +69,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   onClick={() => UpdateExam(props.updater, props.exam).Exam.Remove(current_page)} />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'}
                   onClick={() => SetIsModalOpen(true)} />
-          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
-                  onClick={props.register} />
         </div>
 
         <div className={css.append_exam}>

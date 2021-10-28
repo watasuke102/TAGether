@@ -136,10 +136,6 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
               top_div?.scrollIntoView({ behavior: 'smooth' });
             }
           }} />
-          <Button {...{
-            text: '適用', icon: 'fas fa-check',
-            onClick: props.register, type: 'filled'
-          }} />
         </div>
       </div>
     </>

@@ -276,18 +276,27 @@ export default class create extends React.Component<Props, EditCategolyPageState
           }} />
         <h2>問題</h2>
 
-        <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
-                  onChange={e => this.setState({ jsonEdit: e })} />
+        <div className={css.buttons}>
+          <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
+                    onChange={e => this.setState({ jsonEdit: e })} />
+          <CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
+                    onChange={e => this.setState({ is_using_old_form: e })} />
+          <div className={css.pushbutton_wrapper}>
+            <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
+                    onClick={this.RegistExam} />
+          </div>
+        </div>
 
         <hr />
 
         {this.state.jsonEdit ?
-          <Form label='JSON' value={this.state.categoly.list} rows={30}
-                onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
+          <>
+            <p>注意：編集内容はリッチエディタと同期されません</p>
+            <Form label='JSON' value={this.state.categoly.list} rows={30}
+                  onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
+          </>
           :
           <>
-            {/*<CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
-                      onChange={e => this.setState({ is_using_old_form: e })} />*/}
             {
               this.state.is_using_old_form?
                 <ExamEditFormsOld exam={this.state.exam} register={() => this.RegistExam()}
