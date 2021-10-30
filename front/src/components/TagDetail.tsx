@@ -113,7 +113,7 @@ export default function TagDetail(props: Props): React.ReactElement {
           </ButtonContainer>
         </div>
 
-        <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
+        <Toast id='tag_detail' isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
           <div className={css.toast_body}>
             <span className='fas fa-bell' />
             {toast_body}

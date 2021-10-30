@@ -90,7 +90,7 @@ export default function Request({ requests }: Props): React.ReactElement {
       </tbody></table>
 
 
-      <Toast isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
+      <Toast id='request' isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
         <div className={css.toast_body}>
           {result.isSuccess ?
             <span>

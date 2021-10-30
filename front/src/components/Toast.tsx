@@ -15,11 +15,12 @@ interface Props {
   isOpen: boolean,
   close: Function
   top?: number
+  id: string
 }
 
 export default function Toast(props: Props): React.ReactElement {
   React.useEffect(() => {
-    const target = '#' + css.container;
+    const target = '#' + props.id;
     if (!props.isOpen) {
       gsap.to(target, {
         duration: 0,
@@ -52,7 +53,7 @@ export default function Toast(props: Props): React.ReactElement {
       });
   }, [props.isOpen]);
   return (
-    <div id={css.container} style={{ top: props.top ?? 65 }}>
+    <div id={props.id} className={css.container} style={{ top: props.top ?? 65 }}>
       {props.children}
     </div>
   );

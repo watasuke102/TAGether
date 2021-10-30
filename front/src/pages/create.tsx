@@ -283,7 +283,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
                     onChange={e => this.setState({ is_using_old_form: e })} />
           <div className={css.pushbutton_wrapper}>
             <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
-                    onClick={this.RegistExam} />
+                    onClick={() => this.RegistExam()} />
           </div>
         </div>
 
@@ -312,6 +312,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
           {this.RegistResult()}
         </Modal>
         <Toast
+          id={'toast_create'}
           isOpen={this.state.isToastOpen}
           close={() => this.setState({ isToastOpen: false })}
         >
