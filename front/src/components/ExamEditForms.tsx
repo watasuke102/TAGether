@@ -31,24 +31,31 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
     if (e.ctrlKey && e.shiftKey && !e.repeat) {
       if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
-        MoveBackwardPage();
+        PrevPage();
       }
       else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
-        MoveForwardPage();
+        NextPage();
       }
     }
   }, []);
 
-  function MoveForwardPage(page?: number) {
+  function NextPage() {
     SetCurrentPage(current => {
-      if ((page ?? current) === props.exam.length - 1) return current;
-      return (page ?? current)+1
+      if (current === props.exam.length - 1) return current;
+      return current+1;
     });
   }
-  function MoveBackwardPage(page?: number) {
+  function PrevPage() {
     SetCurrentPage(current => {
-      if ((page ?? current) === 0) return current;
-      return (page ?? current)-1
+      if (current === 0) return current;
+      return current-1;
+    });
+  }
+
+  function MovePageTo(to: number) {
+    SetCurrentPage(current => {
+      if (current < 0 || current > props.exam.length - 1) return current;
+      return to;
     });
   }
 
@@ -62,11 +69,15 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     <>
       <div className={css.button_list}>
         <div className={css.button_container}>
+          <Button type={'material'} icon={'fas fa-angle-double-left'} text={''}
+                  onClick={() => MovePageTo(0)}/>
           <Button type={'material'} icon={'fas fa-chevron-left'} text={''}
-                  onClick={MoveBackwardPage} />
+                  onClick={PrevPage} />
           <span>{current_page+1}/{props.exam.length}</span>
           <Button type={'material'} icon={'fas fa-chevron-right'} text={''}
-                  onClick={MoveForwardPage}/>
+                  onClick={NextPage}/>
+          <Button type={'material'} icon={'fas fa-angle-double-right'} text={''}
+                  onClick={() => MovePageTo(props.exam.length - 1)}/>
         </div>
 
         <div className={css.button_container}>
@@ -83,7 +94,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <Button type={'material'} icon={'fas fa-arrow-left'} text={'1つ前に挿入'}
                     onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(current_page)} />
             <Button type={'material'} icon={'fas fa-arrow-right'} text={'1つ後に挿入'}
-                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(current_page+1); MoveForwardPage();}} />
+                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(current_page+1); NextPage();}} />
             <Button type={'material'} icon={'fas fa-angle-double-right'} text={'最後に挿入'}
                     onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(-1); SetCurrentPage(props.exam.length-1);}} />
           </ButtonContainer>
