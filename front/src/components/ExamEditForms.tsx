@@ -25,33 +25,38 @@ interface Props {
 export default function ExamEditForms(props: Props): React.ReactElement {
   const [current_page, SetCurrentPage] = React.useState(0);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
+
   // ショートカットキー
-  function Shortcut(e: KeyboardEvent): void {
+  const Shortcut = React.useCallback((e: KeyboardEvent) => {
     // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
     if (e.ctrlKey && e.shiftKey && !e.repeat) {
-      if (e.code == 'KeyH' || e.code == 'ArrowLeft') {
+      if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
         PrevPage();
       }
-      else if (e.code == 'KeyL' || e.code == 'ArrowRight') {
+      else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
         NextPage();
       }
     }
-  }
-  function NextPage() {
-    if (current_page === props.exam.length - 1) return;
-    SetCurrentPage(current_page+1);
+  }, []);
 
+  function NextPage(page?: number) {
+    SetCurrentPage(current => {
+      if ((page ?? current) === props.exam.length - 1) return current;
+      return (page ?? current)+1
+    });
   }
-  function PrevPage() {
-    if (current_page === 0) return;
-    SetCurrentPage(current_page-1);
+  function PrevPage(page?: number) {
+    SetCurrentPage(current => {
+      if ((page ?? current) === 0) return current;
+      return (page ?? current)-1
+    });
   }
 
   React.useEffect(() => {
       window.addEventListener('keydown', e => Shortcut(e));
     return () =>
       window.removeEventListener('keydown', e => Shortcut(e));
-  }, []);
+  }, [Shortcut]);
 
   return (
     <>
