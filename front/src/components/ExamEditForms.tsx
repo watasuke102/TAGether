@@ -25,6 +25,7 @@ interface Props {
 export default function ExamEditForms(props: Props): React.ReactElement {
   const [current_page, SetCurrentPage] = React.useState(0);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
+  const question_form = React.useRef<HTMLTextAreaElement>();
 
   // ショートカットキー
   const Shortcut = React.useCallback((e: KeyboardEvent) => {
@@ -44,12 +45,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       if (current === props.exam.length - 1) return current;
       return current+1;
     });
+    console.log(question_form);
+    question_form.current?.focus()
   }
   function PrevPage() {
     SetCurrentPage(current => {
       if (current === 0) return current;
       return current-1;
     });
+    console.log(question_form);
+    question_form.current?.focus();
   }
 
   function MovePageTo(to: number) {
@@ -57,6 +62,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       if (current < 0 || current > props.exam.length - 1) return current;
       return to;
     });
+    question_form.current?.focus();
   }
 
   React.useEffect(() => {
@@ -105,7 +111,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       <div className={css.form_container}>
         <div className={css.question}>
           <Form {...{
-            label: '問題文', value: props.exam[current_page].question, rows: 6,
+            label: '問題文', value: props.exam[current_page].question, rows: 6, ref: question_form,
             onChange: (ev) => UpdateExam(props.updater, props.exam).Question.Update(current_page, ev.target.value)
           }} />
         </div>
