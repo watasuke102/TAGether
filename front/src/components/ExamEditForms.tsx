@@ -118,7 +118,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.answer_list}>{
           props.exam[current_page].answer.map((e, i) => {
             return (
-              <div className={css.answer} key={`anslist_${i}-${e.slice(0, 5)}`}>
+              <div className={css.answer} key={`anslist_${i}`}>
                 <Form {...{
                   label: `答え(${i + 1})`, value: e, rows: 3,
                   onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(current_page, i, ev.target.value)
