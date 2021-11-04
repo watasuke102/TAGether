@@ -8,13 +8,13 @@
 //
 import css from '../style/components/ExamEditForm.module.scss';
 import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful-dnd";
-import Exam from "../types/Exam";
-import Form from "./Form";
-import Modal from "./Modal";
-import Button from "./Button";
-import ButtonContainer from "./ButtonContainer";
-import UpdateExam from "../ts/UpdateExam";
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import Exam from '../types/Exam';
+import Form from './Form';
+import Modal from './Modal';
+import Button from './Button';
+import ButtonContainer from './ButtonContainer';
+import UpdateExam from '../ts/UpdateExam';
 
 interface Props {
   exam: Exam[]
@@ -43,17 +43,15 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   function NextPage() {
     SetCurrentPage(current => {
       if (current === props.exam.length - 1) return current;
-      return current+1;
+      return current + 1;
     });
-    console.log(question_form);
-    question_form.current?.focus()
+    question_form.current?.focus();
   }
   function PrevPage() {
     SetCurrentPage(current => {
       if (current === 0) return current;
-      return current-1;
+      return current - 1;
     });
-    console.log(question_form);
     question_form.current?.focus();
   }
 
@@ -66,7 +64,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   }
 
   React.useEffect(() => {
-      window.addEventListener('keydown', e => Shortcut(e));
+    window.addEventListener('keydown', e => Shortcut(e));
     return () =>
       window.removeEventListener('keydown', e => Shortcut(e));
   }, [Shortcut]);
@@ -76,33 +74,33 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       <div className={css.button_list}>
         <div className={css.button_container}>
           <Button type={'material'} icon={'fas fa-angle-double-left'} text={''}
-                  onClick={() => MovePageTo(0)}/>
+            onClick={() => MovePageTo(0)} />
           <Button type={'material'} icon={'fas fa-chevron-left'} text={''}
-                  onClick={PrevPage} />
-          <span>{current_page+1}/{props.exam.length}</span>
+            onClick={PrevPage} />
+          <span>{current_page + 1}/{props.exam.length}</span>
           <Button type={'material'} icon={'fas fa-chevron-right'} text={''}
-                  onClick={NextPage}/>
+            onClick={NextPage} />
           <Button type={'material'} icon={'fas fa-angle-double-right'} text={''}
-                  onClick={() => MovePageTo(props.exam.length - 1)}/>
+            onClick={() => MovePageTo(props.exam.length - 1)} />
         </div>
 
         <div className={css.button_container}>
           <Button type={'material'} icon={'fas fa-trash'} text={'この問題を削除'}
-                  onClick={() => UpdateExam(props.updater, props.exam).Exam.Remove(current_page)} />
+            onClick={() => UpdateExam(props.updater, props.exam).Exam.Remove(current_page)} />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'}
-                  onClick={() => SetIsModalOpen(true)} />
+            onClick={() => SetIsModalOpen(true)} />
         </div>
 
         <div className={css.append_exam}>
           <ButtonContainer>
             <Button type={'material'} icon={'fas fa-angle-double-left'} text={'最初に挿入'}
-                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(0); SetCurrentPage(0);}} />
+              onClick={() => { UpdateExam(props.updater, props.exam).Exam.Insert(0); SetCurrentPage(0); }} />
             <Button type={'material'} icon={'fas fa-arrow-left'} text={'1つ前に挿入'}
-                    onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(current_page)} />
+              onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(current_page)} />
             <Button type={'material'} icon={'fas fa-arrow-right'} text={'1つ後に挿入'}
-                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(current_page+1); NextPage();}} />
+              onClick={() => { UpdateExam(props.updater, props.exam).Exam.Insert(current_page + 1); NextPage(); }} />
             <Button type={'material'} icon={'fas fa-angle-double-right'} text={'最後に挿入'}
-                    onClick={() => {UpdateExam(props.updater, props.exam).Exam.Insert(-1); SetCurrentPage(props.exam.length-1);}} />
+              onClick={() => { UpdateExam(props.updater, props.exam).Exam.Insert(-1); SetCurrentPage(props.exam.length - 1); }} />
           </ButtonContainer>
         </div>
       </div>
@@ -110,19 +108,19 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       {/* 問題文の編集欄（左側） */}
       <div className={css.form_container}>
         <div className={css.question}>
-          <Form {...{
-            label: '問題文', value: props.exam[current_page].question, rows: 6, ref: question_form,
-            onChange: (ev) => UpdateExam(props.updater, props.exam).Question.Update(current_page, ev.target.value)
-          }} />
+          <Form
+            label={'問題文'} value={props.exam[current_page].question} rows={6} reff={question_form}
+            onChange={(ev) => UpdateExam(props.updater, props.exam).Question.Update(current_page, ev.target.value)}
+          />
         </div>
 
         {/* 答え編集欄（右側） */}
         <div className={css.answer_list}>{
           props.exam[current_page].answer.map((e, i) => {
             return (
-              <div className={css.answer} key={`anslist_${i}-${e.slice(0,5)}`}>
+              <div className={css.answer} key={`anslist_${i}-${e.slice(0, 5)}`}>
                 <Form {...{
-                  label: '答え(' + (i + 1) + ')', value: e, rows: 3,
+                  label: `答え(${i + 1})`, value: e, rows: 3,
                   onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(current_page, i, ev.target.value)
                 }} />
                 <div className={css.answer_area_buttons}>
@@ -143,7 +141,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 </div>
               </div>
             );
-        })}
+          })}
         </div>
       </div>
 
@@ -156,8 +154,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             const from = e.source.index, to = e.destination.index;
             if (from == to) return;
             const exam = props.exam;
-            exam.splice(to+((from<to)? 1 : 0), 0, exam[from]);
-            exam.splice(from+((from>to)? 1 : 0), 1);
+            exam.splice(to + ((from < to) ? 1 : 0), 0, exam[from]);
+            exam.splice(from + ((from > to) ? 1 : 0), 1);
             UpdateExam(props.updater, exam).Exam.Update();
           }}>
 
@@ -169,25 +167,27 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   {...provided.droppableProps}
                 >
                   {
-                    props.exam.map((e,i) =>{return(
-                      <Draggable key={`draggable_${i}-${e.question.slice(0,5)}`}
-                                 draggableId={`${i}-${e.question.slice(0,5)}`}
-                                 index={i}
-                      >
-                        {provided=>(
-                          <div
-                            className={css.dragable_question_card}
-                            ref={provided.innerRef}
-                            onClick={() => {SetCurrentPage(i); SetIsModalOpen(false);}}
-                            {...provided.draggableProps}
-                          >
-                            <span>{`${e.question.slice(0, 50)}${(e.question.length>50)?'...':''}`}</span>
-                            <span className={`fas fa-list ${css.icon}`}
-                                  {...provided.dragHandleProps}/>
-                          </div>
+                    props.exam.map((e, i) => {
+                      return (
+                        <Draggable key={`draggable_${i}-${e.question.slice(0, 5)}`}
+                          draggableId={`${i}-${e.question.slice(0, 5)}`}
+                          index={i}
+                        >
+                          {provided => (
+                            <div
+                              className={css.dragable_question_card}
+                              ref={provided.innerRef}
+                              onClick={() => { SetCurrentPage(i); SetIsModalOpen(false); }}
+                              {...provided.draggableProps}
+                            >
+                              <span>{`${e.question.slice(0, 50)}${(e.question.length > 50) ? '...' : ''}`}</span>
+                              <span className={`fas fa-list ${css.icon}`}
+                                {...provided.dragHandleProps} />
+                            </div>
                           )}
-                      </Draggable>
-                    );})
+                        </Draggable>
+                      );
+                    })
                   }
                   {provided.placeholder}
                 </div>
@@ -198,7 +198,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
           <div className={css.button_container}>
             <Button type={'filled'} icon={'fas fa-times'} text={'閉じる'}
-                    onClick={() => SetIsModalOpen(false)} />
+              onClick={() => SetIsModalOpen(false)} />
           </div>
 
         </div>

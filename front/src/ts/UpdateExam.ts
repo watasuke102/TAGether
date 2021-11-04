@@ -8,10 +8,10 @@
 //
 
 import Exam from '../types/Exam';
-import ExamOperateFunctionsType from "../types/ExamOperateFunctionsType";
+import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
 export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperateFunctionsType {
-  const exam_template: Exam = { question: '', answer: [''] }
+  const exam_template: Exam = { question: '', answer: [''] };
   return {
     Exam: {
       Update: () => updater(exam),

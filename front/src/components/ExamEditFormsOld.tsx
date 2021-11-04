@@ -8,10 +8,10 @@
 //
 import css from '../style/components/ExamEditFormsOld.module.scss';
 import React from 'react';
-import Form from "./Form";
-import Button from "./Button";
-import Exam from "../types/Exam";
-import UpdateExam from "../ts/UpdateExam";
+import Form from './Form';
+import Button from './Button';
+import Exam from '../types/Exam';
+import UpdateExam from '../ts/UpdateExam';
 
 interface Props {
   exam: Exam[]
@@ -20,7 +20,6 @@ interface Props {
 }
 
 export default function ExamEditFormsOld(props: Props): React.ReactElement {
-  const [json_edit, SetJsonEdit] = React.useState(false);
   let bottom_div: HTMLDivElement | null;
   let top_div: HTMLDivElement | null;
 
@@ -31,7 +30,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
         // メインの編集画面
         props.exam.map((e, i) => {
           return (
-            <div className={css.exam_editform}>
+            <div className={css.exam_editform} key={`ansform_${i}`}>
               {/* 上部の移動・追加ボタン */}
               <div className={css.move_button}>
                 {
@@ -67,30 +66,30 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                 {/* 答えの編集欄 */}
                 <div className={css.answers}>
                   {e.answer.map((answer, j) => {
-                      return (
-                        <div className={css.answer_area}>
-                          <Form {...{
-                            label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
-                            onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(i, j, ev.target.value)
+                    return (
+                      <div className={css.answer_area} key={`ansarea_${j}`}>
+                        <Form {...{
+                          label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
+                          onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(i, j, ev.target.value)
+                        }} />
+                        <div className={css.answer_area_buttons}>
+                          {/* 問題の追加/削除 */}
+                          <Button {...{
+                            text: '追加', icon: 'fas fa-plus',
+                            onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(i, -1), type: 'material'
                           }} />
-                          <div className={css.answer_area_buttons}>
-                            {/* 問題の追加/削除 */}
+                          {
+                            // 解答欄を1つ削除するボタン
+                            // 解答欄が1つしかないときは無効
+                            (i !== 0) &&
                             <Button {...{
-                              text: '追加', icon: 'fas fa-plus',
-                              onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(i, -1), type: 'material'
+                              type: 'material', icon: 'fas fa-trash', text: '削除',
+                              onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(i, j)
                             }} />
-                            {
-                              // 解答欄を1つ削除するボタン
-                              // 解答欄が1つしかないときは無効
-                              (i !== 0) &&
-                              <Button {...{
-                                type: 'material', icon: 'fas fa-trash', text: '削除',
-                                onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(i, j)
-                              }} />
-                            }
-                          </div>
+                          }
                         </div>
-                      );
+                      </div>
+                    );
                   })}
                 </div>
 
@@ -110,7 +109,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                 }} />
               </div>
 
-              <hr/>
+              <hr />
             </div>
           );
         })
@@ -139,5 +138,5 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
         </div>
       </div>
     </>
-  )
+  );
 }

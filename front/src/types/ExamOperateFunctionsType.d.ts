@@ -7,7 +7,6 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 
-import Exam from './Exam'
 interface ExamOperateFunctionsType {
   Exam: {
     Update: () => void

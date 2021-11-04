@@ -6,12 +6,16 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
+import { RefObject, MutableRefObject } from 'react';
+
 interface FormInfo {
-  label?:    string
-  value:     string
-  rows:      number
+  label?: string
+  value: string
+  rows: number
   disabled?: boolean
-  onChange:  Function
+  onChange: Function
+  // 
+  reff?: RefObject<HTMLTextAreaElement> | MutableRefObject<HTMLTextAreaElement | undefined> | null
 }
 
 export default FormInfo;

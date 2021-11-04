@@ -54,7 +54,7 @@ interface State {
 }
 
 export default class exam extends React.Component<Props, State> {
-  private ref;
+  private ref: React.RefObject<HTMLTextAreaElement>;
   private correct_answers = 0;
   private total_questions = 0;
   private exam_history: ExamHistory;
@@ -80,7 +80,7 @@ export default class exam extends React.Component<Props, State> {
       correct_count: 0, total_question: 0,
       wrong_exam: []
     };
-    this.ref = React.createRef();
+    this.ref = React.createRef<HTMLTextAreaElement>();
     // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
       for (let i = exam.length - 1; i > 0; i--) {
@@ -201,7 +201,7 @@ export default class exam extends React.Component<Props, State> {
     });
     if (b) return;
     // 入力欄にフォーカスする
-    this.ref.current.focus();
+    this.ref.current?.focus();
   }
 
   // 解答が合っているかどうか確認してstateに格納
@@ -321,7 +321,7 @@ export default class exam extends React.Component<Props, State> {
       label = '解答' + ((length == 1) ? '' : '(' + (i + 1) + ')');
       obj.push(
         <div className={css.form}> <Form {...{
-          label: label, value: tmp, rows: 1, ref: (i == 0) ? this.ref : null,
+          label: label, value: tmp, rows: 1, reff: (i == 0) ? this.ref : null,
           onChange: ev => this.UpdateUsersResponse(ev, i),
           disabled: this.state.examState[this.state.index].checked
         }} /> </div>
@@ -576,7 +576,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       e.tag.forEach(tag => {
         if (tag_included) return;
         tag_included = (tag.name === filter);
-        console.log(tag_included && e.title);
       });
       // タグが含まれているカテゴリであれば、問題を追加
       if (tag_included) {
@@ -589,6 +588,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props.data = [data];
 
   }
-  console.log(JSON.parse(props.data[0].list));
   return { props: props };
 };

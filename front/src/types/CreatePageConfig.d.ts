@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import ButtonInfo from "./ButtonInfo";
+import ButtonInfo from './ButtonInfo';
 
 interface CreatePageConfig {
   document_title: string

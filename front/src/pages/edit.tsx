@@ -12,9 +12,8 @@ import Create from './create';
 import GetFromApi from '../ts/Api';
 import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
-import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
-import CreatePageConfig from "../types/CreatePageConfig";
+import CreatePageConfig from '../types/CreatePageConfig';
 
 interface Props {
   tags: TagData[]

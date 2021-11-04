@@ -16,15 +16,15 @@ import Toast from '../components/Toast';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import TagEdit from '../components/TagEdit';
-import ExamEditForms from "../components/ExamEditForms";
-import ExamEditFormsOld from "../components/ExamEditFormsOld";
+import ExamEditForms from '../components/ExamEditForms';
+import ExamEditFormsOld from '../components/ExamEditFormsOld';
 import GetFromApi from '../ts/Api';
 import Exam from '../types/Exam';
 import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
 import ButtonInfo from '../types/ButtonInfo';
 import ApiResponse from '../types/ApiResponse';
-import CreatePageConfig from "../types/CreatePageConfig";
+import CreatePageConfig from '../types/CreatePageConfig';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
 import CheckBox from '../components/CheckBox';
@@ -278,12 +278,12 @@ export default class create extends React.Component<Props, EditCategolyPageState
 
         <div className={css.buttons}>
           <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
-                    onChange={e => this.setState({ jsonEdit: e })} />
+            onChange={e => this.setState({ jsonEdit: e })} />
           <CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
-                    onChange={e => this.setState({ is_using_old_form: e })} />
+            onChange={e => this.setState({ is_using_old_form: e })} />
           <div className={css.pushbutton_wrapper}>
             <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
-                    onClick={() => this.RegistExam()} />
+              onClick={() => this.RegistExam()} />
           </div>
         </div>
 
@@ -293,17 +293,17 @@ export default class create extends React.Component<Props, EditCategolyPageState
           <>
             <p>注意：編集内容はリッチエディタと同期されません</p>
             <Form label='JSON' value={this.state.categoly.list} rows={30}
-                  onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
+              onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
           </>
           :
           <>
             {
               this.state.is_using_old_form?
                 <ExamEditFormsOld exam={this.state.exam} register={() => this.RegistExam()}
-                                  updater={(e) => this.setState({exam: e})}/>
+                  updater={(e) => this.setState({exam: e})}/>
                 :
                 <ExamEditForms exam={this.state.exam} register={() => this.RegistExam()}
-                                  updater={(e) => this.setState({exam: e})}/>
+                  updater={(e) => this.setState({exam: e})}/>
             }
           </>
         }

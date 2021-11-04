@@ -17,7 +17,7 @@ export default class Form extends React.Component<FormInfo> {
 
   constructor(props: FormInfo) {
     super(props);
-    this.ref = React.createRef();
+    this.ref = this.props.reff ?? React.createRef();
   }
 
   focus(): void {
