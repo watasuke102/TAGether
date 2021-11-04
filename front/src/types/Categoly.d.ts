@@ -1,16 +1,20 @@
 // TAGether - Share self-made exam for classmates
-// ButtonInfo.ts
+// Categoly.d.ts
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
-//
-interface ButtonInfo {
-  type:    'icon_desc' | 'material' | 'filled'
-  icon:    string
-  text:    string
-  onClick: Function
+
+import TagData from './TagData';
+
+interface Categoly {
+  id?: number
+  updated_at?: string
+  title: string
+  description: string
+  tag: TagData[]
+  list: string
 }
 
-export default ButtonInfo;
+export default Categoly;

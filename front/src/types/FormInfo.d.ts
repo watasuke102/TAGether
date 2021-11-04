@@ -14,7 +14,6 @@ interface FormInfo {
   rows: number
   disabled?: boolean
   onChange: Function
-  // 
   reff?: RefObject<HTMLTextAreaElement> | MutableRefObject<HTMLTextAreaElement | undefined> | null
 }
 
