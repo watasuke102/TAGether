@@ -31,6 +31,7 @@ export default function index(): React.ReactElement {
       </p>
 
       <h2>ショートカットキーについて</h2>
+      <p>問題解答ページ、カテゴリ編集ページで使用できます。</p>
       <ul>
         <li>Ctrl + Shift + (Lもしくは右矢印キー)： 答え合わせ・次の問題</li>
         <li>Ctrl + Shift + (Hもしくは左矢印キー)： 前の問題</li>
@@ -41,7 +42,7 @@ export default function index(): React.ReactElement {
         <li>画面切り替えのアニメーション時、スタイルがリセットされる</li>
       </ul>
 
-      <p className={css.version}>TAGether v1.5.0</p>
+      <p className={css.version}>TAGether v1.5.1</p>
     </div>
   );
 }
@@ -49,7 +50,18 @@ export default function index(): React.ReactElement {
 function Releases():React.ReactElement {
   return(
     <>
-    <h3>v1.5.0</h3>
+      <h3>v1.5.1</h3>
+      <ul>
+        <li>特定状況下でプロフィールが開けない問題を修正</li>
+        <li>更新履歴を折りたたみ式にした</li>
+        <li>タグ一覧で、タグが一つも存在しない際にメッセージを表示するように</li>
+        <li>
+          問題作成画面がリニューアルされました。従来のように複数の問題を一度に編集するのではなく、
+          ページを切り替えて1問ずつ編集する方式になりました。
+        </li>
+      </ul>
+
+      <h3>v1.5.0</h3>
       <div><p>
         長いのでまとめると、
         <ul style={{ margin: '0' }}>
