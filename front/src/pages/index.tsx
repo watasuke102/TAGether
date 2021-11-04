@@ -42,7 +42,7 @@ export default function index(): React.ReactElement {
         <li>画面切り替えのアニメーション時、スタイルがリセットされる</li>
       </ul>
 
-      <p className={css.version}>TAGether v1.5.1</p>
+      <p className={css.version}>TAGether v1.5.2</p>
     </div>
   );
 }
@@ -50,6 +50,9 @@ export default function index(): React.ReactElement {
 function Releases():React.ReactElement {
   return(
     <>
+      <h3>v1.5.2</h3>
+      <p>ビルドできない問題を修正</p>
+
       <h3>v1.5.1</h3>
       <ul>
         <li>特定状況下でプロフィールが開けない問題を修正</li>
@@ -99,15 +102,6 @@ function Releases():React.ReactElement {
         <li>環境をdocker-composeへ移行</li>
       </ul>
       <p>お気に入り登録したカテゴリや解答履歴は、プロフィールから見ることが出来ます。</p>
-
-      <h3>v1.3.3</h3>
-      <ul>
-        <li>WebKitで新規追加・編集画面を開けない問題を修正</li>
-        <li>問題編集画面で保存したとき、モーダルウィンドウではなくトースト通知を出すように</li>
-        <li>解答状況一覧で、カテゴリ名や正答率がスクロールに追従するように</li>
-        <li>チェックボックスのコンポーネントを自作のものにした</li>
-        <li>問題一覧で、正解を非表示に出来るようにした</li>
-      </ul>
     </>
   );
 }
