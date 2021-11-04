@@ -13,7 +13,7 @@ import TagDetail from './TagDetail';
 
 interface Props { tag: TagData[] }
 
-export default function Tag(props: Props): React.ReactElement {
+export default function TagContainer(props: Props): React.ReactElement {
   function TagItem(tag_data: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
     return (
@@ -22,7 +22,7 @@ export default function Tag(props: Props): React.ReactElement {
           onClick={e => { e.stopPropagation(); SetIsModalOpen(true); }}>
           <span>{tag_data.name}</span>
         </div>
-        <TagDetail tag={tag_data} isOpen={is_modal_open}
+        <TagDetail tag={tag_data} isOpen={is_modal_open} key={`tagdetail_${tag_data.id}`}
           close={() => SetIsModalOpen(false)} />
       </>
     );

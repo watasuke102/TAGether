@@ -12,13 +12,13 @@ import Helmet from 'react-helmet';
 import { GetServerSideProps } from 'next';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
+import CheckBox from '../components/CheckBox';
 import CategolyCard from '../components/Card';
 import HistoryTable from '../components/ExamHistoryTableItem';
 import GetFromApi from '../ts/Api';
 import { GetExamHistory, GetFavorite, ClearExamHistory } from '../ts/ManageDB';
 import Categoly from '../types/Categoly';
 import ExamHistory from '../types/ExamHistory';
-import CheckBox from '../components/CheckBox';
 
 interface Props { data: Categoly[] }
 
@@ -79,7 +79,7 @@ export default function profile(props: Props): React.ReactElement {
         <table>
           <tbody>
             <tr>
-              <th>日付</th> <th>カテゴリ名</th> <th>結果</th> <th>正答率</th> <th>間違えた問題を解く</th>
+              <th>日付</th><th>カテゴリ名</th><th>結果</th><th>正答率</th><th>間違えた問題を解く</th>
             </tr>
             {
               history_list.map(item => {

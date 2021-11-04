@@ -30,7 +30,7 @@ export default function tag(props: Props): React.ReactElement {
           <span className={css.name}>{e.name}</span>
           <span className={css.desc}>{e.description}</span>
         </div>
-        <TagDetail tag={e} isOpen={is_modal_open}
+        <TagDetail tag={e} isOpen={is_modal_open} key={`tagdetail_${e.id}`}
           close={() => SetIsModalOpen(false)} onComplete={e => {
             const result = tag;
             for (let i = 0; i < result.length; i++) {
