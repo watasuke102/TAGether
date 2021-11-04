@@ -7,6 +7,8 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 
+import ExamType from './ExamType';
+
 interface ExamOperateFunctionsType {
   Exam: {
     Update: () => void
@@ -15,7 +17,7 @@ interface ExamOperateFunctionsType {
     Swap: (from: number, to: number) => void
   }
   Type: {
-    Update: (i: number, value: string) => void
+    Update: (i: number, value: ExamType) => void
   }
   Question: {
     Update: (i: number, value: string) => void

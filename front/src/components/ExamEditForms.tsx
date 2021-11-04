@@ -13,10 +13,9 @@ import Exam from '../types/Exam';
 import Form from './Form';
 import Modal from './Modal';
 import Button from './Button';
+import CheckBox from './CheckBox';
 import ButtonContainer from './ButtonContainer';
 import UpdateExam from '../ts/UpdateExam';
-import CheckBox from './CheckBox';
-import SelectBox from './SelectBox';
 
 interface Props {
   exam: Exam[]

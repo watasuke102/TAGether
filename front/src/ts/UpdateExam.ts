@@ -12,7 +12,7 @@ import ExamType from '../types/ExamType';
 import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
 export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperateFunctionsType {
-  const exam_template: Exam = { question: '', answer: [''], comment: '' };
+  const exam_template: Exam = { type: 'Text', question: '', answer: [''], comment: '' };
   return {
     Exam: {
       Update: () => updater(exam),
