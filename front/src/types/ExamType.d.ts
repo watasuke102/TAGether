@@ -1,19 +1,11 @@
 // TAGether - Share self-made exam for classmates
-// Exam.ts
+// ExamType.d.ts
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
+type ExamType = 'Text' | 'Select' | 'MultiSelect' | 'Sort';
 
-import ExamType from './ExamType';
-
-interface Exam {
-  type?:    ExamType
-  question: string
-  answer:   string[]
-  comment?: string
-}
-
-export default Exam;
+export default ExamType;

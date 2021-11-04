@@ -32,15 +32,17 @@
     padding: 15px;
     width: 100%;
   }
-  .question {
-    width: 47%;
-    padding-bottom: 80px;
-  }
 
-  .answer_list {
+  .type_select {
+    display: grid;
+    grid-template-columns: 48% 48%;
+  }
+  
+  .qa_list {
     width: 47%;
     display: flex;
     flex-direction: column;
+    padding-bottom: 80px;
   }
 
   .answer {
@@ -102,8 +104,7 @@
   }
   // ここ入れ子にしないと正しく適用されないらしい
   .form_container {
-    .question,
-    .answer_list {
+    .qa_list {
       width: 100%;
     }
   }

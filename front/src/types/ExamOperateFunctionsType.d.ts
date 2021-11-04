@@ -14,7 +14,13 @@ interface ExamOperateFunctionsType {
     Remove: (i: number) => void
     Swap: (from: number, to: number) => void
   }
+  Type: {
+    Update: (i: number, value: string) => void
+  }
   Question: {
+    Update: (i: number, value: string) => void
+  }
+  Comment: {
     Update: (i: number, value: string) => void
   }
   Answer: {

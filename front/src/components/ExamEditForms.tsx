@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/ExamEditForm.module.scss';
+import css from '../style/components/ExamEditForms.module.scss';
 import React from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import Exam from '../types/Exam';
@@ -15,6 +15,8 @@ import Modal from './Modal';
 import Button from './Button';
 import ButtonContainer from './ButtonContainer';
 import UpdateExam from '../ts/UpdateExam';
+import CheckBox from './CheckBox';
+import SelectBox from './SelectBox';
 
 interface Props {
   exam: Exam[]
@@ -107,41 +109,57 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
       {/* 問題文の編集欄（左側） */}
       <div className={css.form_container}>
-        <div className={css.question}>
+        <div className={css.qa_list}>
           <Form
             label={'問題文'} value={props.exam[current_page].question} rows={6} reff={question_form}
             onChange={(ev) => UpdateExam(props.updater, props.exam).Question.Update(current_page, ev.target.value)}
           />
+          <Form
+            label={'コメント（解説など）'} value={props.exam[current_page].comment ?? ''} rows={5}
+            onChange={(ev) => UpdateExam(props.updater, props.exam).Comment.Update(current_page, ev.target.value)}
+          />
         </div>
 
         {/* 答え編集欄（右側） */}
-        <div className={css.answer_list}>{
-          props.exam[current_page].answer.map((e, i) => {
-            return (
-              <div className={css.answer} key={`anslist_${i}`}>
-                <Form {...{
-                  label: `答え(${i + 1})`, value: e, rows: 3,
-                  onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(current_page, i, ev.target.value)
-                }} />
-                <div className={css.answer_area_buttons}>
-                  {/* 問題の追加/削除 */}
-                  <Button {...{
-                    text: '追加', icon: 'fas fa-plus',
-                    onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(current_page, -1), type: 'material'
+        <div className={css.qa_list}>
+          <div className={css.type_select}>
+            <CheckBox desc='テキスト' status={(props.exam[current_page].type ?? 'Text') === 'Text'}
+              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'Text')} />
+            <CheckBox desc='選択問題' status={(props.exam[current_page].type ?? 'Text') === 'Select'}
+              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'Select')} />
+            <CheckBox desc='複数選択' status={(props.exam[current_page].type ?? 'Text') === 'MultiSelect'}
+              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'MultiSelect')} />
+            <CheckBox desc='並び替え' status={(props.exam[current_page].type ?? 'Text') === 'Sort'}
+              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'Sort')} />
+          </div>
+          {
+            props.exam[current_page].answer.map((e, i) => {
+              return (
+                <div className={css.answer} key={`anslist_${i}`}>
+                  <Form {...{
+                    label: `答え(${i + 1})`, value: e, rows: 3,
+                    onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(current_page, i, ev.target.value)
                   }} />
-                  {
-                    // 解答欄を1つ削除するボタン
-                    // 解答欄が1つしかないときは無効
-                    (i !== 0) &&
+                  <div className={css.answer_area_buttons}>
+                    {/* 問題の追加/削除 */}
                     <Button {...{
-                      type: 'material', icon: 'fas fa-trash', text: '削除',
-                      onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(current_page, i)
+                      text: '追加', icon: 'fas fa-plus',
+                      onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(current_page, -1), type: 'material'
                     }} />
-                  }
+                    {
+                      // 解答欄を1つ削除するボタン
+                      // 解答欄が1つしかないときは無効
+                      (i !== 0) &&
+                      <Button {...{
+                        type: 'material', icon: 'fas fa-trash', text: '削除',
+                        onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(current_page, i)
+                      }} />
+                    }
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          }
         </div>
       </div>
 

@@ -10,7 +10,7 @@ import css from '../style/pages/create.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import {GetServerSideProps} from 'next';
+import { GetServerSideProps } from 'next';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Modal from '../components/Modal';
@@ -33,12 +33,12 @@ import ButtonContainer from '../components/ButtonContainer';
 // デフォルト値
 function exam_default(): Exam[] {
   const tmp: Exam[] = [];
-  tmp.push({ question: '', answer: Array<string>(1).fill('') });
+  tmp.push({ question: '', answer: Array<string>(1).fill(''), comment: '' });
   return tmp;
 }
 function categoly_default(): Categoly {
   return {
-    id: 0, updated_at: '', title: '',
+    id: 0, updated_at: '', version: 2, title: '',
     description: '', tag: [],
     list: JSON.stringify(exam_default(), undefined, '  ')
   };
@@ -298,12 +298,12 @@ export default class create extends React.Component<Props, EditCategolyPageState
           :
           <>
             {
-              this.state.is_using_old_form?
+              this.state.is_using_old_form ?
                 <ExamEditFormsOld exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={(e) => this.setState({exam: e})}/>
+                  updater={(e) => this.setState({ exam: e })} />
                 :
                 <ExamEditForms exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={(e) => this.setState({exam: e})}/>
+                  updater={(e) => this.setState({ exam: e })} />
             }
           </>
         }

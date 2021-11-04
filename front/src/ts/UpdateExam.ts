@@ -8,15 +8,16 @@
 //
 
 import Exam from '../types/Exam';
+import ExamType from '../types/ExamType';
 import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
 export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperateFunctionsType {
-  const exam_template: Exam = { question: '', answer: [''] };
+  const exam_template: Exam = { question: '', answer: [''], comment: '' };
   return {
     Exam: {
       Update: () => updater(exam),
       Insert: (at: number) => {
-        exam.splice((at === -1)? exam.length : at, 0, exam_template);
+        exam.splice((at === -1) ? exam.length : at, 0, exam_template);
         updater(exam);
       },
       Remove: (i: number) => {
@@ -31,9 +32,21 @@ export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperate
         updater(exam);
       },
     },
+    Type: {
+      Update: (i: number, value: ExamType) => {
+        exam[i].type = value;
+        updater(exam);
+      }
+    },
     Question: {
       Update: (i: number, value: string) => {
         exam[i].question = value;
+        updater(exam);
+      }
+    },
+    Comment: {
+      Update: (i: number, value: string) => {
+        exam[i].comment = value;
         updater(exam);
       }
     },
@@ -48,7 +61,7 @@ export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperate
         updater(exam);
       },
       Insert: (i: number, at: number) => {
-        exam[i].answer.splice((at === -1)? exam[i].answer.length : at, 0, '');
+        exam[i].answer.splice((at === -1) ? exam[i].answer.length : at, 0, '');
         updater(exam);
       },
     },
