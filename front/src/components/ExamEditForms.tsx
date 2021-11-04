@@ -180,7 +180,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               onClick={() => { SetCurrentPage(i); SetIsModalOpen(false); }}
                               {...provided.draggableProps}
                             >
-                              <span>{`${e.question.slice(0, 50)}${(e.question.length > 50) ? '...' : ''}`}</span>
+                              <span>{`${e.question.slice(0, 75)}${(e.question.length > 75) ? '...' : ''}`}</span>
                               <span className={`fas fa-list ${css.icon}`}
                                 {...provided.dragHandleProps} />
                             </div>
