@@ -11,7 +11,7 @@ import Exam from '../types/Exam';
 import ExamType from '../types/ExamType';
 import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
-export default function UpdateExam(updater: Function, exam: Exam[]): ExamOperateFunctionsType {
+export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): ExamOperateFunctionsType {
   const exam_template: Exam = { type: 'Text', question: '', answer: [''], comment: '' };
   return {
     Exam: {

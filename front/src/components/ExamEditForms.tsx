@@ -15,11 +15,11 @@ import Modal from './Modal';
 import Button from './Button';
 import CheckBox from './CheckBox';
 import ButtonContainer from './ButtonContainer';
-import UpdateExam from '../ts/UpdateExam';
+import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
 interface Props {
   exam: Exam[]
-  updater: Function
+  updater: ExamOperateFunctionsType
   register: () => void
 }
 
@@ -49,7 +49,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     question_form.current?.focus();
   }
   function PrevPage() {
-    SetCurrentPage(current => {s
+    SetCurrentPage(current => {
       if (current === 0) return current;
       return current - 1;
     });
@@ -87,7 +87,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
         <div className={css.button_container}>
           <Button type={'material'} icon={'fas fa-trash'} text={'この問題を削除'}
-            onClick={() => UpdateExam(props.updater, props.exam).Exam.Remove(current_page)} />
+            onClick={() => props.updater.Exam.Remove(current_page)} />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'}
             onClick={() => SetIsModalOpen(true)} />
         </div>
@@ -95,13 +95,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.append_exam}>
           <ButtonContainer>
             <Button type={'material'} icon={'fas fa-angle-double-left'} text={'最初に挿入'}
-              onClick={() => { UpdateExam(props.updater, props.exam).Exam.Insert(0); SetCurrentPage(0); }} />
+              onClick={() => { props.updater.Exam.Insert(0); SetCurrentPage(0); }} />
             <Button type={'material'} icon={'fas fa-arrow-left'} text={'1つ前に挿入'}
-              onClick={() => UpdateExam(props.updater, props.exam).Exam.Insert(current_page)} />
+              onClick={() => props.updater.Exam.Insert(current_page)} />
             <Button type={'material'} icon={'fas fa-arrow-right'} text={'1つ後に挿入'}
-              onClick={() => { UpdateExam(props.updater, props.exam).Exam.Insert(current_page + 1); NextPage(); }} />
+              onClick={() => { props.updater.Exam.Insert(current_page + 1); NextPage(); }} />
             <Button type={'material'} icon={'fas fa-angle-double-right'} text={'最後に挿入'}
-              onClick={() => { UpdateExam(props.updater, props.exam).Exam.Insert(-1); SetCurrentPage(props.exam.length - 1); }} />
+              onClick={() => { props.updater.Exam.Insert(-1); SetCurrentPage(props.exam.length - 1); }} />
           </ButtonContainer>
         </div>
       </div>
@@ -111,11 +111,11 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.qa_list}>
           <Form
             label={'問題文'} value={props.exam[current_page].question} rows={6} reff={question_form}
-            onChange={(ev) => UpdateExam(props.updater, props.exam).Question.Update(current_page, ev.target.value)}
+            onChange={(ev) => props.updater.Question.Update(current_page, ev.target.value)}
           />
           <Form
             label={'コメント（解説など）'} value={props.exam[current_page].comment ?? ''} rows={5}
-            onChange={(ev) => UpdateExam(props.updater, props.exam).Comment.Update(current_page, ev.target.value)}
+            onChange={(ev) => props.updater.Comment.Update(current_page, ev.target.value)}
           />
         </div>
 
@@ -123,13 +123,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.qa_list}>
           <div className={css.type_select}>
             <CheckBox desc='テキスト' status={(props.exam[current_page].type ?? 'Text') === 'Text'}
-              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'Text')} />
+              onChange={() => props.updater.Type.Update(current_page, 'Text')} />
             <CheckBox desc='選択問題' status={(props.exam[current_page].type ?? 'Text') === 'Select'}
-              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'Select')} />
+              onChange={() => props.updater.Type.Update(current_page, 'Select')} />
             <CheckBox desc='複数選択' status={(props.exam[current_page].type ?? 'Text') === 'MultiSelect'}
-              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'MultiSelect')} />
+              onChange={() => props.updater.Type.Update(current_page, 'MultiSelect')} />
             <CheckBox desc='並び替え' status={(props.exam[current_page].type ?? 'Text') === 'Sort'}
-              onChange={() => UpdateExam(props.updater, props.exam).Type.Update(current_page, 'Sort')} />
+              onChange={() => props.updater.Type.Update(current_page, 'Sort')} />
           </div>
           {
             props.exam[current_page].answer.map((e, i) => {
@@ -137,13 +137,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <div className={css.answer} key={`anslist_${i}`}>
                   <Form {...{
                     label: `答え(${i + 1})`, value: e, rows: 3,
-                    onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(current_page, i, ev.target.value)
+                    onChange: (ev) => props.updater.Answer.Update(current_page, i, ev.target.value)
                   }} />
                   <div className={css.answer_area_buttons}>
                     {/* 問題の追加/削除 */}
                     <Button {...{
                       text: '追加', icon: 'fas fa-plus',
-                      onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(current_page, -1), type: 'material'
+                      onClick: () => props.updater.Answer.Insert(current_page, -1), type: 'material'
                     }} />
                     {
                       // 解答欄を1つ削除するボタン
@@ -151,7 +151,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                       (i !== 0) &&
                       <Button {...{
                         type: 'material', icon: 'fas fa-trash', text: '削除',
-                        onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(current_page, i)
+                        onClick: () => props.updater.Answer.Remove(current_page, i)
                       }} />
                     }
                   </div>
@@ -173,7 +173,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             const exam = props.exam;
             exam.splice(to + ((from < to) ? 1 : 0), 0, exam[from]);
             exam.splice(from + ((from > to) ? 1 : 0), 1);
-            UpdateExam(props.updater, exam).Exam.Update();
+            props.updater.Exam.Update();
           }}>
 
             <Droppable droppableId={'question_list'}>

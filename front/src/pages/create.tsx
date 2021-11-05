@@ -29,6 +29,7 @@ import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
 import CheckBox from '../components/CheckBox';
 import ButtonContainer from '../components/ButtonContainer';
+import UpdateExam from '../ts/UpdateExam';
 
 // デフォルト値
 function exam_default(): Exam[] {
@@ -316,7 +317,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
                   updater={(e) => this.setState({ exam: e })} />
                 :
                 <ExamEditForms exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={(e) => this.setState({ exam: e })} />
+                  updater={UpdateExam((e) => this.setState({ exam: e }), this.state.exam)} />
             }
           </>
         }
