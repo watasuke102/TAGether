@@ -77,8 +77,9 @@ exports.GetCategoly = (req, res) => {
 };
 
 exports.AddCategoly = (req, res) => {
-  let query = 'INSERT INTO exam (title, description, tag, list) values ';
+  let query = 'INSERT INTO exam (title, version, description, tag, list) values ';
   query += `(${MySql.escape(req.body.title)},`;
+  query += ` ${MySql.escape(req.body.version)},`;
   query += ` ${MySql.escape(req.body.description)},`;
   query += ` ${MySql.escape(req.body.tag)},`;
   query += ` ${MySql.escape(req.body.list)})`;

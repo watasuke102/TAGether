@@ -567,7 +567,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props.tag_filter = filter;
 
     const data: Categoly = {
-      title: `タグ (${filter})`, description: '', tag: [], list: '[]'
+      title: `タグ (${filter})`, version: 2, description: '', tag: [], list: '[]'
     };
 
     props.data.forEach(e => {

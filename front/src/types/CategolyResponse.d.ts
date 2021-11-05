@@ -11,6 +11,7 @@
 interface CategolyResponse {
   id?: number
   updated_at?: string
+  version: number
   title: string
   description: string
   tag: string

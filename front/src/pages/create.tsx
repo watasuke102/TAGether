@@ -70,9 +70,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
 
   constructor(props: Props) {
     super(props);
+    this.props.data[0].version = 2;
     this.state = {
-      isToastOpen: false, isModalOpen: false,
-      jsonEdit: false, is_using_old_form: false,
+      isToastOpen: false, isModalOpen: false, jsonEdit: false,
+      is_using_old_form: this.props.data[0].version === 1 ? true : false,
       categoly: categoly_default(), exam: exam_default(),
       res_result: { isSuccess: false, result: '' },
       showConfirmBeforeLeave: true
@@ -158,8 +159,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
     let tag: string = '';
     tmp.tag.forEach(e => tag += `${e.id ?? e.name},`);
     const categoly: CategolyResponse = {
-      id: tmp.id, title: tmp.title, description: tmp.description, tag: tag.slice(0, -1), list: exam
+      id: tmp.id, version: this.state.is_using_old_form ? 1 : 2, title: tmp.title,
+      description: tmp.description, tag: tag.slice(0, -1), list: exam
     };
+    console.log('VERSION: ', categoly.version);
 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
@@ -279,8 +282,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
         <div className={css.buttons}>
           <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
             onChange={e => this.setState({ jsonEdit: e })} />
-          <CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
-            onChange={e => this.setState({ is_using_old_form: e })} />
+          {this.props.data[0].version !== 1 &&
+            <CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
+              onChange={e => this.setState({ is_using_old_form: e })} />
+          }
           <div className={css.pushbutton_wrapper}>
             <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
               onClick={() => this.RegistExam()} />

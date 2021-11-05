@@ -65,7 +65,7 @@ async function ReplaceTagData(list: CategolyResponse[]): Promise<Categoly[]> {
     // 結果を格納する
     result.push({
       title: list_item.title, id: list_item.id ?? -1,
-      updated_at: list_item.updated_at,
+      updated_at: list_item.updated_at, version: list_item.version,
       description: list_item.description, list: list_item.list,
       tag: result_tag
     });

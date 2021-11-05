@@ -49,7 +49,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     question_form.current?.focus();
   }
   function PrevPage() {
-    SetCurrentPage(current => {
+    SetCurrentPage(current => {s
       if (current === 0) return current;
       return current - 1;
     });

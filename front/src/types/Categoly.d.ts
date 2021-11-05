@@ -11,7 +11,7 @@ import TagData from './TagData';
 interface Categoly {
   id?:         number
   updated_at?: string
-  version?:    number
+  version:     number
   title:       string
   description: string
   tag:         TagData[]
