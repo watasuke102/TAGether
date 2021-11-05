@@ -86,6 +86,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
     }
   }
   BeforeUnLoad = (e: BeforeUnloadEvent): void => {
+    console.log(this.state.showConfirmBeforeLeave);
     if (!this.state.showConfirmBeforeLeave) return;
     e.preventDefault();
     e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
@@ -110,59 +111,61 @@ export default class create extends React.Component<Props, EditCategolyPageState
   RegistExam(): void {
     // トーストを閉じる
     this.setState({ isToastOpen: false });
-    if (this.state.categoly.tag.length > 8) {
-      this.setState({
-        isToastOpen: true, res_result: {
-          'isSuccess': false, 'result': 'タグは合計8個以下にしてください'
-        }
-      });
-      return;
-    }
-    if (this.state.categoly.title == '') {
-      this.setState({
-        isToastOpen: true, res_result: {
-          'isSuccess': false, 'result': 'タイトルを設定してください'
-        }
-      });
-      return;
-    }
-    let failed: boolean = false;
-    this.state.exam.forEach(e => {
-      if (e.question == '') {
+
+    // 編集用
+    const exam_tmp = this.state.exam;
+
+    // データが正しいか判定し、誤りがあればエラーを返す
+    {
+      let failed: boolean = false;
+      let result_str: string = '';
+      if (this.state.categoly.title == '') {
         failed = true;
+        result_str += '・タイトルを設定してください\n';
+      }
+      if (this.state.categoly.tag.length > 8) {
+        failed = true;
+        result_str += '・タグは8個以下にしてください\n';
+      }
+
+      // 空きがある問題の一覧
+      // 重複を排除したかったのでstringではなくArray
+      const blank_exam: number[] = [];
+      this.state.exam.forEach((e, i) => {
+        if (!e.type) exam_tmp[i].type = 'Text';
+        // 空欄があれば追加
+        if (e.question == '') blank_exam.push(i);
+        e.answer.forEach(answer => (answer == '') && blank_exam.push(i));
+      });
+      if (blank_exam.length !== 0) {
+        failed = true;
+        let txt: string = '';
+        Array.from(new Set(blank_exam)).forEach(e => txt += `${e + 1}, `);
+        result_str += `・問題文もしくは答えが入力されていない欄があります\n(ページ: ${txt.slice(0, -2)})\n`;
+      }
+      if (failed) {
         this.setState({
           isToastOpen: true, res_result: {
-            'isSuccess': false, 'result': '問題文が入力されていない欄があります'
+            'isSuccess': false, 'result': result_str
           }
         });
         return;
       }
-      e.answer.forEach(answer => {
-        if (answer == '') {
-          failed = true;
-          this.setState({
-            isToastOpen: true, res_result: {
-              'isSuccess': false, 'result': '答えが入力されていない欄があります'
-            }
-          });
-          return;
-        }
-      });
-    });
-    if (failed) return;
+    }
+
+    // 登録の準備
     const exam = (this.state.jsonEdit) ?
       // インデントを削除
       JSON.stringify(JSON.parse(this.state.categoly.list))
       :
-      JSON.stringify(this.state.exam);
+      JSON.stringify(exam_tmp);
     const tmp: Categoly = this.state.categoly;
     let tag: string = '';
-    tmp.tag.forEach(e => tag += `${e.id ?? e.name},`);
+    tmp.tag.forEach(e => tag += `${e.id ?? e.name}, `);
     const categoly: CategolyResponse = {
       id: tmp.id, version: this.state.is_using_old_form ? 1 : 2, title: tmp.title,
       description: tmp.description, tag: tag.slice(0, -1), list: exam
     };
-    console.log('VERSION: ', categoly.version);
 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
@@ -202,7 +205,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
   }
 
   // モーダルウィンドウの中身
-  RegistResult(string_only?: boolean): React.ReactElement {
+  RegistResult(from: 'Modal' | 'Toast'): React.ReactElement {
     let result;
     if (this.state.res_result.result != '') {
       result = this.state.res_result;
@@ -210,7 +213,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       // 何も中身がなければエラー時の値を代入する
       result = { isSuccess: 'error', result: '失敗しました' };
     }
-    let message;
+    let message: string;
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
     if (result.isSuccess) {
@@ -218,14 +221,19 @@ export default class create extends React.Component<Props, EditCategolyPageState
       button_info = this.config.buttons;
     } else {
       // 失敗した場合、閉じるボタンのみ
-      message = 'エラー: ' + result.result;
+      message = 'エラーが発生しました。\n' + result.result;
       button_info.push({
         type: 'filled', icon: 'fas fa-times', text: '閉じる',
         onClick: () => this.setState({ isModalOpen: false })
       });
     }
-    if (string_only) {
-      return message;
+
+    if (from === 'Toast') {
+      return (
+        <span>{
+          message.split('\n').map(txt => <>{txt}<br /></>)
+        }</span>
+      );
     }
 
     const button: React.ReactElement[] = [];
@@ -314,7 +322,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
         }
 
         <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
-          {this.RegistResult()}
+          {this.RegistResult('Modal')}
         </Modal>
         <Toast
           id={'toast_create'}
@@ -323,7 +331,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
         >
           <div className={css.toast_body}>
             <span className='fas fa-bell' />
-            {this.RegistResult(true)}
+            {this.RegistResult('Toast')}
           </div>
         </Toast>
       </>
