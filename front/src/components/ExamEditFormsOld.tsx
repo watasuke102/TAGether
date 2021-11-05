@@ -11,11 +11,11 @@ import React from 'react';
 import Form from './Form';
 import Button from './Button';
 import Exam from '../types/Exam';
-import UpdateExam from '../ts/UpdateExam';
+import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
 interface Props {
   exam: Exam[]
-  updater: Function
+  updater: ExamOperateFunctionsType
   register: () => void
 }
 
@@ -36,12 +36,12 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                 {
                   (i != 0) && <Button {...{
                     text: '1つ上に移動', icon: 'fas fa-caret-up',
-                    onClick: () => UpdateExam(props.updater, props.exam).Exam.Swap(i, i), type: 'material'
+                    onClick: () => props.updater.Exam.Swap(i, i), type: 'material'
                   }} />
                 }
                 <Button {...{
                   text: '1つ上に追加', icon: 'fas fa-plus',
-                  onClick: () => UpdateExam(props.updater, props.exam).Exam.Insert(i), type: 'material'
+                  onClick: () => props.updater.Exam.Insert(i), type: 'material'
                 }} />
               </div>
 
@@ -53,13 +53,13 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                     (props.exam.length !== 1) &&
                     <Button {...{
                       type: 'material', icon: 'fas fa-trash', text: '削除',
-                      onClick: () => UpdateExam(props.updater, props.exam).Exam.Remove(i)
+                      onClick: () => props.updater.Exam.Remove(i)
                     }} />
                   }
                 </div>
                 <Form {...{
                   label: '問題文', value: e.question, rows: 2,
-                  onChange: (ev) => UpdateExam(props.updater, props.exam).Question.Update(i, ev.target.value)
+                  onChange: (ev) => props.updater.Question.Update(i, ev.target.value)
                 }} />
 
 
@@ -70,13 +70,13 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                       <div className={css.answer_area} key={`ansarea_${j}`}>
                         <Form {...{
                           label: '答え(' + (j + 1) + ')', value: answer, rows: 2,
-                          onChange: (ev) => UpdateExam(props.updater, props.exam).Answer.Update(i, j, ev.target.value)
+                          onChange: (ev) => props.updater.Answer.Update(i, j, ev.target.value)
                         }} />
                         <div className={css.answer_area_buttons}>
                           {/* 問題の追加/削除 */}
                           <Button {...{
                             text: '追加', icon: 'fas fa-plus',
-                            onClick: () => UpdateExam(props.updater, props.exam).Answer.Insert(i, -1), type: 'material'
+                            onClick: () => props.updater.Answer.Insert(i, -1), type: 'material'
                           }} />
                           {
                             // 解答欄を1つ削除するボタン
@@ -84,7 +84,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                             (i !== 0) &&
                             <Button {...{
                               type: 'material', icon: 'fas fa-trash', text: '削除',
-                              onClick: () => UpdateExam(props.updater, props.exam).Answer.Remove(i, j)
+                              onClick: () => props.updater.Answer.Remove(i, j)
                             }} />
                           }
                         </div>
@@ -100,12 +100,12 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                 {
                   (i != props.exam.length - 1) && <Button {...{
                     text: '1つ下に移動', icon: 'fas fa-caret-down',
-                    onClick: () => UpdateExam(props.updater, props.exam).Exam.Swap(i, i + 1), type: 'material'
+                    onClick: () => props.updater.Exam.Swap(i, i + 1), type: 'material'
                   }} />
                 }
                 <Button {...{
                   text: '1つ下に追加', icon: 'fas fa-plus',
-                  onClick: () => UpdateExam(props.updater, props.exam).Exam.Insert(i + 1), type: 'material'
+                  onClick: () => props.updater.Exam.Insert(i + 1), type: 'material'
                 }} />
               </div>
 
@@ -122,7 +122,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
           <Button {...{
             text: '下に追加', icon: 'fas fa-arrow-down', type: 'material',
             onClick: () => {
-              UpdateExam(props.updater, props.exam).Exam.Insert(-1);
+              props.updater.Exam.Insert(-1);
               // 追加した問題欄が表示されるように下にスクロール
               bottom_div?.scrollIntoView({ behavior: 'smooth' });
             }
@@ -130,7 +130,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
           <Button {...{
             text: '上に追加', icon: 'fas fa-arrow-up', type: 'material',
             onClick: () => {
-              UpdateExam(props.updater, props.exam).Exam.Insert(0);
+              props.updater.Exam.Insert(0);
               // 追加した問題欄が表示されるように上にスクロール
               top_div?.scrollIntoView({ behavior: 'smooth' });
             }
