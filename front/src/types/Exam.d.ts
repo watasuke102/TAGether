@@ -10,10 +10,11 @@
 import ExamType from './ExamType';
 
 interface Exam {
-  type?:    ExamType
-  question: string
-  answer:   string[]
-  comment?: string
+  type?:             ExamType
+  question:          string
+  question_choices?: string[]
+  answer:            string[]
+  comment?:          string
 }
 
 export default Exam;

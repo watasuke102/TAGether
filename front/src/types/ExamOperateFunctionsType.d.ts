@@ -22,6 +22,12 @@ interface ExamOperateFunctionsType {
   Question: {
     Update: (i: number, value: string) => void
   }
+  QuestionChoices: {
+    // i: Examのインデックス j: Choicesのインデックス
+    Update: (i: number, j: number, value: string) => void
+    Remove: (i: number, j: number) => void
+    Insert: (i: number, at: number) => void
+  }
   Comment: {
     Update: (i: number, value: string) => void
   }

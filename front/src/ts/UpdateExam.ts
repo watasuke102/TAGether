@@ -12,7 +12,11 @@ import ExamType from '../types/ExamType';
 import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
 
 export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): ExamOperateFunctionsType {
-  const exam_template: Exam = { type: 'Text', question: '', answer: [''], comment: '' };
+  const exam_template: Exam = {
+    type: 'Text', question: '', question_choices: [],
+    answer: [''], comment: ''
+  };
+
   return {
     Exam: {
       Update: () => updater(exam),
@@ -43,6 +47,26 @@ export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): 
         exam[i].question = value;
         updater(exam);
       }
+    },
+    QuestionChoices: {
+      // i: Examのインデックス j: question_choiceのインデックス
+      Update: (i: number, j: number, value: string) => {
+        // choicesはエラー回避のために存在する
+        const choices: string[] = exam[i].question_choices ?? [];
+        choices[j] = value;
+        exam[i].question_choices = choices;
+        updater(exam);
+      },
+      Remove: (i: number, j: number) => {
+        if (!exam[i].question_choices) exam[i].question_choices = [];
+        exam[i].question_choices?.splice(j, 1);
+        updater(exam);
+      },
+      Insert: (i: number, at: number) => {
+        if (!exam[i].question_choices) exam[i].question_choices = [];
+        exam[i].question_choices?.splice((at === -1) ? (exam[i].question_choices?.length ?? 0) : at, 0, '');
+        updater(exam);
+      },
     },
     Comment: {
       Update: (i: number, value: string) => {
