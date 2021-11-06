@@ -16,6 +16,7 @@ import Button from './Button';
 import CheckBox from './CheckBox';
 import ButtonContainer from './ButtonContainer';
 import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
+import ExamType from '../types/ExamType';
 
 interface Props {
   exam: Exam[]
@@ -70,6 +71,106 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       window.removeEventListener('keydown', e => Shortcut(e));
   }, [Shortcut]);
 
+  function AddRemoveButtons(index: number, type: ExamType) {
+    return (
+      <>
+        {/* 問題の追加/削除 */}
+        <Button {...{
+          text: '追加', icon: 'fas fa-plus', type: 'material',
+          onClick: () => (type === 'Text') ?
+            props.updater.Answer.Insert(current_page, -1)
+            :
+            props.updater.QuestionChoices.Insert(current_page, -1)
+        }} />
+        {
+          // 解答欄を1つ削除するボタン
+          // 解答欄が1つしかないときは無効
+          (index !== 0) &&
+          <Button {...{
+            type: 'material', icon: 'fas fa-trash', text: '削除',
+            onClick: () => (type === 'Text') ?
+              props.updater.Answer.Remove(current_page, index)
+              :
+              props.updater.QuestionChoices.Remove(current_page, index)
+          }} />
+        }
+      </>);
+  }
+
+  function AnswerEditArea() {
+    let result: React.ReactElement[] | React.ReactElement;
+
+    switch (props.exam[current_page].type ?? 'Text') {
+      case 'Text':
+        result = props.exam[current_page].answer.map((e, i) => {
+          return (
+            <div key={`examform-text-${i}`}>
+              <Form label={`答え (${i + 1})`} value={e} rows={3}
+                onChange={(ev) => props.updater.Answer.Update(current_page, i, ev.target.value)} />
+              <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'Text')}</div>
+            </div>
+          );
+        });
+        break;
+
+      case 'Select':
+        if (!props.exam[current_page].question_choices) {
+          props.exam[current_page].question_choices = [''];
+          props.updater.Exam.Update();
+        }
+        result = props.exam[current_page].question_choices?.map((e, i) => {
+          return (
+            <div key={`examform-select-${i}`} >
+              <div className={css.select_form}>
+                <CheckBox desc={''} status={props.exam[current_page].answer[0] === e}
+                  onChange={(f) => f && props.updater.Answer.Update(current_page, 0, e)} />
+                <Form value={e} rows={2}
+                  onChange={(ev) => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)} />
+              </div>
+              <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'Select')}</div>
+            </div>
+          );
+        }) ?? <>invalid</>;
+        break;
+
+      case 'MultiSelect':
+        if (!props.exam[current_page].question_choices) {
+          props.exam[current_page].question_choices = [''];
+          props.updater.Exam.Update();
+        }
+        result = props.exam[current_page].answer.map((e, i) => {
+          return (
+            <div key={`examform-multiselect-${i}`}>
+              <div className={css.select_form}>
+                <CheckBox desc={''} status={props.exam[current_page].answer.indexOf(e) !== -1}
+                  onChange={(f) => undefined} />
+                <Form value={e} rows={2}
+                  onChange={(ev) => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)} />
+              </div>
+              <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'MultiSelect')}</div>
+            </div>
+          );
+        });
+        break;
+
+      case 'Sort':
+        if (!props.exam[current_page].question_choices) {
+          props.exam[current_page].question_choices = [''];
+          props.updater.Exam.Update();
+        }
+        result = (
+          <DragDropContext onDragEnd={(e: DropResult) => e}>
+            <Droppable droppableId='examform_sort_droppable'>{provided => (
+              <div>ならびかえ</div>
+            )}
+            </Droppable>
+          </DragDropContext>
+        );
+        break;
+    }
+    return <>{result}</>;
+  }
+
   return (
     <>
       <div className={css.button_list}>
@@ -121,6 +222,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
         {/* 答え編集欄（右側） */}
         <div className={css.qa_list}>
+          {/* 問題の形式を変更するチェックボックス */}
           <div className={css.type_select}>
             <CheckBox desc='テキスト' status={(props.exam[current_page].type ?? 'Text') === 'Text'}
               onChange={() => props.updater.Type.Update(current_page, 'Text')} />
@@ -131,34 +233,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <CheckBox desc='並び替え' status={(props.exam[current_page].type ?? 'Text') === 'Sort'}
               onChange={() => props.updater.Type.Update(current_page, 'Sort')} />
           </div>
-          {
-            props.exam[current_page].answer.map((e, i) => {
-              return (
-                <div className={css.answer} key={`anslist_${i}`}>
-                  <Form {...{
-                    label: `答え(${i + 1})`, value: e, rows: 3,
-                    onChange: (ev) => props.updater.Answer.Update(current_page, i, ev.target.value)
-                  }} />
-                  <div className={css.answer_area_buttons}>
-                    {/* 問題の追加/削除 */}
-                    <Button {...{
-                      text: '追加', icon: 'fas fa-plus',
-                      onClick: () => props.updater.Answer.Insert(current_page, -1), type: 'material'
-                    }} />
-                    {
-                      // 解答欄を1つ削除するボタン
-                      // 解答欄が1つしかないときは無効
-                      (i !== 0) &&
-                      <Button {...{
-                        type: 'material', icon: 'fas fa-trash', text: '削除',
-                        onClick: () => props.updater.Answer.Remove(current_page, i)
-                      }} />
-                    }
-                  </div>
-                </div>
-              );
-            })
-          }
+          {AnswerEditArea()}
         </div>
       </div>
 
