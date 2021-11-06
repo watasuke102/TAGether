@@ -24,13 +24,13 @@ export default function tag(props: Props): React.ReactElement {
   function TagItem(e: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
     return (
-      <>
-        <div key={`tagitem_${e.id}`} className={css.card}
+      <div key={`tag_${e.id}`}>
+        <div className={css.card}
           onClick={e => { e.stopPropagation(); SetIsModalOpen(true); }}>
           <span className={css.name}>{e.name}</span>
           <span className={css.desc}>{e.description}</span>
         </div>
-        <TagDetail tag={e} isOpen={is_modal_open} key={`tagdetail_${e.id}`}
+        <TagDetail tag={e} isOpen={is_modal_open}
           close={() => SetIsModalOpen(false)} onComplete={e => {
             const result = tag;
             for (let i = 0; i < result.length; i++) {
@@ -41,7 +41,7 @@ export default function tag(props: Props): React.ReactElement {
             }
             SetTag(result);
           }} />
-      </>);
+      </div>);
   }
 
   return (
@@ -55,7 +55,7 @@ export default function tag(props: Props): React.ReactElement {
       </div>
 
       <div className={css.container}>
-        {tag.length === 0? <p>見つかりませんでした</p> : tag.map(e => TagItem(e))}
+        {tag.length === 0 ? <p>見つかりませんでした</p> : tag.map(e => TagItem(e))}
       </div>
 
       <TagDetail createMode isOpen={is_modal_open}
