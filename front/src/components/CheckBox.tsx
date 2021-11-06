@@ -12,7 +12,7 @@ import React from 'react';
 interface Props {
   status: boolean,
   desc: string,
-  onChange: Function,
+  onChange: (boolean) => void,
 }
 
 export default function CheckBox(props: Props): React.ReactElement {
