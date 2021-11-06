@@ -77,7 +77,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         {/* 問題の追加/削除 */}
         <Button {...{
           text: '追加', icon: 'fas fa-plus', type: 'material',
-          onClick: () => (type === 'Text') ?
+          onClick: () => (type === 'Text' || type === 'Sort') ?
             props.updater.Answer.Insert(current_page, -1)
             :
             props.updater.QuestionChoices.Insert(current_page, -1)
@@ -88,7 +88,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           (index !== 0) &&
           <Button {...{
             type: 'material', icon: 'fas fa-trash', text: '削除',
-            onClick: () => (type === 'Text') ?
+            onClick: () => (type === 'Text' || type === 'Sort') ?
               props.updater.Answer.Remove(current_page, index)
               :
               props.updater.QuestionChoices.Remove(current_page, index)
@@ -122,8 +122,15 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           return (
             <div key={`examform-select-${i}`} >
               <div className={css.select_form}>
-                <CheckBox desc={''} status={props.exam[current_page].answer[0] === e}
-                  onChange={(f) => f && props.updater.Answer.Update(current_page, 0, e)} />
+                <CheckBox desc={''} status={Number(props.exam[current_page].answer[0]) === i}
+                  onChange={(f) => {
+                    if (!f) return;
+                    if (props.exam[current_page].answer.length > 1) {
+                      props.exam[current_page].answer = [''];
+                      props.updater.Exam.Update();
+                    }
+                    props.updater.Answer.Update(current_page, 0, String(i));
+                  }} />
                 <Form value={e} rows={2}
                   onChange={(ev) => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)} />
               </div>
@@ -138,26 +145,30 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           props.exam[current_page].question_choices = [''];
           props.updater.Exam.Update();
         }
-        result = props.exam[current_page].answer.map((e, i) => {
+        result = props.exam[current_page].question_choices?.map((e, i) => {
           return (
             <div key={`examform-multiselect-${i}`}>
               <div className={css.select_form}>
-                <CheckBox desc={''} status={props.exam[current_page].answer.indexOf(e) !== -1}
-                  onChange={(f) => undefined} />
+                <CheckBox desc={''} status={props.exam[current_page].answer.indexOf(String(i)) !== -1}
+                  onChange={(f) => {
+                    // チェックが付けられた時は追加する
+                    if (f) props.updater.Answer.Insert(current_page, -1, String(i));
+                    else {
+                      // チェックが外された時は該当要素を削除
+                      props.exam[current_page].answer = props.exam[current_page].answer.filter(e => e !== String(i));
+                      props.updater.Exam.Update();
+                    }
+                  }} />
                 <Form value={e} rows={2}
                   onChange={(ev) => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)} />
               </div>
               <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'MultiSelect')}</div>
             </div>
           );
-        });
+        }) ?? <>invalid</>;
         break;
 
       case 'Sort':
-        if (!props.exam[current_page].question_choices) {
-          props.exam[current_page].question_choices = [''];
-          props.updater.Exam.Update();
-        }
         result = (
           <DragDropContext onDragEnd={(e: DropResult) => e}>
             <Droppable droppableId='examform_sort_droppable'>{provided => (

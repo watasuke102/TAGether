@@ -26,7 +26,7 @@ interface ExamOperateFunctionsType {
     // i: Examのインデックス j: Choicesのインデックス
     Update: (i: number, j: number, value: string) => void
     Remove: (i: number, j: number) => void
-    Insert: (i: number, at: number) => void
+    Insert: (i: number, at: number, value?: string) => void
   }
   Comment: {
     Update: (i: number, value: string) => void
@@ -35,7 +35,7 @@ interface ExamOperateFunctionsType {
     // i: Examのインデックス j: Answerのインデックス
     Update: (i: number, j: number, value: string) => void
     Remove: (i: number, j: number) => void
-    Insert: (i: number, at: number) => void
+    Insert: (i: number, at: number, value?: string) => void
   }
 }
 
