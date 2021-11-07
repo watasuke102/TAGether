@@ -48,21 +48,35 @@ export default class ExamTable extends React.Component<Props, State> {
     this.state = { array: array };
   }
 
-  ParseAnswers(e: string[], i: number): string {
-    let answers: string = '';
-    const length = this.props.exam[i].answer.length;
-    if (length == 1) {
-      return e[0] + '\n';
+  ParseAnswers(i: number): string[] {
+    const exam = this.props.exam[i];
+    let result: string[] = [];
+
+    // 選択系だった場合、answerにはインデックスが格納されているため、対応する選択肢に置き換えて返す
+    if ((exam.type === 'Select' || exam.type === 'MultiSelect') && exam.question_choices) {
+      // 長さが1だった場合（複数選択でも1つの答えである可能性がある）
+      if (exam.answer.length === 1) {
+        result.push(exam.question_choices[Number(exam.answer[0])]);
+      } else {
+        // 複数選択の場合
+        // choices? にしないとエラー出る なんでだろう
+        result = exam.answer.map(e => (exam.question_choices ? `・${exam.question_choices[Number(e)]}` : ''));
+      }
+    } else {
+      // それ以外（テキスト、並べ替え）の場合はふつうにanswerから
+      if (exam.answer.length === 1) {
+        result.push(exam.answer[0]);
+      } else {
+        result = exam.answer.map((e, j) => `${j + 1} 問目: ${e} `);
+      }
     }
-    for (let j = 0; j < length; j++) {
-      answers += (j + 1) + '問目: ' + e[j] + '\n';
-    }
-    return answers;
+    return result;
   }
+
 
   Status(i: number): React.ReactElement | undefined {
     if (!this.props.examState || !this.props.answers) return;
-    const ans = this.ParseAnswers(this.props.answers[i], i);
+    const ans = this.ParseAnswers(i);
     // 正解or不正解、もしくはn問正解の表示
     const count = this.props.examState[i].correctAnswerCount;
     let correct_state: string = '';
@@ -75,28 +89,13 @@ export default class ExamTable extends React.Component<Props, State> {
       <>
         <td>{
           // 自分の解答
-          // 一番最後に改行文字があるので、それを削除してから
-          ans.slice(0, -1).split('\n').map(str => {
-            return (<span key={`myans_${i}`}>{str}<br /></span>);
+          ans.map(str => {
+            return (<span key={`myans_${i} `}>{str}<br /></span>);
           })
         }</td>
-        <td><span key={`state_${i}`}>{correct_state}</span></td>
+        <td><span key={`state_${i} `}>{correct_state}</span></td>
       </>
     );
-  }
-
-  RealAnswerList(e: Exam, i: number): React.ReactElement[] {
-    if (this.props.examState) {
-      return this.props.examState[i].realAnswerList;
-    }
-    const ans = this.ParseAnswers(e.answer, i);
-    const list: React.ReactElement[] = [];
-    // 正しい答え
-    // 一番最後に改行文字があるので、それを削除してから
-    ans.slice(0, -1).split('\n').map(str => {
-      list.push(<span key={`realans_${i}`}>{str}<br /></span>);
-    });
-    return list;
   }
 
   render(): React.ReactElement {
@@ -104,17 +103,23 @@ export default class ExamTable extends React.Component<Props, State> {
     const exam = this.props.exam;
     this.state.array.forEach(i => {
       list.push(
-        <tr key={`item_${i}`}>
+        <tr key={`item_${i} `}>
           <td>{
             // 問題
             exam[i].question.split('\n').map(str => {
-              return (<span key={`q_${i}`}>{str}<br /></span>);
+              return (<span key={`q_${i} `}>{str}<br /></span>);
             })
           }</td>
           <td className={this.props.showCorrectAnswer ? '' : css.hide_correct_answer}>
-            <span>{this.RealAnswerList(exam[i], i)}</span>
+            <span>{// 正しい答えの一覧
+              this.props.examState ?
+                this.props.examState[i].realAnswerList
+                :
+                this.ParseAnswers(i)
+                  .map(str => (<span key={`realans_${i} `}>{str}<br /></span>))
+            }</span>
           </td>
-          {this.Status(i)}
+          {/* 何問正解したか */ this.Status(i)}
         </tr>
       );
     });
