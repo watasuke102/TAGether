@@ -376,13 +376,14 @@ export default class exam extends React.Component<Props, State> {
                 this.state.answers[this.state.index].map((e, i) => {
                   const id = `exam-item-${i}`;
                   return (
-                    <Draggable key={id} draggableId={id} index={i}>{provided => (
-                      <div className={css.examform_sort_item} ref={provided.innerRef}
-                        {...provided.draggableProps}>
-                        <span>{e}</span>
-                        <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
-                      </div>
-                    )}</Draggable>
+                    <Draggable key={id} draggableId={id} index={i}
+                      isDragDisabled={this.state.examState[this.state.index].checked}>{provided => (
+                        <div className={css.examform_sort_item} ref={provided.innerRef}
+                          {...provided.draggableProps}>
+                          <span>{e}</span>
+                          <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
+                        </div>
+                      )}</Draggable>
                   );
                 })
               }
