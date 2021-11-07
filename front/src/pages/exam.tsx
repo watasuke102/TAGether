@@ -60,6 +60,7 @@ export default class exam extends React.Component<Props, State> {
   private ref: React.RefObject<HTMLTextAreaElement>;
   private correct_answers = 0;
   private total_questions = 0;
+  private version = 2;
   private exam_history: ExamHistory;
 
   constructor(props: Props) {
@@ -74,6 +75,7 @@ export default class exam extends React.Component<Props, State> {
       // 通常カテゴリであれば
       title = this.props.data[0].title;
       exam = JSON.parse(this.props.data[0].list);
+      this.version = this.props.data[0].version;
     }
 
     this.exam_history = {
@@ -102,7 +104,7 @@ export default class exam extends React.Component<Props, State> {
       answers[i] = Array<string>(exam[i].answer.length).fill('');
     }
     // 最初が並び替えならコピー+シャッフル
-    if (exam[0].type === 'Sort') {
+    if (exam[0].type === 'Sort' && this.version === 2) {
       // 参照コピーはだめなので、引数なしconcatで新規配列作成
       answers[0] = exam[0].answer.concat();
       for (let i = answers[0].length - 1; i > 0; i--) {
@@ -213,7 +215,7 @@ export default class exam extends React.Component<Props, State> {
     let correct: boolean = false;
 
     // 複数選択問題は、完全一致のみ正解にする
-    if (exam.type === 'MultiSelect') {
+    if (exam.type === 'MultiSelect' && this.version === 2) {
       // ソートして比較する
       const my_answers = this.state.answers[index].filter(e => e !== '').sort().toString();
       const real_answers = exam.answer.sort().toString();
@@ -234,8 +236,8 @@ export default class exam extends React.Component<Props, State> {
           }
           this.correct_answers++;
         });
-        this.total_questions++;
       });
+      this.total_questions++;
     }
 
     // 全問正解
@@ -296,7 +298,7 @@ export default class exam extends React.Component<Props, State> {
         this.SetIndex(next_index);
 
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
-        if (this.state.exam[next_index].type === 'Sort') {
+        if (this.state.exam[next_index].type === 'Sort' && this.version === 2) {
           // 参照コピーはだめなので、引数なしconcatで新規配列作成
           const answers = this.state.answers.concat();
           answers[next_index] = this.state.exam[next_index].answer.concat();
@@ -336,8 +338,10 @@ export default class exam extends React.Component<Props, State> {
   //解答欄
   AnswerArea(): React.ReactElement | React.ReactElement[] {
     const exam = this.state.exam[this.state.index];
+    // バージョン1であれば強制的にText扱いとする
+    const type = (this.props.data[0].version === 1) ? 'Text' : (exam.type ?? 'Text');
 
-    switch (exam.type ?? 'Text') {
+    switch (type) {
       case 'Text':
         return exam.answer.map((e, i) => (
           <div className={css.form} key={`examform_Text_${i}`}>
@@ -401,7 +405,7 @@ export default class exam extends React.Component<Props, State> {
                   );
                 })
               }
-              {provided.placeholder}
+                {provided.placeholder}
               </div>
             )}
             </Droppable>
@@ -442,7 +446,7 @@ export default class exam extends React.Component<Props, State> {
     // 問題数がひとつだった場合は「正解 or 不正解」
     if (
       answer_length == 1 ||
-      this.state.exam[this.state.index].type === 'MultiSelect'
+      (this.state.exam[this.state.index].type === 'MultiSelect' && this.version === 2)
     ) {
       // 正解だった場合
       if (state.correctAnswerCount == 1) {

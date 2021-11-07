@@ -87,7 +87,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
     }
   }
   BeforeUnLoad = (e: BeforeUnloadEvent): void => {
-    console.log(this.state.showConfirmBeforeLeave);
     if (!this.state.showConfirmBeforeLeave) return;
     e.preventDefault();
     e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
