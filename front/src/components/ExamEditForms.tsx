@@ -114,7 +114,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'Select':
-        if (!props.exam[current_page].question_choices) {
+        // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
+        if ((props.exam[current_page].question_choices?.length ?? 0) < 1) {
           props.exam[current_page].question_choices = [''];
           props.updater.Exam.Update();
         }
@@ -141,7 +142,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'MultiSelect':
-        if (!props.exam[current_page].question_choices) {
+        // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
+        if ((props.exam[current_page].question_choices?.length ?? 0) < 1) {
           props.exam[current_page].question_choices = [''];
           props.updater.Exam.Update();
         }
