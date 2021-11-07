@@ -48,7 +48,19 @@
     .select_form {
       display: grid;
       grid-template-columns: 50px 1fr;
-      padding-bottom: 16px;
+    }
+
+    .sort_forms {
+      display: grid;
+      grid-template-columns: 1fr 50px;
+      .icon {
+        font-size: 1.3em;
+        border: 1px solid #4c4e57;
+        border-radius: 6px;
+        padding: 4px;
+        margin: auto;
+        margin-bottom: 45px;
+      }
     }
   }
 
@@ -96,9 +108,6 @@
         border-radius: 6px;
         padding: 4px;
         margin: auto;
-        &:hover {
-          cursor: grab;
-        }
       }
     }
   }

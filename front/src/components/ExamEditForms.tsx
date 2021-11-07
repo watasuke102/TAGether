@@ -170,12 +170,37 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
       case 'Sort':
         result = (
-          <DragDropContext onDragEnd={(e: DropResult) => e}>
+          <DragDropContext onDragEnd={(e: DropResult) => {
+            if (!e.destination) return;
+            const from = e.source.index, to = e.destination.index;
+            if (from == to) return;
+            const ans = props.exam[current_page].answer;
+            ans.splice(to + ((from < to) ? 1 : 0), 0, ans[from]);
+            ans.splice(from + ((from > to) ? 1 : 0), 1);
+            props.exam[current_page].answer = ans;
+            props.updater.Exam.Update();
+          }}>
             <Droppable droppableId='examform_sort_droppable'>{provided => (
-              <div>ならびかえ</div>
+              <div ref={provided.innerRef} {...provided.innerRef}>{
+                props.exam[current_page].answer.map((e, i) => {
+                  const id = `examform-sort-${i}`;
+                  return (
+                    <Draggable key={id} draggableId={id} index={i}>{provided => (
+                      <div className={css.sort_forms} ref={provided.innerRef}
+                        {...provided.draggableProps}>
+                        <Form label={`答え (${i + 1})`} value={e} rows={3}
+                          onChange={(ev) => props.updater.Answer.Update(current_page, i, ev.target.value)} />
+                        <span className={`fas fa-list ${css.icon}`}
+                          {...provided.dragHandleProps} />
+                        <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'Sort')}</div>
+                      </div>
+                    )}</Draggable>
+                  );
+                })
+              }</div>
             )}
             </Droppable>
-          </DragDropContext>
+          </DragDropContext >
         );
         break;
     }
