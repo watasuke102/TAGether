@@ -93,20 +93,24 @@ export default class exam extends React.Component<Props, State> {
         exam[r] = tmp;
       }
     }
-    // 解答状況の初期化
+    // 解答状況・解答欄の初期化
     const exam_length = exam.length;
     const exam_state: ExamState[] = Array<ExamState>();
-    let max_answer = 1;
-    for (let i = 0; i < exam_length; i++) {
-      exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0 };
-      if (exam[i].answer.length > max_answer) {
-        max_answer = exam[i].answer.length;
-      }
-    }
-    // 解答欄の初期化
     const answers: string[][] = Array<Array<string>>(exam_length);
     for (let i = 0; i < exam_length; i++) {
-      answers[i] = Array<string>(max_answer).fill('');
+      exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0 };
+      answers[i] = Array<string>(exam[i].answer.length).fill('');
+    }
+    // 最初が並び替えならコピー+シャッフル
+    if (exam[0].type === 'Sort') {
+      // 参照コピーはだめなので、引数なしconcatで新規配列作成
+      answers[0] = exam[0].answer.concat();
+      for (let i = answers[0].length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = answers[0][i];
+        answers[0][i] = answers[0][r];
+        answers[0][r] = tmp;
+      }
     }
     // stateの初期化
     this.state = {
@@ -279,12 +283,13 @@ export default class exam extends React.Component<Props, State> {
 
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
         if (this.state.exam[next_index].type === 'Sort') {
-          const answers = this.state.answers;
+          // 参照コピーはだめなので、引数なしconcatで新規配列作成
+          const answers = this.state.answers.concat();
           answers[next_index] = this.state.exam[next_index].answer;
           for (let i = answers[next_index].length - 1; i > 0; i--) {
             const r = Math.floor(Math.random() * (i + 1));
             const tmp = answers[next_index][i];
-            answers[next_index][i] = exam[r];
+            answers[next_index][i] = answers[next_index][r];
             answers[next_index][r] = tmp;
           }
           this.setState({ answers: answers });
@@ -381,7 +386,7 @@ export default class exam extends React.Component<Props, State> {
                   );
                 })
               }
-              {provided.placeholder}
+                {provided.placeholder}
               </div>
             )}
             </Droppable>
