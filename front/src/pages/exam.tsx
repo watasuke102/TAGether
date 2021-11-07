@@ -367,8 +367,8 @@ export default class exam extends React.Component<Props, State> {
             this.setState({ answers: ans });
           }}>
             <Droppable droppableId='examform_sort_item_droppable'>{provided => (
-              <div ref={provided.innerRef} {...provided.innerRef}>{
-                exam.answer.map((e, i) => {
+              <div ref={provided.innerRef} {...provided.droppableProps}>{
+                this.state.answers[this.state.index].map((e, i) => {
                   const id = `exam-item-${i}`;
                   return (
                     <Draggable key={id} draggableId={id} index={i}>{provided => (
@@ -380,7 +380,9 @@ export default class exam extends React.Component<Props, State> {
                     )}</Draggable>
                   );
                 })
-              }</div>
+              }
+              {provided.placeholder}
+              </div>
             )}
             </Droppable>
           </DragDropContext >

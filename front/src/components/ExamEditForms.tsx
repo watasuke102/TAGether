@@ -187,7 +187,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             props.updater.Exam.Update();
           }}>
             <Droppable droppableId='examform_sort_droppable'>{provided => (
-              <div ref={provided.innerRef} {...provided.innerRef}>{
+              <div ref={provided.innerRef} {...provided.droppableProps}>{
                 props.exam[current_page].answer.map((e, i) => {
                   const id = `examform-sort-${i}`;
                   return (
@@ -203,7 +203,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                     )}</Draggable>
                   );
                 })
-              }</div>
+              }
+              {provided.placeholder}</div>
             )}
             </Droppable>
           </DragDropContext >
