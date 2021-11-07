@@ -36,6 +36,24 @@
   margin: 0 0;
   margin-right: 20px;
 }
+// 並び替え問題の要素
+.examform_sort_item {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  padding: 10px 15px;
+  margin: 20px 15px;
+  font-size: 1.3em;
+  color: #1a1a1a;
+  background-color: #acb7d3;
+
+  .icon {
+    font-size: 1.3em;
+    border: 1px solid #4c4e57;
+    border-radius: 6px;
+    padding: 4px;
+    margin: auto;
+  }
+}
 .form {
   margin-top: 15px;
 }

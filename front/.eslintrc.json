@@ -48,6 +48,8 @@
     ],
     // 割り当てる前に～のエラーが出るのが嫌なので
     "@typescript-eslint/no-inferrable-types": "off",
+    // case内の宣言は許してほしい
+    "no-case-declarations": "off",
     // なんで駄目なんですか
     "@typescript-eslint/ban-types": [
       "error",

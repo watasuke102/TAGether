@@ -12,6 +12,7 @@ import Helmet from 'react-helmet';
 import Router from 'next/router';
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import Form from '../components/Form';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
@@ -25,6 +26,7 @@ import ExamHistory from '../types/ExamHistory';
 import ButtonInfo from '../types/ButtonInfo';
 import ButtonContainer from '../components/ButtonContainer';
 import ParseAnswers from '../components/ParseAnswer';
+import CheckBox from '../components/CheckBox';
 
 enum NextButtonState {
   show_answer,
@@ -271,8 +273,22 @@ export default class exam extends React.Component<Props, State> {
 
       // 次の問題へ進む
       case NextButtonState.next_question:
+        const next_index = this.state.index + 1;
         // indexの変更
-        this.SetIndex(this.state.index + 1);
+        this.SetIndex(next_index);
+
+        // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
+        if (this.state.exam[next_index].type === 'Sort') {
+          const answers = this.state.answers;
+          answers[this.state.index] = this.state.exam[this.state.index].answer;
+          for (let i = answers[this.state.index].length - 1; i > 0; i--) {
+            const r = Math.floor(Math.random() * (i + 1));
+            const tmp = answers[this.state.index][i];
+            answers[this.state.index][i] = exam[r];
+            answers[this.state.index][r] = tmp;
+          }
+          this.setState({ answers: answers });
+        }
         break;
 
       // 終了ボタンを押したらモーダルウィンドウを表示
@@ -299,23 +315,77 @@ export default class exam extends React.Component<Props, State> {
 
 
   //解答欄
-  AnswerArea(): React.ReactElement[] {
-    const length = this.state.exam[this.state.index].answer.length;
-    const obj: React.ReactElement[] = [];
-    let label = '';
-    for (let i = 0; i < length; i++) {
-      const tmp = this.state.answers[this.state.index][i];
-      // 入力欄のラベル
-      label = '解答' + ((length == 1) ? '' : '(' + (i + 1) + ')');
-      obj.push(
-        <div className={css.form}> <Form {...{
-          label: label, value: tmp, rows: 1, reff: (i == 0) ? this.ref : null,
-          onChange: ev => this.UpdateUsersResponse(ev, i),
-          disabled: this.state.examState[this.state.index].checked
-        }} /> </div>
-      );
-    }
-    return obj;
+  AnswerArea(): React.ReactElement | React.ReactElement[] {
+    const exam = this.state.exam[this.state.index];
+
+    switch (exam.type ?? 'Text') {
+      case 'Text':
+        return exam.answer.map((e, i) => (
+          <div className={css.form} key={`examform_Text_${i}`}>
+            <Form rows={1} reff={(i == 0) ? this.ref : null}
+              label={`解答 ${(exam.answer.length === 1) ? '' : `(${i + 1})`}`}
+              value={this.state.answers[this.state.index][i]}
+              onChange={ev => this.UpdateUsersResponse(ev, i)}
+              disabled={this.state.examState[this.state.index].checked} />
+          </div>
+        ));
+
+      case 'Select':
+        return exam.question_choices?.map((e, i) => (
+          <CheckBox key={`examform_checkbox_${i}`} desc={e}
+            status={Number(this.state.answers[this.state.index][0]) === i && this.state.answers[this.state.index][0] !== ''}
+            onChange={f => {
+              if (!f || this.state.examState[this.state.index].checked) return;
+              const tmp = this.state.answers;
+              tmp[this.state.index][0] = String(i);
+              this.setState({ answers: tmp });
+            }} />
+        )) ?? <>invalid</>;
+
+      case 'MultiSelect':
+        return exam.question_choices?.map((e, i) => (
+          <CheckBox key={`examform_checkbox_${i}`} desc={e}
+            status={this.state.answers[this.state.index].indexOf(String(i)) !== -1}
+            onChange={f => {
+              if (this.state.examState[this.state.index].checked) return;
+              const tmp = this.state.answers;
+              if (f) tmp[this.state.index].push(String(i));
+              else tmp[this.state.index] = tmp[this.state.index].filter(e => e !== String(i));
+              this.setState({ answers: tmp });
+            }} />
+        )) ?? <>invalid</>;
+
+      case 'Sort':
+        return (
+          <DragDropContext onDragEnd={(e: DropResult) => {
+            if (!e.destination) return;
+            const from = e.source.index, to = e.destination.index;
+            if (from == to) return;
+            const ans = this.state.answers;
+            ans[this.state.index].splice(to + ((from < to) ? 1 : 0), 0, ans[this.state.index][from]);
+            ans[this.state.index].splice(from + ((from > to) ? 1 : 0), 1);
+            this.setState({ answers: ans });
+          }}>
+            <Droppable droppableId='examform_sort_item_droppable'>{provided => (
+              <div ref={provided.innerRef} {...provided.innerRef}>{
+                exam.answer.map((e, i) => {
+                  const id = `exam-item-${i}`;
+                  return (
+                    <Draggable key={id} draggableId={id} index={i}>{provided => (
+                      <div className={css.examform_sort_item} ref={provided.innerRef}
+                        {...provided.draggableProps}>
+                        <span>{e}</span>
+                        <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
+                      </div>
+                    )}</Draggable>
+                  );
+                })
+              }</div>
+            )}
+            </Droppable>
+          </DragDropContext >
+        );
+    } // switch(exam.type)
   }
 
   NextButton(): React.ReactElement {
@@ -452,7 +522,7 @@ export default class exam extends React.Component<Props, State> {
       return (<p>読み込み中...</p>);
     }
 
-    const current_status = `${this.state.index + 1}/${this.state.exam.length}`;
+    const current_status = `${this.state.index + 1} / ${this.state.exam.length}`;
 
     return (
       <>
@@ -555,7 +625,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props.tag_filter = filter;
 
     const data: Categoly = {
-      title: `タグ (${filter})`, version: 2, description: '', tag: [], list: '[]'
+      title: `タグ(${filter})`, version: 2, description: '', tag: [], list: '[]'
     };
 
     props.data.forEach(e => {
