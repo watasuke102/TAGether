@@ -209,20 +209,34 @@ export default class exam extends React.Component<Props, State> {
   CheckAnswer(): void {
     const index = this.state.index;
     const result: ExamState = { order: 0, checked: true, correctAnswerCount: 0 };
+    const exam = this.state.exam[index];
     let correct: boolean = false;
-    this.state.exam[index].answer.forEach((e, i) => {
-      correct = false;
-      // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
-      e.split('&').map(ans => {
-        // 合ってたら正解数と全体の正解数をインクリメント
-        if (this.state.answers[index][i] == ans && !correct) {
-          correct = true;
-          result.correctAnswerCount++;
-          this.correct_answers++;
-        }
-      });
+
+    // 複数選択問題は、完全一致のみ正解にする
+    if (exam.type === 'MultiSelect') {
+      // ソートして比較する
+      const my_answers = this.state.answers[index].filter(e => e !== '').sort().toString();
+      const real_answers = exam.answer.sort().toString();
+      if (my_answers === real_answers) {
+        result.correctAnswerCount++;
+        this.correct_answers++;
+      }
       this.total_questions++;
-    });
+    } else {
+      exam.answer.forEach((e, i) => {
+        correct = false;
+        // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
+        e.split('&').map(ans => {
+          if (this.state.answers[index][i] == ans && !correct) {
+            // 合ってたら正解数と全体の正解数をインクリメント
+            correct = true;
+            result.correctAnswerCount++;
+          }
+          this.correct_answers++;
+        });
+        this.total_questions++;
+      });
+    }
 
     // 全問正解
     if (result.correctAnswerCount == this.state.exam[index].answer.length) {
@@ -426,7 +440,10 @@ export default class exam extends React.Component<Props, State> {
     let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」
-    if (answer_length == 1) {
+    if (
+      answer_length == 1 ||
+      this.state.exam[this.state.index].type === 'MultiSelect'
+    ) {
       // 正解だった場合
       if (state.correctAnswerCount == 1) {
         icon = 'far fa-circle';
@@ -531,7 +548,6 @@ export default class exam extends React.Component<Props, State> {
     }
 
     const current_status = `${this.state.index + 1} / ${this.state.exam.length}`;
-
     return (
       <>
         <Helmet title={`(${current_status}) : ${this.state.title} - TAGether`} />
