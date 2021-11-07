@@ -397,6 +397,11 @@ export default class exam extends React.Component<Props, State> {
         <div className={css.answer_list}>
           <p id={css.seikai}>正解:</p>
           {this.state.examState[this.state.index].realAnswerList}
+          {this.state.exam[this.state.index].comment &&
+            <div>
+              <h2>コメント</h2>
+              <p>{this.state.exam[this.state.index].comment}</p>
+            </div>}
         </div>
       </div>
     );
