@@ -299,7 +299,7 @@ export default class exam extends React.Component<Props, State> {
         if (this.state.exam[next_index].type === 'Sort') {
           // 参照コピーはだめなので、引数なしconcatで新規配列作成
           const answers = this.state.answers.concat();
-          answers[next_index] = this.state.exam[next_index].answer;
+          answers[next_index] = this.state.exam[next_index].answer.concat();
           for (let i = answers[next_index].length - 1; i > 0; i--) {
             const r = Math.floor(Math.random() * (i + 1));
             const tmp = answers[next_index][i];
@@ -379,7 +379,7 @@ export default class exam extends React.Component<Props, State> {
           <DragDropContext onDragEnd={(e: DropResult) => {
             if (!e.destination) return;
             const from = e.source.index, to = e.destination.index;
-            if (from == to) return;
+            if (from === to) return;
             const ans = this.state.answers;
             ans[this.state.index].splice(to + ((from < to) ? 1 : 0), 0, ans[this.state.index][from]);
             ans[this.state.index].splice(from + ((from > to) ? 1 : 0), 1);
@@ -401,7 +401,7 @@ export default class exam extends React.Component<Props, State> {
                   );
                 })
               }
-                {provided.placeholder}
+              {provided.placeholder}
               </div>
             )}
             </Droppable>
