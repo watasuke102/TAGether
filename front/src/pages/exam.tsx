@@ -318,17 +318,6 @@ export default class exam extends React.Component<Props, State> {
     return obj;
   }
 
-  // 最初の要素だった場合はボタンを非表示に
-  // 次へボタンを右に寄せて表示するため、divを返す
-  BackButton(): React.ReactElement {
-    if (this.state.index == 0) return (<div></div>);
-    else return (
-      <Button {...{
-        text: '戻る', icon: 'fas fa-arrow-left',
-        onClick: () => this.DecrementIndex(), type: 'material'
-      }} />
-    );
-  }
   NextButton(): React.ReactElement {
     const info: ButtonInfo = {
       icon: '', text: '',
@@ -496,7 +485,13 @@ export default class exam extends React.Component<Props, State> {
 
         <div className={css.button_container}>
           <div className={css.buttons}>
-            {this.BackButton()}
+            {this.state.index === 0 ?
+              // 次へボタンを右に寄せたいのでdiv
+              <div></div>
+              :
+              <Button text='戻る' icon='fas fa-arrow-left'
+                onClick={() => this.DecrementIndex()} type='material' />
+            }
             {this.NextButton()}
           </div>
         </div>
