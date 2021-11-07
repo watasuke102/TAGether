@@ -221,7 +221,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             onClick={() => MovePageTo(0)} />
           <Button type={'material'} icon={'fas fa-chevron-left'} text={''}
             onClick={PrevPage} />
-          <span>{current_page + 1}/{props.exam.length}</span>
+          <span className={css.current_page}>{current_page + 1}/{props.exam.length}</span>
           <Button type={'material'} icon={'fas fa-chevron-right'} text={''}
             onClick={NextPage} />
           <Button type={'material'} icon={'fas fa-angle-double-right'} text={''}
