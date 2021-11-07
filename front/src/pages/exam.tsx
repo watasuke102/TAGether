@@ -233,11 +233,11 @@ export default class exam extends React.Component<Props, State> {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
+            this.correct_answers++;
           }
-          this.correct_answers++;
         });
+        this.total_questions++;
       });
-      this.total_questions++;
     }
 
     // 全問正解
