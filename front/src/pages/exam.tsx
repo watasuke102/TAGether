@@ -24,6 +24,7 @@ import ExamState from '../types/ExamState';
 import ExamHistory from '../types/ExamHistory';
 import ButtonInfo from '../types/ButtonInfo';
 import ButtonContainer from '../components/ButtonContainer';
+import ParseAnswers from '../components/ParseAnswer';
 
 enum NextButtonState {
   show_answer,
@@ -95,7 +96,7 @@ export default class exam extends React.Component<Props, State> {
     const exam_state: ExamState[] = Array<ExamState>();
     let max_answer = 1;
     for (let i = 0; i < exam_length; i++) {
-      exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
+      exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0 };
       if (exam[i].answer.length > max_answer) {
         max_answer = exam[i].answer.length;
       }
@@ -136,7 +137,7 @@ export default class exam extends React.Component<Props, State> {
         const exam_state: ExamState[] = Array<ExamState>();
         let max_answer = 1;
         for (let i = 0; i < exam_length; i++) {
-          exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0, realAnswerList: [] };
+          exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0 };
           if (exam[i].answer.length > max_answer) {
             max_answer = exam[i].answer.length;
           }
@@ -192,22 +193,16 @@ export default class exam extends React.Component<Props, State> {
       this.state.showExamStateTable ||
       (this.props.history_id && this.state.exam.length === 0)
     ) return;
-    let b: boolean = false;
-    this.state.answers[this.state.index].map(e => {
-      if (e != '') {
-        b = true;
-        return;
-      }
-    });
-    if (b) return;
-    // 入力欄にフォーカスする
+    // ページ更新時、全ての入力欄が空欄であれば入力欄にフォーカス
+    for (let i = 0; i < this.state.answers[this.state.index].length; i++)
+      if (this.state.answers[this.state.index][i] !== '') return;
     this.ref.current?.focus();
   }
 
   // 解答が合っているかどうか確認してstateに格納
   CheckAnswer(): void {
     const index = this.state.index;
-    const result: ExamState = { order: 0, checked: true, correctAnswerCount: 0, realAnswerList: [] };
+    const result: ExamState = { order: 0, checked: true, correctAnswerCount: 0 };
     let correct: boolean = false;
     this.state.exam[index].answer.forEach((e, i) => {
       correct = false;
@@ -220,13 +215,6 @@ export default class exam extends React.Component<Props, State> {
           this.correct_answers++;
         }
       });
-      // 正しい解答をリストに追加
-      const classname = (correct) ? '' : css.wrong;
-      if (this.state.exam[index].answer.length == 1) {
-        result.realAnswerList.push(<p className={classname}>{e}</p>);
-      } else {
-        result.realAnswerList.push(<p className={classname}>{i + 1}問目: {e}</p>);
-      }
       this.total_questions++;
     });
 
@@ -396,7 +384,7 @@ export default class exam extends React.Component<Props, State> {
         </div>
         <div className={css.answer_list}>
           <p id={css.seikai}>正解:</p>
-          {this.state.examState[this.state.index].realAnswerList}
+          {ParseAnswers(this.state.exam[this.state.index].answer, this.state.exam[this.state.index])}
           {this.state.exam[this.state.index].comment &&
             <div>
               <h2>コメント</h2>

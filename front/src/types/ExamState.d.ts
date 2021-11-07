@@ -11,7 +11,6 @@ interface ExamState {
   order:              number
   checked:            boolean
   correctAnswerCount: number
-  realAnswerList:     React.ReactElement[]
 }
 
 export default ExamState;
