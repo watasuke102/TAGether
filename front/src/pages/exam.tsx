@@ -280,12 +280,12 @@ export default class exam extends React.Component<Props, State> {
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
         if (this.state.exam[next_index].type === 'Sort') {
           const answers = this.state.answers;
-          answers[this.state.index] = this.state.exam[this.state.index].answer;
-          for (let i = answers[this.state.index].length - 1; i > 0; i--) {
+          answers[next_index] = this.state.exam[next_index].answer;
+          for (let i = answers[next_index].length - 1; i > 0; i--) {
             const r = Math.floor(Math.random() * (i + 1));
-            const tmp = answers[this.state.index][i];
-            answers[this.state.index][i] = exam[r];
-            answers[this.state.index][r] = tmp;
+            const tmp = answers[next_index][i];
+            answers[next_index][i] = exam[r];
+            answers[next_index][r] = tmp;
           }
           this.setState({ answers: answers });
         }
