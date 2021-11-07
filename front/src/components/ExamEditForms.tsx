@@ -123,7 +123,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           return (
             <div key={`examform-select-${i}`} >
               <div className={css.select_form}>
-                <CheckBox desc={''} status={Number(props.exam[current_page].answer[0]) === i}
+                <CheckBox desc={''} status={Number(props.exam[current_page].answer[0]) === i && props.exam[current_page].answer[0] !== ''}
                   onChange={(f) => {
                     if (!f) return;
                     if (props.exam[current_page].answer.length > 1) {
