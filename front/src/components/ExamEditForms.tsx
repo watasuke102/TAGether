@@ -71,7 +71,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       window.removeEventListener('keydown', e => Shortcut(e));
   }, [Shortcut]);
 
-  function AddRemoveButtons(index: number, type: ExamType) {
+  function AddRemoveButtons(type: ExamType, index: number, length: number) {
     return (
       <>
         {/* 問題の追加/削除 */}
@@ -85,7 +85,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         {
           // 解答欄を1つ削除するボタン
           // 解答欄が1つしかないときは無効
-          (index !== 0) &&
+          (length !== 1) &&
           <Button {...{
             type: 'material', icon: 'fas fa-trash', text: '削除',
             onClick: () => (type === 'Text' || type === 'Sort') ?
@@ -107,7 +107,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <div key={`examform-text-${i}`}>
               <Form label={`答え (${i + 1})`} value={e} rows={3}
                 onChange={(ev) => props.updater.Answer.Update(current_page, i, ev.target.value)} />
-              <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'Text')}</div>
+              <div className={css.answer_area_buttons}>{AddRemoveButtons('Text', i, props.exam[current_page].answer.length)}</div>
             </div>
           );
         });
@@ -135,7 +135,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <Form value={e} rows={2}
                   onChange={(ev) => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)} />
               </div>
-              <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'Select')}</div>
+              <div className={css.answer_area_buttons}>{AddRemoveButtons('Select', i, props.exam[current_page].question_choices?.length ?? 0)}</div>
             </div>
           );
         }) ?? <>invalid</>;
@@ -154,17 +154,21 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <CheckBox desc={''} status={props.exam[current_page].answer.indexOf(String(i)) !== -1}
                   onChange={(f) => {
                     // チェックが付けられた時は追加する
-                    if (f) props.updater.Answer.Insert(current_page, -1, String(i));
-                    else {
+                    if (f) {
+                      props.updater.Answer.Insert(current_page, -1, String(i));
+                      // デフォルトで存在する空欄要素を排除
+                      props.exam[current_page].answer = props.exam[current_page].answer.filter(e => e !== '');
+                      props.updater.Exam.Update();
+                    } else {
                       // チェックが外された時は該当要素を削除
-                      props.exam[current_page].answer = props.exam[current_page].answer.filter(e => e !== String(i));
+                      props.exam[current_page].answer = props.exam[current_page].answer.filter(e => (e !== String(i) && e !== ''));
                       props.updater.Exam.Update();
                     }
                   }} />
                 <Form value={e} rows={2}
                   onChange={(ev) => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)} />
               </div>
-              <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'MultiSelect')}</div>
+              <div className={css.answer_area_buttons}>{AddRemoveButtons('MultiSelect', i, props.exam[current_page].question_choices?.length ?? 0)}</div>
             </div>
           );
         }) ?? <>invalid</>;
@@ -194,7 +198,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                           onChange={(ev) => props.updater.Answer.Update(current_page, i, ev.target.value)} />
                         <span className={`fas fa-list ${css.icon}`}
                           {...provided.dragHandleProps} />
-                        <div className={css.answer_area_buttons}>{AddRemoveButtons(i, 'Sort')}</div>
+                        <div className={css.answer_area_buttons}>{AddRemoveButtons('Sort', i, props.exam[current_page].answer.length)}</div>
                       </div>
                     )}</Draggable>
                   );
@@ -226,7 +230,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
         <div className={css.button_container}>
           <Button type={'material'} icon={'fas fa-trash'} text={'この問題を削除'}
-            onClick={() => props.updater.Exam.Remove(current_page)} />
+            onClick={() => {
+              if (current_page === props.exam.length - 1) PrevPage();
+              props.updater.Exam.Remove(current_page);
+            }} />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'}
             onClick={() => SetIsModalOpen(true)} />
         </div>

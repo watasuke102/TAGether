@@ -34,7 +34,7 @@ import UpdateExam from '../ts/UpdateExam';
 // デフォルト値
 function exam_default(): Exam[] {
   const tmp: Exam[] = [];
-  tmp.push({ question: '', answer: Array<string>(1).fill(''), comment: '' });
+  tmp.push({ question: '', answer: [''], comment: '' });
   return tmp;
 }
 function categoly_default(): Categoly {
@@ -134,15 +134,22 @@ export default class create extends React.Component<Props, EditCategolyPageState
       const blank_exam: number[] = [];
       this.state.exam.forEach((e, i) => {
         if (!e.type) exam_tmp[i].type = 'Text';
-        // 空欄があれば追加
-        if (e.question == '') blank_exam.push(i);
-        e.answer.forEach(answer => (answer == '') && blank_exam.push(i));
+        // 問題文が空欄かチェック
+        if (e.question === '') blank_exam.push(i);
+        // 答えに空欄があるかチェック
+        if (e.answer.length < 1) blank_exam.push(i);
+        e.answer.forEach(answer => (answer === '') && blank_exam.push(i));
+        // 選択系のタイプの場合、choicesに空欄があるかチェック
+        if (e.type === 'Select' || e.type === 'MultiSelect') {
+          e.question_choices?.forEach(choice => (choice === '') && blank_exam.push(i));
+        }
       });
       if (blank_exam.length !== 0) {
         failed = true;
         let txt: string = '';
+        // 重複を排除し、'0, 1, 2, 'みたいな形の文字列に整形する
         Array.from(new Set(blank_exam)).forEach(e => txt += `${e + 1}, `);
-        result_str += `・問題文もしくは答えが入力されていない欄があります\n(ページ: ${txt.slice(0, -2)})\n`;
+        result_str += `・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${txt.slice(0, -2)})\n`;
       }
       if (failed) {
         this.setState({
