@@ -23,7 +23,7 @@ export default function ParseAnswers(ans_list: string[], exam: Exam): React.Reac
         result.push(exam.question_choices[Number(ans_list[0])]);
     } else {
       // 複数選択の場合
-      for (let j = 0; j < exam.answer.length; j++) {
+      for (let j = 0; j < ans_list.length; j++) {
         if (ans_list[j] !== '')
           // choices? にしないとエラー出る なんでだろう
           result.push(exam.question_choices ? `・${exam.question_choices[Number(ans_list[j])]}` : '');
