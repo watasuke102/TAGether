@@ -19,12 +19,14 @@ export default function ParseAnswers(ans_list: string[], exam: Exam): React.Reac
   if ((exam.type === 'Select' || exam.type === 'MultiSelect') && exam.question_choices) {
     // 長さが1だった場合（複数選択でも1つの答えである可能性がある）
     if (exam.answer.length === 1) {
-      result.push(exam.question_choices[Number(ans_list[0])]);
+      if (ans_list[0] !== '')
+        result.push(exam.question_choices[Number(ans_list[0])]);
     } else {
       // 複数選択の場合
-      // choices? にしないとエラー出る なんでだろう
       for (let j = 0; j < exam.answer.length; j++) {
-        result.push(exam.question_choices ? `・${exam.question_choices[Number(ans_list[j])]}` : '');
+        if (ans_list[j] !== '')
+          // choices? にしないとエラー出る なんでだろう
+          result.push(exam.question_choices ? `・${exam.question_choices[Number(ans_list[j])]}` : '');
       }
     }
   } else {
@@ -37,6 +39,8 @@ export default function ParseAnswers(ans_list: string[], exam: Exam): React.Reac
       }
     }
   }
+
+  console.log('[@ParseAnswer] (ans_list, exam, result)=>', ans_list, exam, result);
 
   return <>{
     result.map((e, i) => <span key={`parsed_answer_${i}`}>{e}<br /></span>)
