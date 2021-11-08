@@ -12,7 +12,7 @@
   height: 100%;
   color: #a1a1ff;
   margin: auto 0;
-  padding: 10px 0;
+  padding: 14px 0;
   &:hover {
     cursor: pointer;
   }
@@ -20,4 +20,7 @@
 
 .button {
   text-align: center;
+  p {
+    margin: auto;
+  }
 }
