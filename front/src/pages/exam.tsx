@@ -104,14 +104,17 @@ export default class exam extends React.Component<Props, State> {
       answers[i] = Array<string>(exam[i].answer.length).fill('');
     }
     // 最初が並び替えならコピー+シャッフル
-    if (exam[0].type === 'Sort' && this.version === 2) {
-      // 参照コピーはだめなので、引数なしconcatで新規配列作成
-      answers[0] = exam[0].answer.concat();
-      for (let i = answers[0].length - 1; i > 0; i--) {
-        const r = Math.floor(Math.random() * (i + 1));
-        const tmp = answers[0][i];
-        answers[0][i] = answers[0][r];
-        answers[0][r] = tmp;
+    // 読み込みが終わっていなかった場合
+    if (exam.length !== 0) {
+      if (exam[0].type === 'Sort' && this.version === 2) {
+        // 参照コピーはだめなので、引数なしconcatで新規配列作成
+        answers[0] = exam[0].answer.concat();
+        for (let i = answers[0].length - 1; i > 0; i--) {
+          const r = Math.floor(Math.random() * (i + 1));
+          const tmp = answers[0][i];
+          answers[0][i] = answers[0][r];
+          answers[0][r] = tmp;
+        }
       }
     }
     // stateの初期化
@@ -140,20 +143,24 @@ export default class exam extends React.Component<Props, State> {
             exam[r] = tmp;
           }
         }
-        // 解答状況の初期化
-        const exam_length = result.wrong_exam.length;
+        // 解答状況・解答欄の初期化
+        const exam_length = exam.length;
         const exam_state: ExamState[] = Array<ExamState>();
-        let max_answer = 1;
-        for (let i = 0; i < exam_length; i++) {
-          exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0 };
-          if (exam[i].answer.length > max_answer) {
-            max_answer = exam[i].answer.length;
-          }
-        }
-        // 解答欄の初期化
         const answers: string[][] = Array<Array<string>>(exam_length);
         for (let i = 0; i < exam_length; i++) {
-          answers[i] = Array<string>(max_answer).fill('');
+          exam_state[i] = { order: 0, checked: false, correctAnswerCount: 0 };
+          answers[i] = Array<string>(exam[i].answer.length).fill('');
+        }
+        // 最初が並び替えならコピー+シャッフル
+        if (exam[0].type === 'Sort' && this.version === 2) {
+          // 参照コピーはだめなので、引数なしconcatで新規配列作成
+          answers[0] = exam[0].answer.concat();
+          for (let i = answers[0].length - 1; i > 0; i--) {
+            const r = Math.floor(Math.random() * (i + 1));
+            const tmp = answers[0][i];
+            answers[0][i] = answers[0][r];
+            answers[0][r] = tmp;
+          }
         }
 
         // 同じ処理おわり //
@@ -339,7 +346,7 @@ export default class exam extends React.Component<Props, State> {
   AnswerArea(): React.ReactElement | React.ReactElement[] {
     const exam = this.state.exam[this.state.index];
     // バージョン1であれば強制的にText扱いとする
-    const type = (this.props.data[0].version === 1) ? 'Text' : (exam.type ?? 'Text');
+    const type = (this.version === 1) ? 'Text' : (exam.type ?? 'Text');
 
     switch (type) {
       case 'Text':
