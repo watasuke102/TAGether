@@ -19,13 +19,13 @@
 
 // 問題文と解答欄 
 .exam {
+  width: 50vw;
   margin-right: 50px;
 }
 .question_area {
   display: flex;
   align-items: flex-start;
   font-size: 20px;
-  width: 50vw;
   border-bottom: 3px solid;
 }
 .question_text {
@@ -64,6 +64,7 @@
 
 // 正誤表示 
 .state_and_answer {
+  width: 50vw;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

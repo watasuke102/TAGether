@@ -8,10 +8,12 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 45px 1fr;
   align-items: center;
   padding: 15px 0;
   user-select: none;
+  width: 100%;
 }
 .container:hover {
   cursor: pointer;
@@ -24,6 +26,7 @@
   margin: 5px 10px;
   span {
     margin-top: 6px;
+    word-break: break-all;
   }
 }
 
