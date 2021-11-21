@@ -40,8 +40,6 @@ export default function ParseAnswers(ans_list: string[], exam: Exam): React.Reac
     }
   }
 
-  console.log('[@ParseAnswer] (ans_list, exam, result)=>', ans_list, exam, result);
-
   return <>{
     result.map((e, i) => <span key={`parsed_answer_${i}`}>{e}<br /></span>)
   }</>;

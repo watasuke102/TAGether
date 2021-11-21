@@ -167,11 +167,11 @@ export default class create extends React.Component<Props, EditCategolyPageState
       :
       JSON.stringify(exam_tmp);
     const tmp: Categoly = this.state.categoly;
-    let tag: string = '';
-    tmp.tag.forEach(e => tag += `${e.id ?? e.name}, `);
+    const tag: string[] = [];
+    tmp.tag.forEach(e => tag.push(String(e.id) ?? e.name));
     const categoly: CategolyResponse = {
       id: tmp.id, version: this.state.is_using_old_form ? 1 : 2, title: tmp.title,
-      description: tmp.description, tag: tag.slice(0, -1), list: exam
+      description: tmp.description, tag: tag.toString(), list: exam
     };
 
     const req = new XMLHttpRequest();
