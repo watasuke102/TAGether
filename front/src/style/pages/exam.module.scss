@@ -142,14 +142,12 @@
 
 // 横幅が狭かったらボタンとかを縦に並べる 
 @media screen and (max-width: 700px) {
-  .question_area {
-    width: 92vw;
+  .exam, .state_and_answer {
+    width: 90vw;
+    margin-top: 50px;
   }
   .display {
     flex-direction: column;
-  }
-  .state_and_answer {
-    margin-top: 50px;
   }
 
   .window {
