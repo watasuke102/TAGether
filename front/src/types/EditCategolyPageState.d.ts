@@ -18,7 +18,6 @@ interface EditCategolyPageState{
   res_result:             ApiResponse
   categoly:               Categoly
   exam:                   Exam[]
-  showConfirmBeforeLeave: boolean
 }
 
 export default EditCategolyPageState;
