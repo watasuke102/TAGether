@@ -96,12 +96,15 @@
     height: 80%;
     overflow-y: auto;
     .dragable_question_card {
+      .q_index {
+        font-size: 1.2em;
+      }
       top: auto !important;
       left: auto !important;
       margin: 10px 5px;
       padding: 10px 15px;
       display: grid;
-      grid-template-columns: 1fr 50px;
+      grid-template-columns: 30px 1fr 50px;
       user-select: none;
       color: #1a1a1a;
       background-color: #acb7d3;

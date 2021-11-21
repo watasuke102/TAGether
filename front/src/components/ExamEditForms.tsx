@@ -204,7 +204,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   );
                 })
               }
-              {provided.placeholder}</div>
+                {provided.placeholder}</div>
             )}
             </Droppable>
           </DragDropContext >
@@ -318,6 +318,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               onClick={() => { SetCurrentPage(i); SetIsModalOpen(false); }}
                               {...provided.draggableProps}
                             >
+                              <span className={css.q_index}>{i + 1}</span>
                               <span>{`${e.question.slice(0, 75)}${(e.question.length > 75) ? '...' : ''}`}</span>
                               <span className={`fas fa-list ${css.icon}`}
                                 {...provided.dragHandleProps} />
