@@ -31,7 +31,7 @@ export default class edit extends Create {
         type: 'material', icon: 'fas fa-undo', text: '編集を続ける',
         onClick: (): void => {
           this.RouterEventOn();
-          this.setState({ isModalOpen: false, showConfirmBeforeLeave: true });
+          this.setState({ isModalOpen: false });
         }
       },
       {
@@ -53,8 +53,7 @@ export default class edit extends Create {
       isToastOpen: false, isModalOpen: false, jsonEdit: false,
       is_using_old_form: this.props.data[0].version === 1 ? true : false,
       categoly: categoly, exam: JSON.parse(this.props.data[0].list),
-      res_result: { isSuccess: false, result: '' },
-      showConfirmBeforeLeave: true
+      res_result: { isSuccess: false, result: '' }
     };
   }
 
