@@ -76,7 +76,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
       isToastOpen: false, isModalOpen: false, jsonEdit: false,
       is_using_old_form: this.props.data[0].version === 1 ? true : false,
       categoly: categoly_default(), exam: exam_default(),
-      res_result: { isSuccess: false, result: '' }
+      res_result: { isSuccess: false, result: '' },
+      showConfirmBeforeLeave: true
     };
   }
   // ページ移動時に警告
@@ -85,6 +86,11 @@ export default class create extends React.Component<Props, EditCategolyPageState
       throw new Error('canceled');
     }
   }
+  BeforeUnLoad = (e: BeforeUnloadEvent): void => {
+    if (!this.state.showConfirmBeforeLeave) return;
+    e.preventDefault();
+    e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
+  }
 
   RouterEventOn(): void {
     Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
@@ -92,7 +98,12 @@ export default class create extends React.Component<Props, EditCategolyPageState
   RouterEventOff(): void {
     Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
   }
+  componentDidMount(): void {
+    window.addEventListener('beforeunload', this.BeforeUnLoad);
+    this.RouterEventOn();
+  }
   componentWillUnmount(): void {
+    window.removeEventListener('beforeunload', this.BeforeUnLoad);
     this.RouterEventOff();
   }
 
@@ -168,9 +179,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
       if (req.readyState == 4) {
         const result = JSON.parse(req.responseText);
         this.FinishedRegist(result);
-        // エラーでなければページ移動確認ダイアログを無効化
-        if (result.isSuccess) {
+        // エラーだったらページ移動確認ダイアログを無効化しない
+        if (!result.isSuccess) {
           this.RouterEventOff();
+          this.setState({ showConfirmBeforeLeave: false });
         }
       }
     };
@@ -196,7 +208,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
       case 'desc': tmp.description = str; break;
       case 'list': tmp.list = str; break;
     }
-    this.RouterEventOn();
     this.setState({ categoly: tmp });
   }
 
@@ -309,22 +320,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
             {
               this.state.is_using_old_form ?
                 <ExamEditFormsOld exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={UpdateExam(
-                    (e) => {
-                      this.setState({ exam: e });
-                      this.RouterEventOn();
-                    },
-                    this.state.exam
-                  )} />
+                  updater={UpdateExam((e) => this.setState({ exam: e }), this.state.exam)} />
                 :
                 <ExamEditForms exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={UpdateExam(
-                    (e) => {
-                      this.setState({ exam: e });
-                      this.RouterEventOn();
-                    },
-                    this.state.exam
-                  )} />
+                  updater={UpdateExam((e) => this.setState({ exam: e }), this.state.exam)} />
             }
           </>
         }
