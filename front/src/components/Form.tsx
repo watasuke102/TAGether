@@ -30,7 +30,8 @@ export default class Form extends React.Component<FormInfo> {
         {this.props.label &&
           <label className={css.label}>{this.props.label}</label>
         }
-        <textarea className={css.form} value={this.props.value} rows={this.props.rows} ref={this.ref}
+        <textarea className={css.form} ref={this.ref}
+          value={this.props.value} rows={this.props.rows} spellCheck={false}
           onChange={(e) => this.props.onChange(e)} disabled={this.props.disabled}
         />
       </div>
