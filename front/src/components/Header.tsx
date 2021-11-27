@@ -12,14 +12,16 @@ import Router from 'next/router';
 import Button from './Button';
 import ButtonInfo from '../types/ButtonInfo';
 
-interface State { isFixedButtons: boolean }
+interface State {
+  isFixedButtons: boolean;
+}
 
 // TODO: どうにかならないかなぁ
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 export default class Header extends React.Component<any, State> {
   constructor(props: State) {
     super(props);
-    this.state = { isFixedButtons: false };
+    this.state = {isFixedButtons: false};
   }
 
   componentDidMount(): void {
@@ -35,7 +37,7 @@ export default class Header extends React.Component<any, State> {
     if (window.pageYOffset > 70) {
       isFixedButtons = true;
     }
-    this.setState({ isFixedButtons: isFixedButtons });
+    this.setState({isFixedButtons: isFixedButtons});
   }
 
   ButtonContainersCSS(): string {
@@ -45,11 +47,14 @@ export default class Header extends React.Component<any, State> {
 
   render(): React.ReactElement {
     const info: ButtonInfo[] = [];
-    info.push({ text: 'ホーム', icon: 'fas fa-home', onClick: () => Router.push('/'), type: 'icon_desc' });
-    info.push({ text: 'カテゴリ一覧', icon: 'fas fa-book', onClick: () => Router.push('/list'), type: 'icon_desc' });
-    info.push({ text: 'タグ一覧', icon: 'fas fa-tag', onClick: () => Router.push('/tag'), type: 'icon_desc' });
-    info.push({ text: 'プロフィール', icon: 'fas fa-user', onClick: () => Router.push('/profile'), type: 'icon_desc' });
-    info.push({ text: '機能要望', icon: 'fas fa-comment-alt', onClick: () => Router.push('/request'), type: 'icon_desc' });
+    // prettier-ignore
+    {
+      info.push({ text: 'ホーム', icon: 'fas fa-home', onClick: () => Router.push('/'), type: 'icon_desc' });
+      info.push({ text: 'カテゴリ一覧', icon: 'fas fa-book', onClick: () => Router.push('/list'), type: 'icon_desc' });
+      info.push({ text: 'タグ一覧', icon: 'fas fa-tag', onClick: () => Router.push('/tag'), type: 'icon_desc' });
+      info.push({ text: 'プロフィール', icon: 'fas fa-user', onClick: () => Router.push('/profile'), type: 'icon_desc' });
+      info.push({ text: '機能要望', icon: 'fas fa-comment-alt', onClick: () => Router.push('/request'), type: 'icon_desc' });
+    }
     const button_list: React.ReactElement[] = [];
     info.forEach(element => {
       button_list.push(<Button key={`headerbutton_${element.text}`} {...element} />);
@@ -59,9 +64,7 @@ export default class Header extends React.Component<any, State> {
       <header className={css.header}>
         <h1>TAGether</h1>
         <nav className={this.ButtonContainersCSS()}>
-          <div className={css.buttons}>
-            {button_list}
-          </div>
+          <div className={css.buttons}>{button_list}</div>
         </nav>
       </header>
     );

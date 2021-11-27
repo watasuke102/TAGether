@@ -22,7 +22,7 @@
   margin: 10px 20px 15px;
 }
 
-.current_page{
+.current_page {
   font-size: 1.5em;
 }
 
@@ -41,13 +41,13 @@
     grid-template-columns: 48% 48%;
     padding-top: 15px;
   }
-  
+
   .qa_list {
     width: 47%;
     display: flex;
     flex-direction: column;
     padding-bottom: 80px;
-    
+
     .select_form {
       display: grid;
       grid-template-columns: 50px 1fr;
@@ -81,7 +81,6 @@
   }
 }
 
-
 .modal {
   display: flex;
   flex-direction: column;
@@ -108,7 +107,9 @@
       user-select: none;
       color: #1a1a1a;
       background-color: #acb7d3;
-      span { margin: auto 0; }
+      span {
+        margin: auto 0;
+      }
       .icon {
         font-size: 1.3em;
         border: 1px solid #4c4e57;

@@ -10,7 +10,7 @@ import css from '../style/pages/create.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Modal from '../components/Modal';
@@ -34,24 +34,27 @@ import UpdateExam from '../ts/UpdateExam';
 // デフォルト値
 function exam_default(): Exam[] {
   const tmp: Exam[] = [];
-  tmp.push({ question: '', answer: [''], comment: '' });
+  tmp.push({question: '', answer: [''], comment: ''});
   return tmp;
 }
 function categoly_default(): Categoly {
   return {
-    id: 0, updated_at: '', version: 2, title: '',
-    description: '', tag: [],
-    list: JSON.stringify(exam_default(), undefined, '  ')
+    id: 0,
+    updated_at: '',
+    version: 2,
+    title: '',
+    description: '',
+    tag: [],
+    list: JSON.stringify(exam_default(), undefined, '  '),
   };
 }
 
 interface Props {
-  tags: TagData[]
-  data: Categoly[]
+  tags: TagData[];
+  data: Categoly[];
 }
 
 export default class create extends React.Component<Props, EditCategolyPageState> {
-
   public config: CreatePageConfig = {
     document_title: '新規作成',
     heading: '新規カテゴリの追加',
@@ -59,25 +62,32 @@ export default class create extends React.Component<Props, EditCategolyPageState
     api_success: 'カテゴリの追加に成功しました',
     buttons: [
       {
-        type: 'material', icon: 'fas fa-plus', text: '新規カテゴリを追加',
-        onClick: (): void => Router.reload()
+        type: 'material',
+        icon: 'fas fa-plus',
+        text: '新規カテゴリを追加',
+        onClick: (): void => Router.reload(),
       },
       {
-        type: 'filled', icon: 'fas fa-check', text: 'カテゴリ一覧へ',
-        onClick: (): Promise<boolean> => Router.push('/list')
-      }
-    ]
-  }
+        type: 'filled',
+        icon: 'fas fa-check',
+        text: 'カテゴリ一覧へ',
+        onClick: (): Promise<boolean> => Router.push('/list'),
+      },
+    ],
+  };
 
   constructor(props: Props) {
     super(props);
     this.props.data[0].version = 2;
     this.state = {
-      isToastOpen: false, isModalOpen: false, jsonEdit: false,
+      isToastOpen: false,
+      isModalOpen: false,
+      jsonEdit: false,
       is_using_old_form: this.props.data[0].version === 1 ? true : false,
-      categoly: categoly_default(), exam: exam_default(),
-      res_result: { isSuccess: false, result: '' },
-      showConfirmBeforeLeave: true
+      categoly: categoly_default(),
+      exam: exam_default(),
+      res_result: {isSuccess: false, result: ''},
+      showConfirmBeforeLeave: true,
     };
   }
   // ページ移動時に警告
@@ -90,7 +100,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
     if (!this.state.showConfirmBeforeLeave) return;
     e.preventDefault();
     e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
-  }
+  };
 
   RouterEventOn(): void {
     Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
@@ -110,7 +120,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
   // カテゴリ登録
   RegistExam(): void {
     // トーストを閉じる
-    this.setState({ isToastOpen: false });
+    this.setState({isToastOpen: false});
 
     // 編集用
     const exam_tmp = this.state.exam;
@@ -137,41 +147,44 @@ export default class create extends React.Component<Props, EditCategolyPageState
         if (e.question === '') blank_exam.push(i);
         // 答えに空欄があるかチェック
         if (e.answer.length < 1) blank_exam.push(i);
-        e.answer.forEach(answer => (answer === '') && blank_exam.push(i));
+        e.answer.forEach(answer => answer === '' && blank_exam.push(i));
         // 選択系のタイプの場合、choicesに空欄があるかチェック
         if (e.type === 'Select' || e.type === 'MultiSelect') {
-          e.question_choices?.forEach(choice => (choice === '') && blank_exam.push(i));
+          e.question_choices?.forEach(choice => choice === '' && blank_exam.push(i));
         }
       });
       if (blank_exam.length !== 0) {
         failed = true;
         let txt: string = '';
         // 重複を排除し、'0, 1, 2, 'みたいな形の文字列に整形する
-        Array.from(new Set(blank_exam)).forEach(e => txt += `${e + 1}, `);
+        Array.from(new Set(blank_exam)).forEach(e => (txt += `${e + 1}, `));
         result_str += `・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${txt.slice(0, -2)})\n`;
       }
       if (failed) {
         this.setState({
-          isToastOpen: true, res_result: {
-            'isSuccess': false, 'result': result_str
-          }
+          isToastOpen: true,
+          res_result: {
+            isSuccess: false,
+            result: result_str,
+          },
         });
         return;
       }
     }
 
     // 登録の準備
-    const exam = (this.state.jsonEdit) ?
-      // インデントを削除
-      JSON.stringify(JSON.parse(this.state.categoly.list))
-      :
-      JSON.stringify(exam_tmp);
+    // インデントを削除
+    const exam = this.state.jsonEdit ? JSON.stringify(JSON.parse(this.state.categoly.list)) : JSON.stringify(exam_tmp);
     const tmp: Categoly = this.state.categoly;
     const tag: string[] = [];
     tmp.tag.forEach(e => tag.push(String(e.id) ?? e.name));
     const categoly: CategolyResponse = {
-      id: tmp.id, version: this.state.is_using_old_form ? 1 : 2, title: tmp.title,
-      description: tmp.description, tag: tag.toString(), list: exam
+      id: tmp.id,
+      version: this.state.is_using_old_form ? 1 : 2,
+      title: tmp.title,
+      description: tmp.description,
+      tag: tag.toString(),
+      list: exam,
     };
 
     const req = new XMLHttpRequest();
@@ -182,13 +195,13 @@ export default class create extends React.Component<Props, EditCategolyPageState
         // エラーだったらページ移動確認ダイアログを無効化しない
         if (!result.isSuccess) {
           this.RouterEventOff();
-          this.setState({ showConfirmBeforeLeave: false });
+          this.setState({showConfirmBeforeLeave: false});
         }
       }
     };
     const url = process.env.EDIT_URL + '/categoly';
     if (url == undefined) {
-      this.setState({ isToastOpen: true, res_result: { 'isSuccess': false, 'result': '失敗しました: URL is undefined' } });
+      this.setState({isToastOpen: true, res_result: {isSuccess: false, result: '失敗しました: URL is undefined'}});
       return;
     }
     req.open(this.config.api_method, url);
@@ -197,18 +210,24 @@ export default class create extends React.Component<Props, EditCategolyPageState
     console.log('BODY: ' + JSON.stringify(categoly));
   }
   FinishedRegist(result: ApiResponse): void {
-    this.setState({ isModalOpen: true, res_result: result });
+    this.setState({isModalOpen: true, res_result: result});
   }
 
   // state更新
   UpdateCategoly(type: 'title' | 'desc' | 'list', str: string): void {
     const tmp = this.state.categoly;
     switch (type) {
-      case 'title': tmp.title = str; break;
-      case 'desc': tmp.description = str; break;
-      case 'list': tmp.list = str; break;
+      case 'title':
+        tmp.title = str;
+        break;
+      case 'desc':
+        tmp.description = str;
+        break;
+      case 'list':
+        tmp.list = str;
+        break;
     }
-    this.setState({ categoly: tmp });
+    this.setState({categoly: tmp});
   }
 
   // モーダルウィンドウの中身
@@ -218,7 +237,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       result = this.state.res_result;
     } else {
       // 何も中身がなければエラー時の値を代入する
-      result = { isSuccess: 'error', result: '失敗しました' };
+      result = {isSuccess: 'error', result: '失敗しました'};
     }
     let message: string;
     let button_info: ButtonInfo[] = [];
@@ -230,27 +249,34 @@ export default class create extends React.Component<Props, EditCategolyPageState
       // 失敗した場合、閉じるボタンのみ
       message = 'エラーが発生しました。\n' + result.result;
       button_info.push({
-        type: 'filled', icon: 'fas fa-times', text: '閉じる',
-        onClick: () => this.setState({ isModalOpen: false })
+        type: 'filled',
+        icon: 'fas fa-times',
+        text: '閉じる',
+        onClick: () => this.setState({isModalOpen: false}),
       });
     }
 
     if (from === 'Toast') {
       return (
-        <span>{
-          message.split('\n').map(txt => <>{txt}<br /></>)
-        }</span>
+        <span>
+          {message.split('\n').map(txt => (
+            <>
+              {txt}
+              <br />
+            </>
+          ))}
+        </span>
       );
     }
 
     const button: React.ReactElement[] = [];
-    button_info.forEach(e => { button.push(<Button {...e} />); });
+    button_info.forEach(e => {
+      button.push(<Button {...e} />);
+    });
     return (
       <div className={css.window}>
         <p>{message}</p>
-        <ButtonContainer>
-          {button}
-        </ButtonContainer>
+        <ButtonContainer>{button}</ButtonContainer>
       </div>
     );
   }
@@ -265,77 +291,100 @@ export default class create extends React.Component<Props, EditCategolyPageState
         <ul>
           <li>記号 &quot; は使用できません </li>
           <li>
-            記号 \ を表示したいときは \\ のように入力してください<br />
+            記号 \ を表示したいときは \\ のように入力してください
+            <br />
             \\ 以外で記号 \ を使用しないでください。問題を開けなくなります
           </li>
           <li>
-            「答え」の欄に&を入れると、複数の正解を作ることが出来ます<br />
+            「答え」の欄に&を入れると、複数の正解を作ることが出来ます
+            <br />
             例: 「A&B&C」→解答欄にAもしくはBもしくはCのどれかが入力されたら正解
           </li>
         </ul>
 
         <div className={css.edit_area}>
-          <Form {...{
-            label: 'タイトル', value: this.state.categoly.title, rows: 1,
-            onChange: (e) => this.UpdateCategoly('title', e.target.value)
-          }} />
-          <Form {...{
-            label: '説明', value: this.state.categoly.description, rows: 3,
-            onChange: (e) => this.UpdateCategoly('desc', e.target.value)
-          }} />
+          <Form
+            {...{
+              label: 'タイトル',
+              value: this.state.categoly.title,
+              rows: 1,
+              onChange: e => this.UpdateCategoly('title', e.target.value),
+            }}
+          />
+          <Form
+            {...{
+              label: '説明',
+              value: this.state.categoly.description,
+              rows: 3,
+              onChange: e => this.UpdateCategoly('desc', e.target.value),
+            }}
+          />
         </div>
 
         <h2>タグ</h2>
-        <TagEdit tags={this.props.tags} current_tag={this.state.categoly.tag}
+        <TagEdit
+          tags={this.props.tags}
+          current_tag={this.state.categoly.tag}
           SetTag={(e: TagData[]) => {
             const tmp = this.state.categoly;
             tmp.tag = e;
-            this.setState({ categoly: tmp });
-          }} />
+            this.setState({categoly: tmp});
+          }}
+        />
         <h2>問題</h2>
 
         <div className={css.buttons}>
-          <CheckBox status={this.state.jsonEdit} desc='高度な編集（JSON）'
-            onChange={e => this.setState({ jsonEdit: e })} />
-          {this.props.data[0].version !== 1 &&
-            <CheckBox status={this.state.is_using_old_form} desc='古い編集画面を使う'
-              onChange={e => this.setState({ is_using_old_form: e })} />
-          }
+          <CheckBox
+            status={this.state.jsonEdit}
+            desc='高度な編集（JSON）'
+            onChange={e => this.setState({jsonEdit: e})}
+          />
+          {this.props.data[0].version !== 1 && (
+            <CheckBox
+              status={this.state.is_using_old_form}
+              desc='古い編集画面を使う'
+              onChange={e => this.setState({is_using_old_form: e})}
+            />
+          )}
           <div className={css.pushbutton_wrapper}>
-            <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'}
-              onClick={() => this.RegistExam()} />
+            <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => this.RegistExam()} />
           </div>
         </div>
 
         <hr />
 
-        {this.state.jsonEdit ?
+        {this.state.jsonEdit ? (
           <>
             <p>注意：編集内容はリッチエディタと同期されません</p>
-            <Form label='JSON' value={this.state.categoly.list} rows={30}
-              onChange={(e) => this.UpdateCategoly('list', e.target.value)} />
+            <Form
+              label='JSON'
+              value={this.state.categoly.list}
+              rows={30}
+              onChange={e => this.UpdateCategoly('list', e.target.value)}
+            />
           </>
-          :
+        ) : (
           <>
-            {
-              this.state.is_using_old_form ?
-                <ExamEditFormsOld exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={UpdateExam((e) => this.setState({ exam: e }), this.state.exam)} />
-                :
-                <ExamEditForms exam={this.state.exam} register={() => this.RegistExam()}
-                  updater={UpdateExam((e) => this.setState({ exam: e }), this.state.exam)} />
-            }
+            {this.state.is_using_old_form ? (
+              <ExamEditFormsOld
+                exam={this.state.exam}
+                register={() => this.RegistExam()}
+                updater={UpdateExam(e => this.setState({exam: e}), this.state.exam)}
+              />
+            ) : (
+              <ExamEditForms
+                exam={this.state.exam}
+                register={() => this.RegistExam()}
+                updater={UpdateExam(e => this.setState({exam: e}), this.state.exam)}
+              />
+            )}
           </>
-        }
+        )}
 
-        <Modal isOpen={this.state.isModalOpen} close={() => this.setState({ isModalOpen: false })}>
+        <Modal isOpen={this.state.isModalOpen} close={() => this.setState({isModalOpen: false})}>
           {this.RegistResult('Modal')}
         </Modal>
-        <Toast
-          id={'toast_create'}
-          isOpen={this.state.isToastOpen}
-          close={() => this.setState({ isToastOpen: false })}
-        >
+        <Toast id={'toast_create'} isOpen={this.state.isToastOpen} close={() => this.setState({isToastOpen: false})}>
           <div className={css.toast_body}>
             <span className='fas fa-bell' />
             {this.RegistResult('Toast')}
@@ -347,8 +396,8 @@ export default class create extends React.Component<Props, EditCategolyPageState
 }
 
 // APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const tags = await GetFromApi<TagData>('tag', context.query.id);
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
-  return { props: { tags: tags, data: data } };
+  return {props: {tags: tags, data: data}};
 };

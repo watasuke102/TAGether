@@ -15,7 +15,7 @@ function ExamHisotryInstance() {
     driver: LocalForage.INDEXEDDB,
     name: 'TAGether',
     storeName: 'history',
-    description: '問題の解答履歴'
+    description: '問題の解答履歴',
   });
 }
 export function AddExamHistory(item: ExamHistory): void {
@@ -28,18 +28,24 @@ export function AddExamHistory(item: ExamHistory): void {
 }
 export function GetExamHistory(): Promise<ExamHistory[]> {
   const result: ExamHistory[] = [];
-  return ExamHisotryInstance().iterate((value: ExamHistory, key: string) => {
-    result.push({ history_key: key, ...value });
-  }).then(() => { return result; });
+  return ExamHisotryInstance()
+    .iterate((value: ExamHistory, key: string) => {
+      result.push({history_key: key, ...value});
+    })
+    .then(() => {
+      return result;
+    });
 }
 export function ClearExamHistory(): Promise<void> {
   return ExamHisotryInstance().clear();
 }
 
 export function GetSpecifiedExamHistory(key: string): Promise<ExamHistory | null> {
-  return ExamHisotryInstance().getItem<ExamHistory>(key).then(result => {
-    return result;
-  });
+  return ExamHisotryInstance()
+    .getItem<ExamHistory>(key)
+    .then(result => {
+      return result;
+    });
 }
 
 // お気に入りカテゴリ
@@ -48,12 +54,13 @@ function FavoriteInstance() {
     driver: LocalForage.INDEXEDDB,
     name: 'TAGether',
     storeName: 'favorite',
-    description: 'お気に入り登録したカテゴリ'
+    description: 'お気に入り登録したカテゴリ',
   });
 }
 export function GetFavorite(): Promise<number[]> {
-  return FavoriteInstance().getItem<number[]>('main')
-    .then((value) => {
+  return FavoriteInstance()
+    .getItem<number[]>('main')
+    .then(value => {
       const result = value ?? [];
       return result;
     });

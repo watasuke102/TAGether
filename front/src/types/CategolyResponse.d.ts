@@ -9,13 +9,13 @@
 
 // APIレスポンスの型
 interface CategolyResponse {
-  id?: number
-  updated_at?: string
-  version: number
-  title: string
-  description: string
-  tag: string
-  list: string
+  id?: number;
+  updated_at?: string;
+  version: number;
+  title: string;
+  description: string;
+  tag: string;
+  list: string;
 }
 
 export default CategolyResponse;

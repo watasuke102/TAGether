@@ -7,8 +7,8 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 interface ApiResponse {
-  isSuccess: boolean
-  result: Array | string
+  isSuccess: boolean;
+  result: Array | string;
 }
 
 export default ApiResponse;

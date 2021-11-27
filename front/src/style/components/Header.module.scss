@@ -32,8 +32,8 @@
   justify-content: space-around;
 }
 
-// 縦幅が狭かったらロゴとボタンを同じ行に 
-// ただし横幅も狭い場合は同じ行にはしない 
+// 縦幅が狭かったらロゴとボタンを同じ行に
+// ただし横幅も狭い場合は同じ行にはしない
 @media screen and (min-width: 551px) and (max-height: 600px) {
   .header {
     display: flex;
@@ -53,7 +53,7 @@
   }
 }
 
-// 横幅が狭い時、ボタンコンテナの背景を変える 
+// 横幅が狭い時、ボタンコンテナの背景を変える
 @media screen and (max-width: 550px) {
   .buttons_container,
   .buttons_container_fixed {
@@ -64,7 +64,7 @@
   }
 }
 
-// 縦幅が狭くなければヘッダーを追従させる 
+// 縦幅が狭くなければヘッダーを追従させる
 @media screen and (min-height: 600px) {
   .buttons_container {
     position: absolute;
@@ -75,13 +75,14 @@
   .buttons_container_fixed {
     position: fixed;
     width: 100%;
-    left: 0; top: 0;
+    left: 0;
+    top: 0;
     background-color: #8891a5dd;
   }
 }
 
 // アイコンと説明が2段になっていたらマージンを増やす
-// ヘッダの高さが増えて、内容が隠れてしまう 
+// ヘッダの高さが増えて、内容が隠れてしまう
 @media screen and (min-width: 700px) and (max-width: 900px) and (min-height: 600px) {
   .header {
     margin-bottom: 100px;

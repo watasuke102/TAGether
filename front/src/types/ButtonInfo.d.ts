@@ -7,10 +7,10 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 interface ButtonInfo {
-  type:    'icon_desc' | 'material' | 'filled'
-  icon:    string
-  text:    string
-  onClick: Function
+  type: 'icon_desc' | 'material' | 'filled';
+  icon: string;
+  text: string;
+  onClick: Function;
 }
 
 export default ButtonInfo;

@@ -8,12 +8,11 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
-
 @mixin bg-animation($col) {
   cursor: pointer;
   background-color: $col;
   transition: 0.3s;
-  span{
+  span {
     color: #ffffff;
     transition: 0.3s;
   }
@@ -28,17 +27,21 @@
   padding: 5px;
   border-radius: 3px;
   background-color: #ffffff00;
-  border: 1px solid  #7766d8;
+  border: 1px solid #7766d8;
   transition: background-color 0.3s;
   span {
     color: #e7e7e7;
   }
-  
+
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
-    &:hover{ @include bg-animation(#8e7aff3a); }
+    &:hover {
+      @include bg-animation(#8e7aff3a);
+    }
   }
-  &:active{ @include bg-animation(#8e7aff7e); }
+  &:active {
+    @include bg-animation(#8e7aff7e);
+  }
 }
 
 // ボタンのなかみ
@@ -48,7 +51,7 @@
   span {
     font-size: 25px;
     color: #ffffff;
-    width:  auto;
+    width: auto;
     margin: 0px auto;
   }
 }
@@ -61,7 +64,7 @@
 
 // 横幅が狭かったらフォントサイズを小さく
 @media screen and (max-width: 750px) {
-  .button_icon span{
+  .button_icon span {
     font-size: 1em;
   }
   .button_text {

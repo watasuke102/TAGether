@@ -22,22 +22,24 @@
   box-shadow: 5px 5px 5px #1e1e1e;
   background-color: #6b6b6baa;
   transition: 300ms;
-  .title, .desc {
+  .title,
+  .desc {
     color: #dbdbdb;
     transition: 300ms;
   }
 
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
-    &:hover{
+    &:hover {
       cursor: pointer;
       background-color: #a5a5a5aa;
       transition: 300ms;
-      .title, .desc {
+      .title,
+      .desc {
         color: #111111;
         transition: 300ms;
       }
-      .tag_container{
+      .tag_container {
         background-color: #ffffff;
       }
     }
@@ -57,9 +59,9 @@
 
   .desc {
     overflow-wrap: break-word;
-    font-size: 15px
+    font-size: 15px;
   }
-  
+
   .favorite_button {
     // お気に入りボタンがでかくなるのを防ぐ
     width: 0;

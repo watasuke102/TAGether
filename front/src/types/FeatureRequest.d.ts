@@ -7,10 +7,10 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 interface FeatureRequest {
-  id:         number
-  updated_at: string
-  body:       string
-  answer:     string
+  id: number;
+  updated_at: string;
+  body: string;
+  answer: string;
 }
 
 export default FeatureRequest;

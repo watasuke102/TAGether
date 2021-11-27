@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src",
+    "fmt": "prettier --write src/",
     "dev": "next dev -p 3009",
     "build": "next build",
     "start": "next start -p 3009"

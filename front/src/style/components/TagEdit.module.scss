@@ -18,8 +18,12 @@
   margin: 5px 10px;
   padding: 2px 4px;
   border: 1px solid #eee;
-  div { margin-right: 5px; }
-  &:hover { cursor: pointer; }
+  div {
+    margin-right: 5px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .tag_picker {
@@ -28,7 +32,9 @@
   .close {
     font-size: 1.4em;
     margin: auto;
-    &:hover { cursor: pointer; }
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
@@ -47,7 +53,8 @@
 
 .picker_normal {
   display: grid;
-  height: 350px; width: 280px;
+  height: 350px;
+  width: 280px;
   grid-template-rows: 37px 1fr;
   grid-template-columns: 1fr 37px;
   .search {
@@ -58,9 +65,12 @@
       margin: auto 0;
     }
     input {
-      height: 100%; width: 100%;
+      height: 100%;
+      width: 100%;
       border: none;
-      &:focus-visible { outline: none; }
+      &:focus-visible {
+        outline: none;
+      }
     }
   }
   .list {

@@ -10,7 +10,7 @@ import React from 'react';
 import Exam from '../types/Exam';
 
 // ans_listをいい感じに整形して返す
-// Ex. exam.type = 'Text' && ans_list = ['first', 'second'] 
+// Ex. exam.type = 'Text' && ans_list = ['first', 'second']
 //     => <><span>1問目: first</span><br /><span>2問目: second</span>
 export default function ParseAnswers(ans_list: string[], exam: Exam): React.ReactElement {
   const result: string[] = [];
@@ -19,8 +19,7 @@ export default function ParseAnswers(ans_list: string[], exam: Exam): React.Reac
   if ((exam.type === 'Select' || exam.type === 'MultiSelect') && exam.question_choices) {
     // 長さが1だった場合（複数選択でも1つの答えである可能性がある）
     if (exam.answer.length === 1) {
-      if (ans_list[0] !== '')
-        result.push(exam.question_choices[Number(ans_list[0])]);
+      if (ans_list[0] !== '') result.push(exam.question_choices[Number(ans_list[0])]);
     } else {
       // 複数選択の場合
       for (let j = 0; j < ans_list.length; j++) {
@@ -40,7 +39,14 @@ export default function ParseAnswers(ans_list: string[], exam: Exam): React.Reac
     }
   }
 
-  return <>{
-    result.map((e, i) => <span key={`parsed_answer_${i}`}>{e}<br /></span>)
-  }</>;
+  return (
+    <>
+      {result.map((e, i) => (
+        <span key={`parsed_answer_${i}`}>
+          {e}
+          <br />
+        </span>
+      ))}
+    </>
+  );
 }

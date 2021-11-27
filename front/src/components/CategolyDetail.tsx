@@ -16,11 +16,11 @@ import Categoly from '../types/Categoly';
 import ButtonContainer from './ButtonContainer';
 
 interface Props {
-  data: Categoly,
-  close: Function
+  data: Categoly;
+  close: Function;
 }
 interface state {
-  isShuffleEnabled: boolean
+  isShuffleEnabled: boolean;
 }
 
 export default class CategolyDetail extends React.Component<Props, state> {
@@ -30,12 +30,12 @@ export default class CategolyDetail extends React.Component<Props, state> {
     super(props);
     this.UpdateContainersHeight();
     this.data = this.props.data;
-    this.state = { isShuffleEnabled: false };
+    this.state = {isShuffleEnabled: false};
   }
 
   // スマホ対策
   UpdateContainersHeight(): void {
-    document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100 * 90) + 'px');
+    document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100) * 90 + 'px');
   }
 
   componentDidMount(): void {
@@ -77,29 +77,46 @@ export default class CategolyDetail extends React.Component<Props, state> {
           <textarea disabled={true} value={this.data.description} id={css.desc} />
 
           {/* シャッフルするかどうかを決めるチェックボックス */}
-          <CheckBox status={this.state.isShuffleEnabled} desc='問題順をシャッフル'
-            onChange={e => this.setState({ isShuffleEnabled: e })}
+          <CheckBox
+            status={this.state.isShuffleEnabled}
+            desc='問題順をシャッフル'
+            onChange={e => this.setState({isShuffleEnabled: e})}
           />
 
           <ButtonContainer>
-            <Button {...{
-              text: '閉じる', icon: 'fas fa-times',
-              onClick: () => this.props.close(), type: 'material'
-            }} />
-            <Button {...{
-              text: '編集する', icon: 'fas fa-pen',
-              onClick: () => this.Push('edit'), type: 'material'
-            }} />
-            <Button {...{
-              text: '問題一覧', icon: 'fas fa-list',
-              onClick: () => this.Push('table'), type: 'material'
-            }} />
-            <Button {...{
-              text: 'この問題を解く', icon: 'fas fa-arrow-right',
-              onClick: () => this.Push('exam'), type: 'filled'
-            }} />
+            <Button
+              {...{
+                text: '閉じる',
+                icon: 'fas fa-times',
+                onClick: () => this.props.close(),
+                type: 'material',
+              }}
+            />
+            <Button
+              {...{
+                text: '編集する',
+                icon: 'fas fa-pen',
+                onClick: () => this.Push('edit'),
+                type: 'material',
+              }}
+            />
+            <Button
+              {...{
+                text: '問題一覧',
+                icon: 'fas fa-list',
+                onClick: () => this.Push('table'),
+                type: 'material',
+              }}
+            />
+            <Button
+              {...{
+                text: 'この問題を解く',
+                icon: 'fas fa-arrow-right',
+                onClick: () => this.Push('exam'),
+                type: 'filled',
+              }}
+            />
           </ButtonContainer>
-
         </div>
       </>
     );

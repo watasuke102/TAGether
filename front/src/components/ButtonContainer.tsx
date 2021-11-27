@@ -10,13 +10,9 @@ import css from '../style/components/ButtonContainer.module.scss';
 import React from 'react';
 
 interface Props {
-  children: React.ReactElement[]
+  children: React.ReactElement[];
 }
 
-export default function ButtonContainer({ children }: Props): React.ReactElement {
-  return (
-    <div className={`${css.container} ${children.length >= 4 && css.grid}`}>
-      {children}
-    </div>
-  );
+export default function ButtonContainer({children}: Props): React.ReactElement {
+  return <div className={`${css.container} ${children.length >= 4 && css.grid}`}>{children}</div>;
 }

@@ -7,17 +7,17 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-// 全体の親 
+// 全体の親
 .display {
   display: flex;
   justify-content: flex-start;
   padding-bottom: 90px;
 }
-.display p{
+.display p {
   margin: 0;
 }
 
-// 問題文と解答欄 
+// 問題文と解答欄
 .exam {
   width: 45vw;
   margin-right: 50px;
@@ -57,12 +57,12 @@
 .form {
   margin-top: 15px;
 }
-// Enter送信防止用 
+// Enter送信防止用
 #dummy {
   display: none;
 }
 
-// 正誤表示 
+// 正誤表示
 .state_and_answer {
   width: 45vw;
   display: flex;
@@ -96,9 +96,9 @@
   margin-left: 20px;
 }
 
-// ボタン 
+// ボタン
 .button_container {
-  position:fixed;
+  position: fixed;
   width: 100%;
   left: 0px;
   bottom: 0px;
@@ -110,7 +110,7 @@
   justify-content: space-between;
 }
 
-// 解答状況一覧 
+// 解答状況一覧
 .examdata_container {
   position: sticky;
   top: 60px;
@@ -123,7 +123,7 @@
   font-size: 22px;
 }
 
-// モーダルウィンドウ 
+// モーダルウィンドウ
 .window {
   width: 60vw;
   padding: 30px 50px;
@@ -131,7 +131,7 @@
   background-color: #646772;
 }
 
-.window>h1 {
+.window > h1 {
   font-size: 28px;
   font-weight: bold;
 }
@@ -140,9 +140,10 @@
   font-size: 22px;
 }
 
-// 横幅が狭かったらボタンとかを縦に並べる 
+// 横幅が狭かったらボタンとかを縦に並べる
 @media screen and (max-width: 700px) {
-  .exam, .state_and_answer {
+  .exam,
+  .state_and_answer {
     width: 90vw;
     margin-top: 50px;
   }
@@ -153,8 +154,8 @@
   .window {
     padding-bottom: 80px;
   }
-  // スクロールに追従しない 
+  // スクロールに追従しない
   .examdata_container {
-    position: static
+    position: static;
   }
 }

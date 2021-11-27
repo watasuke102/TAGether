@@ -17,9 +17,9 @@ import ExamHistory from '../types/ExamHistory';
 import Router from 'next/router';
 
 interface Props {
-  categoly: Categoly,
-  item: ExamHistory
-  isShuffleEnabled: boolean
+  categoly: Categoly;
+  item: ExamHistory;
+  isShuffleEnabled: boolean;
 }
 
 export default function ExamHistoryTableItem(props: Props): React.ReactElement {
@@ -42,25 +42,32 @@ export default function ExamHistoryTableItem(props: Props): React.ReactElement {
         </p>
       </td>
 
-      <td>{props.item.total_question}問中{props.item.correct_count}問正解</td>
+      <td>
+        {props.item.total_question}問中{props.item.correct_count}問正解
+      </td>
 
       <td>{isNaN(rate) ? 0 : rate}%</td>
 
       <td>
         <div className={css.button}>
-          {(props.item.wrong_exam) && (props.item.wrong_exam.length === 0 ?
-            <p>全問正解しています</p>
-            :
-            <Button {...{
-              text: '解き直し', icon: 'fas fa-edit', type: 'material',
-              onClick: PushExamPage
-            }} />
-          )}
+          {props.item.wrong_exam &&
+            (props.item.wrong_exam.length === 0 ? (
+              <p>全問正解しています</p>
+            ) : (
+              <Button
+                {...{
+                  text: '解き直し',
+                  icon: 'fas fa-edit',
+                  type: 'material',
+                  onClick: PushExamPage,
+                }}
+              />
+            ))}
         </div>
       </td>
 
       <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
-        <Detail {...{ data: props.categoly, close: () => setIsModalOpen(false) }} />
+        <Detail {...{data: props.categoly, close: () => setIsModalOpen(false)}} />
       </Modal>
     </tr>
   );

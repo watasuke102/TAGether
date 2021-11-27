@@ -39,7 +39,8 @@
   width: 150px;
 }
 .radiobutton input {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
 }
 .radiobutton p {
   height: 30px;
@@ -83,7 +84,7 @@
  */
 .list::before {
   display: block;
-  content: "";
+  content: '';
   width: 300px;
   margin: 10px 25px;
   padding: 5px 10px;
@@ -91,7 +92,7 @@
 }
 .list::after {
   display: block;
-  content: "";
+  content: '';
   width: 300px;
   margin: 10px 25px;
   padding: 5px 10px;

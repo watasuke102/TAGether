@@ -41,7 +41,6 @@
   justify-content: space-around;
 }
 
-
 .dummy_button {
   width: 88px;
 }
@@ -58,7 +57,7 @@
 }
 
 .button_container {
-  position:fixed;
+  position: fixed;
   width: 100%;
   left: 0px;
   bottom: 0px;
@@ -77,7 +76,6 @@
 .bottom {
   height: 250px;
 }
-
 
 // 横幅が狭かったらボタンと問題編集欄を縦に並べる
 @media screen and (max-width: 800px) {

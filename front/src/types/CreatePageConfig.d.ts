@@ -9,11 +9,11 @@
 import ButtonInfo from './ButtonInfo';
 
 interface CreatePageConfig {
-  document_title: string
-  heading: string
-  api_method: string
-  api_success: string
-  buttons: ButtonInfo[]
+  document_title: string;
+  heading: string;
+  api_method: string;
+  api_success: string;
+  buttons: ButtonInfo[];
 }
 
 export default CreatePageConfig;

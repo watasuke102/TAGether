@@ -10,7 +10,7 @@ import css from '../style/pages/list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 import Form from '../components/Form';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
@@ -20,10 +20,9 @@ import Categoly from '../types/Categoly';
 import TagData from '../types/TagData';
 
 interface Props {
-  data: Categoly[]
-  tags: TagData[]
+  data: Categoly[];
+  tags: TagData[];
 }
-
 
 export default function list(props: Props): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
@@ -40,27 +39,33 @@ export default function list(props: Props): React.ReactElement {
       list.forEach(e => {
         let text: string = '';
         switch (radioState) {
-          case 'タイトル': text = e.title; break;
-          case '説明': text = e.description; break;
+          case 'タイトル':
+            text = e.title;
+            break;
+          case '説明':
+            text = e.description;
+            break;
           case 'ID':
-            if (e.id?.toString() != undefined)
-              text = e.id.toString();
+            if (e.id?.toString() != undefined) text = e.id.toString();
             break;
           case 'タグ':
-            e.tag.forEach(a => text += `${a.name},`);
+            e.tag.forEach(a => (text += `${a.name},`));
             text = text.slice(0, -1);
             break;
         }
         // 検索欄に入力された文字と一致したら検索結果に追加
-        if (text.indexOf(searchStr) != -1)
-          searchResult.push(e);
+        if (text.indexOf(searchStr) != -1) searchResult.push(e);
       });
     } else {
       searchResult = list;
     }
     // 検索結果からカードを生成
     if (searchResult.length === 0) {
-      cards.push(<p key={'result_404'} className={css.notfound}>見つかりませんでした</p>);
+      cards.push(
+        <p key={'result_404'} className={css.notfound}>
+          見つかりませんでした
+        </p>,
+      );
     } else {
       searchResult.forEach(element => {
         cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
@@ -75,7 +80,7 @@ export default function list(props: Props): React.ReactElement {
       <div key={'newcategoly'} className={css.card} onClick={() => Router.push('/create')}>
         <span className='fas fa-plus' />
         <p id={css.create_new}>新規作成</p>
-      </div>
+      </div>,
     );
     return cards;
   }
@@ -86,24 +91,36 @@ export default function list(props: Props): React.ReactElement {
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
         {/* 検索欄 */}
-        <Form {...{
-          label: '検索', value: searchStr, rows: 1,
-          onChange: (ev) => SetSearchStr(ev.target.value)
-        }} />
-        <Button {...{
-          text: '入力のクリア', icon: 'fas fa-times',
-          onClick: () => SetSearchStr(''), type: 'filled'
-        }} />
+        <Form
+          {...{
+            label: '検索',
+            value: searchStr,
+            rows: 1,
+            onChange: ev => SetSearchStr(ev.target.value),
+          }}
+        />
+        <Button
+          {...{
+            text: '入力のクリア',
+            icon: 'fas fa-times',
+            onClick: () => SetSearchStr(''),
+            type: 'filled',
+          }}
+        />
         {/* 何を検索するか選択 */}
         <div className={css.radiobutton_container}>
-          <SelectBox onChange={txt => SetRadioState(txt)} status={radioState}
-            list={['タイトル', 'タグ', '説明', 'ID']} />
+          <SelectBox
+            onChange={txt => SetRadioState(txt)}
+            status={radioState}
+            list={['タイトル', 'タグ', '説明', 'ID']}
+          />
         </div>
 
         <div className={css.sort}>
           <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
           <Button
-            type='material' text={newer_first ? '古い順に並べる' : '新しい順に並べる'}
+            type='material'
+            text={newer_first ? '古い順に並べる' : '新しい順に並べる'}
             icon={'fas fa-sort-numeric-' + (newer_first ? 'down-alt' : 'down')}
             onClick={() => SetNewerFirst(!newer_first)}
           />
@@ -116,8 +133,8 @@ export default function list(props: Props): React.ReactElement {
 }
 
 // APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const tags = await GetFromApi<TagData>('tag', context.query.id);
-  return { props: { data: data, tags: tags } };
+  return {props: {data: data, tags: tags}};
 };

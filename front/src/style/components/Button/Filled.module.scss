@@ -12,13 +12,13 @@
   cursor: pointer;
   background-color: $col;
   transition: 0.3s;
-  span{
+  span {
     color: #ffffff;
     transition: 0.3s;
   }
 }
 
-// 塗りつぶされたボタン 
+// 塗りつぶされたボタン
 .button {
   display: inline-flex;
   justify-content: center;
@@ -28,23 +28,26 @@
   border-radius: 3px;
   background-color: #524a80;
   transition: background-color 0.3s;
-  
+
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
-    &:hover{ @include bg-animation(#625899); }
+    &:hover {
+      @include bg-animation(#625899);
+    }
   }
-  &:active{ @include bg-animation(#726b97); }
-
+  &:active {
+    @include bg-animation(#726b97);
+  }
 }
 
-// ボタンのなかみ 
+// ボタンのなかみ
 .button_icon {
   margin: auto 5px;
   text-align: center;
   span {
     font-size: 25px;
     color: #ffffff;
-    width:  auto;
+    width: auto;
     margin: 0px auto;
   }
 }
@@ -57,7 +60,7 @@
 
 // 横幅が狭かったらフォントサイズを小さく
 @media screen and (max-width: 750px) {
-  .button_icon span{
+  .button_icon span {
     font-size: 1em;
   }
   .button_text {

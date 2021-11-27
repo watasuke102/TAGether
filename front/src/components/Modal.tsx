@@ -8,14 +8,13 @@
 //
 import css from '../style/components/Modal.module.scss';
 import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import {AnimatePresence, motion} from 'framer-motion';
 
 interface Props {
-  children: React.ReactElement | React.ReactElement[]
-  isOpen: boolean
-  close: Function
+  children: React.ReactElement | React.ReactElement[];
+  isOpen: boolean;
+  close: Function;
 }
-
 
 export default function Modal(props: Props): React.ReactElement {
   // スマホ対策
@@ -26,42 +25,48 @@ export default function Modal(props: Props): React.ReactElement {
 
   React.useEffect(() => {
     window.addEventListener('resize', UpdateContainersHeight);
-    return () =>
-      window.removeEventListener('resize', UpdateContainersHeight);
+    return () => window.removeEventListener('resize', UpdateContainersHeight);
   }, []);
 
-  const transition = { duration: 0.4 };
+  const transition = {duration: 0.4};
   return (
     <AnimatePresence>
-      {props.isOpen &&
+      {props.isOpen && (
         // 背景（開いているときに暗くする）
         <motion.div
           className={css.background}
-          onClick={e => { e.stopPropagation(); props.close(); }}
+          onClick={e => {
+            e.stopPropagation();
+            props.close();
+          }}
           onHoverStart={e => e.stopPropagation()}
           variants={{
-            init: { opacity: 0 },
-            main: { opacity: 1 }
+            init: {opacity: 0},
+            main: {opacity: 1},
           }}
           transition={transition}
-          initial='init' animate='main' exit='init'
+          initial='init'
+          animate='main'
+          exit='init'
         >
           {/* ウィンドウ本体 */}
           <motion.div
             className={css.window}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             variants={{
-              init: { x: '-50%', y: '-10%', opacity: 0 },
-              main: { x: '-50%', y: '-50%', opacity: 1 }
+              init: {x: '-50%', y: '-10%', opacity: 0},
+              main: {x: '-50%', y: '-50%', opacity: 1},
             }}
             transition={transition}
-            initial='init' animate='main' exit='init'
+            initial='init'
+            animate='main'
+            exit='init'
           >
             {/* 中身 */}
             {props.children}
           </motion.div>
         </motion.div>
-      }
-    </AnimatePresence >
+      )}
+    </AnimatePresence>
   );
 }

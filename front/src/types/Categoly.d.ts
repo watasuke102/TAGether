@@ -9,13 +9,13 @@
 import TagData from './TagData';
 
 interface Categoly {
-  id?:         number
-  updated_at?: string
-  version:     number
-  title:       string
-  description: string
-  tag:         TagData[]
-  list:        string
+  id?: number;
+  updated_at?: string;
+  version: number;
+  title: string;
+  description: string;
+  tag: TagData[];
+  list: string;
 }
 
 export default Categoly;

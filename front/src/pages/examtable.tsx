@@ -10,7 +10,7 @@ import css from '../style/pages/examtable.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 import Button from '../components/Button';
 import ExamTable from '../components/ExamTableComponent';
 import GetFromApi from '../ts/Api';
@@ -18,10 +18,12 @@ import Exam from '../types/Exam';
 import Categoly from '../types/Categoly';
 
 interface Props {
-  data: Categoly[],
-  shuffle: boolean
+  data: Categoly[];
+  shuffle: boolean;
 }
-interface States { showCorrectAnswer: boolean }
+interface States {
+  showCorrectAnswer: boolean;
+}
 
 export default class examtable extends React.Component<Props, States> {
   private exam: Exam[];
@@ -38,7 +40,7 @@ export default class examtable extends React.Component<Props, States> {
         this.exam[r] = tmp;
       }
     }
-    this.state = { showCorrectAnswer: false };
+    this.state = {showCorrectAnswer: false};
   }
   render(): React.ReactElement {
     return (
@@ -50,19 +52,26 @@ export default class examtable extends React.Component<Props, States> {
 
         <div className={css.button_container}>
           <div className={css.buttons}>
-            <Button {...{
-              text: '戻る', icon: 'fas fa-undo',
-              onClick: Router.back, type: 'material'
-            }} />
+            <Button
+              {...{
+                text: '戻る',
+                icon: 'fas fa-undo',
+                onClick: Router.back,
+                type: 'material',
+              }}
+            />
             {/* 正しい答えの表示/非表示切り替え */}
-            <Button {...{
-              onClick: () => this.setState(state => {
-                return { showCorrectAnswer: !state.showCorrectAnswer };
-              }),
-              type: 'material',
-              text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
-              icon: this.state.showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
-            }} />
+            <Button
+              {...{
+                onClick: () =>
+                  this.setState(state => {
+                    return {showCorrectAnswer: !state.showCorrectAnswer};
+                  }),
+                type: 'material',
+                text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
+                icon: this.state.showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
+              }}
+            />
           </div>
         </div>
       </>
@@ -71,11 +80,11 @@ export default class examtable extends React.Component<Props, States> {
 }
 
 // APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const data = await GetFromApi<Categoly>('categoly', context.query.id);
   const props: Props = {
     data: data,
-    shuffle: (context.query.shuffle === 'true')
+    shuffle: context.query.shuffle === 'true',
   };
-  return { props: props };
+  return {props: props};
 };

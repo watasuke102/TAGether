@@ -17,20 +17,19 @@ import Toast from './Toast';
 import ButtonContainer from './ButtonContainer';
 
 interface Props {
-  tag: TagData
-  isOpen: boolean
-  close: Function
-  createMode?: boolean
-  onComplete?: Function
+  tag: TagData;
+  isOpen: boolean;
+  close: Function;
+  createMode?: boolean;
+  onComplete?: Function;
 }
-
 
 export default function TagDetail(props: Props): React.ReactElement {
   const [isToastOpen, SetIsToastOpen] = React.useState(false);
   const [toast_body, SetToastBody] = React.useState('');
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
-  const disabled: boolean = (!props.createMode && props.tag.id === undefined);
+  const disabled: boolean = !props.createMode && props.tag.id === undefined;
 
   function UpdateTag() {
     if (disabled) {
@@ -51,8 +50,9 @@ export default function TagDetail(props: Props): React.ReactElement {
         if (result.isSuccess) {
           if (props.onComplete) {
             props.onComplete({
-              id: props.tag.id ?? result.result.insertId, name: edited_name,
-              description: edited_desc
+              id: props.tag.id ?? result.result.insertId,
+              name: edited_name,
+              description: edited_desc,
             });
           }
           // 新規作成モードであれば終了
@@ -68,10 +68,13 @@ export default function TagDetail(props: Props): React.ReactElement {
     };
     req.open(props.createMode ? 'POST' : 'PUT', process.env.EDIT_URL + '/tag');
     req.setRequestHeader('Content-Type', 'application/json');
-    req.send(JSON.stringify({
-      id: props.tag.id,
-      name: edited_name, description: edited_desc
-    }));
+    req.send(
+      JSON.stringify({
+        id: props.tag.id,
+        name: edited_name,
+        description: edited_desc,
+      }),
+    );
   }
 
   return (
@@ -84,32 +87,42 @@ export default function TagDetail(props: Props): React.ReactElement {
             <hr />
           </div>
 
-
           {/* 編集 */}
           <div className={css.forms}>
-            <Form {...{
-              label: 'タグ名', rows: 1, value: edited_name,
-              disabled: disabled,
-              onChange: e => SetEditedName(e.target.value)
-            }} />
-            <Form {...{
-              label: '説明', rows: 4, value: edited_desc,
-              disabled: disabled,
-              onChange: e => SetEditedDesc(e.target.value)
-            }} />
+            <Form
+              {...{
+                label: 'タグ名',
+                rows: 1,
+                value: edited_name,
+                disabled: disabled,
+                onChange: e => SetEditedName(e.target.value),
+              }}
+            />
+            <Form
+              {...{
+                label: '説明',
+                rows: 4,
+                value: edited_desc,
+                disabled: disabled,
+                onChange: e => SetEditedDesc(e.target.value),
+              }}
+            />
           </div>
 
           {/* ボタン */}
           <ButtonContainer>
-            <Button type='material' icon='fas fa-times' text='閉じる'
-              onClick={props.close} />
-            {props.createMode ?
-              <></> :
-              <Button type='material' icon='fas fa-pen' text='このタグのカテゴリを解く'
-                onClick={() => Router.push(`/exam?tag=${props.tag.name}`)} />
-            }
-            <Button type='filled' icon='fas fa-check' text='編集結果を適用'
-              onClick={UpdateTag} />
+            <Button type='material' icon='fas fa-times' text='閉じる' onClick={props.close} />
+            {props.createMode ? (
+              <></>
+            ) : (
+              <Button
+                type='material'
+                icon='fas fa-pen'
+                text='このタグのカテゴリを解く'
+                onClick={() => Router.push(`/exam?tag=${props.tag.name}`)}
+              />
+            )}
+            <Button type='filled' icon='fas fa-check' text='編集結果を適用' onClick={UpdateTag} />
           </ButtonContainer>
         </div>
 
@@ -119,8 +132,7 @@ export default function TagDetail(props: Props): React.ReactElement {
             {toast_body}
           </div>
         </Toast>
-
-      </Modal >
+      </Modal>
     </>
   );
 }

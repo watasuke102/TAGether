@@ -8,14 +8,16 @@
 //
 import React from 'react';
 import Link from 'next/link';
-import { NextPageContext } from 'next';
+import {NextPageContext} from 'next';
 
-interface Props { code: number | undefined }
+interface Props {
+  code: number | undefined;
+}
 
 export default class Error extends React.Component<Props> {
-  static getInitialProps({ res, err }: NextPageContext): Props {
+  static getInitialProps({res, err}: NextPageContext): Props {
     const result: Props = {
-      code: res ? res.statusCode : err ? err.statusCode : undefined
+      code: res ? res.statusCode : err ? err.statusCode : undefined,
     };
     return result;
   }
@@ -23,7 +25,7 @@ export default class Error extends React.Component<Props> {
     return (
       <div>
         <h1>エラーが発生しました: {this.props.code ?? -1}</h1>
-        <Link href="/">ホームに戻る</Link>
+        <Link href='/'>ホームに戻る</Link>
       </div>
     );
   }

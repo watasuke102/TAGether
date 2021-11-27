@@ -23,7 +23,8 @@ export default async function GetFromApi<T>(target: string, query: Query): Promi
   }
   // APIでカテゴリを取得する
   let data: ApiResponse = {
-    isSuccess: false, result: []
+    isSuccess: false,
+    result: [],
   };
   try {
     const res = await fetch(`${process.env.GET_URL ?? ''}/${target}/${id ?? ''}`);
@@ -32,11 +33,9 @@ export default async function GetFromApi<T>(target: string, query: Query): Promi
     data.result = [];
   }
   // カテゴリであれば文字列からタグリストを生成する
-  if (target === 'categoly')
-    data.result = await ReplaceTagData(data.result);
+  if (target === 'categoly') data.result = await ReplaceTagData(data.result);
   // 取得したデータを返す
-  if (data.isSuccess && Array.isArray(data.result))
-    return data.result;
+  if (data.isSuccess && Array.isArray(data.result)) return data.result;
   else return [];
 }
 
@@ -57,17 +56,20 @@ async function ReplaceTagData(list: CategolyResponse[]): Promise<Categoly[]> {
           result_tag.push({
             name: list_tag,
             description: '',
-            updated_at: ''
+            updated_at: '',
           });
         }
       });
     }
     // 結果を格納する
     result.push({
-      title: list_item.title, id: list_item.id ?? -1,
-      updated_at: list_item.updated_at, version: list_item.version,
-      description: list_item.description, list: list_item.list,
-      tag: result_tag
+      title: list_item.title,
+      id: list_item.id ?? -1,
+      updated_at: list_item.updated_at,
+      version: list_item.version,
+      description: list_item.description,
+      list: list_item.list,
+      tag: result_tag,
     });
   });
   return result;

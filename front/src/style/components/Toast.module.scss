@@ -11,22 +11,23 @@
 .container {
   z-index: 3000;
   position: fixed;
-  right: 10px; top: 65px;
+  right: 10px;
+  top: 65px;
   padding: 5px 10px;
   max-width: 85vw;
   border-radius: 5px;
   background-color: #3e3f44dd;
-  // 120にしないとpadding分はみでる？？？ 
+  // 120にしないとpadding分はみでる？？？
   transform: translateX(120%);
 }
 
 @keyframes fadein {
   from {
     opacity: 0;
-    transform: translateX( 120% );
+    transform: translateX(120%);
   }
   to {
     opacity: 1;
-    transform: translateY( 0% );
+    transform: translateY(0%);
   }
 }

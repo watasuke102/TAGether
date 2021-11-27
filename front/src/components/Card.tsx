@@ -39,12 +39,11 @@ export default function ExamCard(props: Categoly): React.ReactElement {
             <Tag tag={props.tag} />
           </div>
           <FavoriteStar id={props.id ?? -1} />
-
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)} >
-        <Detail {...{ data: props, close: () => setIsModalOpen(false) }} />
+      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+        <Detail {...{data: props, close: () => setIsModalOpen(false)}} />
       </Modal>
     </>
   );

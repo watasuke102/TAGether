@@ -10,22 +10,24 @@ import React from 'react';
 import CheckBox from './CheckBox';
 
 interface Props {
-  status: string,
-  list: string[],
-  onChange: Function,
+  status: string;
+  list: string[];
+  onChange: Function;
 }
 
 export default function SelectBox(props: Props): React.ReactElement {
   return (
     <>
-      {
-        props.list.map(str => {
-          return (
-            <CheckBox key={`select_${str}`} status={props.status === str} desc={str}
-              onChange={() => props.onChange(str)} />
-          );
-        })
-      }
+      {props.list.map(str => {
+        return (
+          <CheckBox
+            key={`select_${str}`}
+            status={props.status === str}
+            desc={str}
+            onChange={() => props.onChange(str)}
+          />
+        );
+      })}
     </>
   );
 }

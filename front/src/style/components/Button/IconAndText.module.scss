@@ -12,7 +12,7 @@
   cursor: pointer;
   background-color: $col;
   transition: background-color 0.3s;
-  span{
+  span {
     color: #52f9ff;
     transition: color 0.3s;
   }
@@ -34,15 +34,19 @@
   span {
     transition: color 0.3s;
   }
-  
+
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
-    &:hover{ @include bg-animation(#ffffff55); }
+    &:hover {
+      @include bg-animation(#ffffff55);
+    }
   }
-  &:active{ @include bg-animation(#ffffff80); }
+  &:active {
+    @include bg-animation(#ffffff80);
+  }
 }
 
-// ボタンのなかみ 
+// ボタンのなかみ
 .button_icon {
   margin: auto 5px;
   margin-bottom: 4px;
@@ -61,7 +65,7 @@
   font-size: 0.75em;
 }
 
-// 横幅が狭かったら説明テキストを非表示に 
+// 横幅が狭かったら説明テキストを非表示に
 @media screen and (max-width: 700px) {
   .button_text {
     display: none;
@@ -84,7 +88,7 @@
   }
 }
 
-// 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に 
+// 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に
 @media screen and (max-height: 600px) {
   .button {
     margin: 0;

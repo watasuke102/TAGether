@@ -16,9 +16,12 @@ export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): 
     Exam: {
       Update: () => updater(exam),
       Insert: (at: number) => {
-        exam.splice((at === -1) ? exam.length : at, 0, {
-          type: 'Text', question: '', question_choices: [],
-          answer: [''], comment: ''
+        exam.splice(at === -1 ? exam.length : at, 0, {
+          type: 'Text',
+          question: '',
+          question_choices: [],
+          answer: [''],
+          comment: '',
         });
         updater(exam);
       },
@@ -38,13 +41,13 @@ export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): 
       Update: (i: number, value: ExamType) => {
         exam[i].type = value;
         updater(exam);
-      }
+      },
     },
     Question: {
       Update: (i: number, value: string) => {
         exam[i].question = value;
         updater(exam);
-      }
+      },
     },
     QuestionChoices: {
       // i: Examのインデックス j: question_choiceのインデックス
@@ -62,7 +65,7 @@ export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): 
       },
       Insert: (i: number, at: number, value?: string) => {
         if (!exam[i].question_choices) exam[i].question_choices = [];
-        exam[i].question_choices?.splice((at === -1) ? (exam[i].question_choices?.length ?? 0) : at, 0, value ?? '');
+        exam[i].question_choices?.splice(at === -1 ? exam[i].question_choices?.length ?? 0 : at, 0, value ?? '');
         updater(exam);
       },
     },
@@ -70,7 +73,7 @@ export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): 
       Update: (i: number, value: string) => {
         exam[i].comment = value;
         updater(exam);
-      }
+      },
     },
     Answer: {
       // i: Examのインデックス j: Answerのインデックス
@@ -83,7 +86,7 @@ export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): 
         updater(exam);
       },
       Insert: (i: number, at: number, value?: string) => {
-        exam[i].answer.splice((at === -1) ? exam[i].answer.length : at, 0, value ?? '');
+        exam[i].answer.splice(at === -1 ? exam[i].answer.length : at, 0, value ?? '');
         updater(exam);
       },
     },

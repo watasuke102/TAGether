@@ -11,25 +11,27 @@ import React from 'react';
 import TagData from '../types/TagData';
 import TagDetail from './TagDetail';
 
-interface Props { tag: TagData[] }
+interface Props {
+  tag: TagData[];
+}
 
 export default function TagContainer(props: Props): React.ReactElement {
   function TagItem(tag_data: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
     return (
       <div key={`tagcontainer_${tag_data.id}`}>
-        <div className={css.tag}
-          onClick={e => { e.stopPropagation(); SetIsModalOpen(true); }}>
+        <div
+          className={css.tag}
+          onClick={e => {
+            e.stopPropagation();
+            SetIsModalOpen(true);
+          }}
+        >
           <span>{tag_data.name}</span>
         </div>
-        <TagDetail tag={tag_data} isOpen={is_modal_open}
-          close={() => SetIsModalOpen(false)} />
+        <TagDetail tag={tag_data} isOpen={is_modal_open} close={() => SetIsModalOpen(false)} />
       </div>
     );
   }
-  return (
-    <div className={css.tag_container}>
-      {props.tag.map(e => TagItem(e))}
-    </div>
-  );
+  return <div className={css.tag_container}>{props.tag.map(e => TagItem(e))}</div>;
 }

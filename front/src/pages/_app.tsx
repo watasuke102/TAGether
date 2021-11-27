@@ -10,12 +10,12 @@ import '../style/main.scss';
 import Head from 'next/head';
 import React from 'react';
 import NProgress from 'nprogress';
-import { AppProps } from 'next/app';
+import {AppProps} from 'next/app';
 import '../style/nprogress.css';
 
 import Header from '../components/Header';
 
-export default function MyApp({ Component, pageProps, router }: AppProps): React.ReactElement {
+export default function MyApp({Component, pageProps, router}: AppProps): React.ReactElement {
   if (router.events) {
     router.events.on('routeChangeStart', () => NProgress.start());
     router.events.on('routeChangeComplete', () => NProgress.done());
@@ -28,6 +28,6 @@ export default function MyApp({ Component, pageProps, router }: AppProps): React
       </Head>
       <Header />
       <Component {...pageProps} key={router.route} />
-    </main >
+    </main>
   );
 }

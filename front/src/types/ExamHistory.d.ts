@@ -9,13 +9,13 @@
 import Exam from './Exam';
 
 interface ExamHistory {
-  history_key?:   string
-  id:             number
-  title:          string
-  date:           string
-  total_question: number
-  correct_count:  number
-  wrong_exam:     Exam[]
+  history_key?: string;
+  id: number;
+  title: string;
+  date: string;
+  total_question: number;
+  correct_count: number;
+  wrong_exam: Exam[];
 }
 
 export default ExamHistory;

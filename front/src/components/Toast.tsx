@@ -8,14 +8,14 @@
 //
 import css from '../style/components/Toast.module.scss';
 import React from 'react';
-import { gsap, Power4 } from 'gsap';
+import {gsap, Power4} from 'gsap';
 
 interface Props {
-  children: React.ReactElement | React.ReactElement[],
-  isOpen: boolean,
-  close: Function
-  top?: number
-  id: string
+  children: React.ReactElement | React.ReactElement[];
+  isOpen: boolean;
+  close: Function;
+  top?: number;
+  id: string;
 }
 
 export default function Toast(props: Props): React.ReactElement {
@@ -35,25 +35,29 @@ export default function Toast(props: Props): React.ReactElement {
       .to(target, {
         duration: 0,
         opacity: 1,
-        translateX: '120%'
+        translateX: '120%',
       })
       .to(target, {
         ease: Power4.easeOut,
         duration: 0.5,
         translateX: '0%',
       })
-      .to(target, {
-        duration: 1,
-        opacity: 0,
-      }, '+=4')
+      .to(
+        target,
+        {
+          duration: 1,
+          opacity: 0,
+        },
+        '+=4',
+      )
       .to(target, {
         duration: 0,
         translateX: '0%',
-        onComplete: () => props.close()
+        onComplete: () => props.close(),
       });
   }, [props.isOpen]);
   return (
-    <div id={props.id} className={css.container} style={{ top: props.top ?? 65 }}>
+    <div id={props.id} className={css.container} style={{top: props.top ?? 65}}>
       {props.children}
     </div>
   );

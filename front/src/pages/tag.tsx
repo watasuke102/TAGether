@@ -9,13 +9,15 @@
 import css from '../style/pages/tag.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import { GetServerSideProps } from 'next';
+import {GetServerSideProps} from 'next';
 import Button from '../components/Button';
 import GetFromApi from '../ts/Api';
 import TagData from '../types/TagData';
 import TagDetail from '../components/TagDetail';
 
-interface Props { tag: TagData[] }
+interface Props {
+  tag: TagData[];
+}
 
 export default function tag(props: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -25,13 +27,21 @@ export default function tag(props: Props): React.ReactElement {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
     return (
       <div key={`tag_${e.id}`}>
-        <div className={css.card}
-          onClick={e => { e.stopPropagation(); SetIsModalOpen(true); }}>
+        <div
+          className={css.card}
+          onClick={e => {
+            e.stopPropagation();
+            SetIsModalOpen(true);
+          }}
+        >
           <span className={css.name}>{e.name}</span>
           <span className={css.desc}>{e.description}</span>
         </div>
-        <TagDetail tag={e} isOpen={is_modal_open}
-          close={() => SetIsModalOpen(false)} onComplete={e => {
+        <TagDetail
+          tag={e}
+          isOpen={is_modal_open}
+          close={() => SetIsModalOpen(false)}
+          onComplete={e => {
             const result = tag;
             for (let i = 0; i < result.length; i++) {
               if (result[i].id === e.id) {
@@ -40,8 +50,10 @@ export default function tag(props: Props): React.ReactElement {
               }
             }
             SetTag(result);
-          }} />
-      </div>);
+          }}
+        />
+      </div>
+    );
   }
 
   return (
@@ -49,26 +61,25 @@ export default function tag(props: Props): React.ReactElement {
       <div className={css.heading}>
         <h1>タグ一覧</h1>
         <div className={css.button}>
-          <Button type='filled' text='新規作成' icon='fas fa-plus'
-            onClick={() => SetIsModalOpen(true)} />
+          <Button type='filled' text='新規作成' icon='fas fa-plus' onClick={() => SetIsModalOpen(true)} />
         </div>
       </div>
 
-      <div className={css.container}>
-        {tag.length === 0 ? <p>見つかりませんでした</p> : tag.map(e => TagItem(e))}
-      </div>
+      <div className={css.container}>{tag.length === 0 ? <p>見つかりませんでした</p> : tag.map(e => TagItem(e))}</div>
 
-      <TagDetail createMode isOpen={is_modal_open}
-        tag={{ name: '', description: '', updated_at: '' }}
+      <TagDetail
+        createMode
+        isOpen={is_modal_open}
+        tag={{name: '', description: '', updated_at: ''}}
         close={() => SetIsModalOpen(false)}
-        onComplete={Router.reload} />
+        onComplete={Router.reload}
+      />
     </>
   );
 }
 
-
 // APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const data = await GetFromApi<TagData>('tag', context.query.id);
-  return { props: { tag: data } };
+  return {props: {tag: data}};
 };
