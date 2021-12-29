@@ -19,10 +19,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "noImplicitAny": false,
+    "incremental": true,
     "typeRoots": [
       "src/types"
     ],
-    "incremental": true
+    "baseUrl": "src",
+    "paths": {"@/*": ["src/components/*"]}
   },
   "include": [
     "next-env.d.ts",

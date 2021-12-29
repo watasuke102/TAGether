@@ -15,7 +15,7 @@ import Form from '../components/Form';
 import Button from '../components/Button';
 import CategolyCard from '../components/Card';
 import SelectBox from '../components/SelectBox';
-import GetFromApi from '../ts/Api';
+import GetFromApi from '../components/utils/Api';
 import Categoly from '../types/Categoly';
 import TagData from '../types/TagData';
 

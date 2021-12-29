@@ -11,7 +11,7 @@ import React from 'react';
 import Router from 'next/router';
 import {GetServerSideProps} from 'next';
 import Button from '../components/Button';
-import GetFromApi from '../ts/Api';
+import GetFromApi from '../components/utils/Api';
 import TagData from '../types/TagData';
 import TagDetail from '../components/TagDetail';
 

@@ -18,7 +18,7 @@ import Button from '../components/Button';
 import TagEdit from '../components/TagEdit';
 import ExamEditForms from '../components/ExamEditForms';
 import ExamEditFormsOld from '../components/ExamEditFormsOld';
-import GetFromApi from '../ts/Api';
+import GetFromApi from '../components/utils/Api';
 import Exam from '../types/Exam';
 import TagData from '../types/TagData';
 import Categoly from '../types/Categoly';
@@ -29,7 +29,7 @@ import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
 import CheckBox from '../components/CheckBox';
 import ButtonContainer from '../components/ButtonContainer';
-import UpdateExam from '../ts/UpdateExam';
+import UpdateExam from '../components/utils/UpdateExam';
 
 // デフォルト値
 function exam_default(): Exam[] {

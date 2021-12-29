@@ -15,8 +15,8 @@ import Button from '../components/Button';
 import CheckBox from '../components/CheckBox';
 import CategolyCard from '../components/Card';
 import HistoryTable from '../components/ExamHistoryTableItem';
-import GetFromApi from '../ts/Api';
-import {GetExamHistory, GetFavorite, ClearExamHistory} from '../ts/ManageDB';
+import GetFromApi from '../components/utils/Api';
+import {GetExamHistory, GetFavorite, ClearExamHistory} from '../components/utils/ManageDB';
 import Categoly from '../types/Categoly';
 import ExamHistory from '../types/ExamHistory';
 

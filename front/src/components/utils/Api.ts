@@ -1,15 +1,15 @@
 // TAGether - Share self-made exam for classmates
-// Api.tsx
+// Api.ts
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import ApiResponse from '../types/ApiResponse';
-import TagData from '../types/TagData';
-import Categoly from '../types/Categoly';
-import CategolyResponse from '../types/CategolyResponse';
+import ApiResponse from '../../types/ApiResponse';
+import TagData from '../../types/TagData';
+import Categoly from '../../types/Categoly';
+import CategolyResponse from '../../types/CategolyResponse';
 
 type Query = string | string[] | undefined;
 

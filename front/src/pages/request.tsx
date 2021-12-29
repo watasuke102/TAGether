@@ -13,7 +13,7 @@ import {GetServerSideProps} from 'next';
 import Form from '../components/Form';
 import Toast from '../components/Toast';
 import Button from '../components/Button';
-import GetFromApi from '../ts/Api';
+import GetFromApi from '../components/utils/Api';
 import FeatureRequest from '../types/FeatureRequest';
 
 interface Props {
