@@ -66,7 +66,7 @@ export default class exam extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    let exam: Exam[] = [];
+    let exam_list: Exam[] = [];
     let title = '';
     // 間違えた問題のやり直しであれば
     if (props.history_id) {
@@ -74,8 +74,7 @@ export default class exam extends React.Component<Props, State> {
     } else {
       // 通常カテゴリであれば
       title = this.props.data[0].title;
-      exam = JSON.parse(this.props.data[0].list);
-      console.log(exam);
+      exam_list = JSON.parse(this.props.data[0].list);
       this.version = this.props.data[0].version;
     }
 
@@ -90,28 +89,28 @@ export default class exam extends React.Component<Props, State> {
     this.ref = React.createRef<HTMLTextAreaElement>();
     // Fisher-Yatesアルゴリズムで問題順シャッフル
     if (this.props.shuffle) {
-      for (let i = exam.length - 1; i > 0; i--) {
+      for (let i = exam_list.length - 1; i > 0; i--) {
         const r = Math.floor(Math.random() * (i + 1));
-        const tmp = exam[i];
-        exam[i] = exam[r];
-        exam[r] = tmp;
+        const tmp = exam_list[i];
+        exam_list[i] = exam_list[r];
+        exam_list[r] = tmp;
       }
     }
-    console.log(exam);
+    console.log(exam_list);
     // 解答状況・解答欄の初期化
-    const exam_length = exam.length;
+    const exam_length = exam_list.length;
     const exam_state: ExamState[] = Array<ExamState>();
     const answers: string[][] = Array<Array<string>>(exam_length);
     for (let i = 0; i < exam_length; i++) {
       exam_state[i] = {order: 0, checked: false, correctAnswerCount: 0};
-      answers[i] = Array<string>(exam[i].answer.length).fill('');
+      answers[i] = Array<string>(exam_list[i].answer.length).fill('');
     }
     // 最初が並び替えならコピー+シャッフル
     // 読み込みが終わっていなかった場合
-    if (exam.length !== 0) {
-      if (exam[0].type === 'Sort' && this.version === 2) {
+    if (exam_list.length !== 0) {
+      if (exam_list[0].type === 'Sort' && this.version === 2) {
         // 参照コピーはだめなので、引数なしconcatで新規配列作成
-        answers[0] = exam[0].answer.concat();
+        answers[0] = exam_list[0].answer.concat();
         for (let i = answers[0].length - 1; i > 0; i--) {
           const r = Math.floor(Math.random() * (i + 1));
           const tmp = answers[0][i];
@@ -122,7 +121,7 @@ export default class exam extends React.Component<Props, State> {
     }
     // stateの初期化
     this.state = {
-      exam: exam,
+      exam: exam_list,
       title: title,
       index: 0,
       isModalOpen: false,
