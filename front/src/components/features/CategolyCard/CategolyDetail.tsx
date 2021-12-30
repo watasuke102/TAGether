@@ -68,7 +68,7 @@ export default class CategolyDetail extends React.Component<Props, state> {
           <textarea disabled={true} value={this.data.title} id={css.title} />
 
           <div className={css.updated_at}>
-            <span className='fas fa-clock'></span>
+            <span className='fas fa-clock' />
             <p>{this.data.updated_at?.slice(0, -5).replace('T', ' ')}</p>
           </div>
 

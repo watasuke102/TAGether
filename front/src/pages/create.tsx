@@ -83,7 +83,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       isToastOpen: false,
       isModalOpen: false,
       jsonEdit: false,
-      is_using_old_form: this.props.data[0].version === 1 ? true : false,
+      is_using_old_form: (this.props.data[0].version === 1),
       categoly: categoly_default(),
       exam: exam_default(),
       res_result: {isSuccess: false, result: ''},

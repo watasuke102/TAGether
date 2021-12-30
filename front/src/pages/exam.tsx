@@ -75,6 +75,7 @@ export default class exam extends React.Component<Props, State> {
       // 通常カテゴリであれば
       title = this.props.data[0].title;
       exam = JSON.parse(this.props.data[0].list);
+      console.log(exam);
       this.version = this.props.data[0].version;
     }
 
@@ -96,6 +97,7 @@ export default class exam extends React.Component<Props, State> {
         exam[r] = tmp;
       }
     }
+    console.log(exam);
     // 解答状況・解答欄の初期化
     const exam_length = exam.length;
     const exam_state: ExamState[] = Array<ExamState>();

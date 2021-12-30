@@ -16,10 +16,9 @@ interface Props {
 
 export default class Error extends React.Component<Props> {
   static getInitialProps({res, err}: NextPageContext): Props {
-    const result: Props = {
+    return {
       code: res ? res.statusCode : err ? err.statusCode : undefined,
     };
-    return result;
   }
   render(): React.ReactElement {
     return (

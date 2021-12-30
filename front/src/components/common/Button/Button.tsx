@@ -25,7 +25,7 @@ export default function Button(props: ButtonInfo): React.ReactElement {
   return (
     <button className={css.button + ' ' + common.button} onClick={() => props.onClick()}>
       <div className={css.button_icon}>
-        <span className={props.icon}></span>
+        <span className={props.icon} />
       </div>
       <span className={css.button_text}>{props.text}</span>
     </button>

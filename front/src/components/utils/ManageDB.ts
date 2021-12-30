@@ -61,8 +61,7 @@ export function GetFavorite(): Promise<number[]> {
   return FavoriteInstance()
     .getItem<number[]>('main')
     .then(value => {
-      const result = value ?? [];
-      return result;
+      return value ?? [];
     });
 }
 export function UpdateFavorite(target: number): void {

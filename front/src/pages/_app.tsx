@@ -6,12 +6,12 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import '../style/main.scss';
+import '../components/common/main.scss';
 import Head from 'next/head';
 import React from 'react';
 import NProgress from 'nprogress';
 import {AppProps} from 'next/app';
-import '../style/nprogress.css';
+import '../components/common/nprogress.css';
 
 import Header from '../components/features/Header/Header';
 
