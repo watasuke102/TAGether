@@ -6,12 +6,12 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/ExamEditFormsOld.module.scss';
+import css from './ExamEditFormsOld.module.scss';
 import React from 'react';
-import Form from './Form';
-import Button from './Button';
-import Exam from '../types/Exam';
-import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
+import Form from '../../common/TextForm/Form';
+import Button from '../../common/Button/Button';
+import Exam from '../../../types/Exam';
+import ExamOperateFunctionsType from '../../../types/ExamOperateFunctionsType';
 
 interface Props {
   exam: Exam[];

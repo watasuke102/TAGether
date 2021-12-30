@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/ButtonContainer.module.scss';
+import css from './ButtonContainer.module.scss';
 import React from 'react';
 
 interface Props {

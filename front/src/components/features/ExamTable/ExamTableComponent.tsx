@@ -6,11 +6,11 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/ExamTableComponent.module.scss';
+import css from './ExamTableComponent.module.scss';
 import React from 'react';
-import ParseAnswers from './ParseAnswer';
-import Exam from '../types/Exam';
-import ExamState from '../types/ExamState';
+import ParseAnswers from '../../ParseAnswer';
+import Exam from '../../../types/Exam';
+import ExamState from '../../../types/ExamState';
 
 interface Props {
   showCorrectAnswer: boolean;

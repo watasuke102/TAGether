@@ -13,7 +13,7 @@ import NProgress from 'nprogress';
 import {AppProps} from 'next/app';
 import '../style/nprogress.css';
 
-import Header from '../components/Header';
+import Header from '../components/features/Header/Header';
 
 export default function MyApp({Component, pageProps, router}: AppProps): React.ReactElement {
   if (router.events) {

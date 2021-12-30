@@ -6,17 +6,17 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/ExamEditForms.module.scss';
+import css from './ExamEditForms.module.scss';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
-import Exam from '../types/Exam';
-import Form from './Form';
-import Modal from './Modal';
-import Button from './Button';
-import CheckBox from './CheckBox';
-import ButtonContainer from './ButtonContainer';
-import ExamOperateFunctionsType from '../types/ExamOperateFunctionsType';
-import ExamType from '../types/ExamType';
+import Exam from '../../../types/Exam';
+import Form from '../../common/TextForm/Form';
+import Modal from '../../common/Modal/Modal';
+import Button from '../../common/Button/Button';
+import CheckBox from '../../common/CheckBox/CheckBox';
+import ButtonContainer from '../../common/Button/ButtonContainer';
+import ExamOperateFunctionsType from '../../../types/ExamOperateFunctionsType';
+import ExamType from '../../../types/ExamType';
 
 interface Props {
   exam: Exam[];

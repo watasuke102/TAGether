@@ -6,11 +6,11 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/Header.module.scss';
+import css from './Header.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import Button from './Button';
-import ButtonInfo from '../types/ButtonInfo';
+import Button from '../../common/Button/Button';
+import ButtonInfo from '../../../types/ButtonInfo';
 
 interface State {
   isFixedButtons: boolean;

@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/Form.module.scss';
+import css from './Form.module.scss';
 import React from 'react';
-import FormInfo from '../types/FormInfo';
+import FormInfo from '../../../types/FormInfo';
 
 // なんで動くのかよくわからん
 // focus()を消すと動作しなくなる

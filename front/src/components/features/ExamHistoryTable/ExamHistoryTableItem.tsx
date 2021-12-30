@@ -7,13 +7,13 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 
-import css from '../style/components/ExamHistoryTableItem.module.scss';
+import css from './ExamHistoryTableItem.module.scss';
 import React from 'react';
-import Modal from '../components/Modal';
-import Button from '../components/Button';
-import Detail from '../components/CategolyDetail';
-import Categoly from '../types/Categoly';
-import ExamHistory from '../types/ExamHistory';
+import Modal from '../../common/Modal/Modal';
+import Button from '../../common/Button/Button';
+import Detail from '../CategolyCard/CategolyDetail';
+import Categoly from '../../../types/Categoly';
+import ExamHistory from '../../../types/ExamHistory';
 import Router from 'next/router';
 
 interface Props {

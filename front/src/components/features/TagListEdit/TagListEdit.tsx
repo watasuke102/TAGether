@@ -1,16 +1,16 @@
 // TAGether - Share self-made exam for classmates
-// TagEdit.tsx
+// TagListEdit.tsx
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/TagEdit.module.scss';
+import css from './TagListEdit.module.scss';
 import React from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
-import TagData from '../types/TagData';
-import TagDetail from './TagDetail';
+import TagData from '../../../types/TagData';
+import TagDetail from '../TagDetail/TagDetail';
 
 interface Props {
   tags: TagData[];
@@ -29,7 +29,7 @@ const fadeinout = {
   exit: 'init',
 };
 
-export default function TagEdit(props: Props): React.ReactElement {
+export default function TagListEdit(props: Props): React.ReactElement {
   const [is_picker_open, SetIsPickerOpen] = React.useState(false);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [picker_pos, SetPickerPos] = React.useState({top: 0, left: 0});

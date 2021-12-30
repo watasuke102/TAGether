@@ -10,9 +10,9 @@ import css from '../style/pages/request.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import {GetServerSideProps} from 'next';
-import Form from '../components/Form';
-import Toast from '../components/Toast';
-import Button from '../components/Button';
+import Form from '../components/common/TextForm/Form';
+import Toast from '../components/common/Toast/Toast';
+import Button from '../components/common/Button/Button';
 import GetFromApi from '../components/utils/Api';
 import FeatureRequest from '../types/FeatureRequest';
 

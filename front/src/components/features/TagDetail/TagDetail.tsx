@@ -6,15 +6,15 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/TagDetail.module.scss';
+import css from './TagDetail.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import Modal from '../components/Modal';
-import Form from '../components/Form';
-import Button from '../components/Button';
-import TagData from '../types/TagData';
-import Toast from './Toast';
-import ButtonContainer from './ButtonContainer';
+import Modal from '../../common/Modal/Modal';
+import Form from '../../common/TextForm/Form';
+import Button from '../../common/Button/Button';
+import TagData from '../../../types/TagData';
+import Toast from '../../common/Toast/Toast';
+import ButtonContainer from '../../common/Button/ButtonContainer';
 
 interface Props {
   tag: TagData;

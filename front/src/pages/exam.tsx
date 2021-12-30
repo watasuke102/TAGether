@@ -13,10 +13,10 @@ import Router from 'next/router';
 import {format} from 'date-fns';
 import {GetServerSideProps} from 'next';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
-import Form from '../components/Form';
-import Modal from '../components/Modal';
-import Button from '../components/Button';
-import ExamTable from '../components/ExamTableComponent';
+import Form from '../components/common/TextForm/Form';
+import Modal from '../components/common/Modal/Modal';
+import Button from '../components/common/Button/Button';
+import ExamTable from '../components/features/ExamTable/ExamTableComponent';
 import GetFromApi from '../components/utils/Api';
 import {AddExamHistory, GetSpecifiedExamHistory} from '../components/utils/ManageDB';
 import Exam from '../types/Exam';
@@ -24,9 +24,9 @@ import Categoly from '../types/Categoly';
 import ExamState from '../types/ExamState';
 import ExamHistory from '../types/ExamHistory';
 import ButtonInfo from '../types/ButtonInfo';
-import ButtonContainer from '../components/ButtonContainer';
+import ButtonContainer from '../components/common/Button/ButtonContainer';
 import ParseAnswers from '../components/ParseAnswer';
-import CheckBox from '../components/CheckBox';
+import CheckBox from '../components/common/CheckBox/CheckBox';
 
 enum NextButtonState {
   show_answer,

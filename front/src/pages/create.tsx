@@ -11,13 +11,13 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
 import {GetServerSideProps} from 'next';
-import Form from '../components/Form';
-import Toast from '../components/Toast';
-import Modal from '../components/Modal';
-import Button from '../components/Button';
-import TagEdit from '../components/TagEdit';
-import ExamEditForms from '../components/ExamEditForms';
-import ExamEditFormsOld from '../components/ExamEditFormsOld';
+import Form from '../components/common/TextForm/Form';
+import Toast from '../components/common/Toast/Toast';
+import Modal from '../components/common/Modal/Modal';
+import Button from '../components/common/Button/Button';
+import TagListEdit from '../components/features/TagListEdit/TagListEdit';
+import ExamEditForms from '../components/features/ExamEdit/ExamEditForms';
+import ExamEditFormsOld from '../components/features/ExamEdit/ExamEditFormsOld';
 import GetFromApi from '../components/utils/Api';
 import Exam from '../types/Exam';
 import TagData from '../types/TagData';
@@ -27,8 +27,8 @@ import ApiResponse from '../types/ApiResponse';
 import CreatePageConfig from '../types/CreatePageConfig';
 import EditCategolyPageState from '../types/EditCategolyPageState';
 import CategolyResponse from '../types/CategolyResponse';
-import CheckBox from '../components/CheckBox';
-import ButtonContainer from '../components/ButtonContainer';
+import CheckBox from '../components/common/CheckBox/CheckBox';
+import ButtonContainer from '../components/common/Button/ButtonContainer';
 import UpdateExam from '../components/utils/UpdateExam';
 
 // デフォルト値
@@ -322,7 +322,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
         </div>
 
         <h2>タグ</h2>
-        <TagEdit
+        <TagListEdit
           tags={this.props.tags}
           current_tag={this.state.categoly.tag}
           SetTag={(e: TagData[]) => {

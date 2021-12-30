@@ -6,14 +6,14 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/CategolyDetail.module.scss';
+import css from './CategolyDetail.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import Tag from './TagContainer';
-import CheckBox from './CheckBox';
-import Button from './Button';
-import Categoly from '../types/Categoly';
-import ButtonContainer from './ButtonContainer';
+import Tag from '../TagContainer/TagContainer';
+import CheckBox from '../../common/CheckBox/CheckBox';
+import Button from '../../common/Button/Button';
+import Categoly from '../../../types/Categoly';
+import ButtonContainer from '../../common/Button/ButtonContainer';
 
 interface Props {
   data: Categoly;

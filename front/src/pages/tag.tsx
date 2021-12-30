@@ -10,10 +10,10 @@ import css from '../style/pages/tag.module.scss';
 import React from 'react';
 import Router from 'next/router';
 import {GetServerSideProps} from 'next';
-import Button from '../components/Button';
+import Button from '../components/common/Button/Button';
 import GetFromApi from '../components/utils/Api';
 import TagData from '../types/TagData';
-import TagDetail from '../components/TagDetail';
+import TagDetail from '../components/features/TagDetail/TagDetail';
 
 interface Props {
   tag: TagData[];

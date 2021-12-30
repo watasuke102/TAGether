@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/Modal.module.scss';
+import css from './Modal.module.scss';
 import React from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
 

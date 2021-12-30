@@ -6,10 +6,10 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from '../style/components/FavoriteStar.module.scss';
+import css from './FavoriteStar.module.scss';
 import React from 'react';
 import {gsap, Power4} from 'gsap';
-import {UpdateFavorite, GetFavorite} from './utils/ManageDB';
+import {UpdateFavorite, GetFavorite} from '../../utils/ManageDB';
 
 interface Props {
   id: number;
