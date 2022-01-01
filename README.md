@@ -1,61 +1,71 @@
 # TAGether - Share self-made exam for classmates
 
 ## What's this
-誰かが作った問題をクラスの人と共有できるようなサービスです。  
+
+誰かが作った問題をクラスの人と共有できるようなサービスです。
 
 ## How to use
-1. /back/srcの `sample-env.json` を `env.json` にリネーム
-1. /frontの `sample-next.config.js` を `next.config.js` にリネーム
+
+1. /back/src 及び/front の `sample-env.json` を `env.json` にリネーム
 1. `./start.sh` (本番環境は`./start.sh product`)
 
-## docker-composeについて
-最新情報はdocker-compose.ymlをチェックしてね
-| 名前                     | ポート |
+## docker-compose について
+
+最新情報は docker-compose.yml をチェックしてね
+| 名前 | ポート |
 | ------------------------ | ------ |
-| フロントエンド (Next.js) |  3009  |
-| バックエンド (Node.js)   |  8079  |
-| phpMyAdmin               |  8888  |
-| MySQL                    |  3334  |
+| フロントエンド (Next.js) | 3009 |
+| バックエンド (Node.js) | 8079 |
+| phpMyAdmin | 8888 |
+| MySQL | 3334 |
 
 ## ディレクトリ構造
-ディレクトリは主にdocker, back, frontの3つ
+
+ディレクトリは主に docker, back, front の 3 つ
+
 <details>
 <summary>ディレクトリ構造の詳細</summary>
 
 ### Docker
-docker-compose用
+
+docker-compose 用
+
 - mysql/  
-  DB初期化の `db_init.sql`
+  DB 初期化の `db_init.sql`
 - nginx/  
-  nginxの設定ファイル (`api.conf`)
+  nginx の設定ファイル (`api.conf`)
 
 ### back
+
 Express (Node.js) によるバックエンド (API)
+
 - index.js  
-  Expressの初期化など
+  Express の初期化など
 - api.js  
   各リクエストに対するレスポンス
 - sample-env.json  
-  envファイルのテンプレート
+  env ファイルのテンプレート
 
 ### front
+
 React (next.js) によるフロントエンド
+
 - public/  
-  favicon用
+  favicon 用
 - src/
   - components
   - pages
   - style  
-    scssモジュール
+    scss モジュール
   - ts  
-    コンポーネントではないTypeScript置き場
+    コンポーネントではない TypeScript 置き場
   - types  
     型定義ファイル
   - sample-next.config.js  
-    next.config.jsファイルのテンプレート
+    next.config.js ファイルのテンプレート
 
 </details>
 
-
 ## LICENSE
+
 MIT SUSHI-WARE LICENSE

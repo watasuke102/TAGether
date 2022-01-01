@@ -6,12 +6,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "ES2015"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext", "ES2015"],
     "allowJs": true,
     "noEmit": true,
     "moduleResolution": "node",
@@ -20,18 +15,10 @@
     "jsx": "preserve",
     "noImplicitAny": false,
     "incremental": true,
-    "typeRoots": [
-      "src/types"
-    ],
+    "typeRoots": ["src/types"],
     "baseUrl": "src",
-    "paths": {"@/*": ["src/components/*"]}
+    "paths": {"@/*": ["src/components/*"],"@":["src/components"]}
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
