@@ -5,6 +5,7 @@ module.exports = {
   env: env,
   webpack(conf, _opt) {
     conf.resolve.alias['@'] = path.join(__dirname, 'src/components');
+    conf.resolve.alias['types'] = path.join(__dirname, 'src/types');
     return conf;
   },
 };
