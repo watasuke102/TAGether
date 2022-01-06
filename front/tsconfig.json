@@ -16,7 +16,7 @@
     "noImplicitAny": false,
     "incremental": true,
     "typeRoots": ["src/types"],
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {"@/*": ["src/components/*"], "types/*": ["src/types/*"]}
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

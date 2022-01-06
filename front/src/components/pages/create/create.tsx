@@ -46,12 +46,6 @@ function categoly_default(): Categoly {
   };
 }
 
-interface Props {
-  mode: 'create' | 'edit';
-  tags: TagData[];
-  data: Categoly[];
-}
-
 export default class create extends React.Component<Props, EditCategolyPageState> {
   constructor(props: Props) {
     super(props);
