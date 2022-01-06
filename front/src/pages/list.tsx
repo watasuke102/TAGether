@@ -10,8 +10,8 @@ import React from 'react';
 import {GetServerSideProps} from 'next';
 import {List} from '@/pages/list';
 import GetFromApi from '@/utils/Api';
-import TagData from 'types/TagData';
-import Categoly from 'types/Categoly';
+import TagData from '@mytypes/TagData';
+import Categoly from '@mytypes/Categoly';
 
 interface Props {
   tags: TagData[];

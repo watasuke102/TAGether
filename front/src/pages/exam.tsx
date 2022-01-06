@@ -10,7 +10,7 @@ import React from 'react';
 import {GetServerSideProps} from 'next';
 import {Exam} from '@/pages/exam';
 import GetFromApi from '@/utils/Api';
-import Categoly from 'types/Categoly';
+import Categoly from '@mytypes/Categoly';
 
 interface Props {
   data: Categoly[];

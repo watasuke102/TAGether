@@ -10,7 +10,7 @@ import React from 'react';
 import {GetServerSideProps} from 'next';
 import {Request} from '@/pages/request';
 import GetFromApi from '@/utils/Api';
-import FeatureRequest from 'types/FeatureRequest';
+import FeatureRequest from '@mytypes/FeatureRequest';
 
 interface Props {
   requests: FeatureRequest[];
