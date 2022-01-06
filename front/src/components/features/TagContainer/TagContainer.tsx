@@ -8,7 +8,7 @@
 //
 import css from './TagContainer.module.scss';
 import React from 'react';
-import TagData from '../../../types/TagData';
+import TagData from '@mytypes/TagData';
 import TagDetail from '../TagDetail/TagDetail';
 
 interface Props {

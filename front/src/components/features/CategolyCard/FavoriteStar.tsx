@@ -9,7 +9,7 @@
 import css from './FavoriteStar.module.scss';
 import React from 'react';
 import {gsap, Power4} from 'gsap';
-import {UpdateFavorite, GetFavorite} from '../../utils/ManageDB';
+import {UpdateFavorite, GetFavorite} from '@/utils/ManageDB';
 
 interface Props {
   id: number;

@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import React from 'react';
-import Exam from '../types/Exam';
+import Exam from '@mytypes/Exam';
 
 // ans_listをいい感じに整形して返す
 // Ex. exam.type = 'Text' && ans_list = ['first', 'second']

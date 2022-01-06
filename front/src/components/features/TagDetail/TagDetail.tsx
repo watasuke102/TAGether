@@ -9,12 +9,12 @@
 import css from './TagDetail.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import Modal from '../../common/Modal/Modal';
-import Form from '../../common/TextForm/Form';
-import Button from '../../common/Button/Button';
-import TagData from '../../../types/TagData';
-import Toast from '../../common/Toast/Toast';
-import ButtonContainer from '../../common/Button/ButtonContainer';
+import Modal from '@/common/Modal/Modal';
+import Form from '@/common/TextForm/Form';
+import Button from '@/common/Button/Button';
+import TagData from '@mytypes/TagData';
+import Toast from '@/common/Toast/Toast';
+import ButtonContainer from '@/common/Button/ButtonContainer';
 
 interface Props {
   tag: TagData;

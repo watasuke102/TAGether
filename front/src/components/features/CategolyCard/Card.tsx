@@ -9,10 +9,10 @@
 import css from './Card.module.scss';
 import React from 'react';
 import Tag from '../TagContainer/TagContainer';
-import Modal from '../../common/Modal/Modal';
+import Modal from '@/common/Modal/Modal';
 import Detail from './CategolyDetail';
 import FavoriteStar from './FavoriteStar';
-import Categoly from '../../../types/Categoly';
+import Categoly from '@mytypes/Categoly';
 
 export default function ExamCard(props: Categoly): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);

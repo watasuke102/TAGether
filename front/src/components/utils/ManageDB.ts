@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import LocalForage from 'localforage';
-import ExamHistory from '../../types/ExamHistory';
+import ExamHistory from '@mytypes/ExamHistory';
 
 // 解答履歴
 function ExamHisotryInstance() {

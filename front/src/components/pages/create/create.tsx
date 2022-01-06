@@ -20,13 +20,13 @@ import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
 import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
 import UpdateExam from '@/utils/UpdateExam';
-import Exam from '../../../types/Exam';
-import TagData from '../../../types/TagData';
-import Categoly from '../../../types/Categoly';
-import ButtonInfo from '../../../types/ButtonInfo';
-import ApiResponse from '../../../types/ApiResponse';
-import CategolyResponse from '../../../types/CategolyResponse';
-import EditCategolyPageState from '../../../types/EditCategolyPageState';
+import Exam from '@mytypes/Exam';
+import TagData from '@mytypes/TagData';
+import Categoly from '@mytypes/Categoly';
+import ButtonInfo from '@mytypes/ButtonInfo';
+import ApiResponse from '@mytypes/ApiResponse';
+import CategolyResponse from '@mytypes/CategolyResponse';
+import EditCategolyPageState from '@mytypes/EditCategolyPageState';
 
 // デフォルト値
 function exam_default(): Exam[] {

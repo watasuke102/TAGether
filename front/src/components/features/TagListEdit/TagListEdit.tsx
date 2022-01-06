@@ -9,7 +9,7 @@
 import css from './TagListEdit.module.scss';
 import React from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
-import TagData from '../../../types/TagData';
+import TagData from '@mytypes/TagData';
 import TagDetail from '../TagDetail/TagDetail';
 
 interface Props {

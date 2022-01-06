@@ -10,12 +10,12 @@ import css from './list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import Form from '../../common/TextForm/Form';
-import Button from '../../common/Button/Button';
-import CategolyCard from '../../features/CategolyCard/Card';
-import SelectBox from '../../common/CheckBox/SelectBox';
-import Categoly from '../../../types/Categoly';
-import TagData from '../../../types/TagData';
+import Form from '@/common/TextForm/Form';
+import Button from '@/common/Button/Button';
+import CategolyCard from '@/features/CategolyCard/Card';
+import SelectBox from '@/common/CheckBox/SelectBox';
+import Categoly from '@mytypes/Categoly';
+import TagData from '@mytypes/TagData';
 
 interface Props {
   data: Categoly[];

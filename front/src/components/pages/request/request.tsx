@@ -9,10 +9,10 @@
 import css from './request.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Form from '../../common/TextForm/Form';
-import Toast from '../../common/Toast/Toast';
-import Button from '../../common/Button/Button';
-import FeatureRequest from '../../../types/FeatureRequest';
+import Form from '@/common/TextForm/Form';
+import Toast from '@/common/Toast/Toast';
+import Button from '@/common/Button/Button';
+import FeatureRequest from '@mytypes/FeatureRequest';
 
 interface Props {
   requests: FeatureRequest[];

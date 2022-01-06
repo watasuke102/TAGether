@@ -11,7 +11,7 @@ import material from './MaterialLike.module.scss';
 import icon_and_text from './IconAndText.module.scss';
 import common from './Common.module.scss';
 import React from 'react';
-import ButtonInfo from '../../../types/ButtonInfo';
+import ButtonInfo from '@mytypes/ButtonInfo';
 
 export default function Button(props: ButtonInfo): React.ReactElement {
   // cssの設定

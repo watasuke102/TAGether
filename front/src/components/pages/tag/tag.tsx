@@ -9,9 +9,9 @@
 import css from './tag.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import Button from '../../common/Button/Button';
-import TagData from '../../../types/TagData';
-import TagDetail from '../../features/TagDetail/TagDetail';
+import Button from '@/common/Button/Button';
+import TagData from '@mytypes/TagData';
+import TagDetail from '@/features/TagDetail/TagDetail';
 
 interface Props {
   tags: TagData[];

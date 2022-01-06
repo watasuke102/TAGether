@@ -10,10 +10,10 @@ import css from './examtable.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Router from 'next/router';
-import Button from '../../common/Button/Button';
-import ExamTableComponent from '../../features/ExamTable/ExamTableComponent';
-import Exam from '../../../types/Exam';
-import Categoly from '../../../types/Categoly';
+import Button from '@/common/Button/Button';
+import ExamTableComponent from '@/features/ExamTable/ExamTableComponent';
+import Exam from '@mytypes/Exam';
+import Categoly from '@mytypes/Categoly';
 
 interface Props {
   data: Categoly[];

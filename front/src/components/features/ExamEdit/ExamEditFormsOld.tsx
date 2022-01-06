@@ -8,10 +8,10 @@
 //
 import css from './ExamEditFormsOld.module.scss';
 import React from 'react';
-import Form from '../../common/TextForm/Form';
-import Button from '../../common/Button/Button';
-import Exam from '../../../types/Exam';
-import ExamOperateFunctionsType from '../../../types/ExamOperateFunctionsType';
+import Form from '@/common/TextForm/Form';
+import Button from '@/common/Button/Button';
+import Exam from '@mytypes/Exam';
+import ExamOperateFunctionsType from '@mytypes/ExamOperateFunctionsType';
 
 interface Props {
   exam: Exam[];

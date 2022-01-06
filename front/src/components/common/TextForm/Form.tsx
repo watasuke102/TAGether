@@ -8,7 +8,7 @@
 //
 import css from './Form.module.scss';
 import React from 'react';
-import FormInfo from '../../../types/FormInfo';
+import FormInfo from '@mytypes/FormInfo';
 
 // なんで動くのかよくわからん
 // focus()を消すと動作しなくなる

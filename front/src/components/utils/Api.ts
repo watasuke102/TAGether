@@ -6,10 +6,10 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import ApiResponse from '../../types/ApiResponse';
-import TagData from '../../types/TagData';
-import Categoly from '../../types/Categoly';
-import CategolyResponse from '../../types/CategolyResponse';
+import ApiResponse from '@mytypes/ApiResponse';
+import TagData from '@mytypes/TagData';
+import Categoly from '@mytypes/Categoly';
+import CategolyResponse from '@mytypes/CategolyResponse';
 
 type Query = string | string[] | undefined;
 

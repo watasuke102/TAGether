@@ -12,19 +12,19 @@ import Helmet from 'react-helmet';
 import Router from 'next/router';
 import {format} from 'date-fns';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
-import Form from '../../common/TextForm/Form';
-import Modal from '../../common/Modal/Modal';
-import Button from '../../common/Button/Button';
-import ExamTable from '../../features/ExamTable/ExamTableComponent';
-import {AddExamHistory, GetSpecifiedExamHistory} from '../../utils/ManageDB';
-import Exam from '../../../types/Exam';
-import Categoly from '../../../types/Categoly';
-import ExamState from '../../../types/ExamState';
-import ExamHistory from '../../../types/ExamHistory';
-import ButtonInfo from '../../../types/ButtonInfo';
-import ButtonContainer from '../../common/Button/ButtonContainer';
+import Form from '@/common/TextForm/Form';
+import Modal from '@/common/Modal/Modal';
+import Button from '@/common/Button/Button';
+import ExamTable from '@/features/ExamTable/ExamTableComponent';
+import {AddExamHistory, GetSpecifiedExamHistory} from '@/utils/ManageDB';
+import Exam from '@mytypes/Exam';
+import Categoly from '@mytypes/Categoly';
+import ExamState from '@mytypes/ExamState';
+import ExamHistory from '@mytypes/ExamHistory';
+import ButtonInfo from '@mytypes/ButtonInfo';
+import ButtonContainer from '@/common/Button/ButtonContainer';
 import ParseAnswers from '../../ParseAnswer';
-import CheckBox from '../../common/CheckBox/CheckBox';
+import CheckBox from '@/common/CheckBox/CheckBox';
 
 enum NextButtonState {
   show_answer,

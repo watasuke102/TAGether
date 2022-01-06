@@ -10,10 +10,10 @@ import css from './CategolyDetail.module.scss';
 import React from 'react';
 import Router from 'next/router';
 import Tag from '../TagContainer/TagContainer';
-import CheckBox from '../../common/CheckBox/CheckBox';
-import Button from '../../common/Button/Button';
-import Categoly from '../../../types/Categoly';
-import ButtonContainer from '../../common/Button/ButtonContainer';
+import CheckBox from '@/common/CheckBox/CheckBox';
+import Button from '@/common/Button/Button';
+import Categoly from '@mytypes/Categoly';
+import ButtonContainer from '@/common/Button/ButtonContainer';
 
 interface Props {
   data: Categoly;

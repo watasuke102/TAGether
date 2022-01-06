@@ -9,14 +9,14 @@
 import css from './profile.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Modal from '../../common/Modal/Modal';
-import Button from '../../common/Button/Button';
-import CheckBox from '../../common/CheckBox/CheckBox';
-import CategolyCard from '../../features/CategolyCard/Card';
-import HistoryTable from '../../features/ExamHistoryTable/ExamHistoryTableItem';
-import {GetExamHistory, GetFavorite, ClearExamHistory} from '../../utils/ManageDB';
-import Categoly from '../../../types/Categoly';
-import ExamHistory from '../../../types/ExamHistory';
+import Modal from '@/common/Modal/Modal';
+import Button from '@/common/Button/Button';
+import CheckBox from '@/common/CheckBox/CheckBox';
+import CategolyCard from '@/features/CategolyCard/Card';
+import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryTableItem';
+import {GetExamHistory, GetFavorite, ClearExamHistory} from '@/utils/ManageDB';
+import Categoly from '@mytypes/Categoly';
+import ExamHistory from '@mytypes/ExamHistory';
 
 interface Props {
   data: Categoly[];
@@ -134,4 +134,3 @@ export default function profile(props: Props): React.ReactElement {
     </>
   );
 }
-

@@ -9,8 +9,8 @@
 import css from './Header.module.scss';
 import React from 'react';
 import Router from 'next/router';
-import Button from '../../common/Button/Button';
-import ButtonInfo from '../../../types/ButtonInfo';
+import Button from '@/common/Button/Button';
+import ButtonInfo from '@mytypes/ButtonInfo';
 
 interface State {
   isFixedButtons: boolean;
