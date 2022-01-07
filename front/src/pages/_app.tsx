@@ -25,6 +25,7 @@ export default function MyApp({Component, pageProps, router}: AppProps): React.R
     <main>
       <Head>
         <title>TAGether</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <Header />
       <Component {...pageProps} key={router.route} />
