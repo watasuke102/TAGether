@@ -16,7 +16,7 @@ export default class Doc extends Document {
         <Head>
           <meta charSet='utf8' />
           <link rel='icon' href='/static/icon.ico' />
-          <script></script>
+          <link rel='manifest' href='/manifest.json' />
         </Head>
         <body>
           <Main />

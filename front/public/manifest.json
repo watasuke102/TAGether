@@ -1,0 +1,40 @@
+{
+  "name": "TAGether",
+  "short_name": "tagether",
+  "description": "Share self-made exam for classmates",
+  "start_url": "/",
+  "id": "/",
+  "theme_color": "#7b8496",
+  "background_color": "#282c34",
+  "orientation": "any",
+  "display": "minimal-ui",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "sizes": "480x480",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Categoly list",
+      "short_name": "list",
+      "url": "/list"
+    },
+    {
+      "name": "Create new categoly",
+      "short_name": "create",
+      "url": "/create"
+    },
+    {
+      "name": "Tag list",
+      "short_name": "tag",
+      "url": "/tag"
+    },
+    {
+      "name": "Show profile",
+      "short_name": "profile",
+      "url": "/profile"
+    }
+  ]
+}
