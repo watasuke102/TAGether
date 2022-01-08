@@ -20,20 +20,14 @@ interface Props {
 
 export default function Request({requests}: Props): React.ReactElement {
   const [request, SetRequest] = React.useState('');
-  const [isToastOpen, SetIsToastOpen] = React.useState(false);
-  const [result, SetResult] = React.useState({isSuccess: false, result: ''});
+  const router = useRouter();
 
   const SendRequest = () => {
     if (request == '') return;
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
-        const result = JSON.parse(req.responseText);
-        if (result.isSuccess) {
-          SetRequest('');
-        }
-        SetResult(result);
-        SetIsToastOpen(true);
+        router.reload();
       }
     };
     req.open('POST', process.env.EDIT_URL + '/request');
@@ -102,24 +96,7 @@ export default function Request({requests}: Props): React.ReactElement {
             <th>内容</th>
             <th>回答</th>
           </tr>
-          {list}
-        </tbody>
-      </table>
-
-      <Toast id='request' isOpen={isToastOpen} close={() => SetIsToastOpen(false)} top={20}>
-        <div className={css.toast_body}>
-          {result.isSuccess ? (
-            <span>
-              送信しました。ご協力ありがとうございます。
-              <br />
-              ページを再読み込みすることで要望一覧が更新されます。
-            </span>
-          ) : (
-            <span>
-              送信に失敗しました: {result.result}
-              <br />
-              しばらく時間を置いてもう一度送信してください。
-            </span>
+        </table>
           )}
         </div>
       </Toast>
