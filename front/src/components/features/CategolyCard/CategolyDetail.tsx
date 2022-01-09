@@ -12,113 +12,75 @@ import React from 'react';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import CheckBox from '@/common/CheckBox/CheckBox';
+import Tag from '@/features/TagContainer/TagContainer';
+import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
-import Tag from '../TagContainer/TagContainer';
 
 interface Props {
   data: Categoly;
   close: () => void;
 }
-interface state {
-  isShuffleEnabled: boolean;
-}
 
-export default class CategolyDetail extends React.Component<Props, state> {
-  private data: Categoly;
-
-  constructor(props: Props) {
-    super(props);
-    this.UpdateContainersHeight();
-    this.data = this.props.data;
-    this.state = {isShuffleEnabled: false};
-  }
+export default function CategolyDetail(props: Props): React.ReactElement {
+  const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState(false);
 
   // スマホ対策
-  UpdateContainersHeight(): void {
+  const UpdateContainersHeight = (): void => {
     document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100) * 90 + 'px');
-  }
+  };
 
-  componentDidMount(): void {
-    window.addEventListener('resize', this.UpdateContainersHeight);
-  }
-  componentWillUnmount(): void {
-    window.removeEventListener('resize', this.UpdateContainersHeight);
-  }
+  React.useEffect(() => {
+    window.addEventListener('resize', UpdateContainersHeight);
+    return () => window.removeEventListener('resize', UpdateContainersHeight);
+  }, []);
 
-  Push(s: string): void {
+  function Push(s: string): void {
     let url: string = '';
     switch (s) {
       case 'edit':
-        url = `/edit?id=${this.data.id}`;
+        url = `/edit?id=${props.data.id}`;
         break;
       case 'exam':
-        url = `/exam?id=${this.data.id}&shuffle=${this.state.isShuffleEnabled}`;
+        url = `/exam?id=${props.data.id}&shuffle=${isShuffleEnabled}`;
         break;
       default:
-        url = `/examtable?id=${this.data.id}`;
+        url = `/examtable?id=${props.data.id}`;
         break;
     }
     Router.push(url);
   }
 
-  render(): React.ReactElement {
-    return (
-      <>
-        <div className={css.container}>
-          <textarea disabled={true} value={this.data.title} id={css.title} />
+  // prettier-ignore
+  const info: ButtonInfo[] = [
+    {text: '閉じる',        icon: 'fas fa-times',      onClick: props.close,         type: 'material'},
+    {text: '編集する',      icon: 'fas fa-pen',        onClick: () => Push('edit'),  type: 'material'},
+    {text: '問題一覧',      icon: 'fas fa-list',       onClick: () => Push('table'), type: 'material'},
+    {text: 'この問題を解く',icon: 'fas fa-arrow-right',onClick: () => Push('exam'),  type: 'filled'},
+  ];
 
-          <div className={css.updated_at}>
-            <span className='fas fa-clock' />
-            <p>{this.data.updated_at?.slice(0, -5).replace('T', ' ')}</p>
-          </div>
+  return (
+    <>
+      <div className={css.container}>
+        <textarea disabled={true} value={props.data.title} id={css.title} />
 
-          <Tag tag={this.data.tag} />
-
-          <textarea disabled={true} value={this.data.description} id={css.desc} />
-
-          {/* シャッフルするかどうかを決めるチェックボックス */}
-          <CheckBox
-            status={this.state.isShuffleEnabled}
-            desc='問題順をシャッフル'
-            onChange={e => this.setState({isShuffleEnabled: e})}
-          />
-
-          <ButtonContainer>
-            <Button
-              {...{
-                text: '閉じる',
-                icon: 'fas fa-times',
-                onClick: () => this.props.close(),
-                type: 'material',
-              }}
-            />
-            <Button
-              {...{
-                text: '編集する',
-                icon: 'fas fa-pen',
-                onClick: () => this.Push('edit'),
-                type: 'material',
-              }}
-            />
-            <Button
-              {...{
-                text: '問題一覧',
-                icon: 'fas fa-list',
-                onClick: () => this.Push('table'),
-                type: 'material',
-              }}
-            />
-            <Button
-              {...{
-                text: 'この問題を解く',
-                icon: 'fas fa-arrow-right',
-                onClick: () => this.Push('exam'),
-                type: 'filled',
-              }}
-            />
-          </ButtonContainer>
+        <div className={css.updated_at}>
+          <span className='fas fa-clock' />
+          <p>{props.data.updated_at?.slice(0, -5).replace('T', ' ')}</p>
         </div>
-      </>
-    );
-  }
+
+        <Tag tag={props.data.tag} />
+
+        <textarea disabled={true} value={props.data.description} id={css.desc} />
+
+        {/* シャッフルするかどうかを決めるチェックボックス */}
+        <CheckBox status={isShuffleEnabled} desc='問題順をシャッフル' onChange={SetIsShuffleEnabled} />
+
+        <ButtonContainer>
+          {info.map(e => (
+            <Button key={`categolydetail_${e.text}`} {...e} />
+          ))}
+        </ButtonContainer>
+      </div>
+    </>
+  );
 }
