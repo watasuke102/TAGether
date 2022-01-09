@@ -47,10 +47,10 @@ export default function TagDetail(props: Props): React.ReactElement {
     req.onreadystatechange = () => {
       if (req.readyState == 4) {
         const result = JSON.parse(req.responseText);
-        if (result.isSuccess) {
+        if (req.status === 200) {
           if (props.onComplete) {
             props.onComplete({
-              id: props.tag.id ?? result.result.insertId,
+              id: props.tag.id ?? result.insertId,
               name: edited_name,
               description: edited_desc,
             });

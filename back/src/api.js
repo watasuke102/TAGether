@@ -20,11 +20,11 @@ function Log(mes) {
 }
 
 function Success(resp, data) {
-  resp.json({ isSuccess: true, result: data });
+  resp.json(data);
   resp.status(200);
 }
 function Error(resp, mes) {
-  resp.json({ isSuccess: false, result: mes });
+  resp.json({ message: mes });
   resp.status(400);
 }
 
