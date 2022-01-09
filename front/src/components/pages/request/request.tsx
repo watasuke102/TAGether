@@ -11,15 +11,13 @@ import {useRouter} from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
+import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
-import FeatureRequest from '@mytypes/FeatureRequest';
+import {useRequestData} from '@/utils/Api';
 
-interface Props {
-  requests: FeatureRequest[];
-}
-
-export default function Request({requests}: Props): React.ReactElement {
+export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
+  const [requests, isLoading] = useRequestData();
   const router = useRouter();
 
   const SendRequest = () => {
@@ -73,28 +71,34 @@ export default function Request({requests}: Props): React.ReactElement {
       </div>
 
       <hr />
-
-      <table>
-        <tbody>
-          <tr>
-            <th>ID</th>
-            <th>最終更新</th>
-            <th>内容</th>
-            <th>回答</th>
-          </tr>
-          {requests.map(e => {
-            const updated_at = e.updated_at.slice(0, -5).replace('T', ' ');
-            return (
-              <tr key={`req_${e.id}`}>
-                <td className={css.id}>{e.id}</td>
-                <td className={css.updated_at}>{updated_at}</td>
-                <td className={css.body}>{e.body}</td>
-                <td className={css.answer}>{e.answer}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <table>
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>最終更新</th>
+              <th>内容</th>
+              <th>回答</th>
+            </tr>
+            {requests
+              .slice(0)
+              .reverse()
+              .map(e => {
+                const updated_at = e.updated_at.slice(0, -5).replace('T', ' ');
+                return (
+                  <tr key={`req_${e.id}`}>
+                    <td className={css.id}>{e.id}</td>
+                    <td className={css.updated_at}>{updated_at}</td>
+                    <td className={css.body}>{e.body}</td>
+                    <td className={css.answer}>{e.answer}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

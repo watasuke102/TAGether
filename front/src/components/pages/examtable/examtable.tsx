@@ -11,33 +11,21 @@ import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
+import Loading from '@/common/Loading/Loading';
 import ExamTableComponent from '@/features/ExamTable/ExamTableComponent';
-import Categoly from '@mytypes/Categoly';
-import Exam from '@mytypes/Exam';
+import {useCategolyData} from '@/utils/Api';
 
-interface Props {
-  data: Categoly[];
-  shuffle: boolean;
-}
-
-export default function ExamTable(props: Props): React.ReactElement {
+export default function ExamTable(): React.ReactElement {
+  const [data, isLoading] = useCategolyData();
   const [showCorrectAnswer, SetShowCorrectAnswer] = React.useState(false);
 
-  const exam: Exam[] = JSON.parse(props.data[0].list);
-  // Fisher-Yatesアルゴリズムらしい
-  if (props.shuffle) {
-    for (let i = exam.length - 1; i > 0; i--) {
-      const r = Math.floor(Math.random() * (i + 1));
-      const tmp = exam[i];
-      exam[i] = exam[r];
-      exam[r] = tmp;
-    }
-  }
+  if (isLoading) return <Loading />;
+
   return (
     <>
-      <Helmet title={`問題一覧 : ${props.data[0].title} - TAGether`} />
+      <Helmet title={`問題一覧 : ${data[0].title} - TAGether`} />
       <div className={css.table}>
-        <ExamTableComponent exam={exam} showCorrectAnswer={showCorrectAnswer} />
+        <ExamTableComponent exam={JSON.parse(data[0].list)} showCorrectAnswer={showCorrectAnswer} />
       </div>
 
       <div className={css.button_container}>

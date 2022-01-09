@@ -9,7 +9,7 @@
 import {Exam} from '@/pages/exam';
 import {GetServerSideProps} from 'next';
 import React from 'react';
-import GetFromApi from '@/utils/Api';
+import {GetFromApi} from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 
 interface Props {
@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
-  const data = await GetFromApi<Categoly>('categoly', context.query.id);
+  const data = await GetFromApi<Categoly>('categoly');
   const props: Props = {
     data: data,
     shuffle: context.query.shuffle === 'true',

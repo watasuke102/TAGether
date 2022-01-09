@@ -11,22 +11,21 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import CheckBox from '@/common/CheckBox/CheckBox';
+import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import CategolyCard from '@/features/CategolyCard/Card';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryTableItem';
+import {useCategolyData} from '@/utils/Api';
 import {GetExamHistory, GetFavorite, ClearExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 
-interface Props {
-  data: Categoly[];
-}
-
-export default function profile(props: Props): React.ReactElement {
+export default function profile(): React.ReactElement {
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
+  const [data, isLoading] = useCategolyData();
 
   const InitExamHistory = () => {
     GetExamHistory().then(res => {
@@ -53,11 +52,15 @@ export default function profile(props: Props): React.ReactElement {
       <div className={css.container}>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_categoly}>
-          {props.data
-            .filter(a => favorite_list.includes(a.id ?? -1))
-            .map(item => {
-              return <CategolyCard key={`card_${item.id}`} {...item} />;
-            })}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            data
+              .filter(a => favorite_list.includes(a.id ?? -1))
+              .map(item => {
+                return <CategolyCard key={`card_${item.id}`} {...item} />;
+              })
+          )}
         </div>
 
         <h2>解答履歴</h2>
@@ -90,7 +93,7 @@ export default function profile(props: Props): React.ReactElement {
               <th>間違えた問題を解く</th>
             </tr>
             {history_list.map(item => {
-              const categoly: Categoly | undefined = props.data.find(a => a.id === item.id);
+              const categoly: Categoly | undefined = data.find(a => a.id === item.id);
               if (categoly === undefined) return <></>;
               return (
                 <HistoryTable

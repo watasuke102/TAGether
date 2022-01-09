@@ -7,25 +7,8 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import {ExamTable} from '@/pages/examtable';
-import {GetServerSideProps} from 'next';
 import React from 'react';
-import GetFromApi from '@/utils/Api';
-import Categoly from '@mytypes/Categoly';
 
-interface Props {
-  data: Categoly[];
-  shuffle: boolean;
+export default function ExamTablePage(): React.ReactElement {
+  return <ExamTable />;
 }
-
-export default function ExamTablePage(props: Props): React.ReactElement {
-  return <ExamTable {...props} />;
-}
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  const data = await GetFromApi<Categoly>('categoly', context.query.id);
-  const props: Props = {
-    data: data,
-    shuffle: context.query.shuffle === 'true',
-  };
-  return {props: props};
-};

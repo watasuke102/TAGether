@@ -7,19 +7,18 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './tag.module.scss';
-import Router from 'next/router';
+import Router, {useRouter} from 'next/router';
 import React from 'react';
 import Button from '@/common/Button/Button';
+import Loading from '@/common/Loading/Loading';
 import TagDetail from '@/features/TagDetail/TagDetail';
+import {useTagData} from '@/utils/Api';
 import TagData from '@mytypes/TagData';
 
-interface Props {
-  tags: TagData[];
-}
-
-export default function Tag(props: Props): React.ReactElement {
+export default function Tag(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
-  const [tag, SetTag] = React.useState(props.tags);
+  const [tag, isLoading] = useTagData();
+  const router = useRouter();
 
   function TagItem(e: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -35,24 +34,12 @@ export default function Tag(props: Props): React.ReactElement {
           <span className={css.name}>{e.name}</span>
           <span className={css.desc}>{e.description}</span>
         </div>
-        <TagDetail
-          tag={e}
-          isOpen={is_modal_open}
-          close={() => SetIsModalOpen(false)}
-          onComplete={e => {
-            const result = tag;
-            for (let i = 0; i < result.length; i++) {
-              if (result[i].id === e.id) {
-                result[i] = e;
-                break;
-              }
-            }
-            SetTag(result);
-          }}
-        />
+        <TagDetail tag={e} isOpen={is_modal_open} close={() => SetIsModalOpen(false)} onComplete={router.reload} />
       </div>
     );
   }
+
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -63,7 +50,15 @@ export default function Tag(props: Props): React.ReactElement {
         </div>
       </div>
 
-      <div className={css.container}>{tag.length === 0 ? <p>見つかりませんでした</p> : tag.map(e => TagItem(e))}</div>
+      <div className={css.container}>
+        {tag.length === 0 ? (
+          <p>見つかりませんでした</p>
+        ) : isLoading ? (
+          <Loading />
+        ) : (
+          tag.map(e => <TagItem key={`tagcard_${e.id ?? ''}`} {...e} />)
+        )}
+      </div>
 
       <TagDetail
         createMode

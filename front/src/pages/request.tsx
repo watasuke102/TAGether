@@ -7,21 +7,8 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import {Request} from '@/pages/request';
-import {GetServerSideProps} from 'next';
 import React from 'react';
-import GetFromApi from '@/utils/Api';
-import FeatureRequest from '@mytypes/FeatureRequest';
 
-interface Props {
-  requests: FeatureRequest[];
+export default function RequestPage(): React.ReactElement {
+  return <Request />;
 }
-
-export default function RequestPage(props: Props): React.ReactElement {
-  return <Request {...props} />;
-}
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  const data = await GetFromApi<FeatureRequest>('request', context.query.id);
-  data.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
-  return {props: {requests: data}};
-};

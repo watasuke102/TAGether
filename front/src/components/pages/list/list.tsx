@@ -12,23 +12,20 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import SelectBox from '@/common/CheckBox/SelectBox';
+import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
 import CategolyCard from '@/features/CategolyCard/Card';
+import {useCategolyData} from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
-import TagData from '@mytypes/TagData';
 
-interface Props {
-  data: Categoly[];
-  tags: TagData[];
-}
-
-export default function list(props: Props): React.ReactElement {
+export default function list(): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
-  const list: Categoly[] = props.data;
+  const [list, isLoading] = useCategolyData();
 
   function CardList(): React.ReactElement[] {
+    console.log('in LIST', list);
     let cards: React.ReactElement[] = [];
     let searchResult: Categoly[] = [];
     cards = [];
@@ -124,8 +121,7 @@ export default function list(props: Props): React.ReactElement {
           />
         </div>
       </div>
-
-      <div className={css.list}> {CardList()} </div>
+      {isLoading ? <Loading /> : <div className={css.list}> {CardList()} </div>}
     </>
   );
 }
