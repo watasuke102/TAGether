@@ -67,7 +67,7 @@ export default function TagDetail(props: Props): React.ReactElement {
         SetIsToastOpen(true);
       }
     };
-    req.open(props.createMode ? 'POST' : 'PUT', process.env.EDIT_URL + '/tag');
+    req.open(props.createMode ? 'POST' : 'PUT', process.env.API_URL + '/tag');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(
       JSON.stringify({

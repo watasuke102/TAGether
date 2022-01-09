@@ -28,7 +28,7 @@ export default function Request(): React.ReactElement {
         router.reload();
       }
     };
-    req.open('POST', process.env.EDIT_URL + '/request');
+    req.open('POST', process.env.API_URL + '/request');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({body: request}));
   };

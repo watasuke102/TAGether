@@ -1,4 +1,3 @@
 {
-  "GET_URL": "http://back",
-  "EDIT_URL": "http://localhost:8079"
+  "API_URL": "http://localhost:8079"
 }

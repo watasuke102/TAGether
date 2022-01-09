@@ -103,7 +103,7 @@ export async function GetFromApi<T>(target: string, id?: string, shuffle?: boole
   // APIでカテゴリを取得する
   let data: T[] = [];
   try {
-    data = await (await fetch(`${process.env.EDIT_URL ?? ''}/${target}/${id ?? ''}`)).json();
+    data = await (await fetch(`${process.env.API_URL ?? ''}/${target}/${id ?? ''}`)).json();
   } catch {
     data = [];
   }

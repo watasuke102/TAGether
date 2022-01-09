@@ -169,7 +169,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
         }
       }
     };
-    const url = process.env.EDIT_URL + '/categoly';
+    const url = process.env.API_URL + '/categoly';
     if (url === undefined) {
       this.setState({isToastOpen: true, regist_error: '失敗しました: URL is undefined'});
       return;
