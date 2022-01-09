@@ -28,6 +28,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   const UpdateContainersHeight = (): void => {
     document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100) * 90 + 'px');
   };
+  UpdateContainersHeight();
 
   React.useEffect(() => {
     window.addEventListener('resize', UpdateContainersHeight);
