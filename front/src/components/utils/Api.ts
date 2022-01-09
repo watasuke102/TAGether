@@ -20,17 +20,19 @@ function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): 
   const router = useRouter();
   const {id, shuffle} = router.query;
 
-  const id_str = Array.isArray(id) ? id[0] : id ?? '';
+  let id_str = '';
+  if (target === 'categoly') id_str = Array.isArray(id) ? id[0] : id ?? '';
   const is_shuffle = shuffle === 'true' && router.pathname.slice(1, 5) !== 'exam';
 
   React.useEffect(() => {
+    if (!router.isReady) return;
     (async () =>
       GetFromApi<T>(target, id_str, is_shuffle).then(res => {
         if (onComplete) onComplete(res);
         SetData(res);
         SetIsLoading(false);
       }))();
-  }, []);
+  }, [router.isReady]);
 
   return [data, isLoading];
 }

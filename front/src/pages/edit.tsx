@@ -16,5 +16,9 @@ export default function EditPage(): React.ReactElement {
   const [categoly, isCategolyLoading] = useCategolyData();
   const [tags, isTagLoading] = useTagData();
 
+  React.useEffect(() => {
+    console.log(isCategolyLoading, categoly, isTagLoading, tags);
+  });
+
   return isTagLoading || isCategolyLoading ? <Loading /> : <Create mode={'edit'} data={categoly[0]} tags={tags} />;
 }
