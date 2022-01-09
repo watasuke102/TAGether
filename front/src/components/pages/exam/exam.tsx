@@ -7,24 +7,24 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './exam.module.scss';
-import React from 'react';
-import Helmet from 'react-helmet';
-import Router from 'next/router';
 import {format} from 'date-fns';
+import Router from 'next/router';
+import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
-import Form from '@/common/TextForm/Form';
-import Modal from '@/common/Modal/Modal';
+import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
+import ButtonContainer from '@/common/Button/ButtonContainer';
+import CheckBox from '@/common/CheckBox/CheckBox';
+import Modal from '@/common/Modal/Modal';
+import Form from '@/common/TextForm/Form';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {AddExamHistory, GetSpecifiedExamHistory} from '@/utils/ManageDB';
-import Exam from '@mytypes/Exam';
-import Categoly from '@mytypes/Categoly';
-import ExamState from '@mytypes/ExamState';
-import ExamHistory from '@mytypes/ExamHistory';
 import ButtonInfo from '@mytypes/ButtonInfo';
-import ButtonContainer from '@/common/Button/ButtonContainer';
+import Categoly from '@mytypes/Categoly';
+import Exam from '@mytypes/Exam';
+import ExamHistory from '@mytypes/ExamHistory';
+import ExamState from '@mytypes/ExamState';
 import ParseAnswers from '../../ParseAnswer';
-import CheckBox from '@/common/CheckBox/CheckBox';
 
 enum NextButtonState {
   show_answer,
@@ -184,9 +184,9 @@ export default class exam extends React.Component<Props, State> {
     // Ctrl+Shift+矢印キー等で動かす
     // キーリピートでの入力とウィンドウが表示されている場合は無効
     if (e.ctrlKey && e.shiftKey && !e.repeat && !this.state.isModalOpen) {
-      if (e.code == 'KeyH' || e.code == 'ArrowLeft') {
+      if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
         this.DecrementIndex();
-      } else if (e.code == 'KeyL' || e.code == 'ArrowRight') {
+      } else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
         this.IncrementIndex();
       }
     }
@@ -243,7 +243,7 @@ export default class exam extends React.Component<Props, State> {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').map(ans => {
-          if (this.state.answers[index][i] == ans && !correct) {
+          if (this.state.answers[index][i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
@@ -255,13 +255,13 @@ export default class exam extends React.Component<Props, State> {
     }
 
     // 全問正解
-    if (result.correctAnswerCount == this.state.exam[index].answer.length) {
+    if (result.correctAnswerCount === this.state.exam[index].answer.length) {
       result.order = 0;
     } else {
       // 1問でも間違っていたら、間違えた問題リストに追加
       this.exam_history.wrong_exam.push(this.state.exam[index]);
       // 全問不正解の場合
-      if (result.correctAnswerCount == 0) {
+      if (result.correctAnswerCount === 0) {
         result.order = 2;
       } else {
         // 部分正解
@@ -279,7 +279,7 @@ export default class exam extends React.Component<Props, State> {
     // 解答済みの問題だった場合
     if (this.state.examState[i].checked) {
       // 最後の問題であれば終了ボタン
-      if (i == this.state.exam.length - 1) {
+      if (i === this.state.exam.length - 1) {
         button_state = NextButtonState.finish_exam;
       } else {
         //そうでないなら次へボタン
@@ -297,7 +297,7 @@ export default class exam extends React.Component<Props, State> {
       case NextButtonState.show_answer:
         this.CheckAnswer();
         // 最後の問題であれば、ボタンを終了ボタンに
-        if (this.state.index == this.state.exam.length - 1) {
+        if (this.state.index === this.state.exam.length - 1) {
           this.setState({nextButtonState: NextButtonState.finish_exam});
         } else {
           //そうでないなら次へボタン
@@ -336,7 +336,7 @@ export default class exam extends React.Component<Props, State> {
     }
   }
   DecrementIndex(): void {
-    if (this.state.index == 0) return;
+    if (this.state.index === 0) return;
     // indexの変更
     this.SetIndex(this.state.index - 1);
   }
@@ -360,7 +360,7 @@ export default class exam extends React.Component<Props, State> {
           <div className={css.form} key={`examform_Text_${i}`}>
             <Form
               rows={1}
-              reff={i == 0 ? this.ref : null}
+              reff={i === 0 ? this.ref : null}
               label={`解答 ${exam.answer.length === 1 ? '' : `(${i + 1})`}`}
               value={this.state.answers[this.state.index][i]}
               onChange={ev => this.UpdateUsersResponse(ev, i)}
@@ -484,9 +484,9 @@ export default class exam extends React.Component<Props, State> {
     let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」
-    if (answer_length == 1 || (this.state.exam[this.state.index].type === 'MultiSelect' && this.version === 2)) {
+    if (answer_length === 1 || (this.state.exam[this.state.index].type === 'MultiSelect' && this.version === 2)) {
       // 正解だった場合
-      if (state.correctAnswerCount == 1) {
+      if (state.correctAnswerCount === 1) {
         icon = 'far fa-circle';
         result = '正解';
       } else {
@@ -496,7 +496,7 @@ export default class exam extends React.Component<Props, State> {
     } else {
       // 問題が2つ以上だった場合は「n問正解」
       // 全問正解で○アイコン
-      if (state.correctAnswerCount == answer_length) {
+      if (state.correctAnswerCount === answer_length) {
         icon = 'far fa-circle';
       }
       result = state.correctAnswerCount + '問正解';

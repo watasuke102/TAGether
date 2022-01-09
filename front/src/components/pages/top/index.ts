@@ -1,3 +1,3 @@
 import Top from './top';
 
-export { Top };
+export {Top};

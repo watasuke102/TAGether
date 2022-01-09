@@ -6,7 +6,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-
 import ExamType from './ExamType';
 
 interface Exam {

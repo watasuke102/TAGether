@@ -8,9 +8,9 @@
 //
 import css from './ExamTableComponent.module.scss';
 import React from 'react';
-import ParseAnswers from '../../ParseAnswer';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
+import ParseAnswers from '../../ParseAnswer';
 
 interface Props {
   showCorrectAnswer: boolean;
@@ -50,7 +50,7 @@ export default class ExamTable extends React.Component<Props, State> {
       });
       // 連結する
       // 条件に合うorderがなかった場合、配列がundefinedになるため、それをfilterで削除
-      array = first.concat(second.concat(third)).filter(e => e != undefined && e != -1);
+      array = first.concat(second.concat(third)).filter(e => e !== undefined && e !== -1);
     }
     this.state = {array: array};
   }
@@ -60,8 +60,8 @@ export default class ExamTable extends React.Component<Props, State> {
     // 正解or不正解、もしくはn問正解の表示
     const count = this.props.examState[i].correctAnswerCount;
     let correct_state: string = '';
-    if (this.props.exam[i].answer.length == 1) {
-      correct_state = count == 1 ? '正解' : '不正解';
+    if (this.props.exam[i].answer.length === 1) {
+      correct_state = count === 1 ? '正解' : '不正解';
     } else {
       correct_state = count + '問正解';
     }

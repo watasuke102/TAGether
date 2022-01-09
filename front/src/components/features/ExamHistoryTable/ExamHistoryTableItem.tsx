@@ -6,15 +6,14 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-
 import css from './ExamHistoryTableItem.module.scss';
+import Router from 'next/router';
 import React from 'react';
-import Modal from '@/common/Modal/Modal';
 import Button from '@/common/Button/Button';
-import Detail from '../CategolyCard/CategolyDetail';
+import Modal from '@/common/Modal/Modal';
 import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
-import Router from 'next/router';
+import Detail from '../CategolyCard/CategolyDetail';
 
 interface Props {
   categoly: Categoly;

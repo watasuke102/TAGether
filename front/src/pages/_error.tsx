@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import React from 'react';
-import Link from 'next/link';
 import {NextPageContext} from 'next';
+import Link from 'next/link';
+import React from 'react';
 
 interface Props {
   code: number | undefined;

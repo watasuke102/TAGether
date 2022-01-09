@@ -1,3 +1,3 @@
 import ExamTable from './examtable';
 
-export { ExamTable };
+export {ExamTable};

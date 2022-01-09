@@ -1,3 +1,3 @@
 import Profile from './profile';
 
-export { Profile };
+export {Profile};

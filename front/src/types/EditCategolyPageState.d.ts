@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import Exam from './Exam';
-import Categoly from './Categoly';
 import ApiResponse from './ApiResponse';
+import Categoly from './Categoly';
+import Exam from './Exam';
 
 interface EditCategolyPageState {
   jsonEdit: boolean;

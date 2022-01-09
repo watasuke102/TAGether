@@ -7,17 +7,17 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './CategolyDetail.module.scss';
-import React from 'react';
 import Router from 'next/router';
-import Tag from '../TagContainer/TagContainer';
-import CheckBox from '@/common/CheckBox/CheckBox';
+import React from 'react';
 import Button from '@/common/Button/Button';
-import Categoly from '@mytypes/Categoly';
 import ButtonContainer from '@/common/Button/ButtonContainer';
+import CheckBox from '@/common/CheckBox/CheckBox';
+import Categoly from '@mytypes/Categoly';
+import Tag from '../TagContainer/TagContainer';
 
 interface Props {
   data: Categoly;
-  close: Function;
+  close: () => void;
 }
 interface state {
   isShuffleEnabled: boolean;

@@ -7,13 +7,13 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './list.module.scss';
+import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
-import Form from '@/common/TextForm/Form';
 import Button from '@/common/Button/Button';
-import CategolyCard from '@/features/CategolyCard/Card';
 import SelectBox from '@/common/CheckBox/SelectBox';
+import Form from '@/common/TextForm/Form';
+import CategolyCard from '@/features/CategolyCard/Card';
 import Categoly from '@mytypes/Categoly';
 import TagData from '@mytypes/TagData';
 
@@ -33,7 +33,7 @@ export default function list(props: Props): React.ReactElement {
     let searchResult: Categoly[] = [];
     cards = [];
     // 検索欄になにか記入されていたら、検索
-    if (searchStr != '') {
+    if (searchStr !== '') {
       list.forEach(e => {
         let text: string = '';
         switch (radioState) {
@@ -44,7 +44,7 @@ export default function list(props: Props): React.ReactElement {
             text = e.description;
             break;
           case 'ID':
-            if (e.id?.toString() != undefined) text = e.id.toString();
+            if (e.id?.toString() !== undefined) text = e.id.toString();
             break;
           case 'タグ':
             e.tag.forEach(a => (text += `${a.name},`));
@@ -52,7 +52,7 @@ export default function list(props: Props): React.ReactElement {
             break;
         }
         // 検索欄に入力された文字と一致したら検索結果に追加
-        if (text.indexOf(searchStr) != -1) searchResult.push(e);
+        if (text.indexOf(searchStr) !== -1) searchResult.push(e);
       });
     } else {
       searchResult = list;

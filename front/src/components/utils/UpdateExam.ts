@@ -6,10 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-
 import Exam from '@mytypes/Exam';
-import ExamType from '@mytypes/ExamType';
 import ExamOperateFunctionsType from '@mytypes/ExamOperateFunctionsType';
+import ExamType from '@mytypes/ExamType';
 
 export default function UpdateExam(updater: (e: Exam[]) => void, exam: Exam[]): ExamOperateFunctionsType {
   return {

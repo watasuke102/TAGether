@@ -9,12 +9,12 @@
 import css from './ExamEditForms.module.scss';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
-import Exam from '@mytypes/Exam';
-import Form from '@/common/TextForm/Form';
-import Modal from '@/common/Modal/Modal';
 import Button from '@/common/Button/Button';
-import CheckBox from '@/common/CheckBox/CheckBox';
 import ButtonContainer from '@/common/Button/ButtonContainer';
+import CheckBox from '@/common/CheckBox/CheckBox';
+import Modal from '@/common/Modal/Modal';
+import Form from '@/common/TextForm/Form';
+import Exam from '@mytypes/Exam';
 import ExamOperateFunctionsType from '@mytypes/ExamOperateFunctionsType';
 import ExamType from '@mytypes/ExamType';
 
@@ -213,7 +213,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
               if (!e.destination) return;
               const from = e.source.index,
                 to = e.destination.index;
-              if (from == to) return;
+              if (from === to) return;
               const ans = props.exam[current_page].answer;
               ans.splice(to + (from < to ? 1 : 0), 0, ans[from]);
               ans.splice(from + (from > to ? 1 : 0), 1);
@@ -382,7 +382,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
               if (!e.destination) return;
               const from = e.source.index,
                 to = e.destination.index;
-              if (from == to) return;
+              if (from === to) return;
               const exam = props.exam;
               exam.splice(to + (from < to ? 1 : 0), 0, exam[from]);
               exam.splice(from + (from > to ? 1 : 0), 1);

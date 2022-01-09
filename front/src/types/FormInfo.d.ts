@@ -13,7 +13,7 @@ interface FormInfo {
   value: string;
   rows: number;
   disabled?: boolean;
-  onChange: Function;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   reff?: RefObject<HTMLTextAreaElement> | MutableRefObject<HTMLTextAreaElement | undefined> | null;
 }
 

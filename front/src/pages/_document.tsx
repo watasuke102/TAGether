@@ -6,8 +6,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import React from 'react';
 import Document, {Html, Head, Main, NextScript} from 'next/document';
+import React from 'react';
 
 export default class Doc extends Document {
   render(): React.ReactElement {

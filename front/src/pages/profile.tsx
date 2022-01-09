@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import React from 'react';
-import {GetServerSideProps} from 'next';
 import {Profile} from '@/pages/profile';
+import {GetServerSideProps} from 'next';
+import React from 'react';
 import GetFromApi from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 

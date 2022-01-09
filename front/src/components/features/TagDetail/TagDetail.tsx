@@ -7,21 +7,21 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './TagDetail.module.scss';
-import React from 'react';
 import Router from 'next/router';
+import React from 'react';
+import Button from '@/common/Button/Button';
+import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import Form from '@/common/TextForm/Form';
-import Button from '@/common/Button/Button';
-import TagData from '@mytypes/TagData';
 import Toast from '@/common/Toast/Toast';
-import ButtonContainer from '@/common/Button/ButtonContainer';
+import TagData from '@mytypes/TagData';
 
 interface Props {
   tag: TagData;
   isOpen: boolean;
-  close: Function;
+  close: () => void;
   createMode?: boolean;
-  onComplete?: Function;
+  onComplete?: (e: TagData) => void;
 }
 
 export default function TagDetail(props: Props): React.ReactElement {
@@ -45,13 +45,14 @@ export default function TagDetail(props: Props): React.ReactElement {
 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
-      if (req.readyState == 4) {
+      if (req.readyState === 4) {
         const result = JSON.parse(req.responseText);
         if (req.status === 200) {
           if (props.onComplete) {
             props.onComplete({
               id: props.tag.id ?? result.insertId,
               name: edited_name,
+              updated_at: '',
               description: edited_desc,
             });
           }

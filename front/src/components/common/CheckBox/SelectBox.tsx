@@ -12,7 +12,7 @@ import CheckBox from './CheckBox';
 interface Props {
   status: string;
   list: string[];
-  onChange: Function;
+  onChange: (str: string) => void;
 }
 
 export default function SelectBox(props: Props): React.ReactElement {

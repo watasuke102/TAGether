@@ -7,13 +7,13 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './examtable.module.scss';
+import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
 import Button from '@/common/Button/Button';
 import ExamTableComponent from '@/features/ExamTable/ExamTableComponent';
-import Exam from '@mytypes/Exam';
 import Categoly from '@mytypes/Categoly';
+import Exam from '@mytypes/Exam';
 
 interface Props {
   data: Categoly[];

@@ -6,9 +6,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import React from 'react';
-import {GetServerSideProps} from 'next';
 import {Exam} from '@/pages/exam';
+import {GetServerSideProps} from 'next';
+import React from 'react';
 import GetFromApi from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 
@@ -26,7 +26,7 @@ export default function ExamPage(props: Props): React.ReactElement {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // 解答履歴からのやり直し
-  if (context.query.history_id != undefined) {
+  if (context.query.history_id !== undefined) {
     return {
       props: {
         data: [],
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const props: Props = {
     data: data,
     shuffle: context.query.shuffle === 'true',
-    id: context.query.id == undefined ? -1 : Number(context.query.id),
+    id: context.query.id === undefined ? -1 : Number(context.query.id),
   };
   // 特定のタグを解くのであれば
   if (context.query.tag) {

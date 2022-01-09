@@ -26,7 +26,6 @@ import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import EditCategolyPageState from '@mytypes/EditCategolyPageState';
-import Exam from '@mytypes/Exam';
 import TagData from '@mytypes/TagData';
 
 interface Props {
@@ -94,7 +93,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
     {
       let failed: boolean = false;
       let result_str: string = '';
-      if (this.state.categoly.title == '') {
+      if (this.state.categoly.title === '') {
         failed = true;
         result_str += '・タイトルを設定してください\n';
       }
@@ -154,7 +153,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
-      if (req.readyState == 4) {
+      if (req.readyState === 4) {
         const result = JSON.parse(req.responseText);
         this.FinishedRegist(result);
         // エラーだったらページ移動確認ダイアログを無効化しない
@@ -165,7 +164,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       }
     };
     const url = process.env.EDIT_URL + '/categoly';
-    if (url == undefined) {
+    if (url === undefined) {
       this.setState({isToastOpen: true, res_result: {isSuccess: false, result: '失敗しました: URL is undefined'}});
       return;
     }
@@ -199,7 +198,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
   // モーダルウィンドウの中身
   RegistResult(from: 'Modal' | 'Toast'): React.ReactElement {
     let result;
-    if (this.state.res_result.result != '') {
+    if (this.state.res_result.result !== '') {
       result = this.state.res_result;
     } else {
       // 何も中身がなければエラー時の値を代入する

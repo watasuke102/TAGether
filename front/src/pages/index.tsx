@@ -6,8 +6,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import React from 'react';
 import {Top} from '@/pages/top';
+import React from 'react';
 
 export default function Index(): React.ReactElement {
   return <Top />;

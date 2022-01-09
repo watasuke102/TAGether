@@ -8,8 +8,8 @@
 //
 import css from './ExamEditFormsOld.module.scss';
 import React from 'react';
-import Form from '@/common/TextForm/Form';
 import Button from '@/common/Button/Button';
+import Form from '@/common/TextForm/Form';
 import Exam from '@mytypes/Exam';
 import ExamOperateFunctionsType from '@mytypes/ExamOperateFunctionsType';
 
@@ -33,7 +33,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
             <div className={css.exam_editform} key={`ansform_${i}`}>
               {/* 上部の移動・追加ボタン */}
               <div className={css.move_button}>
-                {i != 0 && (
+                {i !== 0 && (
                   <Button
                     {...{
                       text: '1つ上に移動',
@@ -123,7 +123,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
 
               {/* 下部の移動・追加ボタン */}
               <div className={css.move_button}>
-                {i != props.exam.length - 1 && (
+                {i !== props.exam.length - 1 && (
                   <Button
                     {...{
                       text: '1つ下に移動',

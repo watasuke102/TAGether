@@ -7,15 +7,15 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './TagListEdit.module.scss';
-import React from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
+import React from 'react';
 import TagData from '@mytypes/TagData';
 import TagDetail from '../TagDetail/TagDetail';
 
 interface Props {
   tags: TagData[];
   current_tag: TagData[];
-  SetTag: Function;
+  SetTag: (e: TagData[]) => void;
 }
 
 const fadeinout = {

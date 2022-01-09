@@ -7,11 +7,11 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './request.module.scss';
+import {useRouter} from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Form from '@/common/TextForm/Form';
-import Toast from '@/common/Toast/Toast';
 import Button from '@/common/Button/Button';
+import Form from '@/common/TextForm/Form';
 import FeatureRequest from '@mytypes/FeatureRequest';
 
 interface Props {
@@ -23,10 +23,10 @@ export default function Request({requests}: Props): React.ReactElement {
   const router = useRouter();
 
   const SendRequest = () => {
-    if (request == '') return;
+    if (request === '') return;
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
-      if (req.readyState == 4) {
+      if (req.readyState === 4) {
         router.reload();
       }
     };
@@ -34,20 +34,6 @@ export default function Request({requests}: Props): React.ReactElement {
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({body: request}));
   };
-
-  // 要望一覧
-  const list: React.ReactElement[] = [];
-  requests.map(e => {
-    const updated_at = e.updated_at.slice(0, -5).replace('T', ' ');
-    list.push(
-      <tr key={`req_${e.id}`}>
-        <td className={css.id}>{e.id}</td>
-        <td className={css.updated_at}>{updated_at}</td>
-        <td className={css.body}>{e.body}</td>
-        <td className={css.answer}>{e.answer}</td>
-      </tr>,
-    );
-  });
 
   return (
     <div className={css.container}>
@@ -96,10 +82,19 @@ export default function Request({requests}: Props): React.ReactElement {
             <th>内容</th>
             <th>回答</th>
           </tr>
-        </table>
-          )}
-        </div>
-      </Toast>
+          {requests.map(e => {
+            const updated_at = e.updated_at.slice(0, -5).replace('T', ' ');
+            return (
+              <tr key={`req_${e.id}`}>
+                <td className={css.id}>{e.id}</td>
+                <td className={css.updated_at}>{updated_at}</td>
+                <td className={css.body}>{e.body}</td>
+                <td className={css.answer}>{e.answer}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

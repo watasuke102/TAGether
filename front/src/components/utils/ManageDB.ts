@@ -22,7 +22,7 @@ export function AddExamHistory(item: ExamHistory): void {
   const instance = ExamHisotryInstance();
   instance.keys().then(keys => {
     let key = Math.max(...keys.map(Number)) + 1;
-    if (isNaN(key) || key == -Infinity) key = 0;
+    if (isNaN(key) || key === -Infinity) key = 0;
     instance.setItem(String(key), item);
   });
 }

@@ -7,13 +7,13 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './Toast.module.scss';
-import React from 'react';
 import {gsap, Power4} from 'gsap';
+import React from 'react';
 
 interface Props {
   children: React.ReactElement | React.ReactElement[];
   isOpen: boolean;
-  close: Function;
+  close: () => void;
   top?: number;
   id: string;
 }

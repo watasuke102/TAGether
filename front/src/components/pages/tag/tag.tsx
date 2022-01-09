@@ -7,11 +7,11 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './tag.module.scss';
-import React from 'react';
 import Router from 'next/router';
+import React from 'react';
 import Button from '@/common/Button/Button';
-import TagData from '@mytypes/TagData';
 import TagDetail from '@/features/TagDetail/TagDetail';
+import TagData from '@mytypes/TagData';
 
 interface Props {
   tags: TagData[];

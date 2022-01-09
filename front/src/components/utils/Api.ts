@@ -7,9 +7,9 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import ApiResponse from '@mytypes/ApiResponse';
-import TagData from '@mytypes/TagData';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
+import TagData from '@mytypes/TagData';
 
 type Query = string | string[] | undefined;
 
