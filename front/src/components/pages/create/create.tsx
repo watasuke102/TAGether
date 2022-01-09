@@ -7,44 +7,27 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './create.module.scss';
+import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Router from 'next/router';
+import Button from '@/common/Button/Button';
+import ButtonContainer from '@/common/Button/ButtonContainer';
+import CheckBox from '@/common/CheckBox/CheckBox';
+import Modal from '@/common/Modal/Modal';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
-import Modal from '@/common/Modal/Modal';
-import Button from '@/common/Button/Button';
-import CheckBox from '@/common/CheckBox/CheckBox';
-import ButtonContainer from '@/common/Button/ButtonContainer';
-import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
 import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
+import TagListEdit from '@/features/TagListEdit/TagListEdit';
+import {exam_default, categoly_default} from '@/utils/DefaultValue';
 import UpdateExam from '@/utils/UpdateExam';
-import Exam from '@mytypes/Exam';
-import TagData from '@mytypes/TagData';
-import Categoly from '@mytypes/Categoly';
-import ButtonInfo from '@mytypes/ButtonInfo';
 import ApiResponse from '@mytypes/ApiResponse';
+import ButtonInfo from '@mytypes/ButtonInfo';
+import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import EditCategolyPageState from '@mytypes/EditCategolyPageState';
-
-// デフォルト値
-function exam_default(): Exam[] {
-  const tmp: Exam[] = [];
-  tmp.push({question: '', answer: [''], comment: ''});
-  return tmp;
-}
-function categoly_default(): Categoly {
-  return {
-    id: 0,
-    updated_at: '',
-    version: 2,
-    title: '',
-    description: '',
-    tag: [],
-    list: JSON.stringify(exam_default(), undefined, '  '),
-  };
-}
+import Exam from '@mytypes/Exam';
+import TagData from '@mytypes/TagData';
 
 interface Props {
   mode: 'create' | 'edit';
