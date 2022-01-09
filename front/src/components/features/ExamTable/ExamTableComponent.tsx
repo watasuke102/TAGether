@@ -8,9 +8,9 @@
 //
 import css from './ExamTableComponent.module.scss';
 import React from 'react';
+import {ParseAnswer} from '@/features/ParseAnswer';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
-import ParseAnswers from '../../ParseAnswer';
 
 interface Props {
   showCorrectAnswer: boolean;
@@ -52,15 +52,17 @@ export default function ExamTable(props: Props): React.ReactElement {
     if (!props.examState || !props.answers) return;
     // 正解or不正解、もしくはn問正解の表示
     const count = props.examState[i].correctAnswerCount;
+    const len = props.exam[i].answer.length;
     let correct_state: string = '';
-    if (props.exam[i].answer.length === 1) {
+    if (len === 1) {
       correct_state = count === 1 ? '正解' : '不正解';
     } else {
-      correct_state = count + '問正解';
+      correct_state = `${count === len ? '全' : count}問正解`;
     }
     return (
       <>
-        <td>{ParseAnswers(props.answers[i], props.exam[i])}</td>
+        {/* 自分の解答 */}
+        <td>{ParseAnswer(props.answers[i], props.exam[i])}</td>
         <td>
           <span key={`state_${i} `}>{correct_state}</span>
         </td>
@@ -86,7 +88,7 @@ export default function ExamTable(props: Props): React.ReactElement {
           }
         </td>
         <td className={props.showCorrectAnswer ? '' : css.hide_correct_answer}>
-          {ParseAnswers(exam[i].answer, props.exam[i])}
+          {ParseAnswer(exam[i].answer, props.exam[i])}
         </td>
         {/* 自分の解答+何問正解したか */ Status(i)}
       </tr>,

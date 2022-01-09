@@ -18,13 +18,13 @@ import CheckBox from '@/common/CheckBox/CheckBox';
 import Modal from '@/common/Modal/Modal';
 import Form from '@/common/TextForm/Form';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
+import {ParseAnswer} from '@/features/ParseAnswer';
 import {AddExamHistory} from '@/utils/ManageDB';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamState from '@mytypes/ExamState';
-import ParseAnswers from '../../ParseAnswer';
 
 enum NextButtonState {
   show_answer,
@@ -159,17 +159,18 @@ export default class exam extends React.Component<Props, State> {
 
     // 複数選択問題は、完全一致のみ正解にする
     if (exam.type === 'MultiSelect' && this.version === 2) {
-      // ソートして比較する
-      const my_answers = this.state.answers[index]
-        .filter(e => e !== '')
-        .sort()
-        .toString();
+      // 空欄削除+ソート+文字列化した後、比較する
+      const answers = this.state.answers;
+      answers[index] = answers[index].filter(e => e !== '').sort();
+      const my_answers = answers[index].toString();
       const real_answers = exam.answer.sort().toString();
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
         this.correct_answers++;
       }
       this.total_questions++;
+      // 空欄削除+ソートされたものに変えておく
+      this.setState({answers: answers});
     } else {
       exam.answer.forEach((e, i) => {
         correct = false;
@@ -441,7 +442,11 @@ export default class exam extends React.Component<Props, State> {
         </div>
         <div className={css.answer_list}>
           <p id={css.seikai}>正解:</p>
-          {ParseAnswers(this.state.exam[this.state.index].answer, this.state.exam[this.state.index])}
+          {ParseAnswer(
+            this.state.exam[this.state.index].answer,
+            this.state.exam[this.state.index],
+            this.state.answers[this.state.index],
+          )}
           {this.state.exam[this.state.index].comment && (
             <div>
               <h2>コメント</h2>
