@@ -6,7 +6,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import ApiResponse from './ApiResponse';
 import Categoly from './Categoly';
 import Exam from './Exam';
 
@@ -15,7 +14,8 @@ interface EditCategolyPageState {
   isToastOpen: boolean;
   isModalOpen: boolean;
   is_using_old_form: boolean;
-  res_result: ApiResponse;
+  // 成功した場合は''となる
+  regist_error: string;
   categoly: Categoly;
   exam: Exam[];
   showConfirmBeforeLeave: boolean;

@@ -43,7 +43,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       is_using_old_form: this.props.data.version === 1,
       categoly: this.isCreate() ? categoly_default() : this.props.data,
       exam: this.isCreate() ? exam_default() : JSON.parse(this.props.data.list),
-      res_result: {isSuccess: false, result: ''},
+      regist_error: '',
       showConfirmBeforeLeave: true,
     };
   }
@@ -125,10 +125,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       if (failed) {
         this.setState({
           isToastOpen: true,
-          res_result: {
-            isSuccess: false,
-            result: result_str,
-          },
+          regist_error: result_str,
         });
         return;
       }
@@ -158,7 +155,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
           this.setState({
             isModalOpen: this.isCreate(),
             isToastOpen: !this.isCreate(),
-            res_result: {isSuccess: true, result: result.message},
+            regist_error: '',
           });
           // 確認ダイアログを無効化
           this.RouterEventOff();
@@ -167,14 +164,14 @@ export default class create extends React.Component<Props, EditCategolyPageState
           // エラーはcreate/edit関わらずToastで表示する
           this.setState({
             isToastOpen: true,
-            res_result: {isSuccess: false, result: result.message},
+            regist_error: result.message,
           });
         }
       }
     };
     const url = process.env.EDIT_URL + '/categoly';
     if (url === undefined) {
-      this.setState({isToastOpen: true, res_result: {isSuccess: false, result: '失敗しました: URL is undefined'}});
+      this.setState({isToastOpen: true, regist_error: '失敗しました: URL is undefined'});
       return;
     }
     req.open(this.isCreate() ? 'POST' : 'PUT', url);
@@ -202,17 +199,10 @@ export default class create extends React.Component<Props, EditCategolyPageState
 
   // モーダルウィンドウの中身
   RegistResult(from: 'Modal' | 'Toast'): React.ReactElement {
-    let result;
-    if (this.state.res_result.result !== '') {
-      result = this.state.res_result;
-    } else {
-      // 何も中身がなければエラー時の値を代入する
-      result = {isSuccess: 'error', result: '失敗しました'};
-    }
     let message: string;
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
-    if (result.isSuccess) {
+    if (this.state.regist_error === '') {
       message = this.isCreate() ? 'カテゴリの追加に成功しました' : '編集結果を適用しました';
       button_info = [
         {
@@ -230,7 +220,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       ];
     } else {
       // 失敗した場合、閉じるボタンのみ
-      message = 'エラーが発生しました。\n' + result.result;
+      message = `エラーが発生しました。\n${this.state.regist_error}`;
       button_info = [
         {
           type: 'filled',
