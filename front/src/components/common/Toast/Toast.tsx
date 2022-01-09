@@ -24,7 +24,7 @@ export default function Toast(props: Props): React.ReactElement {
     if (!props.isOpen) {
       gsap.to(target, {
         duration: 0,
-        translateX: '0%',
+        translateX: '120%',
         opacity: 0,
       });
       return;
@@ -52,7 +52,7 @@ export default function Toast(props: Props): React.ReactElement {
       )
       .to(target, {
         duration: 0,
-        translateX: '0%',
+        translateX: '120%',
         onComplete: () => props.close(),
       });
   }, [props.isOpen]);
