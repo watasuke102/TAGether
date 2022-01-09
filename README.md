@@ -6,7 +6,7 @@
 
 ## How to use
 
-1. /back/src 及び/front の `sample-env.json` を `env.json` にリネーム
+1. /back/src 及び/front の `sample-env.json` を `env.json` にリネーム、必要に応じて編集
 1. `./start.sh` (本番環境は`./start.sh product`)
 
 ## docker-compose について
@@ -53,18 +53,23 @@ React (next.js) によるフロントエンド
 - public/  
   favicon 用
 - src/
-  - components
+  - components/
+    - common/ → 共通して使うコンポーネント
+    - features/ → 機能ごとに分ける
+    - pages/ → src/pages の実態みたいな
+    - utils/ → React に関係しないスクリプト
   - pages
-  - style  
-    scss モジュール
-  - ts  
-    コンポーネントではない TypeScript 置き場
+    Next.js のルーティング用
   - types  
     型定義ファイル
-  - sample-next.config.js  
-    next.config.js ファイルのテンプレート
+  - sample-env.json  
+    env.json ファイルのテンプレート
 
 </details>
+
+## Tips
+
+起動すると生成される /public/sw.js の先頭あたりに`self.__WB_DISABLE_DEV_LOGS = true;`を記述すると、やかましい workbox のログが出なくなる
 
 ## LICENSE
 
