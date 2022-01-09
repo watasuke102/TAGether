@@ -21,7 +21,6 @@ import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {exam_default, categoly_default} from '@/utils/DefaultValue';
 import UpdateExam from '@/utils/UpdateExam';
-import ApiResponse from '@mytypes/ApiResponse';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
@@ -30,21 +29,20 @@ import TagData from '@mytypes/TagData';
 
 interface Props {
   mode: 'create' | 'edit';
+  data: Categoly;
   tags: TagData[];
-  data: Categoly[];
 }
 
 export default class create extends React.Component<Props, EditCategolyPageState> {
   constructor(props: Props) {
     super(props);
-    this.props.data[0].version = 2;
     this.state = {
       isToastOpen: false,
       isModalOpen: false,
       jsonEdit: false,
-      is_using_old_form: this.props.data[0].version === 1,
-      categoly: this.isCreate() ? categoly_default() : this.props.data[0],
-      exam: this.isCreate() ? exam_default() : JSON.parse(this.props.data[0].list),
+      is_using_old_form: this.props.data.version === 1,
+      categoly: this.isCreate() ? categoly_default() : this.props.data,
+      exam: this.isCreate() ? exam_default() : JSON.parse(this.props.data.list),
       res_result: {isSuccess: false, result: ''},
       showConfirmBeforeLeave: true,
     };
@@ -155,11 +153,22 @@ export default class create extends React.Component<Props, EditCategolyPageState
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
         const result = JSON.parse(req.responseText);
-        this.FinishedRegist(result);
-        // エラーだったらページ移動確認ダイアログを無効化しない
-        if (!result.isSuccess) {
+        if (req.status === 200) {
+          // createの場合はmodalを表示、editの場合はtoastを表示するから
+          this.setState({
+            isModalOpen: this.isCreate(),
+            isToastOpen: !this.isCreate(),
+            res_result: {isSuccess: true, result: result.message},
+          });
+          // 確認ダイアログを無効化
           this.RouterEventOff();
           this.setState({showConfirmBeforeLeave: false});
+        } else {
+          // エラーはcreate/edit関わらずToastで表示する
+          this.setState({
+            isToastOpen: true,
+            res_result: {isSuccess: false, result: result.message},
+          });
         }
       }
     };
@@ -172,10 +181,6 @@ export default class create extends React.Component<Props, EditCategolyPageState
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(categoly));
     console.log('BODY: ' + JSON.stringify(categoly));
-  }
-  FinishedRegist(result: ApiResponse): void {
-    // createの場合はmodalを表示、editの場合はtoastを表示するから
-    this.setState({isModalOpen: this.isCreate(), isToastOpen: !this.isCreate(), res_result: result});
   }
 
   // state更新
@@ -319,7 +324,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
             desc='高度な編集（JSON）'
             onChange={e => this.setState({jsonEdit: e})}
           />
-          {this.props.data[0].version !== 1 && (
+          {this.props.data.version !== 1 && (
             <CheckBox
               status={this.state.is_using_old_form}
               desc='古い編集画面を使う'

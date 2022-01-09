@@ -7,24 +7,13 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import {Create} from '@/pages/create';
-import {GetServerSideProps} from 'next';
 import React from 'react';
-import {GetFromApi} from '@/utils/Api';
-import Categoly from '@mytypes/Categoly';
-import TagData from '@mytypes/TagData';
+import Loading from '@/common/Loading/Loading';
+import {useTagData} from '@/utils/Api';
+import {categoly_default} from '@/utils/DefaultValue';
 
-interface Props {
-  tags: TagData[];
-  data: Categoly[];
+export default function CreatePage(): React.ReactElement {
+  const [tags, isLoading] = useTagData();
+
+  return isLoading ? <Loading /> : <Create mode={'create'} data={categoly_default()} tags={tags} />;
 }
-
-export default function CreatePage(props: Props): React.ReactElement {
-  return <Create mode={'create'} {...props} />;
-}
-
-// APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async context => {
-  const tags = await GetFromApi<TagData>('tag');
-  const data = await GetFromApi<Categoly>('categoly');
-  return {props: {tags: tags, data: data}};
-};

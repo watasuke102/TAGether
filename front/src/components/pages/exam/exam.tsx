@@ -18,7 +18,7 @@ import CheckBox from '@/common/CheckBox/CheckBox';
 import Modal from '@/common/Modal/Modal';
 import Form from '@/common/TextForm/Form';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
-import {AddExamHistory, GetSpecifiedExamHistory} from '@/utils/ManageDB';
+import {AddExamHistory} from '@/utils/ManageDB';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
@@ -33,12 +33,11 @@ enum NextButtonState {
 }
 
 interface Props {
-  data: Categoly[];
-  shuffle: boolean;
-  id: number;
-  history_id?: string;
-  tag_filter?: string;
+  data: Categoly;
+  history_id: string | string[] | undefined;
+  tag_filter: string | string[] | undefined;
 }
+
 interface State {
   exam: Exam[];
   title: string;
@@ -65,19 +64,12 @@ export default class exam extends React.Component<Props, State> {
     super(props);
 
     let exam_list: Exam[] = [];
-    let title = '';
-    // 間違えた問題のやり直しであれば
-    if (props.history_id) {
-      this.InitWrongExamList();
-    } else {
-      // 通常カテゴリであれば
-      title = this.props.data[0].title;
-      exam_list = JSON.parse(this.props.data[0].list);
-      this.version = this.props.data[0].version;
-    }
+    const title = this.props.data.title;
+    exam_list = JSON.parse(this.props.data.list);
+    this.version = this.props.data.version;
 
     this.exam_history = {
-      id: this.props.id,
+      id: this.props.data.id ?? 0,
       title: title,
       date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       correct_count: 0,
@@ -85,16 +77,6 @@ export default class exam extends React.Component<Props, State> {
       wrong_exam: [],
     };
     this.ref = React.createRef<HTMLTextAreaElement>();
-    // Fisher-Yatesアルゴリズムで問題順シャッフル
-    if (this.props.shuffle) {
-      for (let i = exam_list.length - 1; i > 0; i--) {
-        const r = Math.floor(Math.random() * (i + 1));
-        const tmp = exam_list[i];
-        exam_list[i] = exam_list[r];
-        exam_list[r] = tmp;
-      }
-    }
-    console.log(exam_list);
     // 解答状況・解答欄の初期化
     const exam_length = exam_list.length;
     const exam_state: ExamState[] = Array<ExamState>();
@@ -104,17 +86,14 @@ export default class exam extends React.Component<Props, State> {
       answers[i] = Array<string>(exam_list[i].answer.length).fill('');
     }
     // 最初が並び替えならコピー+シャッフル
-    // 読み込みが終わっていなかった場合
-    if (exam_list.length !== 0) {
-      if (exam_list[0].type === 'Sort' && this.version === 2) {
-        // 参照コピーはだめなので、引数なしconcatで新規配列作成
-        answers[0] = exam_list[0].answer.concat();
-        for (let i = answers[0].length - 1; i > 0; i--) {
-          const r = Math.floor(Math.random() * (i + 1));
-          const tmp = answers[0][i];
-          answers[0][i] = answers[0][r];
-          answers[0][r] = tmp;
-        }
+    if (exam_list[0].type === 'Sort' && this.version === 2) {
+      // 参照コピーはだめなので、引数なしconcatで新規配列作成
+      answers[0] = exam_list[0].answer.concat();
+      for (let i = answers[0].length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = answers[0][i];
+        answers[0][i] = answers[0][r];
+        answers[0][r] = tmp;
       }
     }
     // stateの初期化
@@ -130,53 +109,6 @@ export default class exam extends React.Component<Props, State> {
       examState: exam_state,
       showCorrectAnswer: false,
     };
-  }
-
-  InitWrongExamList(): void {
-    if (!process.browser) return;
-    GetSpecifiedExamHistory(this.props.history_id ?? '').then(result => {
-      if (result) {
-        // ここから下はコンストラクタとほぼ同じ処理をしてる //
-
-        // Fisher-Yatesアルゴリズムで問題順シャッフル
-        const exam = result.wrong_exam;
-        if (this.props.shuffle) {
-          for (let i = exam.length - 1; i > 0; i--) {
-            const r = Math.floor(Math.random() * (i + 1));
-            const tmp = exam[i];
-            exam[i] = exam[r];
-            exam[r] = tmp;
-          }
-        }
-        // 解答状況・解答欄の初期化
-        const exam_length = exam.length;
-        const exam_state: ExamState[] = Array<ExamState>();
-        const answers: string[][] = Array<Array<string>>(exam_length);
-        for (let i = 0; i < exam_length; i++) {
-          exam_state[i] = {order: 0, checked: false, correctAnswerCount: 0};
-          answers[i] = Array<string>(exam[i].answer.length).fill('');
-        }
-        // 最初が並び替えならコピー+シャッフル
-        if (exam[0].type === 'Sort' && this.version === 2) {
-          // 参照コピーはだめなので、引数なしconcatで新規配列作成
-          answers[0] = exam[0].answer.concat();
-          for (let i = answers[0].length - 1; i > 0; i--) {
-            const r = Math.floor(Math.random() * (i + 1));
-            const tmp = answers[0][i];
-            answers[0][i] = answers[0][r];
-            answers[0][r] = tmp;
-          }
-        }
-
-        // 同じ処理おわり //
-        this.setState({
-          exam: exam,
-          title: `やり直し: ${result.title}`,
-          answers: answers,
-          examState: exam_state,
-        });
-      }
-    });
   }
 
   // ショートカットキー
@@ -669,13 +601,13 @@ export default class exam extends React.Component<Props, State> {
               <br />（{this.total_questions}問中{this.correct_answers}問正解）
             </p>
             <ButtonContainer>
-              {!this.props.history_id && !this.props.tag_filter ? (
+              {!this.props.history_id && !this.props.tag_filter && this.props.data.id !== undefined ? (
                 <Button
                   {...{
                     text: '編集する',
                     icon: 'fas fa-pen',
                     type: 'material',
-                    onClick: () => Router.push('/edit?id=' + this.props.id),
+                    onClick: () => Router.push('/edit?id=' + this.props.data.id),
                   }}
                 />
               ) : (

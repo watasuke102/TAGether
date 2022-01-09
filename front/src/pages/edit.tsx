@@ -7,24 +7,14 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import {Create} from '@/pages/create';
-import {GetServerSideProps} from 'next';
 import React from 'react';
-import {GetFromApi} from '@/utils/Api';
-import Categoly from '@mytypes/Categoly';
-import TagData from '@mytypes/TagData';
+import Loading from '@/common/Loading/Loading';
+import {useCategolyData, useTagData} from '@/utils/Api';
 
-interface Props {
-  tags: TagData[];
-  data: Categoly[];
+export default function EditPage(): React.ReactElement {
+  // クエリパラメータでcategoly[0]に編集したいカテゴリがあるはず
+  const [categoly, isCategolyLoading] = useCategolyData();
+  const [tags, isTagLoading] = useTagData();
+
+  return isTagLoading || isCategolyLoading ? <Loading /> : <Create mode={'edit'} data={categoly[0]} tags={tags} />;
 }
-
-export default function EditPage(props: Props): React.ReactElement {
-  return <Create mode={'edit'} {...props} />;
-}
-
-// APIで問題を取得
-export const getServerSideProps: GetServerSideProps = async context => {
-  const tags = await GetFromApi<TagData>('tag');
-  const data = await GetFromApi<Categoly>('categoly');
-  return {props: {tags: tags, data: data}};
-};

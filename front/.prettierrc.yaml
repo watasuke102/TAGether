@@ -8,10 +8,10 @@ bracketSpacing: false
 
 # importの種類ごとに改行を挟まない
 importOrderSeparation: false
-# 
 importOrderCaseInsensitive: false
 importOrder:
   - '(.*)\.module\.scss'
+  - '^@/pages/(.*)'
   - '<THIRD_PARTY_MODULES>'
   - '^@/common/(.*)'
   - '^@/features/(.*)'

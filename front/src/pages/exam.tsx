@@ -7,72 +7,63 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import {Exam} from '@/pages/exam';
-import {GetServerSideProps} from 'next';
+import {useRouter} from 'next/router';
 import React from 'react';
-import {GetFromApi} from '@/utils/Api';
+import Loading from '@/common/Loading/Loading';
+import {useCategolyData} from '@/utils/Api';
+import {categoly_default} from '@/utils/DefaultValue';
+import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 
-interface Props {
-  data: Categoly[];
-  shuffle: boolean;
-  id: number;
-  history_id?: string;
-  tag_filter?: string;
-}
+export default function ExamPage(): React.ReactElement {
+  const router = useRouter();
+  const {id, history_id, tag} = router.query;
 
-export default function ExamPage(props: Props): React.ReactElement {
-  return <Exam {...props} />;
-}
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  // 解答履歴からのやり直し
-  if (context.query.history_id !== undefined) {
-    return {
-      props: {
-        data: [],
-        id: -1,
-        shuffle: context.query.shuffle === 'true',
-        history_id: context.query.history_id,
-      },
-    };
-  }
-  const data = await GetFromApi<Categoly>('categoly');
-  const props: Props = {
-    data: data,
-    shuffle: context.query.shuffle === 'true',
-    id: context.query.id === undefined ? -1 : Number(context.query.id),
-  };
-  // 特定のタグを解くのであれば
-  if (context.query.tag) {
-    let filter: string = '';
-    if (Array.isArray(context.query.tag)) filter = context.query.tag[0];
-    else filter = context.query.tag;
-    props.tag_filter = filter;
-
-    const data: Categoly = {
-      title: `タグ(${filter})`,
-      version: 2,
-      description: '',
-      tag: [],
-      list: '[]',
-    };
-
-    props.data.forEach(e => {
-      let tag_included = false;
-      // タグが含まれているかどうかをチェック
-      e.tag.forEach(tag => {
-        if (tag_included) return;
-        tag_included = tag.name === filter;
+  const [isLoading, SetIsLoading] = React.useState(true);
+  const [data, SetData] = React.useState<Categoly>(categoly_default());
+  useCategolyData(categoly => {
+    if (id !== undefined) {
+      // 通常
+      SetData(categoly[0]);
+      SetIsLoading(false);
+    } else if (history_id !== undefined) {
+      // 履歴からの解き直し
+      const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
+      GetSpecifiedExamHistory(history_id_str).then(result => {
+        if (result) {
+          SetData({
+            ...categoly_default(),
+            title: `やり直し: ${result.title}`,
+            list: JSON.stringify(result.wrong_exam),
+          });
+          SetIsLoading(false);
+        }
       });
-      // タグが含まれているカテゴリであれば、問題を追加
-      if (tag_included) {
-        const data_list = JSON.parse(data.list);
-        const elem_list = JSON.parse(e.list);
-        data.list = JSON.stringify(data_list.concat(elem_list));
-      }
-    });
+    } else if (tag !== undefined) {
+      // 特定のタグ付き問題を解く
+      const filter = Array.isArray(tag) ? tag[0] : tag ?? '';
+      let list: Exam[] = [];
+      categoly.forEach(e => {
+        let tag_included = false;
+        // タグが含まれているかどうかをチェック
+        e.tag.forEach(tag => {
+          if (tag_included) return;
+          tag_included = tag.name === filter;
+        });
+        // タグが含まれているカテゴリであれば、問題を追加
+        if (tag_included) {
+          list = list.concat(JSON.parse(e.list));
+        }
+      });
+      console.log('[TAGFILTER] ', list);
+      SetData({
+        ...categoly_default(),
+        title: `タグ(${filter})`,
+        list: JSON.stringify(list),
+      });
+      SetIsLoading(false);
+    }
+  });
 
-    props.data = [data];
-  }
-  return {props: props};
-};
+  return isLoading ? <Loading /> : <Exam data={data} history_id={history_id} tag_filter={tag} />;
+}
