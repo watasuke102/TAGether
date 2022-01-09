@@ -55,7 +55,6 @@ export default function ExamPage(): React.ReactElement {
           list = list.concat(JSON.parse(e.list));
         }
       });
-      console.log('[TAGFILTER] ', list);
       SetData({
         ...categoly_default(),
         title: `タグ(${filter})`,

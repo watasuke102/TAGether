@@ -26,7 +26,6 @@ function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): 
   React.useEffect(() => {
     (async () =>
       GetFromApi<T>(target, id_str, is_shuffle).then(res => {
-        console.log(`[GetFromApi -> ${target}] `, res);
         if (onComplete) onComplete(res);
         SetData(res);
         SetIsLoading(false);
@@ -57,7 +56,6 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
   const [tags, isTagLoading] = useTagData();
 
   React.useEffect(() => {
-    console.log(`[in useCategolyData(tag, cate) => ${isTagLoading}, ${isCategolyLoading}] `, data);
     if (isTagLoading || isCategolyLoading) return;
 
     // APIレスポンスではtagがstring ("tag1,tag2,tag3..."のような)になっている
@@ -94,7 +92,6 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
     });
     if (onComplete) onComplete(res);
     SetData(res);
-    console.log('[REGISTED] ', res, ' | ', categoly, tags);
     SetIsLoading(false);
   }, [isCategolyLoading, isTagLoading]);
 

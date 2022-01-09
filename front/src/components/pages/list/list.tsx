@@ -25,7 +25,6 @@ export default function list(): React.ReactElement {
   const [list, isLoading] = useCategolyData();
 
   function CardList(): React.ReactElement[] {
-    console.log('in LIST', list);
     let cards: React.ReactElement[] = [];
     let searchResult: Categoly[] = [];
     cards = [];
