@@ -8,8 +8,6 @@
 //
 import css from './create.module.scss';
 import {useRouter} from 'next/router';
-import NProgress from 'nprogress';
-import {stringify} from 'querystring';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
@@ -21,6 +19,7 @@ import Toast from '@/common/Toast/Toast';
 import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
 import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
+import {useConfirmBeforeLeave} from '@/utils/ConfirmBeforeLeave';
 import {exam_default, categoly_default} from '@/utils/DefaultValue';
 import UpdateExam from '@/utils/UpdateExam';
 import ButtonInfo from '@mytypes/ButtonInfo';
@@ -37,7 +36,7 @@ interface Props {
 
 export default function create(props: Props): React.ReactElement {
   const isFirstRendering = React.useRef(true);
-  const showConfirmBeforeLeave = React.useRef(false);
+  const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
 
   const [isToastOpen, SetIsToastOpen] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
@@ -48,6 +47,18 @@ export default function create(props: Props): React.ReactElement {
   const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
   const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
   const router = useRouter();
+  
+  // 初回レンダリング時に実行されないようにしている
+  React.useEffect(() => {
+    isFirstRendering.current = true;
+  }, []);
+  React.useEffect(() => {
+    if (isFirstRendering.current) {
+      isFirstRendering.current = false;
+    } else {
+      SetShowConfirmBeforeLeave(true);
+    }
+  }, [exam, categoly]);
 
   function UpdateCategoly(type: 'title' | 'desc' | 'list', v: string) {
     // 普通に代入すると浅いコピーになってしまった
@@ -65,42 +76,6 @@ export default function create(props: Props): React.ReactElement {
     return props.mode === 'create';
   }
 
-  // ページ移動時に警告
-  const ShowAlertBeforeLeave = React.useCallback(() => {
-    if (!showConfirmBeforeLeave.current) return;
-    if (!window.confirm('変更は破棄されます。ページを移動してもよろしいですか？')) {
-      // ページを移動していないにも関わらずnprogressが動作してしまうので止める
-      NProgress.done();
-      throw 'canceled';
-    }
-  }, []);
-
-  // リロード時に警告（ChromeではreturnValueの中身はユーザーに見えないらしい）
-  const BeforeUnLoad = React.useCallback((e: BeforeUnloadEvent): void => {
-    if (!showConfirmBeforeLeave.current) return;
-    e.preventDefault();
-    e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
-  }, []);
-
-  React.useEffect(() => {
-    window.addEventListener('beforeunload', BeforeUnLoad);
-    router.events.on('routeChangeStart', ShowAlertBeforeLeave);
-    isFirstRendering.current = true;
-    return () => {
-      window.removeEventListener('beforeunload', BeforeUnLoad);
-      router.events.off('routeChangeStart', ShowAlertBeforeLeave);
-    };
-  }, []);
-
-  // 初回レンダリング時に実行されないようにしている
-  React.useEffect(() => {
-    console.log('Updated Exam or Categoly');
-    if (isFirstRendering.current) {
-      isFirstRendering.current = false;
-    } else {
-      showConfirmBeforeLeave.current = true;
-    }
-  }, [exam, categoly]);
 
   // カテゴリ登録
   function RegistExam(): void {
@@ -172,7 +147,7 @@ export default function create(props: Props): React.ReactElement {
           SetRegistError('');
           isCreate() ? SetIsModalOpen(true) : SetIsToastOpen(true);
           // 確認ダイアログを無効化
-          showConfirmBeforeLeave.current = false;
+          SetShowConfirmBeforeLeave(false);
         } else {
           // エラーはcreate/edit関わらずToastで表示する
           SetRegistError(result.message);

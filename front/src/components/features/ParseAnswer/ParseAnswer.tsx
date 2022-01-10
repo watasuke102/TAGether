@@ -58,7 +58,6 @@ export default function ParseAnswers(ans_list: string[], exam: Exam, cmp?: strin
       return ans_list[i] !== compare[i];
     }
   });
-  console.log('in ParseAnswer: ', exam.type, wrong_list);
 
   return (
     <>
