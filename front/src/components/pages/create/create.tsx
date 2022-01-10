@@ -9,6 +9,7 @@
 import css from './create.module.scss';
 import {useRouter} from 'next/router';
 import NProgress from 'nprogress';
+import {stringify} from 'querystring';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
@@ -312,9 +313,17 @@ export default function create(props: Props): React.ReactElement {
       ) : (
         <>
           {isOldForm ? (
-            <ExamEditFormsOld exam={exam} register={RegistExam} updater={UpdateExam(SetExam, exam)} />
+            <ExamEditFormsOld
+              exam={exam}
+              register={RegistExam}
+              updater={UpdateExam(SetExam, JSON.parse(JSON.stringify(exam)))}
+            />
           ) : (
-            <ExamEditForms exam={exam} register={RegistExam} updater={UpdateExam(SetExam, exam)} />
+            <ExamEditForms
+              exam={exam}
+              register={RegistExam}
+              updater={UpdateExam(SetExam, JSON.parse(JSON.stringify(exam)))}
+            />
           )}
         </>
       )}
