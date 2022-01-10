@@ -45,7 +45,7 @@ export default function index(): React.ReactElement {
         <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
       </ul>
 
-      <p className={css.version}>TAGether v1.6.0</p>
+      <p className={css.version}>TAGether v1.7.0</p>
     </div>
   );
 }
