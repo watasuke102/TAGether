@@ -10,9 +10,9 @@ import css from './profile.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
-import CheckBox from '@/common/CheckBox/CheckBox';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
+import {SelectButton} from '@/common/SelectBox';
 import CategolyCard from '@/features/CategolyCard/Card';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryTableItem';
 import {useCategolyData} from '@/utils/Api';
@@ -76,7 +76,8 @@ export default function profile(): React.ReactElement {
             />
           </div>
           {/* シャッフルするかどうかを決めるチェックボックス */}
-          <CheckBox
+          <SelectButton
+            type='single'
             status={isShuffleEnabled}
             desc='解き直しのとき、問題順をシャッフルする'
             onChange={e => SetIsShuffleEnabled(e)}

@@ -11,7 +11,7 @@ import Router from 'next/router';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
-import CheckBox from '@/common/CheckBox/CheckBox';
+import {SelectButton} from '@/common/SelectBox';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
@@ -74,7 +74,12 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         <textarea disabled={true} value={props.data.description} id={css.desc} />
 
         {/* シャッフルするかどうかを決めるチェックボックス */}
-        <CheckBox status={isShuffleEnabled} desc='問題順をシャッフル' onChange={SetIsShuffleEnabled} />
+        <SelectButton
+          type='single'
+          status={isShuffleEnabled}
+          desc='問題順をシャッフル'
+          onChange={SetIsShuffleEnabled}
+        />
 
         <ButtonContainer>
           {info.map(e => (

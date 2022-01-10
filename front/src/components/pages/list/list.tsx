@@ -11,8 +11,8 @@ import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
-import SelectBox from '@/common/CheckBox/SelectBox';
 import Loading from '@/common/Loading/Loading';
+import {SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import CategolyCard from '@/features/CategolyCard/Card';
 import {useCategolyData} from '@/utils/Api';
@@ -103,7 +103,7 @@ export default function list(): React.ReactElement {
         />
         {/* 何を検索するか選択 */}
         <div className={css.radiobutton_container}>
-          <SelectBox
+          <SingleSelectBox
             onChange={txt => SetRadioState(txt)}
             status={radioState}
             list={['タイトル', 'タグ', '説明', 'ID']}

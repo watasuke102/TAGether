@@ -12,8 +12,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
-import CheckBox from '@/common/CheckBox/CheckBox';
 import Modal from '@/common/Modal/Modal';
+import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
@@ -47,7 +47,7 @@ export default function create(props: Props): React.ReactElement {
   const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
   const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
   const router = useRouter();
-  
+
   // 初回レンダリング時に実行されないようにしている
   React.useEffect(() => {
     isFirstRendering.current = true;
@@ -75,7 +75,6 @@ export default function create(props: Props): React.ReactElement {
   function isCreate(): boolean {
     return props.mode === 'create';
   }
-
 
   // カテゴリ登録
   function RegistExam(): void {
@@ -271,8 +270,10 @@ export default function create(props: Props): React.ReactElement {
       <h2>問題</h2>
 
       <div className={css.buttons}>
-        <CheckBox status={isJsonEdit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
-        {props.data.version !== 1 && <CheckBox status={isOldForm} desc='古い編集画面を使う' onChange={SetIsOldForm} />}
+        <SelectButton type='single' status={isJsonEdit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
+        {props.data.version !== 1 && (
+          <SelectButton type='single' status={isOldForm} desc='古い編集画面を使う' onChange={SetIsOldForm} />
+        )}
         <div className={css.pushbutton_wrapper}>
           <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => RegistExam()} />
         </div>

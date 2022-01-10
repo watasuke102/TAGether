@@ -11,9 +11,10 @@ import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
-import CheckBox from '@/common/CheckBox/CheckBox';
 import Modal from '@/common/Modal/Modal';
+import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
+import ButtonInfo from '@mytypes/ButtonInfo';
 import Exam from '@mytypes/Exam';
 import ExamOperateFunctionsType from '@mytypes/ExamOperateFunctionsType';
 import ExamType from '@mytypes/ExamType';
@@ -107,8 +108,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   function AnswerEditArea() {
     let result: React.ReactElement[] | React.ReactElement;
+    const type = props.exam[current_page].type ?? 'Text';
+    // Select系はquestion_choicesを使用するので、choicesがなければ初期化
+    // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
+    if ((type === 'Select' || type === 'MultiSelect') && (props.exam[current_page].question_choices?.length ?? 0) < 1) {
+      props.exam[current_page].question_choices = [''];
+      // レンダリング中にstate変えるなみたいなエラーへの対策
+      setTimeout(props.updater.Exam.Update, 0);
+    }
 
-    switch (props.exam[current_page].type ?? 'Text') {
+    switch (type) {
       case 'Text':
         result = props.exam[current_page].answer.map((e, i) => {
           return (
@@ -128,16 +137,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'Select':
-        // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
-        if ((props.exam[current_page].question_choices?.length ?? 0) < 1) {
-          props.exam[current_page].question_choices = [''];
-          props.updater.Exam.Update();
-        }
         result = props.exam[current_page].question_choices?.map((e, i) => {
           return (
             <div key={`examform-select-${i}`}>
               <div className={css.select_form}>
-                <CheckBox
+                <SelectButton
+                  type='single'
                   desc={''}
                   status={Number(props.exam[current_page].answer[0]) === i && props.exam[current_page].answer[0] !== ''}
                   onChange={f => {
@@ -164,16 +169,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'MultiSelect':
-        // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
-        if ((props.exam[current_page].question_choices?.length ?? 0) < 1) {
-          props.exam[current_page].question_choices = [''];
-          props.updater.Exam.Update();
-        }
         result = props.exam[current_page].question_choices?.map((e, i) => {
           return (
             <div key={`examform-multiselect-${i}`}>
               <div className={css.select_form}>
-                <CheckBox
+                <SelectButton
+                  type='multi'
                   desc={''}
                   status={props.exam[current_page].answer.indexOf(String(i)) !== -1}
                   onChange={f => {
@@ -256,6 +257,42 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     return <>{result}</>;
   }
 
+  const append_exam_button: ButtonInfo[] = [
+    {
+      type: 'material',
+      icon: 'fas fa-angle-double-left',
+      text: '最初に挿入',
+      onClick: () => {
+        props.updater.Exam.Insert(0);
+        SetCurrentPage(0);
+      },
+    },
+    {
+      type: 'material',
+      icon: 'fas fa-arrow-left',
+      text: '1つ前に挿入',
+      onClick: () => props.updater.Exam.Insert(current_page),
+    },
+    {
+      type: 'material',
+      icon: 'fas fa-arrow-right',
+      text: '1つ後に挿入',
+      onClick: () => {
+        props.updater.Exam.Insert(current_page + 1);
+        NextPage();
+      },
+    },
+    {
+      type: 'material',
+      icon: 'fas fa-angle-double-right',
+      text: '最後に挿入',
+      onClick: () => {
+        props.updater.Exam.Insert(-1);
+        SetCurrentPage(props.exam.length - 1);
+      },
+    },
+  ];
+
   return (
     <>
       <div className={css.button_list}>
@@ -289,39 +326,9 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
         <div className={css.append_exam}>
           <ButtonContainer>
-            <Button
-              type={'material'}
-              icon={'fas fa-angle-double-left'}
-              text={'最初に挿入'}
-              onClick={() => {
-                props.updater.Exam.Insert(0);
-                SetCurrentPage(0);
-              }}
-            />
-            <Button
-              type={'material'}
-              icon={'fas fa-arrow-left'}
-              text={'1つ前に挿入'}
-              onClick={() => props.updater.Exam.Insert(current_page)}
-            />
-            <Button
-              type={'material'}
-              icon={'fas fa-arrow-right'}
-              text={'1つ後に挿入'}
-              onClick={() => {
-                props.updater.Exam.Insert(current_page + 1);
-                NextPage();
-              }}
-            />
-            <Button
-              type={'material'}
-              icon={'fas fa-angle-double-right'}
-              text={'最後に挿入'}
-              onClick={() => {
-                props.updater.Exam.Insert(-1);
-                SetCurrentPage(props.exam.length - 1);
-              }}
-            />
+            {append_exam_button.map(e => (
+              <Button key={`append_exam_button_${e.text}`} {...e} />
+            ))}
           </ButtonContainer>
         </div>
       </div>
@@ -346,24 +353,31 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
         {/* 答え編集欄（右側） */}
         <div className={css.qa_list}>
-          {/* 問題の形式を変更するチェックボックス */}
+          {/* 
+            問題の形式を変更するチェックボックス 
+            表示される文字列と、実際に設定される値が異なるため、一つずつ付けている
+          */}
           <div className={css.type_select}>
-            <CheckBox
+            <SelectButton
+              type='single'
               desc='テキスト'
               status={(props.exam[current_page].type ?? 'Text') === 'Text'}
               onChange={() => props.updater.Type.Update(current_page, 'Text')}
             />
-            <CheckBox
+            <SelectButton
+              type='single'
               desc='選択問題'
               status={(props.exam[current_page].type ?? 'Text') === 'Select'}
               onChange={() => props.updater.Type.Update(current_page, 'Select')}
             />
-            <CheckBox
+            <SelectButton
+              type='single'
               desc='複数選択'
               status={(props.exam[current_page].type ?? 'Text') === 'MultiSelect'}
               onChange={() => props.updater.Type.Update(current_page, 'MultiSelect')}
             />
-            <CheckBox
+            <SelectButton
+              type='single'
               desc='並び替え'
               status={(props.exam[current_page].type ?? 'Text') === 'Sort'}
               onChange={() => props.updater.Type.Update(current_page, 'Sort')}

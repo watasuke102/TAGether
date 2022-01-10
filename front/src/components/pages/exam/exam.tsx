@@ -14,8 +14,8 @@ import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
-import CheckBox from '@/common/CheckBox/CheckBox';
 import Modal from '@/common/Modal/Modal';
+import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
@@ -305,7 +305,8 @@ export default class exam extends React.Component<Props, State> {
       case 'Select':
         return (
           exam.question_choices?.map((e, i) => (
-            <CheckBox
+            <SelectButton
+              type='single'
               key={`examform_checkbox_${i}`}
               desc={e}
               status={
@@ -324,7 +325,8 @@ export default class exam extends React.Component<Props, State> {
       case 'MultiSelect':
         return (
           exam.question_choices?.map((e, i) => (
-            <CheckBox
+            <SelectButton
+              type='multi'
               key={`examform_checkbox_${i}`}
               desc={e}
               status={this.state.answers[this.state.index].indexOf(String(i)) !== -1}

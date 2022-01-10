@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import React from 'react';
-import CheckBox from './CheckBox';
+import {SelectButton} from './';
 
 interface Props {
   status: string;
@@ -15,12 +15,13 @@ interface Props {
   onChange: (str: string) => void;
 }
 
-export default function SelectBox(props: Props): React.ReactElement {
+export default function SingleSelectBox(props: Props): React.ReactElement {
   return (
     <>
       {props.list.map(str => {
         return (
-          <CheckBox
+          <SelectButton
+            type='single'
             key={`select_${str}`}
             status={props.status === str}
             desc={str}
