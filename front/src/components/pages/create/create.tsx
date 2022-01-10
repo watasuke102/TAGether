@@ -7,7 +7,8 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './create.module.scss';
-import Router from 'next/router';
+import {useRouter} from 'next/router';
+import NProgress from 'nprogress';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
@@ -24,7 +25,7 @@ import UpdateExam from '@/utils/UpdateExam';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
-import EditCategolyPageState from '@mytypes/EditCategolyPageState';
+import Exam from '@mytypes/Exam';
 import TagData from '@mytypes/TagData';
 
 interface Props {
@@ -33,69 +34,90 @@ interface Props {
   tags: TagData[];
 }
 
-export default class create extends React.Component<Props, EditCategolyPageState> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isToastOpen: false,
-      isModalOpen: false,
-      jsonEdit: false,
-      is_using_old_form: this.props.data.version === 1,
-      categoly: this.isCreate() ? categoly_default() : this.props.data,
-      exam: this.isCreate() ? exam_default() : JSON.parse(this.props.data.list),
-      regist_error: '',
-      showConfirmBeforeLeave: true,
-    };
+export default function create(props: Props): React.ReactElement {
+  const isFirstRendering = React.useRef(true);
+  const showConfirmBeforeLeave = React.useRef(false);
+
+  const [isToastOpen, SetIsToastOpen] = React.useState(false);
+  const [isModalOpen, SetIsModalOpen] = React.useState(false);
+  const [isJsonEdit, SetIsJsonEdit] = React.useState(false);
+  const [isOldForm, SetIsOldForm] = React.useState(props.data.version === 1);
+  const [registError, SetRegistError] = React.useState('');
+
+  const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
+  const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
+  const router = useRouter();
+
+  function UpdateCategoly(type: 'title' | 'desc' | 'list', v: string) {
+    // 普通に代入すると浅いコピーになってしまった
+    const stat = JSON.parse(JSON.stringify(categoly));
+    // prettier-ignore
+    switch (type) {
+      case 'title': stat.title       = v; break;
+      case 'desc':  stat.description = v; break;
+      case 'list':  stat.list        = v; break;
+    }
+    SetCategoly(stat);
   }
 
-  isCreate(): boolean {
-    return this.props.mode === 'create';
+  function isCreate(): boolean {
+    return props.mode === 'create';
   }
 
   // ページ移動時に警告
-  ShowAlertBeforeLeave(): void {
+  const ShowAlertBeforeLeave = React.useCallback(() => {
+    if (!showConfirmBeforeLeave.current) return;
     if (!window.confirm('変更は破棄されます。ページを移動してもよろしいですか？')) {
-      throw new Error('canceled');
+      // ページを移動していないにも関わらずnprogressが動作してしまうので止める
+      NProgress.done();
+      throw 'canceled';
     }
-  }
-  BeforeUnLoad = (e: BeforeUnloadEvent): void => {
-    if (!this.state.showConfirmBeforeLeave) return;
+  }, []);
+
+  // リロード時に警告（ChromeではreturnValueの中身はユーザーに見えないらしい）
+  const BeforeUnLoad = React.useCallback((e: BeforeUnloadEvent): void => {
+    if (!showConfirmBeforeLeave.current) return;
     e.preventDefault();
     e.returnValue = '変更は破棄されます。ページを移動してもよろしいですか？';
-  };
+  }, []);
 
-  RouterEventOn(): void {
-    Router.events.on('routeChangeStart', this.ShowAlertBeforeLeave);
-  }
-  RouterEventOff(): void {
-    Router.events.off('routeChangeStart', this.ShowAlertBeforeLeave);
-  }
-  componentDidMount(): void {
-    window.addEventListener('beforeunload', this.BeforeUnLoad);
-    this.RouterEventOn();
-  }
-  componentWillUnmount(): void {
-    window.removeEventListener('beforeunload', this.BeforeUnLoad);
-    this.RouterEventOff();
-  }
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', BeforeUnLoad);
+    router.events.on('routeChangeStart', ShowAlertBeforeLeave);
+    isFirstRendering.current = true;
+    return () => {
+      window.removeEventListener('beforeunload', BeforeUnLoad);
+      router.events.off('routeChangeStart', ShowAlertBeforeLeave);
+    };
+  }, []);
+
+  // 初回レンダリング時に実行されないようにしている
+  React.useEffect(() => {
+    console.log('Updated Exam or Categoly');
+    if (isFirstRendering.current) {
+      isFirstRendering.current = false;
+    } else {
+      showConfirmBeforeLeave.current = true;
+    }
+  }, [exam, categoly]);
 
   // カテゴリ登録
-  RegistExam(): void {
+  function RegistExam(): void {
     // トーストを閉じる
-    this.setState({isToastOpen: false});
+    SetIsToastOpen(false);
 
     // 編集用
-    const exam_tmp = this.state.exam;
+    const exam_tmp = exam;
 
     // データが正しいか判定し、誤りがあればエラーを返す
     {
       let failed: boolean = false;
       let result_str: string = '';
-      if (this.state.categoly.title === '') {
+      if (categoly.title === '') {
         failed = true;
         result_str += '・タイトルを設定してください\n';
       }
-      if (this.state.categoly.tag.length > 8) {
+      if (categoly.tag.length > 8) {
         failed = true;
         result_str += '・タグは8個以下にしてください\n';
       }
@@ -103,7 +125,7 @@ export default class create extends React.Component<Props, EditCategolyPageState
       // 空きがある問題の一覧
       // 重複を排除したかったのでstringではなくArray
       const blank_exam: number[] = [];
-      this.state.exam.forEach((e, i) => {
+      exam.forEach((e, i) => {
         if (!e.type) exam_tmp[i].type = 'Text';
         // 問題文が空欄かチェック
         if (e.question === '') blank_exam.push(i);
@@ -123,27 +145,21 @@ export default class create extends React.Component<Props, EditCategolyPageState
         result_str += `・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${txt.slice(0, -2)})\n`;
       }
       if (failed) {
-        this.setState({
-          isToastOpen: true,
-          regist_error: result_str,
-        });
+        SetIsToastOpen(true);
+        SetRegistError(result_str);
         return;
       }
     }
+    // exam形式の確認おわり
 
     // 登録の準備
     // インデントを削除
-    const exam = this.state.jsonEdit ? JSON.stringify(JSON.parse(this.state.categoly.list)) : JSON.stringify(exam_tmp);
-    const tmp: Categoly = this.state.categoly;
-    const tag: string[] = [];
-    tmp.tag.forEach(e => tag.push(String(e.id) ?? e.name));
-    const categoly: CategolyResponse = {
-      id: tmp.id,
-      version: this.state.is_using_old_form ? 1 : 2,
-      title: tmp.title,
-      description: tmp.description,
+    const tag: string[] = categoly.tag.map(e => String(e.id) ?? e.name);
+    const api_body: CategolyResponse = {
+      ...categoly,
+      version: isOldForm ? 1 : 2,
       tag: tag.toString(),
-      list: exam,
+      list: isJsonEdit ? JSON.stringify(JSON.parse(categoly.list)) : JSON.stringify(exam_tmp),
     };
 
     const req = new XMLHttpRequest();
@@ -151,82 +167,54 @@ export default class create extends React.Component<Props, EditCategolyPageState
       if (req.readyState === 4) {
         const result = JSON.parse(req.responseText);
         if (req.status === 200) {
-          // createの場合はmodalを表示、editの場合はtoastを表示するから
-          this.setState({
-            isModalOpen: this.isCreate(),
-            isToastOpen: !this.isCreate(),
-            regist_error: '',
-          });
+          // createの場合はmodalを表示、editの場合はtoastを表示する
+          SetRegistError('');
+          isCreate() ? SetIsModalOpen(true) : SetIsToastOpen(true);
           // 確認ダイアログを無効化
-          this.RouterEventOff();
-          this.setState({showConfirmBeforeLeave: false});
+          showConfirmBeforeLeave.current = false;
         } else {
           // エラーはcreate/edit関わらずToastで表示する
-          this.setState({
-            isToastOpen: true,
-            regist_error: result.message,
-          });
+          SetRegistError(result.message);
+          SetIsToastOpen(true);
         }
       }
     };
-    const url = process.env.API_URL + '/categoly';
-    if (url === undefined) {
-      this.setState({isToastOpen: true, regist_error: '失敗しました: URL is undefined'});
-      return;
-    }
-    req.open(this.isCreate() ? 'POST' : 'PUT', url);
+    req.open(isCreate() ? 'POST' : 'PUT', process.env.API_URL + '/categoly');
     req.setRequestHeader('Content-Type', 'application/json');
-    req.send(JSON.stringify(categoly));
-    console.log('BODY: ' + JSON.stringify(categoly));
-  }
-
-  // state更新
-  UpdateCategoly(type: 'title' | 'desc' | 'list', str: string): void {
-    const tmp = this.state.categoly;
-    switch (type) {
-      case 'title':
-        tmp.title = str;
-        break;
-      case 'desc':
-        tmp.description = str;
-        break;
-      case 'list':
-        tmp.list = str;
-        break;
-    }
-    this.setState({categoly: tmp});
+    req.send(JSON.stringify(api_body));
+    console.log('BODY: ' + JSON.stringify(api_body));
   }
 
   // モーダルウィンドウの中身
-  RegistResult(from: 'Modal' | 'Toast'): React.ReactElement {
+  function RegistResult(from: 'Modal' | 'Toast'): React.ReactElement {
     let message: string;
     let button_info: ButtonInfo[] = [];
     // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
-    if (this.state.regist_error === '') {
-      message = this.isCreate() ? 'カテゴリの追加に成功しました' : '編集結果を適用しました';
+    if (registError === '') {
+      message = isCreate() ? 'カテゴリの追加に成功しました' : '編集結果を適用しました';
       button_info = [
         {
           type: 'material',
           icon: 'fas fa-plus',
           text: '新規カテゴリを追加',
-          onClick: (): void => Router.reload(),
+          onClick: (): void => router.reload(),
         },
         {
           type: 'filled',
           icon: 'fas fa-check',
           text: 'カテゴリ一覧へ',
-          onClick: (): Promise<boolean> => Router.push('/list'),
+          onClick: (): Promise<boolean> => router.push('/list'),
         },
       ];
     } else {
       // 失敗した場合、閉じるボタンのみ
-      message = `エラーが発生しました。\n${this.state.regist_error}`;
+      message = `エラーが発生しました。\n${registError}`;
       button_info = [
         {
           type: 'filled',
           icon: 'fas fa-times',
           text: '閉じる',
-          onClick: () => this.setState({isModalOpen: false}),
+          onClick: () => SetIsModalOpen(false),
         },
       ];
     }
@@ -255,117 +243,91 @@ export default class create extends React.Component<Props, EditCategolyPageState
       </div>
     );
   }
+  return (
+    <>
+      <Helmet title={`${isCreate() ? '新規作成' : '編集'} - TAGether`} />
 
-  render(): React.ReactElement {
-    return (
-      <>
-        <Helmet title={`${this.isCreate() ? '新規作成' : '編集'} - TAGether`} />
+      <h1>{isCreate() ? '新規カテゴリの追加' : 'カテゴリの編集'}</h1>
 
-        <h1>{this.isCreate() ? '新規カテゴリの追加' : 'カテゴリの編集'}</h1>
+      <ul>
+        <li>記号 &quot; は使用できません </li>
+        <li>
+          記号 \ を表示したいときは \\ のように入力してください
+          <br />
+          \\ 以外で記号 \ を使用しないでください。問題を開けなくなります
+        </li>
+        <li>
+          「答え」の欄に&を入れると、複数の正解を作ることが出来ます
+          <br />
+          例: 「A&B&C」→解答欄にAもしくはBもしくはCのどれかが入力されたら正解
+        </li>
+      </ul>
 
-        <ul>
-          <li>記号 &quot; は使用できません </li>
-          <li>
-            記号 \ を表示したいときは \\ のように入力してください
-            <br />
-            \\ 以外で記号 \ を使用しないでください。問題を開けなくなります
-          </li>
-          <li>
-            「答え」の欄に&を入れると、複数の正解を作ることが出来ます
-            <br />
-            例: 「A&B&C」→解答欄にAもしくはBもしくはCのどれかが入力されたら正解
-          </li>
-        </ul>
-
-        <div className={css.edit_area}>
-          <Form
-            {...{
-              label: 'タイトル',
-              value: this.state.categoly.title,
-              rows: 1,
-              onChange: e => this.UpdateCategoly('title', e.target.value),
-            }}
-          />
-          <Form
-            {...{
-              label: '説明',
-              value: this.state.categoly.description,
-              rows: 3,
-              onChange: e => this.UpdateCategoly('desc', e.target.value),
-            }}
-          />
-        </div>
-
-        <h2>タグ</h2>
-        <TagListEdit
-          tags={this.props.tags}
-          current_tag={this.state.categoly.tag}
-          SetTag={(e: TagData[]) => {
-            const tmp = this.state.categoly;
-            tmp.tag = e;
-            this.setState({categoly: tmp});
+      <div className={css.edit_area}>
+        <Form
+          {...{
+            label: 'タイトル',
+            value: categoly.title,
+            rows: 1,
+            onChange: e => UpdateCategoly('title', e.target.value),
           }}
         />
-        <h2>問題</h2>
+        <Form
+          {...{
+            label: '説明',
+            value: categoly.description,
+            rows: 3,
+            onChange: e => UpdateCategoly('desc', e.target.value),
+          }}
+        />
+      </div>
 
-        <div className={css.buttons}>
-          <CheckBox
-            status={this.state.jsonEdit}
-            desc='高度な編集（JSON）'
-            onChange={e => this.setState({jsonEdit: e})}
-          />
-          {this.props.data.version !== 1 && (
-            <CheckBox
-              status={this.state.is_using_old_form}
-              desc='古い編集画面を使う'
-              onChange={e => this.setState({is_using_old_form: e})}
-            />
-          )}
-          <div className={css.pushbutton_wrapper}>
-            <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => this.RegistExam()} />
-          </div>
+      <h2>タグ</h2>
+      <TagListEdit
+        tags={props.tags}
+        current_tag={categoly.tag}
+        SetTag={(e: TagData[]) => {
+          const tmp = categoly;
+          tmp.tag = e;
+          SetCategoly(tmp);
+        }}
+      />
+      <h2>問題</h2>
+
+      <div className={css.buttons}>
+        <CheckBox status={isJsonEdit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
+        {props.data.version !== 1 && <CheckBox status={isOldForm} desc='古い編集画面を使う' onChange={SetIsOldForm} />}
+        <div className={css.pushbutton_wrapper}>
+          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => RegistExam()} />
         </div>
+      </div>
 
-        <hr />
+      <hr />
 
-        {this.state.jsonEdit ? (
-          <>
-            <p>注意：編集内容はリッチエディタと同期されません</p>
-            <Form
-              label='JSON'
-              value={this.state.categoly.list}
-              rows={30}
-              onChange={e => this.UpdateCategoly('list', e.target.value)}
-            />
-          </>
-        ) : (
-          <>
-            {this.state.is_using_old_form ? (
-              <ExamEditFormsOld
-                exam={this.state.exam}
-                register={() => this.RegistExam()}
-                updater={UpdateExam(e => this.setState({exam: e}), this.state.exam)}
-              />
-            ) : (
-              <ExamEditForms
-                exam={this.state.exam}
-                register={() => this.RegistExam()}
-                updater={UpdateExam(e => this.setState({exam: e}), this.state.exam)}
-              />
-            )}
-          </>
-        )}
+      {isJsonEdit ? (
+        <>
+          <p>注意：編集内容はリッチエディタと同期されません</p>
+          <Form label='JSON' value={categoly.list} rows={30} onChange={e => UpdateCategoly('list', e.target.value)} />
+        </>
+      ) : (
+        <>
+          {isOldForm ? (
+            <ExamEditFormsOld exam={exam} register={RegistExam} updater={UpdateExam(SetExam, exam)} />
+          ) : (
+            <ExamEditForms exam={exam} register={RegistExam} updater={UpdateExam(SetExam, exam)} />
+          )}
+        </>
+      )}
 
-        <Modal isOpen={this.state.isModalOpen} close={() => this.setState({isModalOpen: false})}>
-          {this.RegistResult('Modal')}
-        </Modal>
-        <Toast id={'toast_create'} isOpen={this.state.isToastOpen} close={() => this.setState({isToastOpen: false})}>
-          <div className={css.toast_body}>
-            <span className='fas fa-bell' />
-            {this.RegistResult('Toast')}
-          </div>
-        </Toast>
-      </>
-    );
-  }
+      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
+        {RegistResult('Modal')}
+      </Modal>
+      <Toast id={'toast_create'} isOpen={isToastOpen} close={() => SetIsToastOpen(false)}>
+        <div className={css.toast_body}>
+          <span className='fas fa-bell' />
+          {RegistResult('Toast')}
+        </div>
+      </Toast>
+    </>
+  );
 }
