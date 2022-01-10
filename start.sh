@@ -14,7 +14,7 @@ echo -e "\e[36;7m[info] Backend setup completed\e[m"
 
 ## when product environment
 if [[ ${1} == "product" ]]; then
-  docker-compose run --rm --entrypoint "npm run build" front
+  docker-compose run --rm --entrypoint "npm run check" front
   ## start
   docker-compose -f docker-compose.yml -f product.override.yml up -d --build
 else

@@ -1,11 +1,12 @@
 {
   "name": "tagether",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "lint": "eslint src",
     "fmt": "prettier --write src/",
+    "check": "npm run lint && npm run fmt && npm run build",
     "dev": "next dev -p 3009",
     "build": "next build",
     "start": "next start -p 3009"

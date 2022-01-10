@@ -53,6 +53,17 @@ export default function index(): React.ReactElement {
 function Releases(): React.ReactElement {
   return (
     <>
+      <h3>v1.7.0</h3>
+      <ul>
+        <li>問題編集後、タグに空要素が挿入されてしまう問題を修正</li>
+        <li>問題の文字数が多い時はみ出てしまう問題を修正</li>
+        <li>入力欄のスペルチェックを無効化</li>
+        <li>ページ移動時のアニメーションを変更（プログレスバーに）</li>
+        <li>何か編集されたときのみ画面移動時の警告を表示するように修正</li>
+        <li>間違えた問題を強調表示できるようにした</li>
+        <li>PWAに対応しました。 インストールすることにより、一部オフライン環境での動作ができるかもしれません。</li>
+      </ul>
+
       <h3>v1.6.0</h3>
       <ul>
         <li>
@@ -112,14 +123,6 @@ function Releases(): React.ReactElement {
           <li>jsonを直接編集できるようにした</li>
         </ul>
       </div>
-
-      <h3>v1.4.0</h3>
-      <ul>
-        <li>カテゴリをお気に入り登録できるようにした</li>
-        <li>解答したカテゴリの履歴（日付、正答率）が見れるように</li>
-        <li>環境をdocker-composeへ移行</li>
-      </ul>
-      <p>お気に入り登録したカテゴリや解答履歴は、プロフィールから見ることが出来ます。</p>
     </>
   );
 }
