@@ -93,8 +93,9 @@ export default class exam extends React.Component<Props, State> {
     }
     // 最初が並び替えならコピー+シャッフル
     if (exam_list[0].type === 'Sort' && this.version === 2) {
-      // 参照コピーはだめなので、引数なしconcatで新規配列作成
-      answers[0] = Shuffle(answers[0]);
+      console.log('before', answers);
+      answers[0] = Shuffle(exam_list[0].answer);
+      console.log('after', answers);
     }
     // stateの初期化
     this.state = {
