@@ -54,6 +54,13 @@ export default function ParseAnswers(ans_list: string[], exam: Exam, cmp?: strin
       // exam     中は (ans_list, compare) = (正しい答え, 解答) であり、
       // examtable中は (ans_list, compare) = (解答, 正しい答え) であることを利用する
       return !compare.includes(ans_list[i]);
+    } else if (exam.type === 'Text') {
+      // 解答が[A, E]で、正しい答えが[A&B, C&D]だった場合、
+      // all_listは[A, A, B] | [E, C, D]
+      // つまり、重複があれば (setにしたものとlengthが異なれば) 正解
+      const all_list = ans_list[i].split('&').concat(compare[i].split('&'));
+      const set = new Set(all_list);
+      return set.size === all_list.length;
     } else {
       return ans_list[i] !== compare[i];
     }
