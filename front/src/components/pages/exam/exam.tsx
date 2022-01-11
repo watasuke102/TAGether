@@ -20,6 +20,7 @@ import Form from '@/common/TextForm/Form';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import {AddExamHistory} from '@/utils/ManageDB';
+import {Shuffle} from '@/utils/Shuffle';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
@@ -65,8 +66,13 @@ export default class exam extends React.Component<Props, State> {
 
     let exam_list: Exam[] = [];
     const title = this.props.data.title;
-    exam_list = JSON.parse(this.props.data.list);
     this.version = this.props.data.version;
+    exam_list = JSON.parse(this.props.data.list);
+
+    // シャッフル有効なら
+    if (Router.query.shuffle === 'true') {
+      exam_list = Shuffle(exam_list);
+    }
 
     this.exam_history = {
       id: this.props.data.id ?? 0,
@@ -88,13 +94,7 @@ export default class exam extends React.Component<Props, State> {
     // 最初が並び替えならコピー+シャッフル
     if (exam_list[0].type === 'Sort' && this.version === 2) {
       // 参照コピーはだめなので、引数なしconcatで新規配列作成
-      answers[0] = exam_list[0].answer.concat();
-      for (let i = answers[0].length - 1; i > 0; i--) {
-        const r = Math.floor(Math.random() * (i + 1));
-        const tmp = answers[0][i];
-        answers[0][i] = answers[0][r];
-        answers[0][r] = tmp;
-      }
+      answers[0] = Shuffle(answers[0]);
     }
     // stateの初期化
     this.state = {
@@ -246,15 +246,9 @@ export default class exam extends React.Component<Props, State> {
 
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
         if (this.state.exam[next_index].type === 'Sort' && this.version === 2) {
-          // 参照コピーはだめなので、引数なしconcatで新規配列作成
+          // 引数なしconcatで深いコピー
           const answers = this.state.answers.concat();
-          answers[next_index] = this.state.exam[next_index].answer.concat();
-          for (let i = answers[next_index].length - 1; i > 0; i--) {
-            const r = Math.floor(Math.random() * (i + 1));
-            const tmp = answers[next_index][i];
-            answers[next_index][i] = answers[next_index][r];
-            answers[next_index][r] = tmp;
-          }
+          answers[next_index] = Shuffle(this.state.exam[next_index].answer);
           this.setState({answers: answers});
         }
         break;

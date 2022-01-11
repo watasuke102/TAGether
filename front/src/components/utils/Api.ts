@@ -18,16 +18,14 @@ function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): 
   const [isLoading, SetIsLoading] = React.useState(true);
   const [data, SetData] = React.useState([init]);
   const router = useRouter();
-  const {id, shuffle} = router.query;
-
+  const { id } = router.query;
   let id_str = '';
   if (target === 'categoly') id_str = Array.isArray(id) ? id[0] : id ?? '';
-  const is_shuffle = shuffle === 'true' && router.pathname.slice(1, 5) !== 'exam';
 
   React.useEffect(() => {
     if (!router.isReady) return;
     (async () =>
-      GetFromApi<T>(target, id_str, is_shuffle).then(res => {
+      GetFromApi<T>(target, id_str).then(res => {
         if (onComplete) onComplete(res);
         SetData(res);
         SetIsLoading(false);
@@ -100,7 +98,7 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
   return [data, isLoading];
 };
 
-export async function GetFromApi<T>(target: string, id?: string, shuffle?: boolean): Promise<T[]> {
+export async function GetFromApi<T>(target: string, id?: string): Promise<T[]> {
   // 渡されたURLクエリ (context.query.id) からidを取得
   // APIでカテゴリを取得する
   let data: T[] = [];
@@ -110,15 +108,5 @@ export async function GetFromApi<T>(target: string, id?: string, shuffle?: boole
     data = [];
   }
   // 取得したデータを返す
-  if (Array.isArray(data)) {
-    if (shuffle) {
-      for (let i = data.length - 1; i > 0; i--) {
-        const r = Math.floor(Math.random() * (i + 1));
-        const tmp = data[i];
-        data[i] = data[r];
-        data[r] = tmp;
-      }
-    }
-    return data;
-  } else return [];
+  return Array.isArray(data) && data.length > 0 ? data : [];
 }
