@@ -41,8 +41,8 @@ export default function index(): React.ReactElement {
 
       <h2>既知の不具合</h2>
       <ul>
-        <li>画面切り替えのアニメーション時、スタイルがリセットされる</li>
         <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
+        <li>問題編集ページでショートカットを押した時、反応しなかったりエラーになったりする</li>
       </ul>
 
       <p className={css.version}>TAGether v1.7.0</p>
