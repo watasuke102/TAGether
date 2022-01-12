@@ -298,7 +298,7 @@ export default function create(props: Props): React.ReactElement {
             />
           ) : (
             <ExamContext.Provider value={exam}>
-              <ExamEditForms updater={(e) => SetExam(e)} />
+              <ExamEditForms updater={e => SetExam(e)} />
             </ExamContext.Provider>
           )}
         </>

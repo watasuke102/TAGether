@@ -19,8 +19,8 @@ import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
+import {Move, Shuffle} from '@/utils/ArrayUtil';
 import {AddExamHistory} from '@/utils/ManageDB';
-import {Shuffle} from '@/utils/Shuffle';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
@@ -339,12 +339,8 @@ export default class exam extends React.Component<Props, State> {
           <DragDropContext
             onDragEnd={(e: DropResult) => {
               if (!e.destination) return;
-              const from = e.source.index,
-                to = e.destination.index;
-              if (from === to) return;
               const ans = this.state.answers;
-              ans[this.state.index].splice(to + (from < to ? 1 : 0), 0, ans[this.state.index][from]);
-              ans[this.state.index].splice(from + (from > to ? 1 : 0), 1);
+              ans[this.state.index] = Move(ans[this.state.index], e.source.index, e.destination.index);
               this.setState({answers: ans});
             }}
           >

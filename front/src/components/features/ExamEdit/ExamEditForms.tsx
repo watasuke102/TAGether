@@ -15,6 +15,7 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
+import {Move} from '@/utils/ArrayUtil';
 import UpdateExam from '@/utils/UpdateExam';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Exam from '@mytypes/Exam';
@@ -206,12 +207,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <DragDropContext
             onDragEnd={(e: DropResult) => {
               if (!e.destination) return;
-              const from = e.source.index,
-                to = e.destination.index;
-              if (from === to) return;
               const tmp = exam.concat();
-              tmp[current_page].answer.splice(to + (from < to ? 1 : 0), 0, tmp[current_page].answer[from]);
-              tmp[current_page].answer.splice(from + (from > to ? 1 : 0), 1);
+              tmp[current_page].answer = Move(tmp[current_page].answer, e.source.index, e.destination.index);
               props.updater(tmp);
             }}
           >
@@ -398,13 +395,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <DragDropContext
             onDragEnd={(e: DropResult) => {
               if (!e.destination) return;
-              const from = e.source.index,
-                to = e.destination.index;
-              if (from === to) return;
-              const tmp = exam.concat();
-              tmp.splice(to + (from < to ? 1 : 0), 0, tmp[from]);
-              tmp.splice(from + (from > to ? 1 : 0), 1);
-              props.updater(tmp);
+              props.updater(Move(exam, e.source.index, e.destination.index));
             }}
           >
             <Droppable droppableId={'question_list'}>

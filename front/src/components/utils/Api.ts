@@ -18,7 +18,7 @@ function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): 
   const [isLoading, SetIsLoading] = React.useState(true);
   const [data, SetData] = React.useState([init]);
   const router = useRouter();
-  const { id } = router.query;
+  const {id} = router.query;
   let id_str = '';
   if (target === 'categoly') id_str = Array.isArray(id) ? id[0] : id ?? '';
 
