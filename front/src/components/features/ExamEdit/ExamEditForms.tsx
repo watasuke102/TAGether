@@ -7,6 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './ExamEditForms.module.scss';
+import {ExamContext} from '@/pages/create';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 import Button from '@/common/Button/Button';
@@ -14,21 +15,22 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
+import UpdateExam from '@/utils/UpdateExam';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Exam from '@mytypes/Exam';
-import ExamOperateFunctionsType from '@mytypes/ExamOperateFunctionsType';
 import ExamType from '@mytypes/ExamType';
 
 interface Props {
-  exam: Exam[];
-  updater: ExamOperateFunctionsType;
-  register: () => void;
+  updater: (e: Exam[]) => void;
 }
 
 export default function ExamEditForms(props: Props): React.ReactElement {
   const [current_page, SetCurrentPage] = React.useState(0);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const question_form = React.useRef<HTMLTextAreaElement>();
+  const exam = React.useContext(ExamContext);
+
+  const updater = UpdateExam(props.updater, exam.concat());
 
   // ショートカットキー
   const Shortcut = React.useCallback((e: KeyboardEvent) => {
@@ -44,7 +46,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   function NextPage() {
     SetCurrentPage(current => {
-      if (current === props.exam.length - 1) return current;
+      if (current === exam.length - 1) return current;
       return current + 1;
     });
     question_form.current?.focus();
@@ -59,7 +61,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   function MovePageTo(to: number) {
     SetCurrentPage(current => {
-      if (current < 0 || current > props.exam.length - 1) return current;
+      if (current < 0 || current > exam.length - 1) return current;
       return to;
     });
     question_form.current?.focus();
@@ -81,8 +83,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             type: 'material',
             onClick: () =>
               type === 'Text' || type === 'Sort'
-                ? props.updater.Answer.Insert(current_page, -1)
-                : props.updater.QuestionChoices.Insert(current_page, -1),
+                ? updater.Answer.Insert(current_page, -1)
+                : updater.QuestionChoices.Insert(current_page, -1),
           }}
         />
         {
@@ -96,8 +98,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 text: '削除',
                 onClick: () =>
                   type === 'Text' || type === 'Sort'
-                    ? props.updater.Answer.Remove(current_page, index)
-                    : props.updater.QuestionChoices.Remove(current_page, index),
+                    ? updater.Answer.Remove(current_page, index)
+                    : updater.QuestionChoices.Remove(current_page, index),
               }}
             />
           )
@@ -108,28 +110,28 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   function AnswerEditArea() {
     let result: React.ReactElement[] | React.ReactElement;
-    const type = props.exam[current_page].type ?? 'Text';
+    const type = exam[current_page].type ?? 'Text';
     // Select系はquestion_choicesを使用するので、choicesがなければ初期化
     // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
-    if ((type === 'Select' || type === 'MultiSelect') && (props.exam[current_page].question_choices?.length ?? 0) < 1) {
-      props.exam[current_page].question_choices = [''];
-      // レンダリング中にstate変えるなみたいなエラーへの対策
-      setTimeout(props.updater.Exam.Update, 0);
+    if ((type === 'Select' || type === 'MultiSelect') && (exam[current_page].question_choices?.length ?? 0) < 1) {
+      const tmp = exam.concat();
+      tmp[current_page].question_choices = [''];
+      props.updater(tmp);
     }
 
     switch (type) {
       case 'Text':
-        result = props.exam[current_page].answer.map((e, i) => {
+        result = exam[current_page].answer.map((e, i) => {
           return (
             <div key={`examform-text-${i}`}>
               <Form
                 label={`答え (${i + 1})`}
                 value={e}
                 rows={3}
-                onChange={ev => props.updater.Answer.Update(current_page, i, ev.target.value)}
+                onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
               />
               <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('Text', i, props.exam[current_page].answer.length)}
+                {AddRemoveButtons('Text', i, exam[current_page].answer.length)}
               </div>
             </div>
           );
@@ -137,31 +139,32 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'Select':
-        result = props.exam[current_page].question_choices?.map((e, i) => {
+        result = exam[current_page].question_choices?.map((e, i) => {
           return (
             <div key={`examform-select-${i}`}>
               <div className={css.select_form}>
                 <SelectButton
                   type='single'
                   desc={''}
-                  status={Number(props.exam[current_page].answer[0]) === i && props.exam[current_page].answer[0] !== ''}
+                  status={Number(exam[current_page].answer[0]) === i && exam[current_page].answer[0] !== ''}
                   onChange={f => {
                     if (!f) return;
-                    if (props.exam[current_page].answer.length > 1) {
-                      props.exam[current_page].answer = [''];
-                      props.updater.Exam.Update();
+                    if (exam[current_page].answer.length > 1) {
+                      const tmp = exam.concat();
+                      tmp[current_page].answer = [''];
+                      props.updater(tmp);
                     }
-                    props.updater.Answer.Update(current_page, 0, String(i));
+                    updater.Answer.Update(current_page, 0, String(i));
                   }}
                 />
                 <Form
                   value={e}
                   rows={2}
-                  onChange={ev => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)}
+                  onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
               <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('Select', i, props.exam[current_page].question_choices?.length ?? 0)}
+                {AddRemoveButtons('Select', i, exam[current_page].question_choices?.length ?? 0)}
               </div>
             </div>
           );
@@ -169,38 +172,38 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'MultiSelect':
-        result = props.exam[current_page].question_choices?.map((e, i) => {
+        result = exam[current_page].question_choices?.map((e, i) => {
           return (
             <div key={`examform-multiselect-${i}`}>
               <div className={css.select_form}>
                 <SelectButton
                   type='multi'
                   desc={''}
-                  status={props.exam[current_page].answer.indexOf(String(i)) !== -1}
+                  status={exam[current_page].answer.indexOf(String(i)) !== -1}
                   onChange={f => {
                     // チェックが付けられた時は追加する
                     if (f) {
-                      props.updater.Answer.Insert(current_page, -1, String(i));
+                      updater.Answer.Insert(current_page, -1, String(i));
                       // デフォルトで存在する空欄要素を排除
-                      props.exam[current_page].answer = props.exam[current_page].answer.filter(e => e !== '');
-                      props.updater.Exam.Update();
+                      const tmp = exam.concat();
+                      tmp[current_page].answer = tmp[current_page].answer.filter(e => e !== '');
+                      props.updater(tmp);
                     } else {
                       // チェックが外された時は該当要素を削除
-                      props.exam[current_page].answer = props.exam[current_page].answer.filter(
-                        e => e !== String(i) && e !== '',
-                      );
-                      props.updater.Exam.Update();
+                      const tmp = exam.concat();
+                      tmp[current_page].answer = tmp[current_page].answer.filter(e => e !== String(i) && e !== '');
+                      props.updater(tmp);
                     }
                   }}
                 />
                 <Form
                   value={e}
                   rows={2}
-                  onChange={ev => props.updater.QuestionChoices.Update(current_page, i, ev.target.value)}
+                  onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
               <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('MultiSelect', i, props.exam[current_page].question_choices?.length ?? 0)}
+                {AddRemoveButtons('MultiSelect', i, exam[current_page].question_choices?.length ?? 0)}
               </div>
             </div>
           );
@@ -215,17 +218,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
               const from = e.source.index,
                 to = e.destination.index;
               if (from === to) return;
-              const ans = props.exam[current_page].answer;
-              ans.splice(to + (from < to ? 1 : 0), 0, ans[from]);
-              ans.splice(from + (from > to ? 1 : 0), 1);
-              props.exam[current_page].answer = ans;
-              props.updater.Exam.Update();
+              const tmp = exam.concat();
+              tmp[current_page].answer.splice(to + (from < to ? 1 : 0), 0, tmp[current_page].answer[from]);
+              tmp[current_page].answer.splice(from + (from > to ? 1 : 0), 1);
+              props.updater(tmp);
             }}
           >
             <Droppable droppableId='examform_sort_droppable'>
               {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {props.exam[current_page].answer.map((e, i) => {
+                  {exam[current_page].answer.map((e, i) => {
                     const id = `examform-sort-${i}`;
                     return (
                       <Draggable key={id} draggableId={id} index={i}>
@@ -235,11 +237,11 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               label={`答え (${i + 1})`}
                               value={e}
                               rows={3}
-                              onChange={ev => props.updater.Answer.Update(current_page, i, ev.target.value)}
+                              onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
                             />
                             <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
                             <div className={css.answer_area_buttons}>
-                              {AddRemoveButtons('Sort', i, props.exam[current_page].answer.length)}
+                              {AddRemoveButtons('Sort', i, exam[current_page].answer.length)}
                             </div>
                           </div>
                         )}
@@ -263,7 +265,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       icon: 'fas fa-angle-double-left',
       text: '最初に挿入',
       onClick: () => {
-        props.updater.Exam.Insert(0);
+        updater.Exam.Insert(0);
         SetCurrentPage(0);
       },
     },
@@ -271,14 +273,14 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       type: 'material',
       icon: 'fas fa-arrow-left',
       text: '1つ前に挿入',
-      onClick: () => props.updater.Exam.Insert(current_page),
+      onClick: () => updater.Exam.Insert(current_page),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-right',
       text: '1つ後に挿入',
       onClick: () => {
-        props.updater.Exam.Insert(current_page + 1);
+        updater.Exam.Insert(current_page + 1);
         NextPage();
       },
     },
@@ -287,8 +289,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       icon: 'fas fa-angle-double-right',
       text: '最後に挿入',
       onClick: () => {
-        props.updater.Exam.Insert(-1);
-        SetCurrentPage(props.exam.length - 1);
+        updater.Exam.Insert(-1);
+        SetCurrentPage(exam.length - 1);
       },
     },
   ];
@@ -300,14 +302,14 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <Button type={'material'} icon={'fas fa-angle-double-left'} text={''} onClick={() => MovePageTo(0)} />
           <Button type={'material'} icon={'fas fa-chevron-left'} text={''} onClick={PrevPage} />
           <span className={css.current_page}>
-            {current_page + 1}/{props.exam.length}
+            {current_page + 1}/{exam.length}
           </span>
           <Button type={'material'} icon={'fas fa-chevron-right'} text={''} onClick={NextPage} />
           <Button
             type={'material'}
             icon={'fas fa-angle-double-right'}
             text={''}
-            onClick={() => MovePageTo(props.exam.length - 1)}
+            onClick={() => MovePageTo(exam.length - 1)}
           />
         </div>
 
@@ -317,8 +319,8 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             icon={'fas fa-trash'}
             text={'この問題を削除'}
             onClick={() => {
-              if (current_page === props.exam.length - 1) PrevPage();
-              props.updater.Exam.Remove(current_page);
+              if (current_page === exam.length - 1) PrevPage();
+              updater.Exam.Remove(current_page);
             }}
           />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'} onClick={() => SetIsModalOpen(true)} />
@@ -338,16 +340,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         <div className={css.qa_list}>
           <Form
             label={'問題文'}
-            value={props.exam[current_page].question}
+            value={exam[current_page].question}
             rows={6}
             reff={question_form}
-            onChange={ev => props.updater.Question.Update(current_page, ev.target.value)}
+            onChange={ev => updater.Question.Update(current_page, ev.target.value)}
           />
           <Form
             label={'コメント（解説など）'}
-            value={props.exam[current_page].comment ?? ''}
+            value={exam[current_page].comment ?? ''}
             rows={5}
-            onChange={ev => props.updater.Comment.Update(current_page, ev.target.value)}
+            onChange={ev => updater.Comment.Update(current_page, ev.target.value)}
           />
         </div>
 
@@ -361,26 +363,26 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <SelectButton
               type='single'
               desc='テキスト'
-              status={(props.exam[current_page].type ?? 'Text') === 'Text'}
-              onChange={() => props.updater.Type.Update(current_page, 'Text')}
+              status={(exam[current_page].type ?? 'Text') === 'Text'}
+              onChange={() => updater.Type.Update(current_page, 'Text')}
             />
             <SelectButton
               type='single'
               desc='選択問題'
-              status={(props.exam[current_page].type ?? 'Text') === 'Select'}
-              onChange={() => props.updater.Type.Update(current_page, 'Select')}
+              status={(exam[current_page].type ?? 'Text') === 'Select'}
+              onChange={() => updater.Type.Update(current_page, 'Select')}
             />
             <SelectButton
               type='single'
               desc='複数選択'
-              status={(props.exam[current_page].type ?? 'Text') === 'MultiSelect'}
-              onChange={() => props.updater.Type.Update(current_page, 'MultiSelect')}
+              status={(exam[current_page].type ?? 'Text') === 'MultiSelect'}
+              onChange={() => updater.Type.Update(current_page, 'MultiSelect')}
             />
             <SelectButton
               type='single'
               desc='並び替え'
-              status={(props.exam[current_page].type ?? 'Text') === 'Sort'}
-              onChange={() => props.updater.Type.Update(current_page, 'Sort')}
+              status={(exam[current_page].type ?? 'Text') === 'Sort'}
+              onChange={() => updater.Type.Update(current_page, 'Sort')}
             />
           </div>
           {AnswerEditArea()}
@@ -397,16 +399,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
               const from = e.source.index,
                 to = e.destination.index;
               if (from === to) return;
-              const exam = props.exam;
-              exam.splice(to + (from < to ? 1 : 0), 0, exam[from]);
-              exam.splice(from + (from > to ? 1 : 0), 1);
-              props.updater.Exam.Update();
+              const tmp = exam.concat();
+              tmp.splice(to + (from < to ? 1 : 0), 0, tmp[from]);
+              tmp.splice(from + (from > to ? 1 : 0), 1);
+              props.updater(tmp);
             }}
           >
             <Droppable droppableId={'question_list'}>
               {provided => (
                 <div className={css.question_list} ref={provided.innerRef} {...provided.droppableProps}>
-                  {props.exam.map((e, i) => {
+                  {exam.map((e, i) => {
                     return (
                       <Draggable
                         key={`draggable_${i}-${e.question.slice(0, 5)}`}

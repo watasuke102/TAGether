@@ -34,7 +34,10 @@ interface Props {
   tags: TagData[];
 }
 
+export const ExamContext = React.createContext<Exam[]>(exam_default());
+
 export default function create(props: Props): React.ReactElement {
+  const router = useRouter();
   const isFirstRendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
 
@@ -46,7 +49,6 @@ export default function create(props: Props): React.ReactElement {
 
   const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
   const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
-  const router = useRouter();
 
   // 初回レンダリング時に実行されないようにしている
   React.useEffect(() => {
@@ -128,12 +130,12 @@ export default function create(props: Props): React.ReactElement {
     // exam形式の確認おわり
 
     // 登録の準備
-    // インデントを削除
     const tag: string[] = categoly.tag.map(e => String(e.id) ?? e.name);
     const api_body: CategolyResponse = {
       ...categoly,
       version: isOldForm ? 1 : 2,
       tag: tag.toString(),
+      // インデントを削除
       list: isJsonEdit ? JSON.stringify(JSON.parse(categoly.list)) : JSON.stringify(exam_tmp),
     };
 
@@ -295,11 +297,9 @@ export default function create(props: Props): React.ReactElement {
               updater={UpdateExam(SetExam, JSON.parse(JSON.stringify(exam)))}
             />
           ) : (
-            <ExamEditForms
-              exam={exam}
-              register={RegistExam}
-              updater={UpdateExam(SetExam, JSON.parse(JSON.stringify(exam)))}
-            />
+            <ExamContext.Provider value={exam}>
+              <ExamEditForms updater={(e) => SetExam(e)} />
+            </ExamContext.Provider>
           )}
         </>
       )}
