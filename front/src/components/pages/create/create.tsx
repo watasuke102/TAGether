@@ -99,27 +99,51 @@ export default function create(props: Props): React.ReactElement {
         result_str += '・タグは8個以下にしてください\n';
       }
 
-      // 空きがある問題の一覧
-      // 重複を排除したかったのでstringではなくArray
-      const blank_exam: number[] = [];
-      exam.forEach((e, i) => {
-        if (!e.type) exam_tmp[i].type = 'Text';
-        // 問題文が空欄かチェック
-        if (e.question === '') blank_exam.push(i);
-        // 答えに空欄があるかチェック
-        if (e.answer.length < 1) blank_exam.push(i);
-        e.answer.forEach(answer => answer === '' && blank_exam.push(i));
-        // 選択系のタイプの場合、choicesに空欄があるかチェック
-        if (e.type === 'Select' || e.type === 'MultiSelect') {
-          e.question_choices?.forEach(choice => choice === '' && blank_exam.push(i));
+      // 空きがある問題のインデックス
+      const blank_exam = new Set<number>();
+      // &が2連続以上している問題
+      const irregular_symbol_exam = new Set<number>();
+      exam_tmp.forEach((e, i) => {
+        switch (e.type) {
+          case undefined:
+            exam_tmp[i].type = 'Text';
+            break;
+          // 選択系のタイプの場合、choicesに空欄があるかチェック
+          case 'Select':
+          case 'MultiSelect':
+            e.question_choices?.forEach(choice => choice === '' && blank_exam.add(i));
+            break;
         }
+        // 問題文が空欄かチェック
+        if (e.question === '') blank_exam.add(i);
+        // 答えに空欄があるかチェック
+        let answer_str = '';
+        e.answer.forEach(str => {
+          // forEachのついでにjoin(' ')みたいなことをする
+          // joinを呼ぶ必要がないのでほんの少しだけ速くなるかも？
+          answer_str += `${str} `;
+        });
+        // 使用できない記号などが含まれてないか確認
+        const check = `${e.question} ${e.question_choices?.join(' ') ?? ''} ${answer_str} ${e.comment ?? ''}`;
+        // `"` があった場合 -1 以外の数字が来る
+        if (check.search('"') !== -1) irregular_symbol_exam.add(i);
+        // `\`が1つ以上連続している部分文字列を切り出して、\の数が奇数だったら駄目
+        check.match(/\\+/g)?.forEach(part => {
+          // partに `\` は1つ以上あるはず、lengthがundefinedになる状況は意味不明なので奇数を入れてエラーに
+          if (part.length % 2 === 1) {
+            irregular_symbol_exam.add(i);
+          }
+        });
       });
-      if (blank_exam.length !== 0) {
+      if (blank_exam.size !== 0) {
         failed = true;
-        let txt: string = '';
-        // 重複を排除し、'0, 1, 2, 'みたいな形の文字列に整形する
-        Array.from(new Set(blank_exam)).forEach(e => (txt += `${e + 1}, `));
-        result_str += `・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${txt.slice(0, -2)})\n`;
+        const list = Array.from(blank_exam).toString();
+        result_str += `・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${list})\n`;
+      }
+      if (irregular_symbol_exam.size !== 0) {
+        failed = true;
+        const list = Array.from(irregular_symbol_exam).toString();
+        result_str += `・使用できない記号が含まれています\n(ページ: ${list})\n`;
       }
       if (failed) {
         SetIsToastOpen(true);
@@ -226,18 +250,24 @@ export default function create(props: Props): React.ReactElement {
 
       <h1>{isCreate() ? '新規カテゴリの追加' : 'カテゴリの編集'}</h1>
 
+      <h2>機能について</h2>
       <ul>
+        <li>記号 \ を表示したいときは 「\\」と入力してください（括弧不要）</li>
+        <li>
+          「答え」の欄に&amp;を入れると、複数の正解を作ることが出来ます
+          <br />
+          例: 「A&amp;B&amp;C」→解答欄にAもしくはBもしくはCのどれかが入力されたら正解
+        </li>
+      </ul>
+
+      <h2>制約</h2>
+      <ul>
+        <li>タグの数は8個以下にしてください</li>
+        <li>タイトル及びすべての問題文・答えに空欄を作ることはできません</li>
+        <li>選択問題の場合はかならず1つ以上の問題にチェックが必要です （入力欄左のチェックボックスを確認すること）</li>
         <li>記号 &quot; は使用できません </li>
-        <li>
-          記号 \ を表示したいときは \\ のように入力してください
-          <br />
-          \\ 以外で記号 \ を使用しないでください。問題を開けなくなります
-        </li>
-        <li>
-          「答え」の欄に&を入れると、複数の正解を作ることが出来ます
-          <br />
-          例: 「A&B&C」→解答欄にAもしくはBもしくはCのどれかが入力されたら正解
-        </li>
+        <li>\\ 以外で記号 \ は使用できません（必ず空白無しで偶数個記述すること）</li>
+        <li>&amp;を2つ以上連続して入力することは許可されません</li>
       </ul>
 
       <div className={css.edit_area}>
