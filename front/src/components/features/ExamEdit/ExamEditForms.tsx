@@ -27,6 +27,8 @@ interface Props {
 export default function ExamEditForms(props: Props): React.ReactElement {
   const [current_page, SetCurrentPage] = React.useState(0);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
+
+  const exam_length = React.useRef(0);
   const question_form = React.useRef<HTMLTextAreaElement>();
   const exam = React.useContext(ExamContext);
 
@@ -37,40 +39,29 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
     if (e.ctrlKey && e.shiftKey && !e.repeat) {
       if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
-        PrevPage();
+        SetCurrentPage(current_page - 1);
       } else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
-        NextPage();
+        SetCurrentPage(current_page + 1);
       }
     }
   }, []);
-
-  function NextPage() {
-    SetCurrentPage(current => {
-      if (current === exam.length - 1) return current;
-      return current + 1;
-    });
-    question_form.current?.focus();
-  }
-  function PrevPage() {
-    SetCurrentPage(current => {
-      if (current === 0) return current;
-      return current - 1;
-    });
-    question_form.current?.focus();
-  }
-
-  function MovePageTo(to: number) {
-    SetCurrentPage(current => {
-      if (current < 0 || current > exam.length - 1) return current;
-      return to;
-    });
-    question_form.current?.focus();
-  }
 
   React.useEffect(() => {
     window.addEventListener('keydown', e => Shortcut(e));
     return () => window.removeEventListener('keydown', e => Shortcut(e));
   }, [Shortcut]);
+
+  React.useEffect(() => {
+    exam_length.current = exam.length;
+  }, [exam]);
+
+  function MovePageTo(to: number) {
+    SetCurrentPage(current => {
+      if (current < 0 || current > exam_length.current - 1) return current;
+      return to;
+    });
+    question_form.current?.focus();
+  }
 
   function AddRemoveButtons(type: ExamType, index: number, length: number) {
     return (
@@ -281,7 +272,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       text: '1つ後に挿入',
       onClick: () => {
         updater.Exam.Insert(current_page + 1);
-        NextPage();
+        SetCurrentPage(current_page + 1);
       },
     },
     {
@@ -290,7 +281,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       text: '最後に挿入',
       onClick: () => {
         updater.Exam.Insert(-1);
-        SetCurrentPage(exam.length - 1);
+        SetCurrentPage(exam_length.current);
       },
     },
   ];
@@ -300,16 +291,27 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       <div className={css.button_list}>
         <div className={css.button_container}>
           <Button type={'material'} icon={'fas fa-angle-double-left'} text={''} onClick={() => MovePageTo(0)} />
-          <Button type={'material'} icon={'fas fa-chevron-left'} text={''} onClick={PrevPage} />
+          <Button
+            type={'material'}
+            icon={'fas fa-chevron-left'}
+            text={''}
+            onClick={() => SetCurrentPage(current_page - 1)}
+          />
           <span className={css.current_page}>
+            {/* exam_length.currentにすると再レンダリングされないことがあるので */}
             {current_page + 1}/{exam.length}
           </span>
-          <Button type={'material'} icon={'fas fa-chevron-right'} text={''} onClick={NextPage} />
+          <Button
+            type={'material'}
+            icon={'fas fa-chevron-right'}
+            text={''}
+            onClick={() => SetCurrentPage(current_page + 1)}
+          />
           <Button
             type={'material'}
             icon={'fas fa-angle-double-right'}
             text={''}
-            onClick={() => MovePageTo(exam.length - 1)}
+            onClick={() => MovePageTo(exam_length.current - 1)}
           />
         </div>
 
@@ -319,7 +321,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             icon={'fas fa-trash'}
             text={'この問題を削除'}
             onClick={() => {
-              if (current_page === exam.length - 1) PrevPage();
+              if (current_page === exam_length.current - 1) SetCurrentPage(current_page - 1);
               updater.Exam.Remove(current_page);
             }}
           />
