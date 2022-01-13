@@ -20,7 +20,15 @@ export default function SelectButton(props: Props): React.ReactElement {
   const style = props.type === 'multi' ? css.multi : css.single;
 
   return (
-    <div className={css.container} onClick={() => props.onChange(!props.status)}>
+    <div
+      className={css.container}
+      tabIndex={0}
+      onClick={() => props.onChange(!props.status)}
+      onKeyDown={e => {
+        // FocusしてEnterしたときに状態変化
+        if (e.code === 'Space' || e.code === 'Enter') props.onChange(!props.status);
+      }}
+    >
       <div className={`${css.box} ${style}`}>
         {
           // statusがtrueなら表示
