@@ -144,13 +144,36 @@ export default class exam extends React.Component<Props, State> {
         default:
           return;
       }
+      const exam = this.state.exam[this.state.index];
+      if (exam.type !== 'Sort') return;
       // 一つ上下に移動させる
-      const index = Number(document.activeElement?.attributes.getNamedItem('sort_index')?.value);
+      const from_element = document.activeElement;
+      const index = Number(from_element?.attributes.getNamedItem('sort_index')?.value);
       if (Number.isNaN(index)) return;
       const to = index + direction;
+      if (to < 0 || to >= exam.answer.length) return;
       this.MoveAnswerOnSort(index, to);
       // 移動先の要素にフォーカスする
-      document.querySelector<HTMLElement>(`[sort_index="${to}"]`)?.focus();
+      const to_element = document.querySelector<HTMLElement>(`[sort_index="${to}"]`);
+      to_element?.focus();
+      // アニメーションを発生させる
+      if (to_element) {
+        const e = to_element.parentElement;
+        if (!e) return;
+        e.animate(
+          [{transform: `translateY(${(e.clientHeight + 20) * -direction}px)`}, {transform: 'translateY(0px)'}],
+          {duration: 300, easing: 'ease-out'},
+        );
+      }
+      if (from_element instanceof HTMLElement) {
+        const e = from_element.parentElement;
+        if (!e) return;
+        // prettier-ignore
+        e.animate(
+          [{transform: `translateY(${(e.clientHeight + 20) * direction}px)`}, {transform: 'translateY(0px)'}],
+          {duration: 300, easing: 'ease-out'}
+        );
+      }
     }
   }
   componentDidMount(): void {
