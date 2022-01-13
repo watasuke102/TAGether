@@ -118,11 +118,39 @@ export default class exam extends React.Component<Props, State> {
     // Ctrl+Shift+矢印キー等で動かす
     // キーリピートでの入力とウィンドウが表示されている場合は無効
     if (e.ctrlKey && e.shiftKey && !e.repeat && !this.state.isModalOpen) {
-      if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
-        this.DecrementIndex();
-      } else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
-        this.IncrementIndex();
+      let direction = 0;
+      switch (e.code) {
+        case 'KeyH':
+        case 'ArrowLeft':
+          e.preventDefault();
+          this.DecrementIndex();
+          return;
+        case 'KeyL':
+        case 'ArrowRight':
+          e.preventDefault();
+          this.IncrementIndex();
+          return;
+
+        case 'KeyJ':
+        case 'ArrowDown':
+          e.preventDefault();
+          direction = 1;
+          break;
+        case 'KeyK':
+        case 'ArrowUp':
+          e.preventDefault();
+          direction = -1;
+          break;
+        default:
+          return;
       }
+      // 一つ上下に移動させる
+      const index = Number(document.activeElement?.attributes.getNamedItem('sort_index')?.value);
+      if (Number.isNaN(index)) return;
+      const to = index + direction;
+      this.MoveAnswerOnSort(index, to);
+      // 移動先の要素にフォーカスする
+      document.querySelector<HTMLElement>(`[sort_index="${to}"]`)?.focus();
     }
   }
   componentDidMount(): void {
