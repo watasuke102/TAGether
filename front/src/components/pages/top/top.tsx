@@ -35,8 +35,17 @@ export default function index(): React.ReactElement {
       <h2>ショートカットキーについて</h2>
       <p>問題解答ページ、カテゴリ編集ページで使用できます。</p>
       <ul>
-        <li>Ctrl + Shift + (Lもしくは右矢印キー)： 答え合わせ・次の問題</li>
-        <li>Ctrl + Shift + (Hもしくは左矢印キー)： 前の問題</li>
+        <li>Ctrl + Shift + (Lもしくは右矢印キー)：次の問題・答え合わせ</li>
+        <li>Ctrl + Shift + (Hもしくは左矢印キー)：前の問題</li>
+      </ul>
+
+      <p>問題解答ページのみ、以下のショートカットキーが使えます。</p>
+      <ul>
+        <li>Tab：一つ次の問題に移動</li>
+        <li>Shift + Tab：一つ前の問題に移動</li>
+        <li>SpaceもしくはEnter：（選択問題で）チェック状態の切り替え</li>
+        <li>Ctrl + Shift + (Kもしくは上矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
+        <li>Ctrl + Shift + (Jもしくは下矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
       </ul>
 
       <h2>既知の不具合</h2>
