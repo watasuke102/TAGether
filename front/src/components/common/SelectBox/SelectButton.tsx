@@ -13,6 +13,7 @@ interface Props {
   type: 'multi' | 'single';
   status: boolean;
   desc: string;
+  id: string;
   onChange: (boolean) => void;
 }
 
@@ -22,6 +23,7 @@ export default function SelectButton(props: Props): React.ReactElement {
   return (
     <div
       className={css.container}
+      id={props.id}
       tabIndex={0}
       onClick={() => props.onChange(!props.status)}
       onKeyDown={e => {

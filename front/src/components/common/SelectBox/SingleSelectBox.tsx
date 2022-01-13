@@ -18,10 +18,11 @@ interface Props {
 export default function SingleSelectBox(props: Props): React.ReactElement {
   return (
     <>
-      {props.list.map(str => {
+      {props.list.map((str, i) => {
         return (
           <SelectButton
             type='single'
+            id={i === 0 ? 'singleselect-first' : ''}
             key={`select_${str}`}
             status={props.status === str}
             desc={str}

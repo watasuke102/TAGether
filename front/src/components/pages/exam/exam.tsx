@@ -52,6 +52,8 @@ interface State {
   examState: ExamState[];
   // 解答一覧で、正解を表示するかどうか
   showCorrectAnswer: boolean;
+  // Sortにおいて1回でも入れ替えが発生したか
+  sorted: boolean;
 }
 
 export default class exam extends React.Component<Props, State> {
@@ -82,7 +84,7 @@ export default class exam extends React.Component<Props, State> {
       total_question: 0,
       wrong_exam: [],
     };
-    this.ref = React.createRef<HTMLTextAreaElement>();
+    this.ref = React.createRef();
     // 解答状況・解答欄の初期化
     const exam_length = exam_list.length;
     const exam_state: ExamState[] = Array<ExamState>();
@@ -107,6 +109,7 @@ export default class exam extends React.Component<Props, State> {
       answers: answers,
       examState: exam_state,
       showCorrectAnswer: false,
+      sorted: false,
     };
   }
 
@@ -124,6 +127,8 @@ export default class exam extends React.Component<Props, State> {
   }
   componentDidMount(): void {
     window.addEventListener('keydown', e => this.Shortcut(e));
+    // フォーカスするため
+    this.componentDidUpdate();
   }
   componentWillUnmount(): void {
     window.removeEventListener('keydown', e => this.Shortcut(e));
@@ -141,12 +146,36 @@ export default class exam extends React.Component<Props, State> {
   }
 
   componentDidUpdate(): void {
-    // 結果表示、もしくは間違えた問題の読み込みが終了していなければ終了
-    if (this.state.showExamStateTable || (this.props.history_id && this.state.exam.length === 0)) return;
-    // ページ更新時、全ての入力欄が空欄であれば入力欄にフォーカス
-    for (let i = 0; i < this.state.answers[this.state.index].length; i++)
-      if (this.state.answers[this.state.index][i] !== '') return;
-    this.ref.current?.focus();
+    // 結果表示、もしくは間違えた問題の読み込みが終了していない、Sortタイプで入れ替えが発生した
+    if (this.state.showExamStateTable || (this.props.history_id && this.state.exam.length === 0) || this.state.sorted)
+      return;
+
+    // どれか一つでも解答が入力されていたら終わり
+    // Sortはanswerが埋まってるはずなのでスキップ
+    if (this.state.exam[this.state.index].type !== 'Sort') {
+      for (let i = 0; i < this.state.answers[this.state.index].length; i++)
+        if (this.state.answers[this.state.index][i] !== '') return;
+    }
+
+    switch (this.state.exam[this.state.index].type) {
+      case 'Text':
+        this.ref.current?.focus();
+        break;
+      case 'Select':
+      case 'MultiSelect':
+        document.getElementById('select-first')?.focus();
+        break;
+      case 'Sort':
+        document.getElementById('sort-first-draghandle')?.focus();
+        break;
+    }
+  }
+
+  MoveAnswerOnSort(from: number, to: number): void {
+    if (from === to) return;
+    const ans = this.state.answers;
+    ans[this.state.index] = Move(ans[this.state.index], from, to);
+    this.setState({answers: ans, sorted: true});
   }
 
   // 解答が合っているかどうか確認してstateに格納
@@ -202,7 +231,7 @@ export default class exam extends React.Component<Props, State> {
     }
     const tmp = this.state.examState;
     tmp[index] = result;
-    this.setState({examState: tmp});
+    this.setState({examState: tmp, sorted: false});
   }
 
   // indexを増減する
@@ -300,6 +329,7 @@ export default class exam extends React.Component<Props, State> {
           exam.question_choices?.map((e, i) => (
             <SelectButton
               type='single'
+              id={i === 0 ? 'select-first' : ''}
               key={`examform_checkbox_${i}`}
               desc={e}
               status={
@@ -320,6 +350,7 @@ export default class exam extends React.Component<Props, State> {
           exam.question_choices?.map((e, i) => (
             <SelectButton
               type='multi'
+              id={i === 0 ? 'select-first' : ''}
               key={`examform_checkbox_${i}`}
               desc={e}
               status={this.state.answers[this.state.index].indexOf(String(i)) !== -1}
@@ -339,9 +370,7 @@ export default class exam extends React.Component<Props, State> {
           <DragDropContext
             onDragEnd={(e: DropResult) => {
               if (!e.destination) return;
-              const ans = this.state.answers;
-              ans[this.state.index] = Move(ans[this.state.index], e.source.index, e.destination.index);
-              this.setState({answers: ans});
+              this.MoveAnswerOnSort(e.source.index, e.destination.index);
             }}
           >
             <Droppable droppableId='examform_sort_item_droppable'>
@@ -359,7 +388,12 @@ export default class exam extends React.Component<Props, State> {
                         {provided => (
                           <div className={css.examform_sort_item} ref={provided.innerRef} {...provided.draggableProps}>
                             <span>{e}</span>
-                            <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
+                            <span
+                              className={`fas fa-list ${css.icon}`}
+                              id={i === 0 ? 'sort-first-draghandle' : ''}
+                              {...{sort_index: i}}
+                              {...provided.dragHandleProps}
+                            />
                           </div>
                         )}
                       </Draggable>
