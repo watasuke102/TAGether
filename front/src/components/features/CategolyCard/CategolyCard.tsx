@@ -31,15 +31,14 @@ export default function ExamCard(props: Categoly): React.ReactElement {
 
   return (
     <>
-      <div className={css.card}>
+      <div className={css.container}>
         <Card onClick={() => setIsModalOpen(true)}>
-          <p className={css.title}>{title}</p>
-
-          <div className={css.bottom_items}>
+          <div className={css.card}>
+            <p className={css.title}>{title}</p>
             <p className={css.desc}> {desc} </p>
             <Tag tag={props.tag} />
+            <FavoriteStar id={props.id ?? -1} />
           </div>
-          <FavoriteStar id={props.id ?? -1} />
         </Card>
       </div>
 
