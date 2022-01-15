@@ -274,7 +274,6 @@ export default class exam extends React.Component<Props, State> {
     if (all_correct) {
       result.order = 0;
     } else {
-      console.log('WRONG EXAM', this.state.exam[index], result);
       // 1問でも間違っていたら、間違えた問題リストに追加
       this.exam_history.wrong_exam.push(this.state.exam[index]);
       // 全問不正解の場合

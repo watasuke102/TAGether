@@ -37,11 +37,9 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
       <div className={css.container}>
         <Button text='削除' icon='fas fa-trash-alt' type='material' onClick={props.remove} />
 
-        <div className={css.link_container}>
-          <span className={css.categoly_link} onClick={() => setIsModalOpen(true)}>
-            {props.categoly.title}
-          </span>
-        </div>
+        <span className={css.categoly_link} onClick={() => setIsModalOpen(true)}>
+          {props.categoly.title}
+        </span>
 
         <div className={css.status}>
           <span>
@@ -52,7 +50,7 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
 
         {props.item.wrong_exam &&
           (props.item.wrong_exam.length === 0 ? (
-            <p>全問正解しています</p>
+            <span className={css.all_correct}>全問正解</span>
           ) : (
             <Button text='解き直し' icon='fas fa-edit' type='material' onClick={PushExamPage} />
           ))}

@@ -17,17 +17,19 @@
     button:last-child {
       grid-row: 2/3;
     }
+    span:last-child {
+      grid-row: 2/3;
+    }
   }
 }
 
-.link_container {
-  display: flex;
-  align-items: center;
-}
+$gap: 16px;
+
 .categoly_link {
+  width: 100%;
+  margin: auto;
+  padding-left: $gap;
   color: #a1a1ff;
-  padding: auto 0;
-  padding-left: 16px;
   &:hover {
     cursor: pointer;
   }
@@ -36,17 +38,14 @@
 .status {
   display: flex;
   flex-direction: column;
+  padding-left: $gap;
   .date {
-    color: #c4c4c4;
+    color: #a2a2a2;
   }
 }
 
-.button {
+.all_correct {
   width: 100%;
-  height: 100%;
+  margin: auto;
   text-align: center;
-  p {
-    display: block;
-    margin: auto;
-  }
 }
