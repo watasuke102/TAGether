@@ -14,7 +14,7 @@ import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import {SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import CategolyCard from '@/features/CategolyCard/Card';
+import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import {useCategolyData} from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 

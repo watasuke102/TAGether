@@ -13,7 +13,7 @@ import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
-import CategolyCard from '@/features/CategolyCard/Card';
+import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryTableItem';
 import {useCategolyData} from '@/utils/Api';
 import {GetExamHistory, GetFavorite, ClearExamHistory} from '@/utils/ManageDB';

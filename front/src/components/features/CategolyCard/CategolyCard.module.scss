@@ -18,10 +18,7 @@
   width: 300px;
   height: auto;
   margin: 10px 25px;
-  padding: 5px 10px;
-  box-shadow: 5px 5px 5px #1e1e1e;
-  background-color: #6b6b6baa;
-  transition: 300ms;
+
   .title,
   .desc {
     color: #dbdbdb;
@@ -31,9 +28,6 @@
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     &:hover {
-      cursor: pointer;
-      background-color: #a5a5a5aa;
-      transition: 300ms;
       .title,
       .desc {
         color: #111111;

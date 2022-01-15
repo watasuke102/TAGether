@@ -1,13 +1,14 @@
 // TAGether - Share self-made exam for classmates
-// Card.tsx
+// CategolyCard.tsx
 //
 // CopyRight (c) 2020-2021 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from './Card.module.scss';
+import css from './CategolyCard.module.scss';
 import React from 'react';
+import {Card} from '@/common/Card';
 import Modal from '@/common/Modal/Modal';
 import Categoly from '@mytypes/Categoly';
 import Tag from '../TagContainer/TagContainer';
@@ -30,8 +31,8 @@ export default function ExamCard(props: Categoly): React.ReactElement {
 
   return (
     <>
-      <div className={css.container}>
-        <div className={css.card} onClick={() => setIsModalOpen(true)}>
+      <div className={css.card}>
+        <Card onClick={() => setIsModalOpen(true)}>
           <p className={css.title}>{title}</p>
 
           <div className={css.bottom_items}>
@@ -39,7 +40,7 @@ export default function ExamCard(props: Categoly): React.ReactElement {
             <Tag tag={props.tag} />
           </div>
           <FavoriteStar id={props.id ?? -1} />
-        </div>
+        </Card>
       </div>
 
       <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
