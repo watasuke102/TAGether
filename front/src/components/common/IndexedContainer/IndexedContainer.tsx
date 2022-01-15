@@ -12,7 +12,7 @@ import Button from '../Button/Button';
 
 interface Props {
   children: React.ReactElement[];
-  width: number;
+  width?: string;
   per?: number;
   len: number;
 }
@@ -21,7 +21,7 @@ export default function SelectButton(props: Props): React.ReactElement {
   const [index, SetIndex] = React.useState(0);
   const per = props.per ?? 20;
   const max_page = Math.ceil(props.len / per);
-  const width_var = {'--item_width': `${props.width}px`} as React.CSSProperties;
+  const width_var = {'--item_width': `${props.width ?? '1fr'}`} as React.CSSProperties;
 
   return (
     <>

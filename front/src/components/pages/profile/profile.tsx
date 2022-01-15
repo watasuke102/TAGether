@@ -10,6 +10,7 @@ import css from './profile.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
+import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
@@ -83,25 +84,27 @@ export default function profile(): React.ReactElement {
           />
         </div>
 
-        {history_list.map(item => {
-          const categoly: Categoly | undefined = data.find(a => a.id === item.id);
-          if (categoly === undefined) return <></>;
-          return (
-            <HistoryTable
-              key={`history_${item.history_key}`}
-              item={item}
-              categoly={categoly}
-              isShuffleEnabled={isShuffleEnabled}
-              remove={() => {
-                RemoveExamHistory(item.history_key ?? '');
-                const tmp = history_list.concat();
-                // history_keyが存在しない場合は何も削除しない
-                tmp.splice(Number(item.history_key ?? tmp.length), 1);
-                SetHistoryList(tmp);
-              }}
-            />
-          );
-        })}
+        <IndexedContainer len={history_list.length} per={8}>
+          {history_list.map(item => {
+            const categoly: Categoly | undefined = data.find(a => a.id === item.id);
+            if (categoly === undefined) return <></>;
+            return (
+              <HistoryTable
+                key={`history_${item.history_key}`}
+                item={item}
+                categoly={categoly}
+                isShuffleEnabled={isShuffleEnabled}
+                remove={() => {
+                  RemoveExamHistory(item.history_key ?? '');
+                  const tmp = history_list.concat();
+                  // history_keyが存在しない場合は何も削除しない
+                  tmp.splice(Number(item.history_key ?? tmp.length), 1);
+                  SetHistoryList(tmp);
+                }}
+              />
+            );
+          })}
+        </IndexedContainer>
       </div>
 
       <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>

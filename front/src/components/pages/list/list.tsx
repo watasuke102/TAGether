@@ -125,7 +125,7 @@ export default function list(): React.ReactElement {
       {isLoading ? (
         <Loading />
       ) : (
-        <IndexedContainer len={list.length} width={300}>
+        <IndexedContainer len={list.length} width='300px'>
           {CardList()}
         </IndexedContainer>
       )}
