@@ -11,6 +11,7 @@ import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
+import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import {SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
@@ -120,7 +121,14 @@ export default function list(): React.ReactElement {
           />
         </div>
       </div>
-      {isLoading ? <Loading /> : <div className={css.list}> {CardList()} </div>}
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <IndexedContainer len={list.length} width={300}>
+          {CardList()}
+        </IndexedContainer>
+      )}
     </>
   );
 }

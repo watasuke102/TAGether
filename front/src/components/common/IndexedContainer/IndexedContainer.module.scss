@@ -1,0 +1,24 @@
+/*
+ TAGether - Share self-made exam for classmates
+ IndexedContainer.module.scss
+
+ CopyRight (c) 2020-2021 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+
+.operator {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 32px;
+  span {
+    margin: auto 0;
+  }
+}
+
+.list {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(var(--item_width, 1fr), 1fr));
+}
