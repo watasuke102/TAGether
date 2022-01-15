@@ -13,7 +13,7 @@ interface Props {
   type: 'multi' | 'single';
   status: boolean;
   desc: string;
-  id: string;
+  id?: string;
   onChange: (boolean) => void;
 }
 

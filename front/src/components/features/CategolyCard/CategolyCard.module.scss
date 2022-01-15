@@ -8,10 +8,6 @@
  This software is released under the MIT SUSHI-WARE License.
 */
 
-.container {
-  display: flex;
-}
-
 .card {
   display: flex;
   flex-direction: column;
@@ -22,7 +18,7 @@
   .title,
   .desc {
     color: #dbdbdb;
-    transition: 300ms;
+    transition: color 300ms;
   }
 
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
@@ -31,7 +27,7 @@
       .title,
       .desc {
         color: #111111;
-        transition: 300ms;
+        transition: color 300ms;
       }
       .tag_container {
         background-color: #ffffff;
@@ -44,7 +40,7 @@
   overflow-wrap: break-word;
   font-weight: bold;
   font-size: 25px;
-  margin: 5px 0 0;
+  margin-bottom: 8px;
 }
 
 .bottom_items {
