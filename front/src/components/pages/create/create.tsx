@@ -62,6 +62,19 @@ export default function create(props: Props): React.ReactElement {
     }
   }, [exam, categoly]);
 
+  // ショートカットキー
+  const Shortcut = React.useCallback((e: KeyboardEvent) => {
+    if (e.ctrlKey && e.code === 'KeyS' && !e.repeat) {
+      e.preventDefault();
+      RegistCategoly();
+    }
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener('keydown', e => Shortcut(e));
+    return () => window.removeEventListener('keydown', e => Shortcut(e));
+  }, [Shortcut]);
+
   function UpdateCategoly(type: 'title' | 'desc' | 'list', v: string) {
     // 普通に代入すると浅いコピーになってしまった
     const stat = JSON.parse(JSON.stringify(categoly));
@@ -79,7 +92,7 @@ export default function create(props: Props): React.ReactElement {
   }
 
   // カテゴリ登録
-  function RegistExam(): void {
+  function RegistCategoly(): void {
     // トーストを閉じる
     SetIsToastOpen(false);
 
@@ -307,7 +320,7 @@ export default function create(props: Props): React.ReactElement {
           <SelectButton type='single' status={isOldForm} desc='古い編集画面を使う' onChange={SetIsOldForm} />
         )}
         <div className={css.pushbutton_wrapper}>
-          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => RegistExam()} />
+          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => RegistCategoly()} />
         </div>
       </div>
 
@@ -323,7 +336,7 @@ export default function create(props: Props): React.ReactElement {
           {isOldForm ? (
             <ExamEditFormsOld
               exam={exam}
-              register={RegistExam}
+              register={RegistCategoly}
               updater={UpdateExam(SetExam, JSON.parse(JSON.stringify(exam)))}
             />
           ) : (
