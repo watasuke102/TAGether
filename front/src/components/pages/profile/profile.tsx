@@ -14,9 +14,9 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
-import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryTableItem';
+import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
 import {useCategolyData} from '@/utils/Api';
-import {GetExamHistory, GetFavorite, ClearExamHistory} from '@/utils/ManageDB';
+import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 
@@ -75,7 +75,6 @@ export default function profile(): React.ReactElement {
               }}
             />
           </div>
-          {/* シャッフルするかどうかを決めるチェックボックス */}
           <SelectButton
             type='single'
             status={isShuffleEnabled}
@@ -84,29 +83,25 @@ export default function profile(): React.ReactElement {
           />
         </div>
 
-        <table>
-          <tbody>
-            <tr>
-              <th>日付</th>
-              <th>カテゴリ名</th>
-              <th>結果</th>
-              <th>正答率</th>
-              <th>間違えた問題を解く</th>
-            </tr>
-            {history_list.map(item => {
-              const categoly: Categoly | undefined = data.find(a => a.id === item.id);
-              if (categoly === undefined) return <></>;
-              return (
-                <HistoryTable
-                  key={`history_${item.history_key}`}
-                  item={item}
-                  categoly={categoly}
-                  isShuffleEnabled={isShuffleEnabled}
-                />
-              );
-            })}
-          </tbody>
-        </table>
+        {history_list.map(item => {
+          const categoly: Categoly | undefined = data.find(a => a.id === item.id);
+          if (categoly === undefined) return <></>;
+          return (
+            <HistoryTable
+              key={`history_${item.history_key}`}
+              item={item}
+              categoly={categoly}
+              isShuffleEnabled={isShuffleEnabled}
+              remove={() => {
+                RemoveExamHistory(item.history_key ?? '');
+                const tmp = history_list.concat();
+                // history_keyが存在しない場合は何も削除しない
+                tmp.splice(Number(item.history_key ?? tmp.length), 1);
+                SetHistoryList(tmp);
+              }}
+            />
+          );
+        })}
       </div>
 
       <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>

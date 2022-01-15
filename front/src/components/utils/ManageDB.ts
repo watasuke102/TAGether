@@ -36,6 +36,11 @@ export function GetExamHistory(): Promise<ExamHistory[]> {
       return result;
     });
 }
+
+export function RemoveExamHistory(key: string): Promise<void> {
+  return ExamHisotryInstance().removeItem(key);
+}
+
 export function ClearExamHistory(): Promise<void> {
   return ExamHisotryInstance().clear();
 }

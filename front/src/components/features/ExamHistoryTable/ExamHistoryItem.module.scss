@@ -1,0 +1,53 @@
+/*
+ TAGether - Share self-made exam for classmates
+ ExamHistoryItem.module.scss
+
+ CopyRight (c) 2020-2021 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+
+.container {
+  display: grid;
+  grid-template-columns: 85px 1fr 180px 135px;
+  margin-bottom: 16px;
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 140px 1fr;
+    gap: 8px;
+    button:last-child {
+      grid-row: 2/3;
+    }
+  }
+}
+
+.link_container {
+  display: flex;
+  align-items: center;
+}
+.categoly_link {
+  color: #a1a1ff;
+  padding: auto 0;
+  padding-left: 16px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  .date {
+    color: #c4c4c4;
+  }
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  p {
+    display: block;
+    margin: auto;
+  }
+}
