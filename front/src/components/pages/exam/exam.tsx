@@ -234,7 +234,7 @@ export default class exam extends React.Component<Props, State> {
     const index = this.state.index;
     const result: ExamState = {order: 0, checked: true, correctAnswerCount: 0};
     const exam = this.state.exam[index];
-    let correct: boolean = false;
+    let all_correct = true;
 
     // 複数選択問題は、完全一致のみ正解にする
     if (exam.type === 'MultiSelect' && this.version === 2) {
@@ -246,15 +246,18 @@ export default class exam extends React.Component<Props, State> {
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
         this.correct_answers++;
+      } else {
+        all_correct = false;
       }
       this.total_questions++;
       // 空欄削除+ソートされたものに変えておく
       this.setState({answers: answers});
     } else {
+      let correct: boolean = false;
       exam.answer.forEach((e, i) => {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
-        e.split('&').map(ans => {
+        e.split('&').forEach(ans => {
           if (this.state.answers[index][i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
@@ -262,14 +265,16 @@ export default class exam extends React.Component<Props, State> {
             this.correct_answers++;
           }
         });
+        if (!correct) all_correct = false;
         this.total_questions++;
       });
     }
 
     // 全問正解
-    if (result.correctAnswerCount === this.state.exam[index].answer.length) {
+    if (all_correct) {
       result.order = 0;
     } else {
+      console.log('WRONG EXAM', this.state.exam[index], result);
       // 1問でも間違っていたら、間違えた問題リストに追加
       this.exam_history.wrong_exam.push(this.state.exam[index]);
       // 全問不正解の場合
