@@ -30,6 +30,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
   const exam_length = React.useRef(0);
+  const current_page_ref = React.useRef(0);
   const question_form = React.useRef<HTMLTextAreaElement>();
   const exam = React.useContext(ExamContext);
 
@@ -40,9 +41,9 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
     if (e.ctrlKey && e.shiftKey && !e.repeat) {
       if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
-        SetCurrentPage(current_page - 1);
+        MovePageTo(current_page_ref.current - 1);
       } else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
-        SetCurrentPage(current_page + 1);
+        MovePageTo(current_page_ref.current + 1);
       }
     }
   }, []);
@@ -56,11 +57,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     exam_length.current = exam.length;
   }, [exam]);
 
+  React.useEffect(() => {
+    current_page_ref.current = current_page;
+  }, [current_page]);
+
   function MovePageTo(to: number) {
-    SetCurrentPage(current => {
-      if (current < 0 || current > exam_length.current - 1) return current;
-      return to;
-    });
+    if (to < 0 || to > exam_length.current - 1) return;
+    SetCurrentPage(to);
     question_form.current?.focus();
   }
 
@@ -254,7 +257,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       text: '最初に挿入',
       onClick: () => {
         updater.Exam.Insert(0);
-        SetCurrentPage(0);
+        MovePageTo(0);
       },
     },
     {
@@ -269,7 +272,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       text: '1つ後に挿入',
       onClick: () => {
         updater.Exam.Insert(current_page + 1);
-        SetCurrentPage(current_page + 1);
+        MovePageTo(current_page + 1);
       },
     },
     {
@@ -278,7 +281,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       text: '最後に挿入',
       onClick: () => {
         updater.Exam.Insert(-1);
-        SetCurrentPage(exam_length.current);
+        MovePageTo(exam_length.current);
       },
     },
   ];
@@ -292,7 +295,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             type={'material'}
             icon={'fas fa-chevron-left'}
             text={''}
-            onClick={() => SetCurrentPage(current_page - 1)}
+            onClick={() => MovePageTo(current_page - 1)}
           />
           <span className={css.current_page}>
             {/* exam_length.currentにすると再レンダリングされないことがあるので */}
@@ -302,7 +305,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             type={'material'}
             icon={'fas fa-chevron-right'}
             text={''}
-            onClick={() => SetCurrentPage(current_page + 1)}
+            onClick={() => MovePageTo(current_page + 1)}
           />
           <Button
             type={'material'}
@@ -318,7 +321,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             icon={'fas fa-trash'}
             text={'この問題を削除'}
             onClick={() => {
-              if (current_page === exam_length.current - 1) SetCurrentPage(current_page - 1);
+              if (current_page === exam_length.current - 1) MovePageTo(current_page - 1);
               updater.Exam.Remove(current_page);
             }}
           />
@@ -413,7 +416,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                             className={css.dragable_question_card}
                             ref={provided.innerRef}
                             onClick={() => {
-                              SetCurrentPage(i);
+                              MovePageTo(i);
                               SetIsModalOpen(false);
                             }}
                             {...provided.draggableProps}
