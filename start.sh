@@ -2,6 +2,8 @@
 # if you use this under product environment, run "start.sh product"
 set -e
 
+echo -e "\e[32;7m[info] Started setup script (env: ${1:-not_product})\e[m"
+
 git pull
 
 ## frontend setup
@@ -22,4 +24,4 @@ else
   docker-compose up -d --build
 fi
 
-echo -e "\e[36;7m[info] Start complete\e[m"
+echo -e "\e[36;7m[info] Setup was completed\e[m"
