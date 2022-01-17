@@ -142,7 +142,6 @@ export default function create(props: Props): React.ReactElement {
         if (check.search('"') !== -1) irregular_symbol_exam.add(i);
         // `\`が1つ以上連続している部分文字列を切り出して、\の数が奇数だったら駄目
         check.match(/\\+/g)?.forEach(part => {
-          // partに `\` は1つ以上あるはず、lengthがundefinedになる状況は意味不明なので奇数を入れてエラーに
           if (part.length % 2 === 1) {
             irregular_symbol_exam.add(i);
           }
