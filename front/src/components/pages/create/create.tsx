@@ -135,6 +135,7 @@ export default function create(props: Props): React.ReactElement {
           // forEachのついでにjoin(' ')みたいなことをする
           // joinを呼ぶ必要がないのでほんの少しだけ速くなるかも？
           answer_str += `${str} `;
+          if (str === '') blank_exam.add(i);
         });
         // 使用できない記号などが含まれてないか確認
         const check = `${e.question} ${e.question_choices?.join(' ') ?? ''} ${answer_str} ${e.comment ?? ''}`;
