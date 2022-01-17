@@ -131,23 +131,23 @@ export default function create(props: Props): React.ReactElement {
             break;
         }
         // 問題文が空欄かチェック
-        if (e.question === '') blank_exam.add(i);
+        if (e.question === '') blank_exam.add(i+1);
         // 答えに空欄があるかチェック
         let answer_str = '';
         e.answer.forEach(str => {
           // forEachのついでにjoin(' ')みたいなことをする
           // joinを呼ぶ必要がないのでほんの少しだけ速くなるかも？
           answer_str += `${str} `;
-          if (str === '') blank_exam.add(i);
+          if (str === '') blank_exam.add(i+1);
         });
         // 使用できない記号などが含まれてないか確認
         const check = `${e.question} ${e.question_choices?.join(' ') ?? ''} ${answer_str} ${e.comment ?? ''}`;
         // `"` があった場合 -1 以外の数字が来る
-        if (check.search('"') !== -1) irregular_symbol_exam.add(i);
+        if (check.search('"') !== -1) irregular_symbol_exam.add(i+1);
         // `\`が1つ以上連続している部分文字列を切り出して、\の数が奇数だったら駄目
         check.match(/\\+/g)?.forEach(part => {
           if (part.length % 2 === 1) {
-            irregular_symbol_exam.add(i);
+            irregular_symbol_exam.add(i+1);
           }
         });
       });
@@ -166,8 +166,7 @@ export default function create(props: Props): React.ReactElement {
         SetRegistError(result_str.join('\n'));
         return;
       }
-    }
-    // exam形式の確認おわり
+    } // exam形式の確認おわり
 
     // 登録の準備
     const tag: string[] = categoly.tag.map(e => String(e.id) ?? e.name);
