@@ -10,7 +10,7 @@
 
 .container {
   display: grid;
-  grid-template-columns: 85px 1fr 180px 135px;
+  grid-template-columns: 85px 1fr 230px 135px;
   @media screen and (max-width: 600px) {
     grid-template-columns: 140px 1fr;
     gap: 8px;
