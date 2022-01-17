@@ -59,12 +59,25 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   React.useEffect(() => {
     current_page_ref.current = current_page;
+    question_form.current?.focus();
   }, [current_page]);
 
+  // ページ移動
+  // 0より小さい値を指定した場合は最初に問題追加+ページを0に
+  // 逆も同様
   function MovePageTo(to: number) {
-    if (to < 0 || to > exam_length.current - 1) return;
-    SetCurrentPage(to);
-    question_form.current?.focus();
+    if (to < 0) {
+      AddExam(0);
+    } else if (to > exam_length.current - 1) {
+      AddExam(-1);
+    } else {
+      SetCurrentPage(to);
+    }
+  }
+
+  function AddExam(at: number) {
+    updater.Exam.Insert(at);
+    SetCurrentPage(at === -1 ? exam_length.current : at);
   }
 
   function AddRemoveButtons(type: ExamType, index: number, length: number) {
@@ -255,34 +268,25 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       type: 'material',
       icon: 'fas fa-angle-double-left',
       text: '最初に挿入',
-      onClick: () => {
-        updater.Exam.Insert(0);
-        MovePageTo(0);
-      },
+      onClick: () => AddExam(0),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-left',
       text: '1つ前に挿入',
-      onClick: () => updater.Exam.Insert(current_page),
+      onClick: () => AddExam(current_page),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-right',
       text: '1つ後に挿入',
-      onClick: () => {
-        updater.Exam.Insert(current_page + 1);
-        MovePageTo(current_page + 1);
-      },
+      onClick: () => AddExam(current_page + 1),
     },
     {
       type: 'material',
       icon: 'fas fa-angle-double-right',
       text: '最後に挿入',
-      onClick: () => {
-        updater.Exam.Insert(-1);
-        MovePageTo(exam_length.current);
-      },
+      onClick: () => AddExam(-1),
     },
   ];
 
