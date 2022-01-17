@@ -53,6 +53,7 @@ export default function index(): React.ReactElement {
       <h2>既知の不具合</h2>
       <ul>
         <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
+        <li>Ctrl+Sで適用した場合、カテゴリのタイトルなどが変化しない</li>
       </ul>
 
       <p className={css.version}>TAGether v1.7.1</p>

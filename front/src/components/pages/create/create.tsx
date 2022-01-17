@@ -63,17 +63,20 @@ export default function create(props: Props): React.ReactElement {
   }, [exam, categoly]);
 
   // ショートカットキー
-  const Shortcut = React.useCallback((e: KeyboardEvent) => {
-    if (e.ctrlKey && e.code === 'KeyS' && !e.repeat) {
-      e.preventDefault();
-      RegistCategoly();
-    }
-  }, []);
+  const Shortcut = React.useCallback(
+    (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.code === 'KeyS' && !e.repeat) {
+        e.preventDefault();
+        RegistCategoly();
+      }
+    },
+    [exam, categoly],
+  );
 
   React.useEffect(() => {
     window.addEventListener('keydown', e => Shortcut(e));
     return () => window.removeEventListener('keydown', e => Shortcut(e));
-  }, [Shortcut]);
+  }, []);
 
   function UpdateCategoly(type: 'title' | 'desc' | 'list', v: string) {
     // 普通に代入すると浅いコピーになってしまった
