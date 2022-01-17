@@ -102,14 +102,14 @@ export default function create(props: Props): React.ReactElement {
     // データが正しいか判定し、誤りがあればエラーを返す
     {
       let failed: boolean = false;
-      let result_str: string = '';
+      const result_str: string[] = [];
       if (categoly.title === '') {
         failed = true;
-        result_str += '・タイトルを設定してください\n';
+        result_str.push('・タイトルを設定してください');
       }
       if (categoly.tag.length > 8) {
         failed = true;
-        result_str += '・タグは8個以下にしてください\n';
+        result_str.push('・タグは8個以下にしてください');
       }
 
       // 空きがある問題のインデックス
@@ -151,16 +151,16 @@ export default function create(props: Props): React.ReactElement {
       if (blank_exam.size !== 0) {
         failed = true;
         const list = Array.from(blank_exam).toString();
-        result_str += `・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${list})\n`;
+        result_str.push(`・問題文もしくは答え・チェックボックスが空の問題があります\n(ページ: ${list})`);
       }
       if (irregular_symbol_exam.size !== 0) {
         failed = true;
         const list = Array.from(irregular_symbol_exam).toString();
-        result_str += `・使用できない記号が含まれています\n(ページ: ${list})\n`;
+        result_str.push(`・使用できない記号が含まれています\n(ページ: ${list})`);
       }
       if (failed) {
         SetIsToastOpen(true);
-        SetRegistError(result_str);
+        SetRegistError(result_str.join('\n'));
         return;
       }
     }
