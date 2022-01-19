@@ -530,7 +530,14 @@ export default class exam extends React.Component<Props, State> {
           {this.state.exam[this.state.index].comment && (
             <div>
               <h2>コメント</h2>
-              <p>{this.state.exam[this.state.index].comment}</p>
+              <p>
+                {this.state.exam[this.state.index].comment?.split('\n').map(s => (
+                  <>
+                    {s}
+                    <br />
+                  </>
+                ))}
+              </p>
             </div>
           )}
         </div>
