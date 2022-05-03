@@ -196,12 +196,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                       updater.Answer.Insert(current_page, -1, String(i));
                       // デフォルトで存在する空欄要素を排除
                       const tmp = exam.concat();
-                      tmp[current_page].answer = tmp[current_page].answer.filter(e => e !== '');
+                      tmp[current_page].answer = tmp[current_page].answer
+                        .filter(e => e !== '')
+                        .sort((a, b) => Number(a) - Number(b));
                       props.updater(tmp);
                     } else {
                       // チェックが外された時は該当要素を削除
                       const tmp = exam.concat();
-                      tmp[current_page].answer = tmp[current_page].answer.filter(e => e !== String(i) && e !== '');
+                      tmp[current_page].answer = tmp[current_page].answer
+                        .filter(e => e !== String(i) && e !== '')
+                        .sort((a, b) => Number(a) - Number(b));
                       props.updater(tmp);
                     }
                   }}
