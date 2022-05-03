@@ -49,6 +49,8 @@ export default function create(props: Props): React.ReactElement {
 
   const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
   const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
+  const exam_ref = React.useRef<Exam[]>([]);
+  exam_ref.current = exam;
 
   // 初回レンダリング時に実行されないようにしている
   React.useEffect(() => {
@@ -100,7 +102,7 @@ export default function create(props: Props): React.ReactElement {
     SetIsToastOpen(false);
 
     // 編集用
-    const exam_tmp = exam;
+    const exam_tmp = exam_ref.current;
 
     // データが正しいか判定し、誤りがあればエラーを返す
     {
@@ -131,23 +133,23 @@ export default function create(props: Props): React.ReactElement {
             break;
         }
         // 問題文が空欄かチェック
-        if (e.question === '') blank_exam.add(i+1);
+        if (e.question === '') blank_exam.add(i + 1);
         // 答えに空欄があるかチェック
         let answer_str = '';
         e.answer.forEach(str => {
           // forEachのついでにjoin(' ')みたいなことをする
           // joinを呼ぶ必要がないのでほんの少しだけ速くなるかも？
           answer_str += `${str} `;
-          if (str === '') blank_exam.add(i+1);
+          if (str === '') blank_exam.add(i + 1);
         });
         // 使用できない記号などが含まれてないか確認
         const check = `${e.question} ${e.question_choices?.join(' ') ?? ''} ${answer_str} ${e.comment ?? ''}`;
         // `"` があった場合 -1 以外の数字が来る
-        if (check.search('"') !== -1) irregular_symbol_exam.add(i+1);
+        if (check.search('"') !== -1) irregular_symbol_exam.add(i + 1);
         // `\`が1つ以上連続している部分文字列を切り出して、\の数が奇数だったら駄目
         check.match(/\\+/g)?.forEach(part => {
           if (part.length % 2 === 1) {
-            irregular_symbol_exam.add(i+1);
+            irregular_symbol_exam.add(i + 1);
           }
         });
       });
