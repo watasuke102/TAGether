@@ -1,0 +1,26 @@
+{
+  "name": "tagether",
+  "version": "1.7.1",
+  "description": "Share self-made exam for classmates",
+  "workspaces": [
+    "front",
+    "back"
+  ],
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "./start.sh",
+    "start": "./start.sh product"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watasuke102/tagether.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/watasuke102/tagether/issues"
+  },
+  "homepage": "https://github.com/watasuke102/tagether#readme"
+}
