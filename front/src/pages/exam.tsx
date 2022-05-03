@@ -11,32 +11,40 @@ import {useRouter} from 'next/router';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import {useCategolyData} from '@/utils/Api';
+import {Shuffle} from '@/utils/ArrayUtil';
 import {categoly_default} from '@/utils/DefaultValue';
 import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 
 export default function ExamPage(): React.ReactElement {
   const router = useRouter();
-  const {id, history_id, tag} = router.query;
+  const {id, history_id, tag, shuffle} = router.query;
 
   const [isLoading, SetIsLoading] = React.useState(true);
+  const OnComplete = (categoly: Categoly) => {
+    if (shuffle === 'true') {
+      categoly.list = JSON.stringify(Shuffle(JSON.parse(categoly.list)));
+    }
+    SetData(categoly);
+    SetIsLoading(false);
+  };
   const [data, SetData] = React.useState<Categoly>(categoly_default());
   useCategolyData(categoly => {
     if (id !== undefined) {
       // 通常
-      SetData(categoly[0]);
-      SetIsLoading(false);
+      OnComplete(categoly[0]);
     } else if (history_id !== undefined) {
       // 履歴からの解き直し
       const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
       GetSpecifiedExamHistory(history_id_str).then(result => {
         if (result) {
-          SetData({
+          OnComplete({
             ...categoly_default(),
             title: `やり直し: ${result.title}`,
             list: JSON.stringify(result.wrong_exam),
           });
-          SetIsLoading(false);
+        } else {
+          throw new Error('[FATAL] cannot get ExamHistory');
         }
       });
     } else if (tag !== undefined) {
@@ -55,12 +63,11 @@ export default function ExamPage(): React.ReactElement {
           list = list.concat(JSON.parse(e.list));
         }
       });
-      SetData({
+      OnComplete({
         ...categoly_default(),
         title: `タグ(${filter})`,
         list: JSON.stringify(list),
       });
-      SetIsLoading(false);
     }
   });
 

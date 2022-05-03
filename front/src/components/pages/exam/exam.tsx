@@ -71,11 +71,6 @@ export default class exam extends React.Component<Props, State> {
     this.version = this.props.data.version;
     exam_list = JSON.parse(this.props.data.list);
 
-    // シャッフル有効なら
-    if (Router.query.shuffle === 'true') {
-      exam_list = Shuffle(exam_list);
-    }
-
     this.exam_history = {
       id: this.props.data.id ?? 0,
       title: title,
