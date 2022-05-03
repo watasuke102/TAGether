@@ -26,13 +26,17 @@ interface Props {
 }
 
 export default function ExamEditForms(props: Props): React.ReactElement {
-  const [current_page, SetCurrentPage] = React.useState(0);
+  const ForceRender = useForceRender();
+  const question_form = React.useRef<HTMLTextAreaElement>();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
-  const exam_length = React.useRef(0);
+  const [current_page, SetCurrentPage] = React.useState(0);
   const current_page_ref = React.useRef(0);
-  const question_form = React.useRef<HTMLTextAreaElement>();
+  current_page_ref.current = current_page;
+
   const exam = React.useContext(ExamContext);
+  const exam_length = React.useRef(0);
+  exam_length.current = exam.length;
 
   const updater = UpdateExam(props.updater, exam.concat());
 
@@ -54,10 +58,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   }, [Shortcut]);
 
   React.useEffect(() => {
-    exam_length.current = exam.length;
-  }, [exam]);
-
-  React.useEffect(() => {
     current_page_ref.current = current_page;
     question_form.current?.focus();
   }, [current_page]);
@@ -73,6 +73,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     } else {
       SetCurrentPage(to);
     }
+    ForceRender();
   }
 
   function AddExam(at: number) {
@@ -302,8 +303,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             onClick={() => MovePageTo(current_page - 1)}
           />
           <span className={css.current_page}>
-            {/* exam_length.currentにすると再レンダリングされないことがあるので */}
-            {current_page + 1}/{exam.length}
+            {current_page + 1}/{exam_length.current}
           </span>
           <Button
             type={'material'}
