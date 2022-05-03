@@ -17,6 +17,7 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
+import AnswerArea from '@/features/Exam/AnswerArea';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import {Move, Shuffle} from '@/utils/ArrayUtil';
@@ -113,61 +114,17 @@ export default class exam extends React.Component<Props, State> {
     // Ctrl+Shift+矢印キー等で動かす
     // キーリピートでの入力とウィンドウが表示されている場合は無効
     if (e.ctrlKey && e.shiftKey && !e.repeat && !this.state.isModalOpen) {
-      let direction = 0;
       switch (e.code) {
         case 'KeyH':
         case 'ArrowLeft':
           e.preventDefault();
           this.DecrementIndex();
-          return;
+          break;
         case 'KeyL':
         case 'ArrowRight':
           e.preventDefault();
           this.IncrementIndex();
-          return;
-
-        case 'KeyJ':
-        case 'ArrowDown':
-          e.preventDefault();
-          direction = 1;
           break;
-        case 'KeyK':
-        case 'ArrowUp':
-          e.preventDefault();
-          direction = -1;
-          break;
-        default:
-          return;
-      }
-      const exam = this.state.exam[this.state.index];
-      if (exam.type !== 'Sort') return;
-      // 一つ上下に移動させる
-      const from_element = document.activeElement;
-      const index = Number(from_element?.attributes.getNamedItem('sort_index')?.value);
-      if (Number.isNaN(index)) return;
-      const to = index + direction;
-      if (to < 0 || to >= exam.answer.length) return;
-      this.MoveAnswerOnSort(index, to);
-      // 移動先の要素にフォーカスする
-      const to_element = document.querySelector<HTMLElement>(`[sort_index="${to}"]`);
-      to_element?.focus();
-      // アニメーションを発生させる
-      if (to_element) {
-        const e = to_element.parentElement;
-        if (!e) return;
-        e.animate(
-          [{transform: `translateY(${(e.clientHeight + 20) * -direction}px)`}, {transform: 'translateY(0px)'}],
-          {duration: 300, easing: 'ease-out'},
-        );
-      }
-      if (from_element instanceof HTMLElement) {
-        const e = from_element.parentElement;
-        if (!e) return;
-        // prettier-ignore
-        e.animate(
-          [{transform: `translateY(${(e.clientHeight + 20) * direction}px)`}, {transform: 'translateY(0px)'}],
-          {duration: 300, easing: 'ease-out'}
-        );
       }
     }
   }
@@ -215,13 +172,6 @@ export default class exam extends React.Component<Props, State> {
         document.getElementById('sort-first-draghandle')?.focus();
         break;
     }
-  }
-
-  MoveAnswerOnSort(from: number, to: number): void {
-    if (from === to) return;
-    const ans = this.state.answers;
-    ans[this.state.index] = Move(ans[this.state.index], from, to);
-    this.setState({answers: ans, sorted: true});
   }
 
   // 解答が合っているかどうか確認してstateに格納
@@ -351,111 +301,6 @@ export default class exam extends React.Component<Props, State> {
     const tmp = this.state.answers;
     tmp[this.state.index][i] = event.target.value;
     this.setState({answers: tmp});
-  }
-
-  //解答欄
-  AnswerArea(): React.ReactElement | React.ReactElement[] {
-    const exam = this.state.exam[this.state.index];
-    // バージョン1であれば強制的にText扱いとする
-    const type = this.version === 1 ? 'Text' : exam.type ?? 'Text';
-
-    switch (type) {
-      case 'Text':
-        return exam.answer.map((e, i) => (
-          <div className={css.form} key={`examform_Text_${i}`}>
-            <Form
-              rows={1}
-              reff={i === 0 ? this.ref : null}
-              label={`解答 ${exam.answer.length === 1 ? '' : `(${i + 1})`}`}
-              value={this.state.answers[this.state.index][i]}
-              onChange={ev => this.UpdateUsersResponse(ev, i)}
-              disabled={this.state.examState[this.state.index].checked}
-            />
-          </div>
-        ));
-
-      case 'Select':
-        return (
-          exam.question_choices?.map((e, i) => (
-            <SelectButton
-              type='single'
-              id={i === 0 ? 'select-first' : ''}
-              key={`examform_checkbox_${i}`}
-              desc={e}
-              status={
-                Number(this.state.answers[this.state.index][0]) === i && this.state.answers[this.state.index][0] !== ''
-              }
-              onChange={f => {
-                if (!f || this.state.examState[this.state.index].checked) return;
-                const tmp = this.state.answers;
-                tmp[this.state.index][0] = String(i);
-                this.setState({answers: tmp});
-              }}
-            />
-          )) ?? <>invalid</>
-        );
-
-      case 'MultiSelect':
-        return (
-          exam.question_choices?.map((e, i) => (
-            <SelectButton
-              type='multi'
-              id={i === 0 ? 'select-first' : ''}
-              key={`examform_checkbox_${i}`}
-              desc={e}
-              status={this.state.answers[this.state.index].indexOf(String(i)) !== -1}
-              onChange={f => {
-                if (this.state.examState[this.state.index].checked) return;
-                const tmp = this.state.answers;
-                if (f) tmp[this.state.index].push(String(i));
-                else tmp[this.state.index] = tmp[this.state.index].filter(e => e !== String(i));
-                this.setState({answers: tmp});
-              }}
-            />
-          )) ?? <>invalid</>
-        );
-
-      case 'Sort':
-        return (
-          <DragDropContext
-            onDragEnd={(e: DropResult) => {
-              if (!e.destination) return;
-              this.MoveAnswerOnSort(e.source.index, e.destination.index);
-            }}
-          >
-            <Droppable droppableId='examform_sort_item_droppable'>
-              {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {this.state.answers[this.state.index].map((e, i) => {
-                    const id = `exam-item-${i}`;
-                    return (
-                      <Draggable
-                        key={id}
-                        draggableId={id}
-                        index={i}
-                        isDragDisabled={this.state.examState[this.state.index].checked}
-                      >
-                        {provided => (
-                          <div className={css.examform_sort_item} ref={provided.innerRef} {...provided.draggableProps}>
-                            <span>{e}</span>
-                            <span
-                              className={`fas fa-list ${css.icon}`}
-                              id={i === 0 ? 'sort-first-draghandle' : ''}
-                              {...{sort_index: i}}
-                              {...provided.dragHandleProps}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        );
-    } // switch(exam.type)
   }
 
   NextButton(): React.ReactElement {
@@ -657,7 +502,20 @@ export default class exam extends React.Component<Props, State> {
             </div>
 
             <form>
-              {this.AnswerArea()}
+              <AnswerArea
+                version={this.version}
+                exam={this.state.exam[this.state.index]}
+                answers={this.state.answers[this.state.index]}
+                setAnswers={list => {
+                  const tmp = this.state.answers.concat();
+                  tmp[this.state.index] = list;
+                  this.setState({answers: tmp});
+                }}
+                setSorted={() => this.setState({sorted: true})}
+                disable={this.state.examState[this.state.index].checked}
+                shortcutDisable={this.state.isModalOpen}
+                ref={this.ref}
+              />
               {/* 入力中エンターを押して送信を無効化 */}
               <input id={css.dummy} />
             </form>

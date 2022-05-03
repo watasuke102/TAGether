@@ -48,8 +48,10 @@ export default function create(props: Props): React.ReactElement {
   const [registError, SetRegistError] = React.useState('');
 
   const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
+  const categoly_ref = React.useRef<Categoly>(categoly_default());
+  categoly_ref.current = categoly;
   const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
-  const exam_ref = React.useRef<Exam[]>([]);
+  const exam_ref = React.useRef<Exam[]>(exam_default());
   exam_ref.current = exam;
 
   // 初回レンダリング時に実行されないようにしている
@@ -103,6 +105,7 @@ export default function create(props: Props): React.ReactElement {
 
     // 編集用
     const exam_tmp = exam_ref.current;
+    const categoly = categoly_ref.current;
 
     // データが正しいか判定し、誤りがあればエラーを返す
     {
