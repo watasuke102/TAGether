@@ -10,17 +10,14 @@ import css from './exam.module.scss';
 import {format} from 'date-fns';
 import Router from 'next/router';
 import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
-import {SelectButton} from '@/common/SelectBox';
-import Form from '@/common/TextForm/Form';
 import AnswerArea from '@/features/Exam/AnswerArea';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
-import {Move, Shuffle} from '@/utils/ArrayUtil';
+import {Shuffle} from '@/utils/ArrayUtil';
 import {AddExamHistory} from '@/utils/ManageDB';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
@@ -40,129 +37,98 @@ interface Props {
   tag_filter: string | string[] | undefined;
 }
 
-interface State {
-  exam: Exam[];
-  title: string;
-  index: number;
-  correct_rate: number;
-  isModalOpen: boolean;
-  nextButtonState: NextButtonState;
-  showExamStateTable: boolean;
-  // answers[index][問題番号]
-  answers: string[][];
-  examState: ExamState[];
-  // 解答一覧で、正解を表示するかどうか
-  showCorrectAnswer: boolean;
-  // Sortにおいて1回でも入れ替えが発生したか
-  sorted: boolean;
-}
+export default function Exam(props: Props): JSX.Element {
+  const exam: Exam[] = JSON.parse(props.data.list);
+  const textarea_ref = React.useRef<HTMLTextAreaElement>(null);
+  const [index, SetIndex] = React.useState(0);
+  const [showExamStateTable, SetShowExamStateTable] = React.useState(false);
+  const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
+  const [isModalOpen, SetIsModalOpen] = React.useState(false);
+  const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
 
-export default class exam extends React.Component<Props, State> {
-  private ref: React.RefObject<HTMLTextAreaElement>;
-  private correct_answers = 0;
-  private total_questions = 0;
-  private version = 2;
-  private exam_history: ExamHistory;
+  const [answers, SetAnswers] = React.useState<string[][]>(
+    (() => {
+      const answers: string[][] = Array<Array<string>>(exam.length);
+      for (let i = 0; i < exam.length; i++) {
+        answers[i] = Array<string>(exam[i].answer.length).fill('');
+      }
+      return answers;
+    })(),
+  );
 
-  constructor(props: Props) {
-    super(props);
+  const [examState, SetExamState] = React.useState(
+    (() => {
+      const exam_state: ExamState[] = Array<ExamState>(exam.length);
+      for (let i = 0; i < exam.length; i++) {
+        exam_state[i] = {order: 0, checked: false, correctAnswerCount: 0};
+      }
+      return exam_state;
+    })(),
+  );
 
-    let exam_list: Exam[] = [];
-    const title = this.props.data.title;
-    this.version = this.props.data.version;
-    exam_list = JSON.parse(this.props.data.list);
+  let total_questions = 0;
+  let correct_answers = 0;
+  let correct_rate = 0;
 
-    this.exam_history = {
-      id: this.props.data.id ?? 0,
-      title: title,
-      date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-      correct_count: 0,
-      total_question: 0,
-      wrong_exam: [],
-    };
-    this.ref = React.createRef();
-    // 解答状況・解答欄の初期化
-    const exam_length = exam_list.length;
-    const exam_state: ExamState[] = Array<ExamState>();
-    const answers: string[][] = Array<Array<string>>(exam_length);
-    for (let i = 0; i < exam_length; i++) {
-      exam_state[i] = {order: 0, checked: false, correctAnswerCount: 0};
-      answers[i] = Array<string>(exam_list[i].answer.length).fill('');
-    }
-    // 最初が並び替えならコピー+シャッフル
-    if (exam_list[0].type === 'Sort' && this.version === 2) {
-      answers[0] = Shuffle(exam_list[0].answer);
-    }
-    // stateの初期化
-    this.state = {
-      exam: exam_list,
-      title: title,
-      index: 0,
-      isModalOpen: false,
-      correct_rate: 0,
-      showExamStateTable: false,
-      nextButtonState: NextButtonState.show_answer,
-      answers: answers,
-      examState: exam_state,
-      showCorrectAnswer: false,
-      sorted: false,
-    };
+  // 最初が並び替えならコピー+シャッフル
+  if (exam[0].type === 'Sort' && props.data.version === 2) {
+    answers[0] = Shuffle(exam[0].answer);
   }
 
+  const exam_history: ExamHistory = {
+    id: props.data.id ?? 0,
+    title: props.data.title,
+    date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    correct_count: 0,
+    total_question: 0,
+    wrong_exam: [],
+  };
+  // stateの初期化
+
   // ショートカットキー
-  Shortcut(e: KeyboardEvent): void {
+  const Shortcut = React.useCallback((e: KeyboardEvent) => {
     // Ctrl+Shift+矢印キー等で動かす
     // キーリピートでの入力とウィンドウが表示されている場合は無効
-    if (e.ctrlKey && e.shiftKey && !e.repeat && !this.state.isModalOpen) {
+    if (e.ctrlKey && e.shiftKey && !e.repeat && !isModalOpen) {
       switch (e.code) {
         case 'KeyH':
         case 'ArrowLeft':
           e.preventDefault();
-          this.DecrementIndex();
+          DecrementIndex();
           break;
         case 'KeyL':
         case 'ArrowRight':
           e.preventDefault();
-          this.IncrementIndex();
+          IncrementIndex();
           break;
       }
     }
-  }
-  componentDidMount(): void {
-    window.addEventListener('keydown', e => this.Shortcut(e));
-    // フォーカスするため
-    this.componentDidUpdate();
-  }
-  componentWillUnmount(): void {
-    window.removeEventListener('keydown', e => this.Shortcut(e));
-    // 間違えた問題のやり直しでない and タグ全部でもない and 最後まで解いた
-    // この条件を満たしているとき結果を保存する
-    if (
-      this.props.history_id === undefined &&
-      this.props.tag_filter === undefined &&
-      this.state.examState.slice(-1)[0].checked
-    ) {
-      this.exam_history.total_question = this.total_questions;
-      this.exam_history.correct_count = this.correct_answers;
-      AddExamHistory(this.exam_history);
-    }
-  }
+  }, []);
+  React.useEffect(() => {
+    window.addEventListener('keydown', e => Shortcut(e));
+    return () => {
+      window.removeEventListener('keydown', e => Shortcut(e));
 
-  componentDidUpdate(): void {
-    // 結果表示、もしくは間違えた問題の読み込みが終了していない、Sortタイプで入れ替えが発生した
-    if (this.state.showExamStateTable || (this.props.history_id && this.state.exam.length === 0) || this.state.sorted)
-      return;
+      // 間違えた問題のやり直しでない and タグ全部でもない and 最後まで解いた
+      // この条件を満たしているとき結果を保存する
+      if (props.history_id === undefined && props.tag_filter === undefined && examState.slice(-1)[0].checked) {
+        exam_history.total_question = total_questions;
+        exam_history.correct_count = correct_answers;
+        AddExamHistory(exam_history);
+      }
+    };
+  }, []);
 
+  React.useEffect(() => {
     // どれか一つでも解答が入力されていたら終わり
     // Sortはanswerが埋まってるはずなのでスキップ
-    if (this.state.exam[this.state.index].type !== 'Sort') {
-      for (let i = 0; i < this.state.answers[this.state.index].length; i++)
-        if (this.state.answers[this.state.index][i] !== '') return;
+    if (exam[index].type !== 'Sort') {
+      for (let i = 0; i < answers[index].length; i++) if (answers[index][i] !== '') return;
     }
 
-    switch (this.state.exam[this.state.index].type) {
+    switch (exam[index].type) {
       case 'Text':
-        this.ref.current?.focus();
+        textarea_ref.current?.focus();
         break;
       case 'Select':
       case 'MultiSelect':
@@ -172,46 +138,44 @@ export default class exam extends React.Component<Props, State> {
         document.getElementById('sort-first-draghandle')?.focus();
         break;
     }
-  }
+  }, [index]);
 
   // 解答が合っているかどうか確認してstateに格納
-  CheckAnswer(): void {
-    const index = this.state.index;
+  function CheckAnswer(): void {
     const result: ExamState = {order: 0, checked: true, correctAnswerCount: 0};
-    const exam = this.state.exam[index];
     let all_correct = true;
 
     // 複数選択問題は、完全一致のみ正解にする
-    if (exam.type === 'MultiSelect' && this.version === 2) {
+    if (exam[index].type === 'MultiSelect' && props.data.version === 2) {
       // 空欄削除+ソート+文字列化した後、比較する
-      const answers = this.state.answers;
-      answers[index] = answers[index].filter(e => e !== '').sort();
-      const my_answers = answers[index].toString();
-      const real_answers = exam.answer.sort().toString();
+      const tmp = answers.concat();
+      tmp[index] = tmp[index].filter(e => e !== '').sort();
+      SetAnswers(tmp);
+      const my_answers = tmp[index].toString();
+      const real_answers = exam[index].answer.sort().toString();
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
-        this.correct_answers++;
+        correct_answers++;
       } else {
         all_correct = false;
       }
-      this.total_questions++;
+      total_questions++;
       // 空欄削除+ソートされたものに変えておく
-      this.setState({answers: answers});
     } else {
       let correct: boolean = false;
-      exam.answer.forEach((e, i) => {
+      exam[index].answer.forEach((e, i) => {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').forEach(ans => {
-          if (this.state.answers[index][i] === ans && !correct) {
+          if (answers[index][i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
-            this.correct_answers++;
+            correct_answers++;
           }
         });
         if (!correct) all_correct = false;
-        this.total_questions++;
+        total_questions++;
       });
     }
 
@@ -220,7 +184,7 @@ export default class exam extends React.Component<Props, State> {
       result.order = 0;
     } else {
       // 1問でも間違っていたら、間違えた問題リストに追加
-      this.exam_history.wrong_exam.push(this.state.exam[index]);
+      exam_history.wrong_exam.push(exam[index]);
       // 全問不正解の場合
       if (result.correctAnswerCount === 0) {
         result.order = 2;
@@ -229,88 +193,77 @@ export default class exam extends React.Component<Props, State> {
         result.order = 1;
       }
     }
-    const tmp = this.state.examState;
+    const tmp = examState;
     tmp[index] = result;
-    this.setState({examState: tmp, sorted: false});
+    SetExamState(tmp);
   }
 
   // indexを増減する
-  SetIndex(i: number): void {
+  function ChangeIndex(i: number): void {
     let button_state = NextButtonState.show_answer;
     // 解答済みの問題だった場合
-    if (this.state.examState[i].checked) {
+    if (examState[i].checked) {
       // 最後の問題であれば終了ボタン
-      if (i === this.state.exam.length - 1) {
+      if (i === exam.length - 1) {
         button_state = NextButtonState.finish_exam;
       } else {
         //そうでないなら次へボタン
         button_state = NextButtonState.next_question;
       }
     }
-    this.setState({
-      index: i,
-      nextButtonState: button_state,
-    });
+    SetIndex(i);
+    SetNextButtonState(button_state);
   }
-  IncrementIndex(): void {
-    switch (this.state.nextButtonState) {
+  function IncrementIndex(): void {
+    switch (nextButtonState) {
       // 答えを表示、答え合わせをする
       case NextButtonState.show_answer:
-        this.CheckAnswer();
+        CheckAnswer();
         // 最後の問題であれば、ボタンを終了ボタンに
-        if (this.state.index === this.state.exam.length - 1) {
-          this.setState({nextButtonState: NextButtonState.finish_exam});
+        if (index === exam.length - 1) {
+          SetNextButtonState(NextButtonState.finish_exam);
         } else {
           //そうでないなら次へボタン
-          this.setState({nextButtonState: NextButtonState.next_question});
+          SetNextButtonState(NextButtonState.next_question);
         }
         break;
 
       // 次の問題へ進む
       case NextButtonState.next_question:
-        const next_index = this.state.index + 1;
+        const next_index = index + 1;
         // indexの変更
-        this.SetIndex(next_index);
+        ChangeIndex(next_index);
 
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
-        if (this.state.exam[next_index].type === 'Sort' && this.version === 2) {
+        if (exam[next_index].type === 'Sort' && props.data.version === 2) {
           // 引数なしconcatで深いコピー
-          const answers = this.state.answers.concat();
-          answers[next_index] = Shuffle(this.state.exam[next_index].answer);
-          this.setState({answers: answers});
+          const tmp = answers.concat();
+          tmp[next_index] = Shuffle(exam[next_index].answer);
+          SetAnswers(tmp);
         }
         break;
 
       // 終了ボタンを押したらモーダルウィンドウを表示
       case NextButtonState.finish_exam:
-        this.setState({
-          isModalOpen: true,
-          correct_rate: Math.round((this.correct_answers / this.total_questions) * 10000) / 100,
-        });
+        SetIsModalOpen(true);
+        correct_rate = Math.round((correct_answers / total_questions) * 10000) / 100;
         break;
     }
   }
-  DecrementIndex(): void {
-    if (this.state.index === 0) return;
+  function DecrementIndex(): void {
+    if (index === 0) return;
     // indexの変更
-    this.SetIndex(this.state.index - 1);
+    ChangeIndex(index - 1);
   }
 
-  // ユーザーの入力（問題への解答）を配列に入れる
-  UpdateUsersResponse(event: React.ChangeEvent<HTMLTextAreaElement>, i: number): void {
-    const tmp = this.state.answers;
-    tmp[this.state.index][i] = event.target.value;
-    this.setState({answers: tmp});
-  }
-
-  NextButton(): React.ReactElement {
+  function NextButton(): React.ReactElement {
     const info: ButtonInfo = {
       icon: '',
       text: '',
       type: 'material',
-      onClick: () => this.IncrementIndex(),
+      onClick: () => IncrementIndex(),
     };
-    switch (this.state.nextButtonState) {
+    switch (nextButtonState) {
       case NextButtonState.show_answer:
         info.text = '答え合わせ';
         info.icon = 'far fa-circle';
@@ -329,15 +282,15 @@ export default class exam extends React.Component<Props, State> {
   }
 
   // 正解状況の表示
-  ShowExamState(): React.ReactElement | undefined {
-    const state: ExamState = this.state.examState[this.state.index];
+  function ShowExamState(): React.ReactElement | undefined {
+    const state: ExamState = examState[index];
     if (!state.checked) return;
 
-    const answer_length = this.state.exam[this.state.index].answer.length;
+    const answer_length = exam[index].answer.length;
     let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」
-    if (answer_length === 1 || (this.state.exam[this.state.index].type === 'MultiSelect' && this.version === 2)) {
+    if (answer_length === 1 || (exam[index].type === 'MultiSelect' && props.data.version === 2)) {
       // 正解だった場合
       if (state.correctAnswerCount === 1) {
         icon = 'far fa-circle';
@@ -362,16 +315,12 @@ export default class exam extends React.Component<Props, State> {
         </div>
         <div className={css.answer_list}>
           <p id={css.seikai}>正解:</p>
-          {ParseAnswer(
-            this.state.exam[this.state.index].answer,
-            this.state.exam[this.state.index],
-            this.state.answers[this.state.index],
-          )}
-          {this.state.exam[this.state.index].comment && (
+          {ParseAnswer(exam[index].answer, exam[index], answers[index])}
+          {exam[index].comment && (
             <div>
               <h2>コメント</h2>
               <p>
-                {this.state.exam[this.state.index].comment?.split('\n').map(s => (
+                {exam[index].comment?.split('\n').map(s => (
                   <>
                     {s}
                     <br />
@@ -385,199 +334,190 @@ export default class exam extends React.Component<Props, State> {
     );
   }
 
-  render(): React.ReactElement {
-    // 解答状況一覧を表示する
-    if (this.state.showExamStateTable) {
-      const list: React.ReactElement[] = [];
-      let answers: string = '';
-      this.state.exam.forEach(e => {
-        answers = '';
-        e.answer.forEach(e => (answers += e + ', '));
-        list.push(
-          <tr>
-            <td>
-              {e.question.split('\n').map(str => {
-                return (
-                  <>
-                    {' '}
-                    {str}
-                    <br />{' '}
-                  </>
-                );
-              })}
-            </td>
-            <td>{answers.slice(0, -2)}</td>
-            <td></td>
-          </tr>,
-        );
-      });
+  // 解答状況一覧を表示する
+  if (showExamStateTable) {
+    const list: React.ReactElement[] = [];
+    let users_answer: string = '';
+    exam.forEach(e => {
+      users_answer = '';
+      e.answer.forEach(e => (users_answer += e + ', '));
+      list.push(
+        <tr>
+          <td>
+            {e.question.split('\n').map(str => {
+              return (
+                <>
+                  {' '}
+                  {str}
+                  <br />{' '}
+                </>
+              );
+            })}
+          </td>
+          <td>{users_answer.slice(0, -2)}</td>
+          <td></td>
+        </tr>,
+      );
+    });
 
-      return (
-        <>
-          <div className={css.examdata_container}>
-            <h2>{this.state.title}</h2>
-            <div className={css.correct_rate_statuslist}>
+    return (
+      <>
+        <div className={css.examdata_container}>
+          <h2>{props.data.title}</h2>
+          <div className={css.correct_rate_statuslist}>
+            <p>
+              {total_questions}問中{correct_answers}問正解、 正答率{correct_rate}%
+            </p>
+          </div>
+        </div>
+
+        <ExamTable exam={exam} answers={answers} examState={examState} showCorrectAnswer={showCorrectAnswer} />
+        <div className={css.button_container}>
+          <div className={css.buttons}>
+            <Button
+              {...{
+                text: 'もう一度',
+                icon: 'fas fa-undo',
+                onClick: Router.reload,
+                type: 'material',
+              }}
+            />
+            {/* 正しい答えの表示/非表示切り替え */}
+            <Button
+              {...{
+                onClick: () => SetshowCorrectAnswer(f => !f),
+                type: 'material',
+                text: showCorrectAnswer ? '正解を非表示' : '正解を表示',
+                icon: showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
+              }}
+            />
+            <Button
+              {...{
+                text: '前のページへ',
+                icon: 'fas fa-arrow-left',
+                onClick: Router.back,
+                type: 'filled',
+              }}
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // 読み込みが終わっていなかった場合
+  if (exam.length === 0 && props.history_id) {
+    return <p>読み込み中...</p>;
+  }
+
+  const current_status = `${index + 1} / ${exam.length}`;
+  return (
+    <>
+      <Helmet title={`(${current_status}) : ${props.data.title} - TAGether`} />
+
+      <h1>{current_status}</h1>
+
+      <div className={css.display}>
+        {/* 問題文、解答欄 */}
+        <div className={css.exam}>
+          <div className={css.question_area}>
+            <div>
+              <h2 id={css.mondai}>問題</h2>
+            </div>
+            <div className={css.question_text}>
               <p>
-                {this.total_questions}問中{this.correct_answers}問正解、 正答率{this.state.correct_rate}%
+                {exam[index].question.split('\n').map(str => {
+                  return (
+                    <>
+                      {' '}
+                      {str}
+                      <br />{' '}
+                    </>
+                  );
+                })}
               </p>
             </div>
           </div>
 
-          <ExamTable
-            {...{
-              exam: this.state.exam,
-              answers: this.state.answers,
-              examState: this.state.examState,
-              showCorrectAnswer: this.state.showCorrectAnswer,
-            }}
-          />
-          <div className={css.button_container}>
-            <div className={css.buttons}>
-              <Button
-                {...{
-                  text: 'もう一度',
-                  icon: 'fas fa-undo',
-                  onClick: Router.reload,
-                  type: 'material',
-                }}
-              />
-              {/* 正しい答えの表示/非表示切り替え */}
-              <Button
-                {...{
-                  onClick: () =>
-                    this.setState(state => {
-                      return {showCorrectAnswer: !state.showCorrectAnswer};
-                    }),
-                  type: 'material',
-                  text: this.state.showCorrectAnswer ? '正解を非表示' : '正解を表示',
-                  icon: this.state.showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
-                }}
-              />
-              <Button
-                {...{
-                  text: '前のページへ',
-                  icon: 'fas fa-arrow-left',
-                  onClick: Router.back,
-                  type: 'filled',
-                }}
-              />
-            </div>
-          </div>
-        </>
-      );
-    }
-
-    // 読み込みが終わっていなかった場合
-    if (this.state.exam.length === 0 && this.props.history_id) {
-      return <p>読み込み中...</p>;
-    }
-
-    const current_status = `${this.state.index + 1} / ${this.state.exam.length}`;
-    return (
-      <>
-        <Helmet title={`(${current_status}) : ${this.state.title} - TAGether`} />
-
-        <h1>{current_status}</h1>
-
-        <div className={css.display}>
-          {/* 問題文、解答欄 */}
-          <div className={css.exam}>
-            <div className={css.question_area}>
-              <div>
-                <h2 id={css.mondai}>問題</h2>
-              </div>
-              <div className={css.question_text}>
-                <p>
-                  {this.state.exam[this.state.index].question.split('\n').map(str => {
-                    return (
-                      <>
-                        {' '}
-                        {str}
-                        <br />{' '}
-                      </>
-                    );
-                  })}
-                </p>
-              </div>
-            </div>
-
-            <form>
-              <AnswerArea
-                version={this.version}
-                exam={this.state.exam[this.state.index]}
-                answers={this.state.answers[this.state.index]}
-                setAnswers={list => {
-                  const tmp = this.state.answers.concat();
-                  tmp[this.state.index] = list;
-                  this.setState({answers: tmp});
-                }}
-                setSorted={() => this.setState({sorted: true})}
-                disable={this.state.examState[this.state.index].checked}
-                shortcutDisable={this.state.isModalOpen}
-                ref={this.ref}
-              />
-              {/* 入力中エンターを押して送信を無効化 */}
-              <input id={css.dummy} />
-            </form>
-          </div>
-
-          {/* 結果 */}
-          {this.ShowExamState()}
+          <form>
+            <AnswerArea
+              version={props.data.version}
+              exam={exam[index]}
+              answers={answers[index]}
+              setAnswers={list => {
+                const tmp = answers.concat();
+                tmp[index] = list;
+                SetAnswers(tmp);
+              }}
+              setSorted={() => undefined}
+              disable={examState[index].checked}
+              shortcutDisable={isModalOpen}
+              ref={textarea_ref}
+            />
+            {/* 入力中エンターを押して送信を無効化 */}
+            <input id={css.dummy} />
+          </form>
         </div>
 
-        <div className={css.button_container}>
-          <div className={css.buttons}>
-            {this.state.index === 0 ? (
-              // 次へボタンを右に寄せたいのでdiv
-              <div></div>
+        {/* 結果 */}
+        {ShowExamState()}
+      </div>
+
+      <div className={css.button_container}>
+        <div className={css.buttons}>
+          {index === 0 ? (
+            // 次へボタンを右に寄せたいのでdiv
+            <div></div>
+          ) : (
+            <Button text='戻る' icon='fas fa-arrow-left' onClick={() => DecrementIndex()} type='material' />
+          )}
+          {NextButton()}
+        </div>
+      </div>
+
+      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
+        <div className={css.window}>
+          <h1>🎉問題終了🎉</h1>
+          <p>お疲れさまでした。</p>
+          <p className={css.correct_rate}>
+            <b>正答率{correct_rate}%</b>
+            <br />（{total_questions}問中{correct_answers}問正解）
+          </p>
+          <ButtonContainer>
+            {!props.history_id && !props.tag_filter && props.data.id !== undefined ? (
+              <Button
+                {...{
+                  text: '編集する',
+                  icon: 'fas fa-pen',
+                  type: 'material',
+                  onClick: () => Router.push('/edit?id=' + props.data.id),
+                }}
+              />
             ) : (
-              <Button text='戻る' icon='fas fa-arrow-left' onClick={() => this.DecrementIndex()} type='material' />
+              <></>
             )}
-            {this.NextButton()}
-          </div>
+            <Button
+              {...{
+                text: '回答状況一覧',
+                icon: 'fas fa-list',
+                type: 'material',
+                onClick: () => {
+                  SetIsModalOpen(false);
+                  SetShowExamStateTable(true);
+                },
+              }}
+            />
+            <Button
+              {...{
+                text: '前のページへ',
+                icon: 'fas fa-arrow-left',
+                type: 'filled',
+                onClick: Router.back,
+              }}
+            />
+          </ButtonContainer>
         </div>
-
-        <Modal isOpen={this.state.isModalOpen} close={() => this.setState({isModalOpen: false})}>
-          <div className={css.window}>
-            <h1>🎉問題終了🎉</h1>
-            <p>お疲れさまでした。</p>
-            <p className={css.correct_rate}>
-              <b>正答率{this.state.correct_rate}%</b>
-              <br />（{this.total_questions}問中{this.correct_answers}問正解）
-            </p>
-            <ButtonContainer>
-              {!this.props.history_id && !this.props.tag_filter && this.props.data.id !== undefined ? (
-                <Button
-                  {...{
-                    text: '編集する',
-                    icon: 'fas fa-pen',
-                    type: 'material',
-                    onClick: () => Router.push('/edit?id=' + this.props.data.id),
-                  }}
-                />
-              ) : (
-                <></>
-              )}
-              <Button
-                {...{
-                  text: '回答状況一覧',
-                  icon: 'fas fa-list',
-                  type: 'material',
-                  onClick: () => this.setState({isModalOpen: false, showExamStateTable: true}),
-                }}
-              />
-              <Button
-                {...{
-                  text: '前のページへ',
-                  icon: 'fas fa-arrow-left',
-                  type: 'filled',
-                  onClick: Router.back,
-                }}
-              />
-            </ButtonContainer>
-          </div>
-        </Modal>
-      </>
-    );
-  }
+      </Modal>
+    </>
+  );
 }
