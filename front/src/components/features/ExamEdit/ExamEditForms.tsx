@@ -67,6 +67,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   // 0より小さい値を指定した場合は最初に問題追加+ページを0に
   // 逆も同様
   function MovePageTo(to: number) {
+    console.log('MoveTo: ', to);
     if (to < 0) {
       AddExam(0);
     } else if (to > exam_length.current - 1) {
@@ -78,8 +79,9 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   }
 
   function AddExam(at: number) {
+    const old_exam_len = exam_length.current;
     updater.Exam.Insert(at);
-    SetCurrentPage(at === -1 ? exam_length.current : at);
+    SetCurrentPage(at === -1 ? old_exam_len : at);
   }
 
   function AddRemoveButtons(type: ExamType, index: number, length: number) {
@@ -295,6 +297,11 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       onClick: () => AddExam(-1),
     },
   ];
+
+  if (exam[current_page] === undefined) {
+    console.log('[undefined]', current_page, exam);
+    return <>Loading...</>;
+  }
 
   return (
     <>
