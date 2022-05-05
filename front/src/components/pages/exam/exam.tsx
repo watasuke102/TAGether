@@ -50,6 +50,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
+  const [correct_answers, SetCorrectAnswers] = React.useState(0);
+  const [total_questions, SetTotalQuestions] = React.useState(0);
 
   const [answers, SetAnswers] = React.useState<string[][]>(
     (() => {
@@ -71,23 +73,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     })(),
   );
 
-  let total_questions = 0;
-  let correct_answers = 0;
-  let correct_rate = 0;
-
   // 最初が並び替えならコピー+シャッフル
   if (exam[0].type === 'Sort' && props.data.version === 2) {
     answers[0] = Shuffle(exam[0].answer);
   }
 
-  const exam_history: ExamHistory = {
-    id: props.data.id ?? 0,
-    title: props.data.title,
-    date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    correct_count: 0,
-    total_question: 0,
-    wrong_exam: [],
-  };
   // stateの初期化
 
   // ショートカットキー
@@ -145,6 +135,15 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     }
   }, [index]);
 
+  const exam_history: ExamHistory = {
+    id: props.data.id ?? 0,
+    title: props.data.title,
+    date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    correct_count: 0,
+    total_question: 0,
+    wrong_exam: [],
+  };
+
   // 解答が合っているかどうか確認してstateに格納
   function CheckAnswer(): void {
     const result: ExamState = {order: 0, checked: true, correctAnswerCount: 0};
@@ -176,11 +175,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
-            correct_answers++;
+            SetCorrectAnswers(n => n + 1);
           }
         });
         if (!correct) all_correct = false;
-        total_questions++;
+        SetTotalQuestions(n => n + 1);
       });
     }
 
@@ -251,7 +250,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       // 終了ボタンを押したらモーダルウィンドウを表示
       case NextButtonState.finish_exam:
         SetIsModalOpen(true);
-        correct_rate = Math.round((correct_answers / total_questions) * 10000) / 100;
         break;
     }
   }
@@ -339,6 +337,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     );
   }
 
+  function CorrectRate(): number {
+    return Math.round((correct_answers / total_questions) * 10000) / 100;
+  }
+
   // 解答状況一覧を表示する
   if (showExamStateTable) {
     const list: React.ReactElement[] = [];
@@ -371,7 +373,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           <h2>{props.data.title}</h2>
           <div className={css.correct_rate_statuslist}>
             <p>
-              {total_questions}問中{correct_answers}問正解、 正答率{correct_rate}%
+              {total_questions}問中{correct_answers}問正解、 正答率{CorrectRate()}%
             </p>
           </div>
         </div>
@@ -484,7 +486,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           <h1>🎉問題終了🎉</h1>
           <p>お疲れさまでした。</p>
           <p className={css.correct_rate}>
-            <b>正答率{correct_rate}%</b>
+            <b>正答率{CorrectRate()}%</b>
             <br />（{total_questions}問中{correct_answers}問正解）
           </p>
           <ButtonContainer>
