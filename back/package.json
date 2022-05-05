@@ -1,6 +1,6 @@
 {
-  "name": "tagether-api",
-  "version": "1.6.0",
+  "name": "back",
+  "version": "1.0.0",
   "description": "backend",
   "main": "index.js",
   "scripts": {

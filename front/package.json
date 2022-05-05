@@ -1,6 +1,6 @@
 {
-  "name": "tagether",
-  "version": "1.7.1",
+  "name": "front",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
