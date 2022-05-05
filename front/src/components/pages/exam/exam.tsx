@@ -72,6 +72,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       for (let i = 0; i < exam.length; i++) {
         answers[i] = Array<string>(exam[i].answer.length).fill('');
       }
+      // 最初が並び替えならコピー+シャッフル
+      if (exam[0].type === 'Sort' && props.data.version === 2) {
+        answers[0] = Shuffle(exam[0].answer);
+      }
       return answers;
     })(),
   );
@@ -85,13 +89,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       return exam_state;
     })(),
   );
-
-  // 最初が並び替えならコピー+シャッフル
-  if (exam[0].type === 'Sort' && props.data.version === 2) {
-    answers[0] = Shuffle(exam[0].answer);
-  }
-
-  // stateの初期化
 
   // ショートカットキー
   const Shortcut = React.useCallback((e: KeyboardEvent) => {
