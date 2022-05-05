@@ -21,11 +21,10 @@ interface Props {
   shortcutDisable: boolean;
   answers: string[];
   setAnswers: (list: string[]) => void;
-  setSorted: () => void;
   ref: React.RefObject<HTMLTextAreaElement>;
 }
 
-export default function AnswerArea(props: Props): JSX.Element {
+export default function AnswerArea(props: Props): JSX.Element | JSX.Element[] {
   const answers_ref = React.useRef<string[]>([]);
   answers_ref.current = props.answers;
 
@@ -90,115 +89,104 @@ export default function AnswerArea(props: Props): JSX.Element {
   const MoveAnswerOnSort = (from: number, to: number) => {
     if (from === to) return;
     props.setAnswers(Move(answers_ref.current, from, to));
-    props.setSorted();
   };
 
   // バージョン1であれば強制的にText扱いとする
   const type = props.version === 1 ? 'Text' : props.exam.type ?? 'Text';
 
-  return (
-    <>
-      {() => {
-        switch (type) {
-          case 'Text':
-            return props.exam.answer.map((e, i) => (
-              <div className={css.form} key={`examform_Text_${i}`}>
-                <Form
-                  rows={1}
-                  reff={i === 0 ? props.ref : null}
-                  label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
-                  value={props.answers[i]}
-                  onChange={ev => {
-                    const tmp = props.answers.concat();
-                    tmp[i] = ev.target.value;
-                    props.setAnswers(tmp);
-                  }}
-                  disabled={props.disable}
-                />
+  switch (type) {
+    case 'Text':
+      return props.exam.answer.map((e, i) => (
+        <div className={css.form} key={`examform_Text_${i}`}>
+          <Form
+            rows={1}
+            reff={i === 0 ? props.ref : null}
+            label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
+            value={props.answers[i]}
+            onChange={ev => {
+              const tmp = props.answers.concat();
+              tmp[i] = ev.target.value;
+              props.setAnswers(tmp);
+            }}
+            disabled={props.disable}
+          />
+        </div>
+      ));
+
+    case 'Select':
+      return (
+        props.exam.question_choices?.map((e, i) => (
+          <SelectButton
+            type='single'
+            id={i === 0 ? 'select-first' : ''}
+            key={`examform_checkbox_${i}`}
+            desc={e}
+            status={Number(props.answers[0]) === i && props.answers[0] !== ''}
+            onChange={f => {
+              if (!f || props.disable) return;
+              props.setAnswers([String(i)]);
+            }}
+          />
+        )) ?? <>invalid</>
+      );
+
+    case 'MultiSelect':
+      return (
+        props.exam.question_choices?.map((e, i) => (
+          <SelectButton
+            type='multi'
+            id={i === 0 ? 'select-first' : ''}
+            key={`examform_checkbox_${i}`}
+            desc={e}
+            status={props.answers.indexOf(String(i)) !== -1}
+            onChange={f => {
+              if (props.disable) return;
+              let tmp = props.answers.concat();
+              if (f) {
+                tmp.push(String(i));
+              } else {
+                tmp = tmp.filter(e => e !== String(i));
+              }
+              props.setAnswers(tmp);
+            }}
+          />
+        )) ?? <>invalid</>
+      );
+
+    case 'Sort':
+      return (
+        <DragDropContext
+          onDragEnd={(e: DropResult) => {
+            if (!e.destination) return;
+            MoveAnswerOnSort(e.source.index, e.destination.index);
+          }}
+        >
+          <Droppable droppableId='examform_sort_item_droppable'>
+            {provided => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {props.answers.map((e, i) => {
+                  const id = `exam-item-${i}`;
+                  return (
+                    <Draggable key={id} draggableId={id} index={i} isDragDisabled={props.disable}>
+                      {provided => (
+                        <div className={css.examform_sort_item} ref={provided.innerRef} {...provided.draggableProps}>
+                          <span>{e}</span>
+                          <span
+                            className={`fas fa-list ${css.icon}`}
+                            id={i === 0 ? 'sort-first-draghandle' : ''}
+                            {...{sort_index: i}}
+                            {...provided.dragHandleProps}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
               </div>
-            ));
-
-          case 'Select':
-            return (
-              props.exam.question_choices?.map((e, i) => (
-                <SelectButton
-                  type='single'
-                  id={i === 0 ? 'select-first' : ''}
-                  key={`examform_checkbox_${i}`}
-                  desc={e}
-                  status={Number(props.answers[0]) === i && props.answers[0] !== ''}
-                  onChange={f => {
-                    if (!f || props.disable) return;
-                    props.setAnswers([String(i)]);
-                  }}
-                />
-              )) ?? <>invalid</>
-            );
-
-          case 'MultiSelect':
-            return (
-              props.exam.question_choices?.map((e, i) => (
-                <SelectButton
-                  type='multi'
-                  id={i === 0 ? 'select-first' : ''}
-                  key={`examform_checkbox_${i}`}
-                  desc={e}
-                  status={props.answers.indexOf(String(i)) !== -1}
-                  onChange={f => {
-                    if (props.disable) return;
-                    let tmp = props.answers.concat();
-                    if (f) {
-                      tmp.push(String(i));
-                    } else {
-                      tmp = tmp.filter(e => e !== String(i));
-                    }
-                    props.setAnswers(tmp);
-                  }}
-                />
-              )) ?? <>invalid</>
-            );
-
-          case 'Sort':
-            return (
-              <DragDropContext
-                onDragEnd={(e: DropResult) => {
-                  if (!e.destination) return;
-                  MoveAnswerOnSort(e.source.index, e.destination.index);
-                }}
-              >
-                <Droppable droppableId='examform_sort_item_droppable'>
-                  {provided => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                      {props.answers.map((e, i) => {
-                        const id = `exam-item-${i}`;
-                        return (
-                          <Draggable key={id} draggableId={id} index={i} isDragDisabled={props.disable}>
-                            {provided => (
-                              <div
-                                className={css.examform_sort_item}
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                              >
-                                <span>{e}</span>
-                                <span
-                                  className={`fas fa-list ${css.icon}`}
-                                  id={i === 0 ? 'sort-first-draghandle' : ''}
-                                  {...{sort_index: i}}
-                                  {...provided.dragHandleProps}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            );
-        } // switch(props.exam.type)
-      }}
-    </>
-  );
+            )}
+          </Droppable>
+        </DragDropContext>
+      );
+  } // switch(props.exam.type)
 }
