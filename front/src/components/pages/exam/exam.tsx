@@ -50,8 +50,15 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
+  const [wrong_exam, SetWrongExam] = React.useState<Exam[]>([]);
+
   const [correct_answers, SetCorrectAnswers] = React.useState(0);
+  const correct_answers_ref = React.useRef(0);
+  correct_answers_ref.current = correct_answers;
+
   const [total_questions, SetTotalQuestions] = React.useState(0);
+  const total_questions_ref = React.useRef(0);
+  total_questions_ref.current = total_questions;
 
   const [answers, SetAnswers] = React.useState<string[][]>(
     (() => {
@@ -107,8 +114,14 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       // 間違えた問題のやり直しでない and タグ全部でもない and 最後まで解いた
       // この条件を満たしているとき結果を保存する
       if (props.history_id === undefined && props.tag_filter === undefined && examState.slice(-1)[0].checked) {
-        exam_history.total_question = total_questions;
-        exam_history.correct_count = correct_answers;
+        const exam_history: ExamHistory = {
+          id: props.data.id ?? 0,
+          title: props.data.title,
+          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+          correct_count: correct_answers_ref.current,
+          total_question: total_questions_ref.current,
+          wrong_exam: wrong_exam,
+        };
         AddExamHistory(exam_history);
       }
     };
@@ -134,15 +147,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         break;
     }
   }, [index]);
-
-  const exam_history: ExamHistory = {
-    id: props.data.id ?? 0,
-    title: props.data.title,
-    date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    correct_count: 0,
-    total_question: 0,
-    wrong_exam: [],
-  };
 
   // 解答が合っているかどうか確認してstateに格納
   function CheckAnswer(): void {
@@ -188,7 +192,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       result.order = 0;
     } else {
       // 1問でも間違っていたら、間違えた問題リストに追加
-      exam_history.wrong_exam.push(exam[index]);
+      SetWrongExam(ls => {
+        ls.push(exam[index]);
+        return ls;
+      });
       // 全問不正解の場合
       if (result.correctAnswerCount === 0) {
         result.order = 2;
