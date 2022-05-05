@@ -34,17 +34,10 @@
   margin-top: 20px;
 }
 
-.radiobutton {
-  display: flex;
-  width: 150px;
-}
-.radiobutton input {
-  width: 40px;
-  height: 40px;
-}
-.radiobutton p {
-  height: 30px;
-  margin: auto 30px 0 5px;
+.card_wrapper {
+  height: 100%;
+  min-height: 100px;
+  margin: 0 auto;
 }
 
 .card {
@@ -52,8 +45,9 @@
   justify-content: center;
   align-items: center;
   width: 300px;
-  min-height: 100px;
   height: auto;
+  min-height: 100px;
+  margin: 0 auto;
   border: 1px solid #77797a;
   color: #e1e2dc;
   background-color: #dbdbdb00;
@@ -68,30 +62,4 @@
     background-color: #dbdbdbaa;
     transition: 0.3s;
   }
-}
-
-.list {
-  display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
-}
-
-/* 
- * 最後の行だけ左揃え 
- * list_containerみたいなやつを使うと、いい感じに中央にならないので 
- */
-.list::before {
-  display: block;
-  content: '';
-  width: 300px;
-  margin: 10px 25px;
-  padding: 5px 10px;
-  order: 1;
-}
-.list::after {
-  display: block;
-  content: '';
-  width: 300px;
-  margin: 10px 25px;
-  padding: 5px 10px;
 }

@@ -63,7 +63,11 @@ export default function list(): React.ReactElement {
       );
     } else {
       searchResult.forEach(element => {
-        cards.push(<CategolyCard key={`card_${element.id}`} {...element} />);
+        cards.push(
+          <div className={css.card_wrapper}>
+            <CategolyCard key={`card_${element.id}`} {...element} />
+          </div>,
+        );
       });
     }
     if (newer_first) {
