@@ -381,31 +381,28 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         <ExamTable exam={exam} answers={answers} examState={examState} showCorrectAnswer={showCorrectAnswer} />
         <div className={css.button_container}>
           <div className={css.buttons}>
+            <Button type={'material'} text={'もう一度'} icon={'fas fa-undo'} onClick={Router.reload} />
             <Button
-              {...{
-                text: 'もう一度',
-                icon: 'fas fa-undo',
-                onClick: Router.reload,
-                type: 'material',
+              type={'material'}
+              text={'結果を共有'}
+              icon={'fas fa-upload'}
+              onClick={() => {
+                navigator.share({
+                  title: `${props.data.title} - TAGether`,
+                  text: `${
+                    props.data.title
+                  } の結果：${total_questions}問中${correct_answers}問正解（${CorrectRate()}%）`,
+                });
               }}
             />
             {/* 正しい答えの表示/非表示切り替え */}
             <Button
-              {...{
-                onClick: () => SetshowCorrectAnswer(f => !f),
-                type: 'material',
-                text: showCorrectAnswer ? '正解を非表示' : '正解を表示',
-                icon: showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye',
-              }}
+              type={'material'}
+              text={showCorrectAnswer ? '正解を非表示' : '正解を表示'}
+              icon={showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye'}
+              onClick={() => SetshowCorrectAnswer(f => !f)}
             />
-            <Button
-              {...{
-                text: '前のページへ',
-                icon: 'fas fa-arrow-left',
-                onClick: Router.back,
-                type: 'filled',
-              }}
-            />
+            <Button type={'filled'} text={'前のページへ'} icon={'fas fa-arrow-left'} onClick={Router.back} />
           </div>
         </div>
       </>
@@ -492,35 +489,24 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           <ButtonContainer>
             {!props.history_id && !props.tag_filter && props.data.id !== undefined ? (
               <Button
-                {...{
-                  text: '編集する',
-                  icon: 'fas fa-pen',
-                  type: 'material',
-                  onClick: () => Router.push('/edit?id=' + props.data.id),
-                }}
+                text={'編集する'}
+                icon={'fas fa-pen'}
+                type={'material'}
+                onClick={() => Router.push('/edit?id=' + props.data.id)}
               />
             ) : (
               <></>
             )}
             <Button
-              {...{
-                text: '回答状況一覧',
-                icon: 'fas fa-list',
-                type: 'material',
-                onClick: () => {
-                  SetIsModalOpen(false);
-                  SetShowExamStateTable(true);
-                },
+              text={'回答状況一覧'}
+              icon={'fas fa-list'}
+              type={'material'}
+              onClick={() => {
+                SetIsModalOpen(false);
+                SetShowExamStateTable(true);
               }}
             />
-            <Button
-              {...{
-                text: '前のページへ',
-                icon: 'fas fa-arrow-left',
-                type: 'filled',
-                onClick: Router.back,
-              }}
-            />
+            <Button text={'前のページへ'} icon={'fas fa-arrow-left'} type={'filled'} onClick={Router.back} />
           </ButtonContainer>
         </div>
       </Modal>
