@@ -67,7 +67,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   // 0より小さい値を指定した場合は最初に問題追加+ページを0に
   // 逆も同様
   function MovePageTo(to: number) {
-    console.log('MoveTo: ', to);
     if (to < 0) {
       AddExam(0);
     } else if (to > exam_length.current - 1) {
@@ -299,7 +298,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   ];
 
   if (exam[current_page] === undefined) {
-    console.log('[undefined]', current_page, exam);
     return <>Loading...</>;
   }
 

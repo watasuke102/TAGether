@@ -12,6 +12,7 @@ import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {Move} from '@/utils/ArrayUtil';
+import {exam_default} from '@/utils/DefaultValue';
 import Exam from '@mytypes/Exam';
 
 interface Props {
@@ -25,6 +26,9 @@ interface Props {
 }
 
 export default function AnswerArea(props: Props): JSX.Element {
+  const exam_ref = React.useRef<Exam>(exam_default()[0]);
+  exam_ref.current = props.exam;
+
   const answers_ref = React.useRef<string[]>([]);
   answers_ref.current = props.answers;
 
@@ -48,13 +52,13 @@ export default function AnswerArea(props: Props): JSX.Element {
           default:
             return;
         }
-        if (props.exam.type !== 'Sort') return;
+        if (exam_ref.current.type !== 'Sort') return;
         // 一つ上下に移動させる
         const from_element = document.activeElement;
         const index = Number(from_element?.attributes.getNamedItem('sort_index')?.value);
         if (Number.isNaN(index)) return;
         const to = index + direction;
-        if (to < 0 || to >= props.exam.answer.length) return;
+        if (to < 0 || to >= exam_ref.current.answer.length) return;
         MoveAnswerOnSort(index, to);
         // 移動先の要素にフォーカスする
         const to_element = document.querySelector<HTMLElement>(`[sort_index="${to}"]`);

@@ -79,6 +79,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       return answers;
     })(),
   );
+  const answers_ref = React.useRef<string[][]>([]);
+  answers_ref.current = answers;
 
   const [examState, SetExamState] = React.useState(
     (() => {
@@ -89,6 +91,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       return exam_state;
     })(),
   );
+  const examState_ref = React.useRef<ExamState[]>([]);
+  examState_ref.current = examState;
 
   // ショートカットキー
   const Shortcut = React.useCallback((e: KeyboardEvent) => {
@@ -159,10 +163,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     // 複数選択問題は、完全一致のみ正解にする
     if (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2) {
       // 空欄削除+ソート+文字列化した後、比較する
-      const tmp = answers.concat();
-      tmp[index_ref.current] = tmp[index_ref.current].filter(e => e !== '').sort();
-      SetAnswers(tmp);
-      const my_answers = tmp[index_ref.current].toString();
+      const ans = answers_ref.current.concat();
+      ans[index_ref.current] = ans[index_ref.current].filter(e => e !== '').sort();
+      SetAnswers(ans);
+      const my_answers = ans[index_ref.current].toString();
       const real_answers = exam[index_ref.current].answer.sort().toString();
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
@@ -178,7 +182,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').forEach(ans => {
-          if (answers[index_ref.current][i] === ans && !correct) {
+          if (answers_ref.current[index_ref.current][i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
@@ -207,9 +211,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         result.order = 1;
       }
     }
-    const tmp = examState;
-    tmp[index_ref.current] = result;
-    SetExamState(tmp);
+    SetExamState(state => {
+      state[index_ref.current] = result;
+      return state;
+    });
   }
 
   // indexを増減する
@@ -296,14 +301,15 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
   // 正解状況の表示
   function ShowExamState(): React.ReactElement | undefined {
-    const state: ExamState = examState[index];
+    const state: ExamState = examState_ref.current[index_ref.current];
+    console.log(state);
     if (!state.checked) return;
 
-    const answer_length = exam[index].answer.length;
+    const answer_length = exam[index_ref.current].answer.length;
     let icon = 'fas fa-times';
     let result: string;
     // 問題数がひとつだった場合は「正解 or 不正解」
-    if (answer_length === 1 || (exam[index].type === 'MultiSelect' && props.data.version === 2)) {
+    if (answer_length === 1 || (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2)) {
       // 正解だった場合
       if (state.correctAnswerCount === 1) {
         icon = 'far fa-circle';
@@ -328,12 +334,12 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         </div>
         <div className={css.answer_list}>
           <p id={css.seikai}>正解:</p>
-          {ParseAnswer(exam[index].answer, exam[index], answers[index])}
-          {exam[index].comment && (
+          {ParseAnswer(exam[index_ref.current].answer, exam[index_ref.current], answers[index_ref.current])}
+          {exam[index_ref.current].comment && (
             <div>
               <h2>コメント</h2>
               <p>
-                {exam[index].comment?.split('\n').map(s => (
+                {exam[index_ref.current].comment?.split('\n').map(s => (
                   <>
                     {s}
                     <br />
@@ -456,14 +462,14 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           <form>
             <AnswerArea
               version={props.data.version}
-              exam={exam[index]}
-              answers={answers[index]}
+              exam={exam[index_ref.current]}
+              answers={answers[index_ref.current]}
               setAnswers={list => {
                 const tmp = answers.concat();
-                tmp[index] = list;
+                tmp[index_ref.current] = list;
                 SetAnswers(tmp);
               }}
-              disable={examState[index].checked}
+              disable={examState[index_ref.current].checked}
               shortcutDisable={isModalOpen}
               ref={textarea_ref}
             />
