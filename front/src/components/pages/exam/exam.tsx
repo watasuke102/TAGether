@@ -391,7 +391,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
                   title: `${props.data.title} - TAGether`,
                   text: `${
                     props.data.title
-                  } の結果：${total_questions}問中${correct_answers}問正解（${CorrectRate()}%）`,
+                  } の結果：${total_questions}問中${correct_answers}問正解（${CorrectRate()}%）\n#TAGether`,
                 });
               }}
             />
