@@ -1,6 +1,6 @@
 # "THE MIT SUSHI-WARE LICENSE"
 
-Copyright 2020-2021 Watasuke
+Copyright 2020-2022 Watasuke
 
 - 「作者(著作権者)がソフトウェアに関して責任を負わない」ことに同意する
 - 著作権表示、もしくは本許諾表示をソフトウェアのすべての複製・重要な部分に記載する
