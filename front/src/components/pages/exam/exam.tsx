@@ -18,6 +18,7 @@ import AnswerArea from '@/features/Exam/AnswerArea';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import {Shuffle} from '@/utils/ArrayUtil';
+import {useConfirmBeforeLeave} from '@/utils/ConfirmBeforeLeave';
 import {AddExamHistory} from '@/utils/ManageDB';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
@@ -37,7 +38,11 @@ interface Props {
   tag_filter: string | string[] | undefined;
 }
 
-export default function Exam(props: Props): JSX.Element {
+export default function ExamPageComponent(props: Props): JSX.Element {
+  // 警告を無効化することはないのでは？
+  // 解答中はもちろん、解き終わったあとも結果を見ようとするかもしれない
+  useConfirmBeforeLeave()(true);
+
   const exam: Exam[] = JSON.parse(props.data.list);
   const textarea_ref = React.useRef<HTMLTextAreaElement>(null);
   const [index, SetIndex] = React.useState(0);
@@ -449,7 +454,6 @@ export default function Exam(props: Props): JSX.Element {
                 tmp[index] = list;
                 SetAnswers(tmp);
               }}
-              setSorted={() => undefined}
               disable={examState[index].checked}
               shortcutDisable={isModalOpen}
               ref={textarea_ref}
