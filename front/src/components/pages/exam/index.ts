@@ -1,3 +1,3 @@
-import Exam from './exam';
+import ExamComponent from './exam';
 
-export {Exam};
+export {ExamComponent};

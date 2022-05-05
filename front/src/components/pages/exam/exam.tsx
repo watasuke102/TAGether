@@ -159,11 +159,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       const real_answers = exam[index].answer.sort().toString();
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
-        correct_answers++;
+        SetCorrectAnswers(n => n + 1);
       } else {
         all_correct = false;
       }
-      total_questions++;
+      SetTotalQuestions(n => n + 1);
       // 空欄削除+ソートされたものに変えておく
     } else {
       let correct: boolean = false;

@@ -24,7 +24,7 @@ interface Props {
   ref: React.RefObject<HTMLTextAreaElement>;
 }
 
-export default function AnswerArea(props: Props): JSX.Element | JSX.Element[] {
+export default function AnswerArea(props: Props): JSX.Element {
   const answers_ref = React.useRef<string[]>([]);
   answers_ref.current = props.answers;
 
@@ -96,61 +96,69 @@ export default function AnswerArea(props: Props): JSX.Element | JSX.Element[] {
 
   switch (type) {
     case 'Text':
-      return props.exam.answer.map((e, i) => (
-        <div className={css.form} key={`examform_Text_${i}`}>
-          <Form
-            rows={1}
-            reff={i === 0 ? props.ref : null}
-            label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
-            value={props.answers[i]}
-            onChange={ev => {
-              const tmp = props.answers.concat();
-              tmp[i] = ev.target.value;
-              props.setAnswers(tmp);
-            }}
-            disabled={props.disable}
-          />
-        </div>
-      ));
+      return (
+        <>
+          {props.exam.answer.map((e, i) => (
+            <div className={css.form} key={`examform_Text_${i}`}>
+              <Form
+                rows={1}
+                reff={i === 0 ? props.ref : null}
+                label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
+                value={props.answers[i]}
+                onChange={ev => {
+                  const tmp = props.answers.concat();
+                  tmp[i] = ev.target.value;
+                  props.setAnswers(tmp);
+                }}
+                disabled={props.disable}
+              />
+            </div>
+          ))}
+        </>
+      );
 
     case 'Select':
       return (
-        props.exam.question_choices?.map((e, i) => (
-          <SelectButton
-            type='single'
-            id={i === 0 ? 'select-first' : ''}
-            key={`examform_checkbox_${i}`}
-            desc={e}
-            status={Number(props.answers[0]) === i && props.answers[0] !== ''}
-            onChange={f => {
-              if (!f || props.disable) return;
-              props.setAnswers([String(i)]);
-            }}
-          />
-        )) ?? <>invalid</>
+        <>
+          {props.exam.question_choices?.map((e, i) => (
+            <SelectButton
+              type='single'
+              id={i === 0 ? 'select-first' : ''}
+              key={`examform_checkbox_${i}`}
+              desc={e}
+              status={Number(props.answers[0]) === i && props.answers[0] !== ''}
+              onChange={f => {
+                if (!f || props.disable) return;
+                props.setAnswers([String(i)]);
+              }}
+            />
+          )) ?? <>invalid</>}
+        </>
       );
 
     case 'MultiSelect':
       return (
-        props.exam.question_choices?.map((e, i) => (
-          <SelectButton
-            type='multi'
-            id={i === 0 ? 'select-first' : ''}
-            key={`examform_checkbox_${i}`}
-            desc={e}
-            status={props.answers.indexOf(String(i)) !== -1}
-            onChange={f => {
-              if (props.disable) return;
-              let tmp = props.answers.concat();
-              if (f) {
-                tmp.push(String(i));
-              } else {
-                tmp = tmp.filter(e => e !== String(i));
-              }
-              props.setAnswers(tmp);
-            }}
-          />
-        )) ?? <>invalid</>
+        <>
+          {props.exam.question_choices?.map((e, i) => (
+            <SelectButton
+              type='multi'
+              id={i === 0 ? 'select-first' : ''}
+              key={`examform_checkbox_${i}`}
+              desc={e}
+              status={props.answers.indexOf(String(i)) !== -1}
+              onChange={f => {
+                if (props.disable) return;
+                let tmp = props.answers.concat();
+                if (f) {
+                  tmp.push(String(i));
+                } else {
+                  tmp = tmp.filter(e => e !== String(i));
+                }
+                props.setAnswers(tmp);
+              }}
+            />
+          )) ?? <>invalid</>}
+        </>
       );
 
     case 'Sort':

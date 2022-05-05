@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import {Exam} from '@/pages/exam';
+import {ExamComponent} from '@/pages/exam';
 import {useRouter} from 'next/router';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
@@ -15,6 +15,7 @@ import {Shuffle} from '@/utils/ArrayUtil';
 import {categoly_default} from '@/utils/DefaultValue';
 import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
+import Exam from '@mytypes/Exam';
 
 export default function ExamPage(): React.ReactElement {
   const router = useRouter();
@@ -71,5 +72,5 @@ export default function ExamPage(): React.ReactElement {
     }
   });
 
-  return isLoading ? <Loading /> : <Exam data={data} history_id={history_id} tag_filter={tag} />;
+  return isLoading ? <Loading /> : <ExamComponent data={data} history_id={history_id} tag_filter={tag} />;
 }
