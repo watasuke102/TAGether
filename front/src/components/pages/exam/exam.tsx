@@ -45,12 +45,18 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
   const exam: Exam[] = JSON.parse(props.data.list);
   const textarea_ref = React.useRef<HTMLTextAreaElement>(null);
-  const [index, SetIndex] = React.useState(0);
   const [showExamStateTable, SetShowExamStateTable] = React.useState(false);
   const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
-  const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
   const [wrong_exam, SetWrongExam] = React.useState<Exam[]>([]);
+
+  const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
+  const nextButtonState_ref = React.useRef(NextButtonState.show_answer);
+  nextButtonState_ref.current = nextButtonState;
+
+  const [index, SetIndex] = React.useState(0);
+  const index_ref = React.useRef(0);
+  index_ref.current = index;
 
   const [correct_answers, SetCorrectAnswers] = React.useState(0);
   const correct_answers_ref = React.useRef(0);
@@ -154,13 +160,13 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     let all_correct = true;
 
     // 複数選択問題は、完全一致のみ正解にする
-    if (exam[index].type === 'MultiSelect' && props.data.version === 2) {
+    if (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2) {
       // 空欄削除+ソート+文字列化した後、比較する
       const tmp = answers.concat();
-      tmp[index] = tmp[index].filter(e => e !== '').sort();
+      tmp[index_ref.current] = tmp[index_ref.current].filter(e => e !== '').sort();
       SetAnswers(tmp);
-      const my_answers = tmp[index].toString();
-      const real_answers = exam[index].answer.sort().toString();
+      const my_answers = tmp[index_ref.current].toString();
+      const real_answers = exam[index_ref.current].answer.sort().toString();
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
         SetCorrectAnswers(n => n + 1);
@@ -171,11 +177,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       // 空欄削除+ソートされたものに変えておく
     } else {
       let correct: boolean = false;
-      exam[index].answer.forEach((e, i) => {
+      exam[index_ref.current].answer.forEach((e, i) => {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').forEach(ans => {
-          if (answers[index][i] === ans && !correct) {
+          if (answers[index_ref.current][i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
@@ -193,7 +199,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     } else {
       // 1問でも間違っていたら、間違えた問題リストに追加
       SetWrongExam(ls => {
-        ls.push(exam[index]);
+        ls.push(exam[index_ref.current]);
         return ls;
       });
       // 全問不正解の場合
@@ -205,7 +211,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       }
     }
     const tmp = examState;
-    tmp[index] = result;
+    tmp[index_ref.current] = result;
     SetExamState(tmp);
   }
 
@@ -226,12 +232,12 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     SetNextButtonState(button_state);
   }
   function IncrementIndex(): void {
-    switch (nextButtonState) {
+    switch (nextButtonState_ref.current) {
       // 答えを表示、答え合わせをする
       case NextButtonState.show_answer:
         CheckAnswer();
         // 最後の問題であれば、ボタンを終了ボタンに
-        if (index === exam.length - 1) {
+        if (index_ref.current === exam.length - 1) {
           SetNextButtonState(NextButtonState.finish_exam);
         } else {
           //そうでないなら次へボタン
@@ -241,7 +247,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
       // 次の問題へ進む
       case NextButtonState.next_question:
-        const next_index = index + 1;
+        const next_index = index_ref.current + 1;
         // indexの変更
         ChangeIndex(next_index);
 
@@ -261,9 +267,9 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     }
   }
   function DecrementIndex(): void {
-    if (index === 0) return;
+    if (index_ref.current === 0) return;
     // indexの変更
-    ChangeIndex(index - 1);
+    ChangeIndex(index_ref.current - 1);
   }
 
   function NextButton(): React.ReactElement {
