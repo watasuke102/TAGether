@@ -426,7 +426,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         <div className={css.exam}>
           <div className={css.question_area}>
             <div>
-              <h2 id={css.mondai}>問題</h2>
+              <span id={css.mondai}>問題</span>
             </div>
             <div className={css.question_text}>
               <p>

@@ -23,8 +23,8 @@
   margin-right: 50px;
 }
 .question_area {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 80px 1fr;
   font-size: 20px;
   border-bottom: 3px solid;
 }
@@ -32,7 +32,7 @@
   word-break: break-word;
 }
 .exam #mondai {
-  font-size: 30px;
+  font-weight: bold;
   margin: 0 0;
   margin-right: 20px;
 }
