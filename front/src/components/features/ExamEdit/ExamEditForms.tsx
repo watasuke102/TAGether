@@ -26,6 +26,8 @@ interface Props {
   updater: (e: Exam[]) => void;
 }
 
+const QUESTION_ID = 'ExamEdit_Question';
+
 export default function ExamEditForms(props: Props): React.ReactElement {
   const ForceRender = useForceRender();
   const question_form = React.useRef<HTMLTextAreaElement>();
@@ -60,7 +62,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   React.useEffect(() => {
     current_page_ref.current = current_page;
-    question_form.current?.focus();
+    document.getElementById(QUESTION_ID)?.focus();
   }, [current_page]);
 
   // ページ移動
@@ -355,10 +357,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       <div className={css.form_container}>
         <div className={css.qa_list}>
           <Form
+            id={QUESTION_ID}
             label={'問題文'}
             value={exam[current_page].question}
             rows={6}
-            reff={question_form}
             onChange={ev => updater.Question.Update(current_page, ev.target.value)}
           />
           <Form

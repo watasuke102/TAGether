@@ -14,7 +14,7 @@ import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
-import AnswerArea from '@/features/Exam/AnswerArea';
+import {FORM_ID, AnswerArea} from '@/features/Exam/AnswerArea';
 import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import {Shuffle} from '@/utils/ArrayUtil';
@@ -44,7 +44,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   useConfirmBeforeLeave()(true);
 
   const exam: Exam[] = JSON.parse(props.data.list);
-  const textarea_ref = React.useRef<HTMLTextAreaElement>(null);
   const [showExamStateTable, SetShowExamStateTable] = React.useState(false);
   const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
@@ -143,7 +142,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
     switch (exam[index].type) {
       case 'Text':
-        textarea_ref.current?.focus();
+        document.getElementById(FORM_ID)?.focus();
         break;
       case 'Select':
       case 'MultiSelect':
@@ -470,7 +469,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
               }}
               disable={examState[index_ref.current].checked}
               shortcutDisable={isModalOpen}
-              ref={textarea_ref}
             />
             {/* 入力中エンターを押して送信を無効化 */}
             <input id={css.dummy} />

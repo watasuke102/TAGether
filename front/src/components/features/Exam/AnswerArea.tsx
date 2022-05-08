@@ -22,10 +22,11 @@ interface Props {
   shortcutDisable: boolean;
   answers: string[];
   setAnswers: (list: string[]) => void;
-  ref: React.RefObject<HTMLTextAreaElement>;
 }
 
-export default function AnswerArea(props: Props): JSX.Element {
+export const FORM_ID = 'ExamFirstQuestion';
+
+export function AnswerArea(props: Props): JSX.Element {
   const exam_ref = React.useRef<Exam>(exam_default()[0]);
   exam_ref.current = props.exam;
 
@@ -105,8 +106,8 @@ export default function AnswerArea(props: Props): JSX.Element {
           {props.exam.answer.map((e, i) => (
             <div className={css.form} key={`examform_Text_${i}`}>
               <Form
+                id={FORM_ID}
                 rows={1}
-                reff={i === 0 ? props.ref : null}
                 label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
                 value={props.answers[i]}
                 onChange={ev => {
