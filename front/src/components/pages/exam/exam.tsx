@@ -302,7 +302,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   // 正解状況の表示
   function ShowExamState(): React.ReactElement | undefined {
     const state: ExamState = examState_ref.current[index_ref.current];
-    console.log(state);
     if (!state.checked) return;
 
     const answer_length = exam[index_ref.current].answer.length;
