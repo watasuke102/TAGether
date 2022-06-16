@@ -63,3 +63,23 @@
     transition: 0.3s;
   }
 }
+
+.add_categoly_window {
+  width: 80vw;
+  padding: 30px 50px;
+  background-color: #646772;
+  .button_container {
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.toast_body {
+  display: flex;
+  font-size: 1.25em;
+  align-items: center;
+  span {
+    margin-right: 10px;
+  }
+}

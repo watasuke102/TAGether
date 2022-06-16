@@ -13,17 +13,50 @@ import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
+import Modal from '@/common/Modal/Modal';
 import {SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
+import Toast from '@/common/Toast/Toast';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import {useCategolyData} from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
+import CategolyResponse from '@mytypes/CategolyResponse';
+import Exam from '@mytypes/Exam';
+
+function AddCategoly(name: string, desc: string) {
+  const exam_initial: Exam = {type: 'Text', question: '問題文', answer: ['解答']};
+  const api_body: CategolyResponse = {
+    version: 2,
+    title: name,
+    description: desc,
+    tag: '',
+    list: JSON.stringify([exam_initial]),
+  };
+  const req = new XMLHttpRequest();
+  req.onreadystatechange = () => {
+    if (req.readyState === 4) {
+      const result = JSON.parse(req.responseText);
+      if (req.status === 200) {
+        Router.push(`/edit?id=${result.insertId}`);
+      }
+    }
+  };
+  req.open('POST', process.env.API_URL + '/categoly');
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.send(JSON.stringify(api_body));
+}
 
 export default function list(): React.ReactElement {
   const [searchStr, SetSearchStr] = React.useState('');
   const [radioState, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
   const [list, isLoading] = useCategolyData();
+
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
+  const [categoly_name, SetCategolyName] = React.useState('');
+  const [categoly_desc, SetCategolyDesc] = React.useState('');
+
+  const [is_toast_open, SetIsToastOpen] = React.useState(false);
 
   function CardList(): React.ReactElement[] {
     let cards: React.ReactElement[] = [];
@@ -76,7 +109,7 @@ export default function list(): React.ReactElement {
 
     // カテゴリ作成ページへ飛ぶカードを追加
     cards.unshift(
-      <div key={'newcategoly'} className={css.card} onClick={() => Router.push('/create')}>
+      <div key={'newcategoly'} className={css.card} onClick={() => SetIsModalOpen(true)}>
         <span className='fas fa-plus' />
         <p id={css.create_new}>新規作成</p>
       </div>,
@@ -133,6 +166,35 @@ export default function list(): React.ReactElement {
           {CardList()}
         </IndexedContainer>
       )}
+
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
+        <div className={css.add_categoly_window}>
+          <h2>新規カテゴリの追加</h2>
+          <Form label='タイトル' value={categoly_name} rows={1} onChange={ev => SetCategolyName(ev.target.value)} />
+          <Form label='説明' value={categoly_desc} rows={3} onChange={ev => SetCategolyDesc(ev.target.value)} />
+          <div className={css.button_container}>
+            <Button type='material' icon='fas fa-times' text='キャンセル' onClick={() => SetIsModalOpen(false)} />
+            <Button
+              type='filled'
+              icon='fas fa-check'
+              text='作成する'
+              onClick={() => {
+                if (categoly_name !== '') {
+                  AddCategoly(categoly_name, categoly_desc);
+                } else {
+                  SetIsToastOpen(true);
+                }
+              }}
+            />
+          </div>
+        </div>
+      </Modal>
+      <Toast id='name_empty_notice' isOpen={is_toast_open} close={() => SetIsToastOpen(false)}>
+        <div className={css.toast_body}>
+          <span className='fas fa-bell' />
+          <span>カテゴリのタイトルを設定してください</span>
+        </div>
+      </Toast>
     </>
   );
 }
