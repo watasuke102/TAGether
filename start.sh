@@ -4,8 +4,6 @@ set -e
 
 echo -e "\e[32;7m[info] Started setup script (env: ${1:-not_product})\e[m"
 
-git pull
-
 ## frontend setup
 docker-compose run --rm --entrypoint "npm install" front
 echo -e "\e[36;7m[info] Frontend setup completed\e[m"
