@@ -56,6 +56,8 @@ export default function list(): React.ReactElement {
   const [categoly_name, SetCategolyName] = React.useState('');
   const [categoly_desc, SetCategolyDesc] = React.useState('');
 
+  const [is_loading_modal_open, SetIsLoadingModalOpen] = React.useState(false);
+
   const [is_toast_open, SetIsToastOpen] = React.useState(false);
 
   function CardList(): React.ReactElement[] {
@@ -180,6 +182,7 @@ export default function list(): React.ReactElement {
               text='作成する'
               onClick={() => {
                 if (categoly_name !== '') {
+                  SetIsLoadingModalOpen(true);
                   AddCategoly(categoly_name, categoly_desc);
                 } else {
                   SetIsToastOpen(true);
@@ -187,6 +190,15 @@ export default function list(): React.ReactElement {
               }}
             />
           </div>
+        </div>
+      </Modal>
+      <Modal isOpen={is_loading_modal_open} close={() => undefined}>
+        <div className={css.add_categoly_window}>
+          <span>
+            サーバーからの応答を待っています……
+            <br />
+            （動作しない場合は接続を確認するか、ページをリロードしてください）
+          </span>
         </div>
       </Modal>
       <Toast id='name_empty_notice' isOpen={is_toast_open} close={() => SetIsToastOpen(false)}>
