@@ -6,14 +6,14 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-const Config = require("./env.json");
-const MySql = require("mysql");
+const Config = require('./env.json');
+const MySql = require('mysql');
 
 function Log(mes) {
-  const DateFormat = require("date-fns");
+  const DateFormat = require('date-fns');
   const date = new Date();
   date.setHours(date.getHours() + 9);
-  console.info(DateFormat.format(date, "[yyyy-MM-dd HH:mm:ss]"), mes);
+  console.info(DateFormat.format(date, '[yyyy-MM-dd HH:mm:ss]'), mes);
 }
 
 function Success(resp, data) {
@@ -26,20 +26,20 @@ function Error(resp, mes) {
 }
 
 function WebHook(title, field) {
-  if (Config.Webhook === "") return;
-  const Request = require("request");
+  if (Config.Webhook === '') return;
+  const Request = require('request');
   Request.post({
     url: Config.Webhook,
-    headers: { "content-type": "application/json" },
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      avatar_url: "https://data.watasuke.tk/icon.png",
+      avatar_url: 'https://data.watasuke.tk/icon.png',
       embeds: [{ title: title, fields: field }],
     }),
   });
 }
 
 function Query(query, req, resp) {
-  if (Config.AllowOrigin != "*" && req.headers.origin != Config.AllowOrigin) {
+  if (Config.AllowOrigin != '*' && req.headers.origin != Config.AllowOrigin) {
     Log(
       `BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`
     );
@@ -72,14 +72,14 @@ function Query(query, req, resp) {
 
 // カテゴリ
 exports.GetCategoly = (req, res) => {
-  let query = "SELECT * FROM exam";
-  if (req.params.id) query += " WHERE id = " + MySql.escape(req.params.id);
+  let query = 'SELECT * FROM exam';
+  if (req.params.id) query += ' WHERE id = ' + MySql.escape(req.params.id);
   Query(query, req, res);
 };
 
 exports.AddCategoly = (req, res) => {
   let query =
-    "INSERT INTO exam (title, version, description, tag, list) values ";
+    'INSERT INTO exam (title, version, description, tag, list) values ';
   query += `(${MySql.escape(req.body.title)},`;
   query += ` ${MySql.escape(req.body.version)},`;
   query += ` ${MySql.escape(req.body.description)},`;
@@ -87,14 +87,14 @@ exports.AddCategoly = (req, res) => {
   query += ` ${MySql.escape(req.body.list)})`;
   Query(query, req, res);
 
-  WebHook("新規カテゴリ追加", [
-    { name: "名前", value: req.body.title },
-    { name: "説明", value: req.body.description },
+  WebHook('新規カテゴリ追加', [
+    { name: '名前', value: req.body.title },
+    { name: '説明', value: req.body.description },
   ]);
 };
 
 exports.UpdateCategoly = (req, res) => {
-  let query = "UPDATE exam SET ";
+  let query = 'UPDATE exam SET ';
   query += `title=${MySql.escape(req.body.title)},`;
   query += `description=${MySql.escape(req.body.description)},`;
   query += `tag=${MySql.escape(req.body.tag)},`;
@@ -105,40 +105,40 @@ exports.UpdateCategoly = (req, res) => {
 
 // 機能要望
 exports.GetRequest = (req, res) => {
-  let query = "SELECT * FROM request";
-  if (req.params.id) query += " WHERE id = " + MySql.escape(req.params.id);
+  let query = 'SELECT * FROM request';
+  if (req.params.id) query += ' WHERE id = ' + MySql.escape(req.params.id);
   Query(query, req, res);
 };
 
 exports.AddRequest = (req, res) => {
-  let query = "INSERT INTO request (body) values ";
+  let query = 'INSERT INTO request (body) values ';
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
 
-  WebHook("新規要望が投稿されました", [{ name: "内容", value: req.body.body }]);
+  WebHook('新規要望が投稿されました', [{ name: '内容', value: req.body.body }]);
 };
 
 // タグ
 exports.GetTag = (req, res) => {
-  let query = "SELECT * FROM tag";
-  if (req.params.id) query += " WHERE id = " + MySql.escape(req.params.id);
+  let query = 'SELECT * FROM tag';
+  if (req.params.id) query += ' WHERE id = ' + MySql.escape(req.params.id);
   Query(query, req, res);
 };
 
 exports.AddTag = (req, res) => {
-  let query = "INSERT INTO tag (name, description) values ";
+  let query = 'INSERT INTO tag (name, description) values ';
   query += `(${MySql.escape(req.body.name)},`;
   query += ` ${MySql.escape(req.body.description)})`;
   Query(query, req, res);
 
-  WebHook("新規タグ追加", [
-    { name: "名前", value: req.body.name },
-    { name: "説明", value: req.body.description },
+  WebHook('新規タグ追加', [
+    { name: '名前', value: req.body.name },
+    { name: '説明', value: req.body.description },
   ]);
 };
 
 exports.UpdateTag = (req, res) => {
-  let query = "UPDATE tag SET ";
+  let query = 'UPDATE tag SET ';
   query += `name=${MySql.escape(req.body.name)},`;
   query += `description=${MySql.escape(req.body.description)} `;
   query += `WHERE id=${MySql.escape(req.body.id)}`;
