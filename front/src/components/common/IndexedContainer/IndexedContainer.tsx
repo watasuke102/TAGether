@@ -20,7 +20,7 @@ interface Props {
 export default function SelectButton(props: Props): React.ReactElement {
   const [index, SetIndex] = React.useState(0);
   const per = props.per ?? 20;
-  const max_page = Math.ceil(props.len / per);
+  const max_page = Math.max(Math.ceil(props.len / per), 1);
   const width_var = {'--item_width': `${props.width ?? '1fr'}`} as React.CSSProperties;
 
   if (props.children.length < 1) return <span>何もありません</span>;
