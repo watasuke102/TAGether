@@ -6,7 +6,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import {Create} from '@/pages/create';
+import {Edit} from '@/pages/edit';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import {useCategolyData, useTagData} from '@/utils/Api';
@@ -16,5 +16,5 @@ export default function EditPage(): React.ReactElement {
   const [categoly, isCategolyLoading] = useCategolyData();
   const [tags, isTagLoading] = useTagData();
 
-  return isTagLoading || isCategolyLoading ? <Loading /> : <Create mode={'edit'} data={categoly[0]} tags={tags} />;
+  return isTagLoading || isCategolyLoading ? <Loading /> : <Edit data={categoly[0]} tags={tags} />;
 }

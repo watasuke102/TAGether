@@ -6,13 +6,10 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import css from './create.module.scss';
-import {useRouter} from 'next/router';
-import React from 'react';
+import css from './edit.module.scss';
+import {useRouter} from 'next/router';import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
-import ButtonContainer from '@/common/Button/ButtonContainer';
-import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
@@ -22,35 +19,31 @@ import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useConfirmBeforeLeave} from '@/utils/ConfirmBeforeLeave';
 import {exam_default, categoly_default} from '@/utils/DefaultValue';
 import UpdateExam from '@/utils/UpdateExam';
-import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';
 import TagData from '@mytypes/TagData';
 
 interface Props {
-  mode: 'create' | 'edit';
   data: Categoly;
   tags: TagData[];
 }
 
 export const ExamContext = React.createContext<Exam[]>(exam_default());
 
-export default function create(props: Props): React.ReactElement {
-  const router = useRouter();
+export default function Edit(props: Props): React.ReactElement {
   const isFirstRendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
 
   const [isToastOpen, SetIsToastOpen] = React.useState(false);
-  const [isModalOpen, SetIsModalOpen] = React.useState(false);
   const [isJsonEdit, SetIsJsonEdit] = React.useState(false);
   const [isOldForm, SetIsOldForm] = React.useState(props.data.version === 1);
   const [registError, SetRegistError] = React.useState('');
 
-  const [categoly, SetCategoly] = React.useState(isCreate() ? categoly_default() : props.data);
+  const [categoly, SetCategoly] = React.useState(props.data);
   const categoly_ref = React.useRef<Categoly>(categoly_default());
   categoly_ref.current = categoly;
-  const [exam, SetExam] = React.useState<Exam[]>(isCreate() ? exam_default() : JSON.parse(props.data.list));
+  const [exam, SetExam] = React.useState<Exam[]>(JSON.parse(props.data.list));
   const exam_ref = React.useRef<Exam[]>(exam_default());
   exam_ref.current = exam;
 
@@ -92,10 +85,6 @@ export default function create(props: Props): React.ReactElement {
       case 'list':  stat.list        = v; break;
     }
     SetCategoly(stat);
-  }
-
-  function isCreate(): boolean {
-    return props.mode === 'create';
   }
 
   // カテゴリ登録
@@ -188,9 +177,8 @@ export default function create(props: Props): React.ReactElement {
       if (req.readyState === 4) {
         const result = JSON.parse(req.responseText);
         if (req.status === 200) {
-          // createの場合はmodalを表示、editの場合はtoastを表示する
           SetRegistError('');
-          isCreate() ? SetIsModalOpen(true) : SetIsToastOpen(true);
+          SetIsToastOpen(true);
           // 確認ダイアログを無効化
           SetShowConfirmBeforeLeave(false);
         } else {
@@ -200,75 +188,17 @@ export default function create(props: Props): React.ReactElement {
         }
       }
     };
-    req.open(isCreate() ? 'POST' : 'PUT', process.env.API_URL + '/categoly');
+    req.open('PUT', process.env.API_URL + '/categoly');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(api_body));
     console.log('BODY: ' + JSON.stringify(api_body));
   }
 
-  // モーダルウィンドウの中身
-  function RegistResult(from: 'Modal' | 'Toast'): React.ReactElement {
-    let message: string;
-    let button_info: ButtonInfo[] = [];
-    // 成功した場合、続けて追加/編集を続ける/カテゴリ一覧へ戻るボタンを表示
-    if (registError === '') {
-      message = isCreate() ? 'カテゴリの追加に成功しました' : '編集結果を適用しました';
-      button_info = [
-        {
-          type: 'material',
-          icon: 'fas fa-plus',
-          text: '新規カテゴリを追加',
-          onClick: (): void => router.reload(),
-        },
-        {
-          type: 'filled',
-          icon: 'fas fa-check',
-          text: 'カテゴリ一覧へ',
-          onClick: (): Promise<boolean> => router.push('/list'),
-        },
-      ];
-    } else {
-      // 失敗した場合、閉じるボタンのみ
-      message = `エラーが発生しました。\n${registError}`;
-      button_info = [
-        {
-          type: 'filled',
-          icon: 'fas fa-times',
-          text: '閉じる',
-          onClick: () => SetIsModalOpen(false),
-        },
-      ];
-    }
-
-    if (from === 'Toast') {
-      return (
-        <span>
-          {message.split('\n').map(txt => (
-            <>
-              {txt}
-              <br />
-            </>
-          ))}
-        </span>
-      );
-    }
-
-    const button: React.ReactElement[] = [];
-    button_info.forEach(e => {
-      button.push(<Button {...e} />);
-    });
-    return (
-      <div className={css.window}>
-        <p>{message}</p>
-        <ButtonContainer>{button}</ButtonContainer>
-      </div>
-    );
-  }
   return (
     <>
-      <Helmet title={`${isCreate() ? '新規作成' : '編集'} - TAGether`} />
+      <Helmet title='編集 - TAGether' />
 
-      <h1>{isCreate() ? '新規カテゴリの追加' : 'カテゴリの編集'}</h1>
+      <h1>カテゴリの編集</h1>
 
       <h2>機能について</h2>
       <ul>
@@ -354,13 +284,10 @@ export default function create(props: Props): React.ReactElement {
         </>
       )}
 
-      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
-        {RegistResult('Modal')}
-      </Modal>
       <Toast id={'toast_create'} isOpen={isToastOpen} close={() => SetIsToastOpen(false)}>
         <div className={css.toast_body}>
           <span className='fas fa-bell' />
-          {RegistResult('Toast')}
+          {registError === '' ? '編集結果を適用しました' : `エラーが発生しました。\n${registError}`}
         </div>
       </Toast>
     </>

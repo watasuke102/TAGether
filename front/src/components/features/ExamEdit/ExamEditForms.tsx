@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './ExamEditForms.module.scss';
-import {ExamContext} from '@/pages/create';
+import {ExamContext} from '@/pages/edit';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 import Button from '@/common/Button/Button';

@@ -203,7 +203,7 @@ export default function list(): React.ReactElement {
       </Modal>
       <Toast id='name_empty_notice' isOpen={is_toast_open} close={() => SetIsToastOpen(false)}>
         <div className={css.toast_body}>
-          <span className='fas fa-bell' />
+          <span className='fas fa-exclamation-triangle'></span>
           <span>カテゴリのタイトルを設定してください</span>
         </div>
       </Toast>
