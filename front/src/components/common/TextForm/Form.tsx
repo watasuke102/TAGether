@@ -20,6 +20,7 @@ export default function Form(props: FormInfo): JSX.Element {
         value={props.value}
         rows={props.rows}
         spellCheck={false}
+        tabIndex={props.layer ?? 1}
         onChange={e => props.onChange(e)}
         disabled={props.disabled}
       />

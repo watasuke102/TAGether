@@ -141,6 +141,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 label={`答え (${i + 1})`}
                 value={e}
                 rows={3}
+                layer={4}
                 onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
               />
               <div className={css.answer_area_buttons}>
@@ -173,6 +174,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <Form
                   value={e}
                   rows={2}
+                  layer={4}
                   onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
@@ -216,6 +218,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <Form
                   value={e}
                   rows={2}
+                  layer={4}
                   onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
@@ -250,6 +253,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               label={`答え (${i + 1})`}
                               value={e}
                               rows={3}
+                              layer={4}
                               onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
                             />
                             <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
@@ -361,6 +365,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             label={'問題文'}
             value={exam[current_page].question}
             rows={6}
+            layer={2}
             onChange={ev => updater.Question.Update(current_page, ev.target.value)}
           />
           <Form
@@ -368,6 +373,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             value={exam[current_page].comment ?? ''}
             rows={5}
             onChange={ev => updater.Comment.Update(current_page, ev.target.value)}
+            layer={6}
           />
         </div>
 

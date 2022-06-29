@@ -7,7 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './edit.module.scss';
-import {useRouter} from 'next/router';import React from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';

@@ -9,8 +9,9 @@
 interface FormInfo {
   label?: string;
   value: string;
-  id?: string;
   rows: number;
+  id?: string;
+  layer?: number;
   disabled?: boolean;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
