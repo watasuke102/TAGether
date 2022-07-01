@@ -25,24 +25,28 @@ export default function SelectButton(props: Props): React.ReactElement {
 
   if (props.children.length < 1) return <span>何もありません</span>;
 
+  const Operator = () => (
+    <div className={css.operator}>
+      <Button icon='fas fa-angle-left' onClick={() => index > 0 && SetIndex(i => i - 1)} type='material' text='' />
+      <span>
+        {index + 1}/{max_page}
+      </span>
+      <Button
+        icon='fas fa-angle-right'
+        onClick={() => index + 1 < max_page && SetIndex(i => i + 1)}
+        type='material'
+        text=''
+      />
+    </div>
+  );
+
   return (
     <>
-      <div className={css.operator}>
-        <Button icon='fas fa-angle-left' onClick={() => index > 0 && SetIndex(i => i - 1)} type='material' text='' />
-        <span>
-          {index + 1}/{max_page}
-        </span>
-        <Button
-          icon='fas fa-angle-right'
-          onClick={() => index + 1 < max_page && SetIndex(i => i + 1)}
-          type='material'
-          text=''
-        />
-      </div>
-
+      <Operator />
       <div style={width_var} className={css.list}>
         {props.children.slice(index * per, (index + 1) * per)}
       </div>
+      <Operator />
     </>
   );
 }
