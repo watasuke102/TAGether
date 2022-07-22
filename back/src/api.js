@@ -32,7 +32,7 @@ function WebHook(title, field) {
     url: Config.Webhook,
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      avatar_url: 'https://data.watasuke.tk/icon.png',
+      avatar_url: 'https://data.watasuke.net/icon.png',
       embeds: [{ title: title, fields: field }],
     }),
   });
