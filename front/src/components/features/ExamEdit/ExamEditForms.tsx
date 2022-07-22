@@ -47,11 +47,32 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   const Shortcut = React.useCallback((e: KeyboardEvent) => {
     // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
     if (e.ctrlKey && e.shiftKey && !e.repeat) {
-      if (e.code === 'KeyH' || e.code === 'ArrowLeft') {
-        MovePageTo(current_page_ref.current - 1);
-      } else if (e.code === 'KeyL' || e.code === 'ArrowRight') {
-        MovePageTo(current_page_ref.current + 1);
+      switch (e.code) {
+        case 'KeyH':
+        case 'ArrowLeft':
+          MovePageTo(current_page_ref.current - 1);
+          break;
+        case 'KeyL':
+        case 'ArrowRight':
+          MovePageTo(current_page_ref.current + 1);
+          break;
+        case 'KeyA':
+          updater.Type.Update(current_page, 'Text');
+          break;
+        case 'KeyS':
+          updater.Type.Update(current_page, 'Select');
+          break;
+        case 'KeyZ':
+          updater.Type.Update(current_page, 'MultiSelect');
+          break;
+        case 'KeyX':
+          updater.Type.Update(current_page, 'Sort');
+          break;
+        default:
+          return;
       }
+      ForceRender();
+      e.preventDefault();
     }
   }, []);
 

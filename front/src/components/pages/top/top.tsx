@@ -39,7 +39,14 @@ export default function index(): React.ReactElement {
         <li>Ctrl + Shift + (Hもしくは左矢印キー)：前の問題</li>
       </ul>
 
-      <p>カテゴリ編集ページでは、Ctrl+Sで編集結果の適用ができます。</p>
+      <p>カテゴリ編集ページのみ、以下のショートカットキーが使えます。</p>
+      <ul>
+        <li>Ctrl + S：編集結果の適用</li>
+        <li>Ctrl + Shift + A：問題形式を「テキスト」に変更</li>
+        <li>Ctrl + Shift + S：問題形式を「選択問題」に変更</li>
+        <li>Ctrl + Shift + Z：問題形式を「複数選択」に変更</li>
+        <li>Ctrl + Shift + X：問題形式を「並び替え」に変更</li>
+      </ul>
 
       <p>問題解答ページのみ、以下のショートカットキーが使えます。</p>
       <ul>

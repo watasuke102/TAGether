@@ -62,7 +62,7 @@ export default function Edit(props: Props): React.ReactElement {
   // ショートカットキー
   const Shortcut = React.useCallback(
     (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.code === 'KeyS' && !e.repeat) {
+      if (e.ctrlKey && e.code === 'KeyS' && !e.repeat && !e.shiftKey) {
         e.preventDefault();
         RegistCategoly();
       }
