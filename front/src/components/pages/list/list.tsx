@@ -11,20 +11,21 @@ import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
-import {IndexedContainer} from '@/common/IndexedContainer';
+import { IndexedContainer } from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
-import {SingleSelectBox} from '@/common/SelectBox';
+import { SingleSelectBox } from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
-import {useCategolyData} from '@/utils/Api';
+import { useCategolyData } from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';
+import { useWaiting } from '@/common/Waiting';
 
 function AddCategoly(name: string, desc: string) {
-  const exam_initial: Exam = {type: 'Text', question: '問題文', answer: ['解答']};
+  const exam_initial: Exam = { type: 'Text', question: '問題文', answer: ['解答'] };
   const api_body: CategolyResponse = {
     version: 2,
     title: name,
@@ -56,9 +57,9 @@ export default function list(): React.ReactElement {
   const [categoly_name, SetCategolyName] = React.useState('');
   const [categoly_desc, SetCategolyDesc] = React.useState('');
 
-  const [is_loading_modal_open, SetIsLoadingModalOpen] = React.useState(false);
-
   const [is_toast_open, SetIsToastOpen] = React.useState(false);
+
+  const [Waiting, StartWaiting] = useWaiting();
 
   function CardList(): React.ReactElement[] {
     let cards: React.ReactElement[] = [];
@@ -182,7 +183,7 @@ export default function list(): React.ReactElement {
               text='作成する'
               onClick={() => {
                 if (categoly_name !== '') {
-                  SetIsLoadingModalOpen(true);
+                  StartWaiting();
                   AddCategoly(categoly_name, categoly_desc);
                 } else {
                   SetIsToastOpen(true);
@@ -192,21 +193,13 @@ export default function list(): React.ReactElement {
           </div>
         </div>
       </Modal>
-      <Modal isOpen={is_loading_modal_open} close={() => undefined}>
-        <div className={css.add_categoly_window}>
-          <span>
-            サーバーからの応答を待っています……
-            <br />
-            （動作しない場合は接続を確認するか、ページをリロードしてください）
-          </span>
-        </div>
-      </Modal>
       <Toast id='name_empty_notice' isOpen={is_toast_open} close={() => SetIsToastOpen(false)}>
         <div className={css.toast_body}>
           <span className='fas fa-exclamation-triangle'></span>
           <span>カテゴリのタイトルを設定してください</span>
         </div>
       </Toast>
+      <Waiting />
     </>
   );
 }
