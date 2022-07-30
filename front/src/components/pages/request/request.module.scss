@@ -7,24 +7,31 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
+
 .container {
   table {
     width: 90vw;
     margin: auto;
+
     th {
-      border-bottom: 2px solid #eee;
+      border-bottom: 2px solid $color-4;
     }
+
     tr {
-      border-bottom: 1px solid #555;
+      border-bottom: 1px solid $color-2;
+
       .id {
         width: 0;
         padding: 8px 10px;
         text-align: center;
       }
+
       .updated_at {
         width: 220px;
         text-align: center;
       }
+
       .body,
       .answer {
         width: 40%;
@@ -41,11 +48,4 @@
 .button {
   margin-top: 10px;
   margin-bottom: 50px;
-}
-
-.window {
-  width: 50vw;
-  padding: 30px 50px;
-  text-align: center;
-  background-color: #646772;
 }
