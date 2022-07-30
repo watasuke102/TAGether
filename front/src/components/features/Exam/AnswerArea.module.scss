@@ -7,6 +7,8 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
+
 // 並び替え問題の要素
 .examform_sort_item {
   display: grid;
@@ -14,17 +16,19 @@
   padding: 10px 15px;
   margin: 20px 15px;
   font-size: 1.3em;
-  color: #1a1a1a;
-  background-color: #acb7d3;
+  color: $color-bg;
+  background-color: $color-4;
 
   .icon {
     font-size: 1.3em;
-    border: 1px solid #4c4e57;
+    color: $color-0;
+    border: 1px solid $color-0;
     border-radius: 6px;
     padding: 4px;
     margin: auto;
   }
 }
+
 .form {
   margin-top: 15px;
 }

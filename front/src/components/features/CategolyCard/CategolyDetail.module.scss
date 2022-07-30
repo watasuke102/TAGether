@@ -7,6 +7,8 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
+
 .container {
   width: 90vw;
   height: var(--container_height);
@@ -16,23 +18,26 @@
   // タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
   grid-template-rows: 90px 30px auto 1fr 60px;
 
-  background-color: #4c4e57;
+  background-color: $color-1;
+
   textarea {
     width: 100%;
     font-family: 'M PLUS 1p', sans-serif;
-    color: #e1e2dc;
     border: none;
-    background-color: #0000;
+    background-color: $color-transparent;
+
     &:hover {
       cursor: text;
     }
   }
 }
+
 #title {
   height: 90px;
   font-size: 30px;
   font-weight: bold;
 }
+
 #desc {
   font-size: 18px;
 }
@@ -42,23 +47,12 @@
   height: 25px;
   margin: auto 0;
   padding: 0 12px;
+
   span {
     margin-top: 4px;
   }
+
   p {
     margin-left: 5px;
   }
-}
-
-.window {
-  width: 50vw;
-  padding: 20px 50px;
-  text-align: center;
-  background-color: #646772;
-}
-
-.window_buttons {
-  display: flex;
-  justify-content: space-around;
-  margin: 50px 0 0;
 }

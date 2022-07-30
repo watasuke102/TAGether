@@ -7,15 +7,17 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../variable";
 
 .button {
   font-family: 'M PLUS 1p', sans-serif;
+
   // 横幅が広かったら（スマホじゃなければ）
   // ボタンのフォーカス時にボーダーを表示
   @media screen and (min-width: 800px) {
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 2px #ffffff;
+      box-shadow: 0 0 0 2px $color-4;
     }
   }
 }

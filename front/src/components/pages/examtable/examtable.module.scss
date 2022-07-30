@@ -7,13 +7,15 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
+
 // ボタン
 .button_container {
   position: fixed;
   width: 100%;
   left: 0px;
   bottom: 0px;
-  background-color: #646464ea;
+  background-color: rgba($color: $color-1, $alpha: 0.9);
 }
 .buttons {
   margin: 20px 25px;

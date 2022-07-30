@@ -7,6 +7,8 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
+
 .tag_container {
   align-items: flex-end;
   display: inline-flex;
@@ -21,14 +23,15 @@
   padding-right: 5px;
   border-radius: 20px 0 0 20px;
 
-  color: #222222;
-  background-color: #9d92c0;
-  border: 2px solid #eeeeee00;
+  color: $color-bg;
+  background-color: $color-primary-3;
+  border: 2px solid $color-transparent;
   transition: border-color 0.3s;
+
   &:hover {
     cursor: pointer;
     text-decoration: underline;
-    border-color: #eee;
+    border-color: $color-fg;
     transition: border-color 0.3s;
   }
 }

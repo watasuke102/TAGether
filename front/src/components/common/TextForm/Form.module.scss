@@ -7,25 +7,28 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../variable";
+
 .label {
   font-size: 22px;
 }
 
 .form {
   font-family: 'M PLUS 1p', sans-serif;
-  color: #222;
+  color: $color-bg;
   display: flex;
   resize: vertical;
   width: 100%;
   padding: 5px 5px;
   font-size: 18px;
-  background-color: #8c9ab6;
+  background-color: $color-4;
   border: none;
   box-shadow: none;
   transition: box-shadow 0.3s;
 }
+
 .form:focus {
   border: none;
   outline: none;
-  box-shadow: 0 0 3px 2.5px #dddddd;
+  box-shadow: 0 0 3px 2.5px $color-1;
 }

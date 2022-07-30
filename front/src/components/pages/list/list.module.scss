@@ -7,16 +7,19 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
 
 .form {
   width: 80vw;
   margin: 25px auto;
 }
+
 .sort {
   margin-top: 25px;
   display: flex;
   justify-content: space-between;
 }
+
 .notfound {
   width: 300px;
   margin: auto 0;
@@ -48,18 +51,20 @@
   height: auto;
   min-height: 100px;
   margin: 0 auto;
-  border: 1px solid #77797a;
-  color: #e1e2dc;
-  background-color: #dbdbdb00;
+  border: 1px solid $color-2;
+  font-size: 1.1em;
+  color: $color-fg;
+  background-color: $color-transparent;
   transition: 0.3s;
+
   span {
     margin-right: 15px;
   }
 
   &:hover {
     cursor: pointer;
-    color: #1a1a1a;
-    background-color: #dbdbdbaa;
+    color: $color-bg;
+    background-color: $color-2;
     transition: 0.3s;
   }
 }
@@ -67,7 +72,8 @@
 .add_categoly_window {
   width: 80vw;
   padding: 30px 50px;
-  background-color: #646772;
+  background-color: $color-1;
+
   .button_container {
     padding-top: 16px;
     display: flex;
@@ -79,6 +85,7 @@
   display: flex;
   font-size: 1.25em;
   align-items: center;
+
   span {
     margin-right: 10px;
   }

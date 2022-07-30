@@ -7,15 +7,18 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
 
 .button_list {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   span {
     margin: auto 0;
   }
 }
+
 .button_container {
   display: flex;
   justify-content: space-between;
@@ -31,6 +34,7 @@
   justify-content: space-between;
   margin: 15px 20px;
   padding-bottom: 150px;
+
   textarea {
     padding: 15px;
     width: 100%;
@@ -57,9 +61,10 @@
     .sort_forms {
       display: grid;
       grid-template-columns: 1fr 50px;
+
       .icon {
         font-size: 1.3em;
-        border: 1px solid #4c4e57;
+        border: 1px solid $color-fg;
         border-radius: 6px;
         padding: 4px;
         margin: auto;
@@ -75,6 +80,7 @@
   .answer_area_buttons {
     display: flex;
     justify-content: left;
+
     button {
       margin: 5px 15px 20px 0;
     }
@@ -89,15 +95,18 @@
   //width: 70vw;
   min-width: 50vw;
   max-height: 80vh;
-  background-color: #4c4e57;
+  background-color: $color-1;
+
   .question_list {
     width: 100%;
     height: 80%;
     overflow-y: auto;
+
     .dragable_question_card {
       .q_index {
         font-size: 1.2em;
       }
+
       top: auto !important;
       left: auto !important;
       margin: 10px 5px;
@@ -105,14 +114,17 @@
       display: grid;
       grid-template-columns: 30px 1fr 50px;
       user-select: none;
-      color: #1a1a1a;
-      background-color: #acb7d3;
+      color: $color-bg;
+      background-color: $color-4;
+
       span {
         margin: auto 0;
       }
+
       .icon {
         font-size: 1.3em;
-        border: 1px solid #4c4e57;
+        color: $color-0;
+        border: 1px solid $color-0;
         border-radius: 6px;
         padding: 4px;
         margin: auto;
@@ -126,6 +138,7 @@
   .form_container {
     flex-direction: column;
   }
+
   // ここ入れ子にしないと正しく適用されないらしい
   .form_container {
     .qa_list {
@@ -133,9 +146,11 @@
     }
   }
 }
+
 // ボタンを1つ前・後、最初・最後で同じ行にまとめたい）
 .append_exam {
   margin: 10px 20px;
+
   button:first-child {
     @media screen and (max-width: 850px) {
       grid-row: 2/3;

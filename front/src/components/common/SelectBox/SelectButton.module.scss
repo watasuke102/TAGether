@@ -7,6 +7,8 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../variable";
+
 .container {
   display: grid;
   grid-template-columns: 45px 1fr;
@@ -14,6 +16,7 @@
   padding: 15px 0;
   user-select: none;
 }
+
 .container:hover {
   cursor: pointer;
 }
@@ -21,17 +24,19 @@
 .box {
   width: 25px;
   height: 25px;
-  background-color: #eee;
+  background-color: $color-4;
   margin: 5px 10px;
 }
 
 .multi {
   border-radius: 5px;
+
   span {
     margin-top: 6px;
     word-break: break-all;
   }
 }
+
 .single {
   border-radius: 20px;
 }
@@ -39,15 +44,16 @@
 .multi_checked {
   width: 25px;
   height: 25px;
-  color: #353535;
+  color: $color-0;
   text-align: center;
   align-items: center;
 }
+
 .single_checked {
   margin: auto;
   margin-top: 5px;
   border-radius: 20px;
-  background-color: #353535;
+  background-color: $color-0;
   width: 15px;
   height: 15px;
 }

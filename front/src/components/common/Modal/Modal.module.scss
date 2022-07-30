@@ -7,6 +7,8 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../variable";
+
 .background {
   z-index: 1000;
   position: fixed;
@@ -14,7 +16,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #00000088;
+  background-color: $color-transparent-half;
 }
 
 .window {

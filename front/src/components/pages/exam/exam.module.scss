@@ -7,12 +7,15 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
+
 // 全体の親
 .display {
   display: flex;
   justify-content: flex-start;
   padding-bottom: 90px;
 }
+
 .display p {
   margin: 0;
 }
@@ -22,20 +25,24 @@
   width: 45vw;
   margin-right: 50px;
 }
+
 .question_area {
   display: grid;
   grid-template-columns: 80px 1fr;
   font-size: 20px;
   border-bottom: 3px solid;
 }
+
 .question_text {
   word-break: break-word;
 }
+
 .exam #mondai {
   font-weight: bold;
   margin: 0 0;
   margin-right: 20px;
 }
+
 // 並び替え問題の要素
 .examform_sort_item {
   display: grid;
@@ -43,20 +50,23 @@
   padding: 10px 15px;
   margin: 20px 15px;
   font-size: 1.3em;
-  color: #1a1a1a;
-  background-color: #acb7d3;
+  color: $color-bg;
+  background-color: $color-4;
 
   .icon {
     font-size: 1.3em;
-    border: 1px solid #4c4e57;
+    color: $color-0;
+    border: 1px solid $color-0;
     border-radius: 6px;
     padding: 4px;
     margin: auto;
   }
 }
+
 .form {
   margin-top: 15px;
 }
+
 // Enter送信防止用
 #dummy {
   display: none;
@@ -69,9 +79,6 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-.wrong {
-  color: #ff3939;
-}
 
 .answer_list {
   display: flex;
@@ -81,6 +88,7 @@
   font-size: 20px;
   margin-left: 0;
 }
+
 .answer_list #seikai {
   font-size: 27px;
 }
@@ -92,6 +100,7 @@
   font-size: 40px;
   height: 40px;
 }
+
 .exam_state p {
   margin-left: 20px;
 }
@@ -102,8 +111,9 @@
   width: 100%;
   left: 0px;
   bottom: 0px;
-  background-color: #646464ea;
+  background-color: rgba($color: $color-1, $alpha: 0.9);
 }
+
 .buttons {
   margin: 20px 25px;
   display: flex;
@@ -117,8 +127,9 @@
   width: 90%;
   margin: auto;
   padding: 0 15px;
-  background-color: #646464dd;
+  background-color: rgba($color: $color-1, $alpha: 0.9);
 }
+
 .correct_rate_statuslist {
   font-size: 22px;
 }
@@ -128,10 +139,10 @@
   width: 60vw;
   padding: 30px 50px;
   text-align: center;
-  background-color: #646772;
+  background-color: $color-1;
 }
 
-.window > h1 {
+.window>h1 {
   font-size: 28px;
   font-weight: bold;
 }
@@ -142,11 +153,13 @@
 
 // 横幅が狭かったらボタンとかを縦に並べる
 @media screen and (max-width: 700px) {
+
   .exam,
   .state_and_answer {
     width: 90vw;
     margin-top: 50px;
   }
+
   .display {
     flex-direction: column;
   }
@@ -154,6 +167,7 @@
   .window {
     padding-bottom: 80px;
   }
+
   // スクロールに追従しない
   .examdata_container {
     position: static;

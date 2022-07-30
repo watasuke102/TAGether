@@ -7,7 +7,8 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
 
 .wrong {
-  color: #e03d3d;
+  color: $color-wrong;
 }

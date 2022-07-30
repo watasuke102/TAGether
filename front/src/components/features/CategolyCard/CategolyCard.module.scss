@@ -7,6 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
 
 .container {
   width: 300px;
@@ -22,16 +23,17 @@
 
   .title,
   .desc {
-    color: #dbdbdb;
+    color: $color-bg;
     transition: color 300ms;
   }
 
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     &:hover {
+
       .title,
       .desc {
-        color: #111111;
+        // color: $color-bg;
         transition: color 300ms;
       }
     }
@@ -46,7 +48,7 @@
 }
 
 .desc {
-  border-top: 2px solid #dbdbdb;
+  border-top: 2px solid $color-0;
   overflow-wrap: break-word;
   font-size: 15px;
 }

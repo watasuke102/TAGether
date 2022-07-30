@@ -7,26 +7,32 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../../common/variable";
 
 .window {
   width: 70vw;
   padding: 30px 50px;
-  background-color: #646772;
+  background-color: $color-1;
+
   .heading {
     font-size: 1.5em;
+
     span {
       margin-right: 15px;
     }
+
     hr {
       margin-top: 10px;
     }
   }
+
   .forms div {
     margin-bottom: 30px;
   }
+
   // 親要素（Card）のCSSを打ち消す
   cursor: default;
-  color: #eee;
+  color: $color-fg;
 }
 
 // トースト通知の中身
@@ -35,6 +41,7 @@
   font-size: 1.25em;
   align-items: center;
 }
+
 .toast_body span {
   margin-right: 10px;
 }

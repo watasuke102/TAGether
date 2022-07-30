@@ -7,6 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "variable";
 // reseter.css
 @import url('https://cdn.jsdelivr.net/gh/krishdevdb/reseter.css@1.20/css/reseter.min.css');
 // fonts
@@ -16,25 +17,33 @@
 
 body {
   margin: 15px;
-  background-color: #282c34;
-  color: #e1e2dc;
+  background-color: $color-bg;
+  color: $color-fg;
   overflow-x: hidden;
   font-family: 'M PLUS 1p', sans-serif;
   font-size: 0.9rem;
+
   h2 {
     font-size: 1.7em;
   }
+
   h3 {
     font-size: 1.4em;
   }
+
   a {
-    color: #a1a1ff;
+    color: $color-primary-3;
+
+    &:hover {
+      color: $color-primary-3;
+    }
   }
+
   th {
     text-align: center;
   }
 
-  details > *:not(summary) {
+  details>*:not(summary) {
     margin-left: 20px;
   }
 

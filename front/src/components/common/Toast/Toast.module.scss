@@ -7,6 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
+@import "../variable";
 
 .container {
   z-index: 3000;
@@ -16,7 +17,7 @@
   padding: 5px 10px;
   max-width: 85vw;
   border-radius: 5px;
-  background-color: #3e3f44dd;
+  background-color: rgba($color: $color-0, $alpha: 0.8);
   // 120にしないとpadding分はみでる？？？
   transform: translateX(120%);
 }
@@ -26,6 +27,7 @@
     opacity: 0;
     transform: translateX(120%);
   }
+
   to {
     opacity: 1;
     transform: translateY(0%);
