@@ -22,10 +22,11 @@ export default function Button(props: ButtonInfo): React.ReactElement {
     css = material;
   }
   // アイコンと説明テキストのボタン
+  const icon = (props.icon === 'tagether') ? common.tagether : props.icon;
   return (
     <button className={css.button + ' ' + common.button} onClick={() => props.onClick()}>
       <div className={css.button_icon}>
-        <span className={props.icon} />
+        <span className={icon} />
       </div>
       <span className={css.button_text}>{props.text}</span>
     </button>

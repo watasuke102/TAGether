@@ -48,15 +48,17 @@
 
 // ボタンのなかみ
 .button_icon {
+  width: 24px;
+  height: 24px;
   margin: auto 5px;
   margin-bottom: 4px;
   text-align: center;
   span {
     font-size: 0.8em;
     color: #ffffff;
-    width: auto;
     margin: 0px auto;
     transition: color 0.3s;
+    transform: translateY(-5px);
   }
 }
 
@@ -67,6 +69,9 @@
 
 // 横幅が狭かったら説明テキストを非表示に
 @media screen and (max-width: 700px) {
+  .button {
+    padding-bottom: 8px;
+  }
   .button_text {
     display: none;
   }
@@ -86,12 +91,16 @@
     margin-bottom: 0px;
     font-size: 1.3em;
   }
+  .button_text {
+    margin-top: 12px;
+  }
 }
 
 // 縦幅が狭かったらロゴとボタンを同じ行に、説明テキストを非表示に
 @media screen and (max-height: 600px) {
   .button {
     margin: 0;
+    padding-bottom: 20px;
   }
   .button_icon {
     margin: 0 10px;

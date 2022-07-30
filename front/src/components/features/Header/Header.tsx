@@ -13,26 +13,9 @@ import Button from '@/common/Button/Button';
 import ButtonInfo from '@mytypes/ButtonInfo';
 
 export default function Header(): React.ReactElement {
-  const [isFixedButtons, SetIsFixedButtons] = React.useState(false);
-
-  const onScroll = (): void => {
-    if (!process.browser) return;
-    SetIsFixedButtons(window.pageYOffset > 70);
-  };
-
-  React.useEffect(() => {
-    window.addEventListener('scroll', onScroll, true);
-    return () => window.removeEventListener('scroll', onScroll, true);
-  }, []);
-
-  function ButtonContainersCSS(): string {
-    if (!isFixedButtons) return css.buttons_container;
-    return css.buttons_container_fixed;
-  }
-
   // prettier-ignore
   const info: ButtonInfo[] = [
-    { text: 'ホーム',       icon: 'fas fa-home',        onClick: () => Router.push('/'),        type: 'icon_desc' },
+    { text: 'TAGether',     icon: 'tagether',           onClick: () => Router.push('/'),        type: 'icon_desc' },
     { text: 'カテゴリ一覧', icon: 'fas fa-book',        onClick: () => Router.push('/list'),    type: 'icon_desc' },
     { text: 'タグ一覧',     icon: 'fas fa-tag',         onClick: () => Router.push('/tag'),     type: 'icon_desc' },
     { text: 'プロフィール', icon: 'fas fa-user',        onClick: () => Router.push('/profile'), type: 'icon_desc' },
@@ -41,14 +24,11 @@ export default function Header(): React.ReactElement {
 
   return (
     <header className={css.header}>
-      <h1>TAGether</h1>
-      <nav className={ButtonContainersCSS()}>
-        <div className={css.buttons}>
-          {info.map(e => (
-            <Button key={`headerbutton_${e.text}`} {...e} />
-          ))}
-        </div>
-      </nav>
+      <div className={css.buttons}>
+        {info.map(e => (
+          <Button key={`headerbutton_${e.text}`} {...e} />
+        ))}
+      </div>
     </header>
   );
 }

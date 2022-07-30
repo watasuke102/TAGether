@@ -7,17 +7,19 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+@import "../../common/variable";
+
 .header {
-  margin: -15px -15px 70px;
+  position: sticky;
+  top: 0;
   width: calc(100% + 30px);
-  height: 70px;
+  margin: -15px;
+  margin-bottom: 16px;
+
   font-size: 24px;
-  background-color: #8891a5dd;
-  color: #bbf5cb;
+  background-color: rgba($color: $color-2, $alpha: 0.85);
   box-sizing: border-box;
   h1 {
-    font-family: 'Montserrat', sans-serif;
     text-align: center;
     margin: 0 auto 15px;
     padding: 10px 0 0;
@@ -43,48 +45,5 @@
     h1 {
       margin: auto auto auto 0;
     }
-  }
-  .buttons {
-    margin: 0;
-  }
-  .buttons_container,
-  .buttons_container_fixed {
-    margin: auto 0;
-  }
-}
-
-// 横幅が狭い時、ボタンコンテナの背景を変える
-@media screen and (max-width: 550px) {
-  .buttons_container,
-  .buttons_container_fixed {
-    position: absolute;
-    width: 100%;
-    top: 70px;
-    background-color: #8891a5dd;
-  }
-}
-
-// 縦幅が狭くなければヘッダーを追従させる
-@media screen and (min-height: 600px) {
-  .buttons_container {
-    position: absolute;
-    width: 100%;
-    top: 70px;
-    background-color: #8891a5dd;
-  }
-  .buttons_container_fixed {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0;
-    background-color: #8891a5dd;
-  }
-}
-
-// アイコンと説明が2段になっていたらマージンを増やす
-// ヘッダの高さが増えて、内容が隠れてしまう
-@media screen and (min-width: 700px) and (max-width: 900px) and (min-height: 600px) {
-  .header {
-    margin-bottom: 100px;
   }
 }
