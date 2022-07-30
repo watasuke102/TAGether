@@ -7,13 +7,16 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './FavoriteStar.module.scss';
-import {gsap, Power4} from 'gsap';
+import { gsap, Power4 } from 'gsap';
 import React from 'react';
-import {UpdateFavorite, GetFavorite} from '@/utils/ManageDB';
+import { UpdateFavorite, GetFavorite } from '@/utils/ManageDB';
 
 interface Props {
   id: number;
 }
+
+const starred_color = '#524a80';
+const unstarred_color = '#abb2bf';
 
 export default function FavoriteStar(props: Props): React.ReactElement {
   const [favorite_status, SetFavoriteStatus] = React.useState(false);
@@ -27,7 +30,7 @@ export default function FavoriteStar(props: Props): React.ReactElement {
     const target = `#icon-${props.id}`;
     const timeline = gsap.timeline();
     // お気に入りを変更する前なので ! をつける
-    const color = !favorite_status ? '#c2eb2f' : '#eee';
+    const color = !favorite_status ? starred_color : unstarred_color;
     timeline
       // 初期化
       .to(target, {
@@ -57,7 +60,7 @@ export default function FavoriteStar(props: Props): React.ReactElement {
   };
 
   return (
-    <div className={css.favorite_button} style={{color: favorite_status ? '#c2eb2f' : '#eee'}} onClick={clicked}>
+    <div className={css.favorite_button} style={{ color: favorite_status ? starred_color : unstarred_color }} onClick={clicked}>
       <span className='fas fa-star' id={`icon-${props.id}`} />
     </div>
   );
