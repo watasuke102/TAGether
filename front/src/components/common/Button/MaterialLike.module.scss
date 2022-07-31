@@ -33,11 +33,11 @@
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     &:hover {
-      @include bg-animation($color-primary-1);
+      @include bg-animation($color-primary-2);
     }
   }
   &:active {
-    @include bg-animation($color-primary-1);
+    @include bg-animation($color-primary-2);
   }
 }
 
