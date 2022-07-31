@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-@import "variable";
+@import 'variable';
 // reseter.css
 @import url('https://cdn.jsdelivr.net/gh/krishdevdb/reseter.css@1.20/css/reseter.min.css');
 // fonts
@@ -43,7 +43,7 @@ body {
     text-align: center;
   }
 
-  details>*:not(summary) {
+  details > *:not(summary) {
     margin-left: 20px;
   }
 

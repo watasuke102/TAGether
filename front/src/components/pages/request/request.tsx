@@ -7,14 +7,14 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './request.module.scss';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
-import { useRequestData } from '@/utils/Api';
-import { useWaiting } from '@/common/Waiting';
+import {useWaiting} from '@/common/Waiting';
+import {useRequestData} from '@/utils/Api';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
@@ -33,7 +33,7 @@ export default function Request(): React.ReactElement {
     };
     req.open('POST', process.env.API_URL + '/request');
     req.setRequestHeader('Content-Type', 'application/json');
-    req.send(JSON.stringify({ body: request }));
+    req.send(JSON.stringify({body: request}));
   };
 
   return (

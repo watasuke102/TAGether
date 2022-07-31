@@ -1,3 +1,3 @@
-import useWaiting from "./Waiting";
+import useWaiting from './Waiting';
 
-export { useWaiting };
+export {useWaiting};

@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-@import "../../common/variable";
+@import '../../common/variable';
 
 // 全体の親
 .display {
@@ -142,7 +142,7 @@
   background-color: $color-1;
 }
 
-.window>h1 {
+.window > h1 {
   font-size: 28px;
   font-weight: bold;
 }
@@ -153,7 +153,6 @@
 
 // 横幅が狭かったらボタンとかを縦に並べる
 @media screen and (max-width: 700px) {
-
   .exam,
   .state_and_answer {
     width: 90vw;

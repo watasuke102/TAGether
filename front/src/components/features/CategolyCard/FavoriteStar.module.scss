@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT SUSHI-WARE License.
 */
-@import "../../common/variable";
+@import '../../common/variable';
 
 .favorite_button {
   // お気に入りボタンがでかくなるのを防ぐ
@@ -17,7 +17,7 @@
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     span:hover {
-      color: $color-primary-1; 
+      color: $color-primary-1;
     }
   }
 }

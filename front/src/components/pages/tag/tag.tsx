@@ -7,14 +7,14 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './tag.module.scss';
-import Router, { useRouter } from 'next/router';
+import Router, {useRouter} from 'next/router';
 import React from 'react';
 import Button from '@/common/Button/Button';
+import {Card} from '@/common/Card';
 import Loading from '@/common/Loading/Loading';
 import TagDetail from '@/features/TagDetail/TagDetail';
-import { useTagData } from '@/utils/Api';
+import {useTagData} from '@/utils/Api';
 import TagData from '@mytypes/TagData';
-import { Card } from '@/common/Card';
 
 export default function Tag(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -24,9 +24,9 @@ export default function Tag(): React.ReactElement {
   function TagItem(e: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
     return (
-      <div className={css.card_wrapper} >
+      <div className={css.card_wrapper}>
         <Card key={`tag_${e.id}`} onClick={() => SetIsModalOpen(true)}>
-          <div className={css.card} >
+          <div className={css.card}>
             <span className={css.name}>{e.name}</span>
             <span className={css.desc}>{e.description}</span>
           </div>
@@ -60,7 +60,7 @@ export default function Tag(): React.ReactElement {
       <TagDetail
         createMode
         isOpen={is_modal_open}
-        tag={{ name: '', description: '', updated_at: '' }}
+        tag={{name: '', description: '', updated_at: ''}}
         close={() => SetIsModalOpen(false)}
         onComplete={Router.reload}
       />

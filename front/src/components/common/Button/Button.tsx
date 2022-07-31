@@ -22,7 +22,7 @@ export default function Button(props: ButtonInfo): React.ReactElement {
     css = material;
   }
   // アイコンと説明テキストのボタン
-  const icon = (props.icon === 'tagether') ? common.tagether : props.icon;
+  const icon = props.icon === 'tagether' ? common.tagether : props.icon;
   return (
     <button className={css.button + ' ' + common.button} onClick={() => props.onClick()}>
       <div className={css.button_icon}>

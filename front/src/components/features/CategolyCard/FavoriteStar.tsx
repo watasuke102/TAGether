@@ -7,9 +7,9 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './FavoriteStar.module.scss';
-import { gsap, Power4 } from 'gsap';
+import {gsap, Power4} from 'gsap';
 import React from 'react';
-import { UpdateFavorite, GetFavorite } from '@/utils/ManageDB';
+import {UpdateFavorite, GetFavorite} from '@/utils/ManageDB';
 
 interface Props {
   id: number;
@@ -60,7 +60,11 @@ export default function FavoriteStar(props: Props): React.ReactElement {
   };
 
   return (
-    <div className={css.favorite_button} style={{ color: favorite_status ? starred_color : unstarred_color }} onClick={clicked}>
+    <div
+      className={css.favorite_button}
+      style={{color: favorite_status ? starred_color : unstarred_color}}
+      onClick={clicked}
+    >
       <span className='fas fa-star' id={`icon-${props.id}`} />
     </div>
   );

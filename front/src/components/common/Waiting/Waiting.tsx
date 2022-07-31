@@ -6,7 +6,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-
 import css from './Waiting.module.scss';
 import React from 'react';
 import Modal from '@/common/Modal/Modal';
@@ -27,6 +26,6 @@ export default function useWaiting(): [() => React.ReactElement, () => void] {
         </Modal>
       </div>
     ),
-    () => SetIsOpen(true)
+    () => SetIsOpen(true),
   ];
 }

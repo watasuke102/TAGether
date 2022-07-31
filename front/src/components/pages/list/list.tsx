@@ -11,21 +11,21 @@ import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
-import { IndexedContainer } from '@/common/IndexedContainer';
+import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
-import { SingleSelectBox } from '@/common/SelectBox';
+import {SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
+import {useWaiting} from '@/common/Waiting';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
-import { useCategolyData } from '@/utils/Api';
+import {useCategolyData} from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';
-import { useWaiting } from '@/common/Waiting';
 
 function AddCategoly(name: string, desc: string) {
-  const exam_initial: Exam = { type: 'Text', question: '問題文', answer: ['解答'] };
+  const exam_initial: Exam = {type: 'Text', question: '問題文', answer: ['解答']};
   const api_body: CategolyResponse = {
     version: 2,
     title: name,
