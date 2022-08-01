@@ -108,7 +108,7 @@ export default function profile(): React.ReactElement {
       </div>
 
       <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
-        <div className={css.window}>
+        <div className={css.modal}>
           <p>解答履歴をすべて削除しますか？</p>
           <div className={css.window_buttons}>
             <Button

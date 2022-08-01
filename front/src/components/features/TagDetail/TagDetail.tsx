@@ -81,7 +81,7 @@ export default function TagDetail(props: Props): React.ReactElement {
   return (
     <>
       <Modal isOpen={props.isOpen} close={props.close}>
-        <div className={css.window}>
+        <div className={css.modal}>
           <div className={css.heading}>
             <span className='fas fa-tag' />
             <span>{props.createMode ? 'タグの新規作成' : 'タグ詳細・編集'}</span>

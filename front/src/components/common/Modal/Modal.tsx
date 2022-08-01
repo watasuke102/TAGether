@@ -51,7 +51,7 @@ export default function Modal(props: Props): React.ReactElement {
         >
           {/* ウィンドウ本体 */}
           <motion.div
-            className={css.window}
+            className={css.modal}
             onClick={e => e.stopPropagation()}
             variants={{
               init: {x: '-50%', y: '-10%', opacity: 0},

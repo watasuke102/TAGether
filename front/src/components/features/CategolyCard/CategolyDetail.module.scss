@@ -18,8 +18,6 @@
   // タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
   grid-template-rows: 90px 30px auto 1fr 60px;
 
-  background-color: $color-1;
-
   textarea {
     width: 100%;
     font-family: 'M PLUS 1p', sans-serif;

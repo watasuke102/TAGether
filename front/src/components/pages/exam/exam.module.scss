@@ -135,16 +135,15 @@
 }
 
 // モーダルウィンドウ
-.window {
+.modal {
   width: 60vw;
   padding: 30px 50px;
   text-align: center;
-  background-color: $color-1;
-}
 
-.window > h1 {
-  font-size: 28px;
-  font-weight: bold;
+  h1 {
+    font-size: 28px;
+    font-weight: bold;
+  }
 }
 
 .correct_rate {

@@ -19,9 +19,10 @@
   background-color: $color-transparent-half;
 }
 
-.window {
+.modal {
   position: fixed;
   margin: auto;
   top: 50%;
   left: 50%;
+  background-color: $color-1;
 }
