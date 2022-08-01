@@ -126,17 +126,18 @@ export function AnswerArea(props: Props): JSX.Element {
       return (
         <>
           {props.exam.question_choices?.map((e, i) => (
-            <SelectButton
-              type='single'
-              id={i === 0 ? 'select-first' : ''}
-              key={`examform_checkbox_${i}`}
-              desc={e}
-              status={Number(props.answers[0]) === i && props.answers[0] !== ''}
-              onChange={f => {
-                if (!f || props.disable) return;
-                props.setAnswers([String(i)]);
-              }}
-            />
+            <div className={css.select_button} key={`examform_checkbox_${i}`}>
+              <SelectButton
+                type='single'
+                id={i === 0 ? 'select-first' : ''}
+                desc={e}
+                status={Number(props.answers[0]) === i && props.answers[0] !== ''}
+                onChange={f => {
+                  if (!f || props.disable) return;
+                  props.setAnswers([String(i)]);
+                }}
+              />
+            </div>
           )) ?? <>invalid</>}
         </>
       );
@@ -145,23 +146,24 @@ export function AnswerArea(props: Props): JSX.Element {
       return (
         <>
           {props.exam.question_choices?.map((e, i) => (
-            <SelectButton
-              type='multi'
-              id={i === 0 ? 'select-first' : ''}
-              key={`examform_checkbox_${i}`}
-              desc={e}
-              status={props.answers.indexOf(String(i)) !== -1}
-              onChange={f => {
-                if (props.disable) return;
-                let tmp = props.answers.concat();
-                if (f) {
-                  tmp.push(String(i));
-                } else {
-                  tmp = tmp.filter(e => e !== String(i));
-                }
-                props.setAnswers(tmp);
-              }}
-            />
+            <div className={css.select_button} key={`examform_checkbox_${i}`}>
+              <SelectButton
+                type='multi'
+                id={i === 0 ? 'select-first' : ''}
+                desc={e}
+                status={props.answers.indexOf(String(i)) !== -1}
+                onChange={f => {
+                  if (props.disable) return;
+                  let tmp = props.answers.concat();
+                  if (f) {
+                    tmp.push(String(i));
+                  } else {
+                    tmp = tmp.filter(e => e !== String(i));
+                  }
+                  props.setAnswers(tmp);
+                }}
+              />
+            </div>
           )) ?? <>invalid</>}
         </>
       );

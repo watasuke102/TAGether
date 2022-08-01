@@ -9,6 +9,10 @@
 */
 @import '../../common/variable';
 
+.select_button {
+  padding: 16px 0;
+}
+
 // 並び替え問題の要素
 .examform_sort_item {
   display: grid;

@@ -43,7 +43,9 @@
   .type_select {
     display: grid;
     grid-template-columns: 48% 48%;
-    padding-top: 15px;
+    & > div {
+      padding: 8px 0;
+    }
   }
 
   .qa_list {
