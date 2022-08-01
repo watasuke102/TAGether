@@ -10,7 +10,9 @@
   "devDependencies": {},
   "scripts": {
     "dev": "./start.sh",
-    "start": "./start.sh product"
+    "start": "./start.sh product",
+    "lint": "npm run lint -w front && npm run lint -w back",
+    "build": "npm run build -w front"
   },
   "repository": {
     "type": "git",

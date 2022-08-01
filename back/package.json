@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "lint": "eslint --init"
+    "lint": "eslint src"
   },
   "keywords": [],
   "author": "",
