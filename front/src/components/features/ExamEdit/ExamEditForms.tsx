@@ -26,11 +26,18 @@ interface Props {
   updater: (e: Exam[]) => void;
 }
 
+enum TabIndexList {
+  TypeSelect = 1,
+  Question,
+  Answer,
+  SelectCorrectAnswer,
+  Comment,
+}
+
 const QUESTION_ID = 'ExamEdit_Question';
 
 export default function ExamEditForms(props: Props): React.ReactElement {
   const ForceRender = useForceRender();
-  const question_form = React.useRef<HTMLTextAreaElement>();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
   const [current_page, SetCurrentPage] = React.useState(0);
@@ -162,7 +169,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 label={`答え (${i + 1})`}
                 value={e}
                 rows={3}
-                layer={4}
+                layer={TabIndexList.Answer}
                 onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
               />
               <div className={css.answer_area_buttons}>
@@ -181,6 +188,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <SelectButton
                   type='single'
                   desc={''}
+                  tabIndex={TabIndexList.SelectCorrectAnswer}
                   status={Number(exam[current_page].answer[0]) === i && exam[current_page].answer[0] !== ''}
                   onChange={f => {
                     if (!f) return;
@@ -195,7 +203,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <Form
                   value={e}
                   rows={2}
-                  layer={4}
+                  layer={TabIndexList.Answer}
                   onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
@@ -215,6 +223,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <SelectButton
                   type='multi'
                   desc={''}
+                  tabIndex={TabIndexList.SelectCorrectAnswer}
                   status={exam[current_page].answer.indexOf(String(i)) !== -1}
                   onChange={f => {
                     // チェックが付けられた時は追加する
@@ -239,7 +248,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 <Form
                   value={e}
                   rows={2}
-                  layer={4}
+                  layer={TabIndexList.Answer}
                   onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
@@ -274,7 +283,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               label={`答え (${i + 1})`}
                               value={e}
                               rows={3}
-                              layer={4}
+                              layer={TabIndexList.Answer}
                               onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
                             />
                             <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
@@ -386,7 +395,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             label={'問題文'}
             value={exam[current_page].question}
             rows={6}
-            layer={2}
+            layer={TabIndexList.Question}
             onChange={ev => updater.Question.Update(current_page, ev.target.value)}
           />
           <Form
@@ -394,7 +403,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             value={exam[current_page].comment ?? ''}
             rows={5}
             onChange={ev => updater.Comment.Update(current_page, ev.target.value)}
-            layer={6}
+            layer={TabIndexList.Comment}
           />
         </div>
 
@@ -408,24 +417,28 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <SelectButton
               type='single'
               desc='テキスト'
+              tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'Text'}
               onChange={() => updater.Type.Update(current_page, 'Text')}
             />
             <SelectButton
               type='single'
               desc='選択問題'
+              tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'Select'}
               onChange={() => updater.Type.Update(current_page, 'Select')}
             />
             <SelectButton
               type='single'
               desc='複数選択'
+              tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'MultiSelect'}
               onChange={() => updater.Type.Update(current_page, 'MultiSelect')}
             />
             <SelectButton
               type='single'
               desc='並び替え'
+              tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'Sort'}
               onChange={() => updater.Type.Update(current_page, 'Sort')}
             />

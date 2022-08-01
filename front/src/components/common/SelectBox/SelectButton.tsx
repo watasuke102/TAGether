@@ -14,6 +14,7 @@ interface Props {
   status: boolean;
   desc: string;
   id?: string;
+  tabIndex?: number;
   onChange: (boolean) => void;
 }
 
@@ -24,7 +25,7 @@ export default function SelectButton(props: Props): React.ReactElement {
     <div
       className={css.container}
       id={props.id}
-      tabIndex={0}
+      tabIndex={props.tabIndex ?? 0}
       onClick={() => props.onChange(!props.status)}
       onKeyDown={e => {
         // FocusしてEnterしたときに状態変化
