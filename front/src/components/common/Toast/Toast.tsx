@@ -58,7 +58,7 @@ export default function Toast(props: Props): React.ReactElement {
       });
   }, [props.isOpen]);
   return (
-    <div id={props.id} className={css.container} style={{top: props.top ?? 65}}>
+    <div id={props.id} className={css.container} style={{top: props.top ?? 65}} onClick={props.close}>
       <span className={props.icon} />
       {props.text.split('\n').map(s => (
         <>

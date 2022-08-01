@@ -11,24 +11,26 @@
 
 .container {
   z-index: 3000;
+  display: flex;
   position: fixed;
   right: 10px;
   top: 65px;
   padding: 5px 10px;
+
+  align-items: center;
+  color: $color-fg;
+  font-size: 1.25em;
   max-width: 85vw;
   border-radius: 5px;
   background-color: rgba($color: $color-0, $alpha: 0.8);
   // 120にしないとpadding分はみでる？？？
   transform: translateX(120%);
 
-  display: flex;
-  font-size: 1.25em;
-  align-items: center;
-
   span {
     margin-right: 10px;
   }
-  .body {
+  &:hover {
+    cursor: pointer;
   }
 }
 
