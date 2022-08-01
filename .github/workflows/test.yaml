@@ -5,9 +5,9 @@ name: build
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: ["main", "dev"]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: ["main", "dev"]
 
 jobs:
   build:
@@ -16,11 +16,16 @@ jobs:
       matrix:
         node-version: [12.x, 14.x, 16.x]
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm run lint
-    - run: npm run build
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install
+        run: cd front && npm install
+        run: cd back && npm install
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build
