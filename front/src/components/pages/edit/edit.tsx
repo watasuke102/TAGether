@@ -121,19 +121,32 @@ export default function Edit(props: Props): React.ReactElement {
           // 選択系のタイプの場合、choicesに空欄があるかチェック
           case 'Select':
           case 'MultiSelect':
-            e.question_choices?.forEach(choice => choice === '' && blank_exam.add(i));
+            if (e.question_choices) {
+              e.question_choices?.forEach(choice => choice === '' && blank_exam.add(i + 1));
+            } else {
+              blank_exam.add(i + 1);
+            }
             break;
         }
         // 問題文が空欄かチェック
         if (e.question === '') blank_exam.add(i + 1);
-        // 答えに空欄があるかチェック
+
+        // 答え関連のチェック
         let answer_str = '';
-        e.answer.forEach(str => {
-          // forEachのついでにjoin(' ')みたいなことをする
-          // joinを呼ぶ必要がないのでほんの少しだけ速くなるかも？
-          answer_str += `${str} `;
-          if (str === '') blank_exam.add(i + 1);
-        });
+        // 答えが1つ以上あるか確認
+        // 複数選択ですべてのチェックを外すと0個になったりする
+        if (e.answer.length === 0) {
+          blank_exam.add(i + 1);
+        } else {
+          // 答えに空欄があるかチェック
+          e.answer.forEach(str => {
+            // forEachのついでにjoin(' ')みたいなことをする
+            // joinを呼ぶ必要がないのでほんの少しだけ速くなるかも？
+            answer_str += `${str} `;
+            if (str === '') blank_exam.add(i + 1);
+          });
+        }
+
         // 使用できない記号などが含まれてないか確認
         const check = `${e.question} ${e.question_choices?.join(' ') ?? ''} ${answer_str} ${e.comment ?? ''}`;
         // `"` があった場合 -1 以外の数字が来る
@@ -145,6 +158,7 @@ export default function Edit(props: Props): React.ReactElement {
           }
         });
       });
+
       if (blank_exam.size !== 0) {
         failed = true;
         const list = Array.from(blank_exam).toString();
