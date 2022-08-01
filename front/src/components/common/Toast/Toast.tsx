@@ -11,11 +11,12 @@ import {gsap, Power4} from 'gsap';
 import React from 'react';
 
 interface Props {
-  children: React.ReactElement | React.ReactElement[];
   isOpen: boolean;
   close: () => void;
   top?: number;
   id: string;
+  icon: string;
+  text: string;
 }
 
 export default function Toast(props: Props): React.ReactElement {
@@ -58,7 +59,12 @@ export default function Toast(props: Props): React.ReactElement {
   }, [props.isOpen]);
   return (
     <div id={props.id} className={css.container} style={{top: props.top ?? 65}}>
-      {props.children}
+      <span className={props.icon} />
+      {props.text.split('\n').map(s => (
+        <>
+          {s} <br />
+        </>
+      ))}
     </div>
   );
 }

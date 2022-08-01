@@ -20,6 +20,16 @@
   background-color: rgba($color: $color-0, $alpha: 0.8);
   // 120にしないとpadding分はみでる？？？
   transform: translateX(120%);
+
+  display: flex;
+  font-size: 1.25em;
+  align-items: center;
+
+  span {
+    margin-right: 10px;
+  }
+  .body {
+  }
 }
 
 @keyframes fadein {

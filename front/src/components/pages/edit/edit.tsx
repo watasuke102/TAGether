@@ -284,12 +284,13 @@ export default function Edit(props: Props): React.ReactElement {
         </>
       )}
 
-      <Toast id={'toast_create'} isOpen={isToastOpen} close={() => SetIsToastOpen(false)}>
-        <div className={css.toast_body}>
-          <span className='fas fa-bell' />
-          {registError === '' ? '編集結果を適用しました' : `エラーが発生しました。\n${registError}`}
-        </div>
-      </Toast>
+      <Toast
+        id={'toast_create'}
+        isOpen={isToastOpen}
+        close={() => SetIsToastOpen(false)}
+        icon='fas fa-bell'
+        text={registError === '' ? '編集結果を適用しました' : `エラーが発生しました。\n${registError}`}
+      />
     </>
   );
 }
