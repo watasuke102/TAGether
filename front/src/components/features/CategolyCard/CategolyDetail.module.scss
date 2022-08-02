@@ -16,7 +16,7 @@
 
   display: grid;
   // タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
-  grid-template-rows: 90px 30px auto 1fr 60px;
+  grid-template-rows: 90px 30px auto 1fr auto;
 
   textarea {
     width: 100%;
@@ -52,5 +52,35 @@
 
   p {
     margin-left: 5px;
+  }
+}
+
+.counter {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  span {
+    margin: auto 0;
+  }
+  .value {
+    width: 72px;
+    text-align: center;
+    font-size: 28px;
+  }
+}
+
+.modal {
+  width: 600px;
+  padding: 30px 50px;
+  .head {
+    display: block;
+    margin-bottom: 8px;
+    border-bottom: 1px solid $color-fg;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .button_container {
+    display: flex;
+    justify-content: space-between;
   }
 }
