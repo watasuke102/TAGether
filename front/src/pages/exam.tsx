@@ -19,13 +19,22 @@ import Exam from '@mytypes/Exam';
 
 export default function ExamPage(): React.ReactElement {
   const router = useRouter();
-  const {id, history_id, tag, shuffle} = router.query;
+  const {id, history_id, tag, shuffle, begin, end} = router.query;
 
   const [isLoading, SetIsLoading] = React.useState(true);
   const OnComplete = (categoly: Categoly) => {
-    if (shuffle === 'true') {
-      categoly.list = JSON.stringify(Shuffle(JSON.parse(categoly.list)));
+    let list: Exam[] = JSON.parse(categoly.list);
+    const begin_index = Array.isArray(begin) ? Number(begin[0]) : Number(begin ?? 0);
+    let end_index = Array.isArray(end) ? Number(end[0]) : Number(end);
+    if (!end_index || end_index <= 0) {
+      end_index = list.length-1;
     }
+    list = list.slice(begin_index, end_index + 1);
+
+    if (shuffle === 'true') {
+      list = Shuffle(list);
+    }
+    categoly.list = JSON.stringify(list);
     SetData(categoly);
     SetIsLoading(false);
   };

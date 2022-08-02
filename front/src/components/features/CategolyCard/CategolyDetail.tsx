@@ -56,9 +56,9 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         if (isChoiceShuffleEnabled) {
           url += '&choiceShuffle=true';
         }
-        const begin = beginQuestion;
-        const end = endQuestion;
-        if (begin !== 0 && end !== 0) {
+        const begin = beginQuestion-1;
+        const end = endQuestion-1;
+        if (begin > 0 && end > 0) {
           // 範囲が正当かどうかのチェック
           // 同じ数字だった場合も1問だけにするので間違いにはならない
           if (begin <= end) {
@@ -67,15 +67,13 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             SetIsToastOpen(true);
           }
         } else {
-          if (begin !== 0) {
+          if (begin > 0) {
             url += `&begin=${begin}`;
           }
-          if (end !== 0) {
+          if (end > 0) {
             url += `&end=${end}`;
           }
         }
-        console.log(url);
-        return;
         break;
       default:
         url = `/examtable?id=${props.data.id}`;
