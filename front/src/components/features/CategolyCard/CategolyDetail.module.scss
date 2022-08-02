@@ -74,13 +74,22 @@
   padding: 30px 50px;
   .head {
     display: block;
-    margin-bottom: 8px;
+    margin: 8px 0;
     border-bottom: 1px solid $color-fg;
     font-size: 1.5em;
     font-weight: bold;
   }
+  .question_preview {
+    display: block;
+    margin-bottom: 12px;
+    width: 95%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
   .button_container {
     display: flex;
     justify-content: space-between;
+    margin-top: 16px;
   }
 }

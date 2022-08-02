@@ -17,6 +17,7 @@ import Toast from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
+import Exam from '@mytypes/Exam';
 
 interface Props {
   data: Categoly;
@@ -30,6 +31,8 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   const [isChoiceShuffleEnabled, SetIsChoiceShuffleEnabled] = React.useState(false);
   const [beginQuestion, SetBeginQuestion] = React.useState(0);
   const [endQuestion, SetEndQuestion] = React.useState(0);
+
+  const list: Exam[] = JSON.parse(props.data.list);
 
   // スマホ対策
   const UpdateContainersHeight = (): void => {
@@ -56,8 +59,8 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         if (isChoiceShuffleEnabled) {
           url += '&choiceShuffle=true';
         }
-        const begin = beginQuestion-1;
-        const end = endQuestion-1;
+        const begin = beginQuestion - 1;
+        const end = endQuestion - 1;
         if (begin > 0 && end > 0) {
           // 範囲が正当かどうかのチェック
           // 同じ数字だった場合も1問だけにするので間違いにはならない
@@ -128,8 +131,18 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           <p>設定は閉じてからも保持され、ページを離れると破棄されます。</p>
 
           <span className={css.head}>問題範囲の制限</span>
-          <Counter text='最初の問題番号' value={beginQuestion} setValue={e => SetBeginQuestion(Math.max(0, e))} />
-          <Counter text='最後の問題番号' value={endQuestion} setValue={e => SetEndQuestion(Math.max(0, e))} />
+          <Counter
+            text='最初の問題番号'
+            value={beginQuestion}
+            setValue={e => SetBeginQuestion(Math.max(0, Math.min(list.length, e)))}
+          />
+          <span className={css.question_preview}>問題：{beginQuestion !== 0 && list[beginQuestion-1].question}</span>
+          <Counter
+            text='最後の問題番号'
+            value={endQuestion}
+            setValue={e => SetEndQuestion(Math.max(0, Math.min(list.length, e)))}
+          />
+          <span className={css.question_preview}>問題：{endQuestion !== 0 && list[endQuestion-1].question}</span>
 
           <span className={css.head}>シャッフル</span>
           <p>
