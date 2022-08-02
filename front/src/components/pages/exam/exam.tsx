@@ -493,7 +493,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       </div>
 
       <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
-        <div className={css.window}>
+        <div className={css.modal}>
           <h1>🎉問題終了🎉</h1>
           <p>お疲れさまでした。</p>
           <p className={css.correct_rate}>
