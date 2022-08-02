@@ -7,6 +7,7 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './TagListEdit.module.scss';
+import EventEmitter from 'events';
 import {AnimatePresence, motion} from 'framer-motion';
 import React from 'react';
 import TagData from '@mytypes/TagData';
@@ -29,6 +30,8 @@ const fadeinout = {
   exit: 'init',
 };
 
+const PICKER_ID = 'tag_picker';
+
 export default function TagListEdit(props: Props): React.ReactElement {
   const [is_picker_open, SetIsPickerOpen] = React.useState(false);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -36,6 +39,21 @@ export default function TagListEdit(props: Props): React.ReactElement {
   const [search_box, SetSearchBox] = React.useState('');
   const [current_tag, SetCurrentTag] = React.useState(props.current_tag);
   const [tag_list, SetTagList] = React.useState(props.tags);
+
+  React.useEffect(() => {
+    // いつも通りReact.useCallbackとrefを使おうとすると、
+    // ピッカーを開くためのクリックでこれが発火してしまい、
+    // refはすでに変わっているので閉じてしまう（開けなくなってしまう）
+    const CloseOnClickOutside = (ev: MouseEvent) => {
+      if (!is_picker_open) return;
+      if (!document.getElementById(PICKER_ID)?.contains(ev.target as Node)) {
+        SetIsPickerOpen(false);
+      }
+    };
+
+    document.addEventListener('click', CloseOnClickOutside);
+    return () => document.removeEventListener('click', CloseOnClickOutside);
+  }, [is_picker_open]);
 
   function UpdateTag(e: TagData[]) {
     SetCurrentTag(e);
@@ -98,7 +116,12 @@ export default function TagListEdit(props: Props): React.ReactElement {
         {is_picker_open &&
           (current_tag.length >= 8 ? (
             // タグ
-            <motion.div className={`${css.tag_picker} ${css.picker_error}`} style={picker_pos} {...fadeinout}>
+            <motion.div
+              id={PICKER_ID}
+              className={`${css.tag_picker} ${css.picker_error}`}
+              style={picker_pos}
+              {...fadeinout}
+            >
               <span>
                 タグの登録上限に達しました
                 <br />
@@ -109,7 +132,12 @@ export default function TagListEdit(props: Props): React.ReactElement {
               </div>
             </motion.div>
           ) : (
-            <motion.div className={`${css.tag_picker} ${css.picker_normal}`} style={picker_pos} {...fadeinout}>
+            <motion.div
+              id={PICKER_ID}
+              className={`${css.tag_picker} ${css.picker_normal}`}
+              style={picker_pos}
+              {...fadeinout}
+            >
               <form className={css.search}>
                 <input placeholder='検索...' value={search_box} onChange={e => SetSearchBox(e.target.value)} />
               </form>
