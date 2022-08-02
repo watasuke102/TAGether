@@ -7,16 +7,18 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './AnswerArea.module.scss';
+import {useRouter} from 'next/router';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import {Move} from '@/utils/ArrayUtil';
+import {Move, Shuffle} from '@/utils/ArrayUtil';
 import {exam_default} from '@/utils/DefaultValue';
 import Exam from '@mytypes/Exam';
 
 interface Props {
   version: number;
+  index: number;
   exam: Exam;
   disable: boolean;
   shortcutDisable: boolean;
@@ -27,6 +29,7 @@ interface Props {
 export const FORM_ID = 'ExamFirstQuestion';
 
 export function AnswerArea(props: Props): JSX.Element {
+  const router = useRouter();
   const exam_ref = React.useRef<Exam>(exam_default()[0]);
   exam_ref.current = props.exam;
 
@@ -91,6 +94,14 @@ export function AnswerArea(props: Props): JSX.Element {
     return () => window.removeEventListener('keydown', Shortcut);
   }, []);
 
+  const question_choices = React.useMemo(() => {
+    const list =
+      props.exam.question_choices?.map((e, i) => {
+        return {index: i, choice: e};
+      }) ?? [];
+    return router.query.choiceShuffle === 'true' ? Shuffle(list) : list;
+  }, [props.index]);
+
   const MoveAnswerOnSort = (from: number, to: number) => {
     if (from === to) return;
     props.setAnswers(Move(answers_ref.current, from, to));
@@ -125,46 +136,47 @@ export function AnswerArea(props: Props): JSX.Element {
     case 'Select':
       return (
         <>
-          {props.exam.question_choices?.map((e, i) => (
+          {question_choices.map((choice, i) => (
             <div className={css.select_button} key={`examform_checkbox_${i}`}>
               <SelectButton
                 type='single'
                 id={i === 0 ? 'select-first' : ''}
-                desc={e}
-                status={Number(props.answers[0]) === i && props.answers[0] !== ''}
+                desc={choice.choice}
+                status={Number(props.answers[0]) === choice.index && props.answers[0] !== ''}
                 onChange={f => {
                   if (!f || props.disable) return;
-                  props.setAnswers([String(i)]);
+                  props.setAnswers([String(choice.index)]);
                 }}
               />
             </div>
-          )) ?? <>invalid</>}
+          ))}
         </>
       );
 
     case 'MultiSelect':
       return (
         <>
-          {props.exam.question_choices?.map((e, i) => (
+          {question_choices.map((choice, i) => (
             <div className={css.select_button} key={`examform_checkbox_${i}`}>
               <SelectButton
                 type='multi'
                 id={i === 0 ? 'select-first' : ''}
-                desc={e}
-                status={props.answers.indexOf(String(i)) !== -1}
+                desc={choice.choice}
+                status={props.answers.indexOf(String(choice.index)) !== -1}
                 onChange={f => {
                   if (props.disable) return;
                   let tmp = props.answers.concat();
                   if (f) {
-                    tmp.push(String(i));
+                    tmp.push(String(choice.index));
                   } else {
-                    tmp = tmp.filter(e => e !== String(i));
+                    tmp = tmp.filter(e => e !== String(choice.index));
                   }
+                  console.log(tmp);
                   props.setAnswers(tmp);
                 }}
               />
             </div>
-          )) ?? <>invalid</>}
+          ))}
         </>
       );
 

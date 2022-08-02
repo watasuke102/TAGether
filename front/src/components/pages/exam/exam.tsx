@@ -460,6 +460,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           <form>
             <AnswerArea
               version={props.data.version}
+              index={index_ref.current}
               exam={exam[index_ref.current]}
               answers={answers[index_ref.current]}
               setAnswers={list => {
