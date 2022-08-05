@@ -10,6 +10,7 @@ interface ExamState {
   // 0=全問正解、1=部分正解、2=全問不正解
   order: number;
   checked: boolean;
+  userAnswer: string[];
   correctAnswerCount: number;
 }
 

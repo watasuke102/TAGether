@@ -65,27 +65,20 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const total_questions_ref = React.useRef(0);
   total_questions_ref.current = total_questions;
 
-  const [answers, SetAnswers] = React.useState<string[][]>(
-    (() => {
-      const answers: string[][] = Array<Array<string>>(exam.length);
-      for (let i = 0; i < exam.length; i++) {
-        answers[i] = Array<string>(exam[i].answer.length).fill('');
-      }
-      // 最初が並び替えならコピー+シャッフル
-      if (exam[0].type === 'Sort' && props.data.version === 2) {
-        answers[0] = Shuffle(exam[0].answer);
-      }
-      return answers;
-    })(),
-  );
-  const answers_ref = React.useRef<string[][]>([]);
-  answers_ref.current = answers;
-
   const [examState, SetExamState] = React.useState(
     (() => {
       const exam_state: ExamState[] = Array<ExamState>(exam.length);
       for (let i = 0; i < exam.length; i++) {
-        exam_state[i] = {order: 0, checked: false, correctAnswerCount: 0};
+        let ans = Array<string>(exam[i].answer.length).fill('');
+        if (i === 0 && exam[0].type === 'Sort' && props.data.version === 2) {
+          ans = Shuffle(exam[0].answer);
+        }
+        exam_state[i] = {
+          order: 0,
+          checked: false,
+          correctAnswerCount: 0,
+          userAnswer: ans,
+        };
       }
       return exam_state;
     })(),
@@ -133,11 +126,14 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     };
   }, []);
 
+  // ページ移動時、フォーカスする
   React.useEffect(() => {
     // どれか一つでも解答が入力されていたら終わり
     // Sortはanswerが埋まってるはずなのでスキップ
     if (exam[index].type !== 'Sort') {
-      for (let i = 0; i < answers[index].length; i++) if (answers[index][i] !== '') return;
+      for (let i = 0; i < examState[index].userAnswer.length; i++) {
+        if (examState[index].userAnswer[i] !== '') return;
+      }
     }
 
     switch (exam[index].type) {
@@ -156,16 +152,17 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
   // 解答が合っているかどうか確認してstateに格納
   function CheckAnswer(): void {
-    const result: ExamState = {order: 0, checked: true, correctAnswerCount: 0};
     let all_correct = true;
+    const result: ExamState = examState_ref.current[index_ref.current];
+    result.checked = true;
 
     // 複数選択問題は、完全一致のみ正解にする
     if (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2) {
       // 空欄削除+ソート+文字列化した後、比較する
-      const ans = answers_ref.current.concat();
-      ans[index_ref.current] = ans[index_ref.current].filter(e => e !== '').sort();
-      SetAnswers(ans);
-      const my_answers = ans[index_ref.current].toString();
+      const ans = examState_ref.current.concat();
+      ans[index_ref.current].userAnswer = ans[index_ref.current].userAnswer.filter(e => e !== '').sort();
+      SetExamState(ans);
+      const my_answers = ans[index_ref.current].userAnswer.toString();
       const real_answers = exam[index_ref.current].answer.sort().toString();
       if (my_answers === real_answers) {
         result.correctAnswerCount++;
@@ -181,7 +178,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').forEach(ans => {
-          if (answers_ref.current[index_ref.current][i] === ans && !correct) {
+          if (examState_ref.current[index_ref.current].userAnswer[i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correctAnswerCount++;
@@ -255,9 +252,9 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
         if (exam[next_index].type === 'Sort' && props.data.version === 2) {
           // 引数なしconcatで深いコピー
-          const tmp = answers.concat();
-          tmp[next_index] = Shuffle(exam[next_index].answer);
-          SetAnswers(tmp);
+          const tmp = examState.concat();
+          tmp[next_index].userAnswer = Shuffle(exam[next_index].answer);
+          SetExamState(tmp);
         }
         break;
 
@@ -301,6 +298,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   // 正解状況の表示
   function ShowExamState(): React.ReactElement | undefined {
     const state: ExamState = examState_ref.current[index_ref.current];
+    console.log('hi state:', state);
     if (!state.checked) return;
 
     const answer_length = exam[index_ref.current].answer.length;
@@ -332,7 +330,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         </div>
         <div className={css.answer_list}>
           <p id={css.seikai}>正解:</p>
-          {ParseAnswer(exam[index_ref.current].answer, exam[index_ref.current], answers[index_ref.current])}
+          {ParseAnswer(
+            exam[index_ref.current].answer,
+            exam[index_ref.current],
+            examState_ref.current[index_ref.current].userAnswer,
+          )}
           {exam[index_ref.current].comment && (
             <div>
               <h2>コメント</h2>
@@ -392,7 +394,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           </div>
         </div>
 
-        <ExamTable exam={exam} answers={answers} examState={examState} showCorrectAnswer={showCorrectAnswer} />
+        {/* <ExamTable exam={exam} answers={answers} examState={examState} showCorrectAnswer={showCorrectAnswer} /> */}
         <div className={css.button_container}>
           <div className={css.buttons}>
             <Button type={'material'} text={'もう一度'} icon={'fas fa-undo'} onClick={Router.reload} />
@@ -462,11 +464,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
               version={props.data.version}
               index={index_ref.current}
               exam={exam[index_ref.current]}
-              answers={answers[index_ref.current]}
+              answers={examState[index_ref.current].userAnswer}
               setAnswers={list => {
-                const tmp = answers.concat();
-                tmp[index_ref.current] = list;
-                SetAnswers(tmp);
+                const tmp = examState.concat();
+                tmp[index_ref.current].userAnswer = list;
+                SetExamState(tmp);
               }}
               disable={examState[index_ref.current].checked}
               shortcutDisable={isModalOpen}
