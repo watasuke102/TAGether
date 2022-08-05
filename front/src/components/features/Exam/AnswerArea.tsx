@@ -171,7 +171,6 @@ export function AnswerArea(props: Props): JSX.Element {
                   } else {
                     tmp = tmp.filter(e => e !== String(choice.index));
                   }
-                  console.log(tmp);
                   props.setAnswers(tmp);
                 }}
               />
