@@ -18,12 +18,13 @@ function ExamHisotryInstance() {
     description: '問題の解答履歴',
   });
 }
-export function AddExamHistory(item: ExamHistory): void {
+export function AddExamHistory(item: ExamHistory): Promise<number> {
   const instance = ExamHisotryInstance();
-  instance.keys().then(keys => {
+  return instance.keys().then(keys => {
     let key = Math.max(...keys.map(Number)) + 1;
     if (isNaN(key) || key === -Infinity) key = 0;
     instance.setItem(String(key), item);
+    return key;
   });
 }
 export function GetExamHistory(): Promise<ExamHistory[]> {
