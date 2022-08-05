@@ -16,10 +16,10 @@
   }
 }
 
-.favorite_categoly {
-  display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
+.card_wrapper {
+  height: 100%;
+  min-height: 100px;
+  margin: 0 auto;
 }
 
 .buttons {

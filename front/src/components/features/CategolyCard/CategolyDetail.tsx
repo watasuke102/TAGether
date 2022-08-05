@@ -112,7 +112,9 @@ export default function CategolyDetail(props: Props): React.ReactElement {
 
         <div className={css.updated_at}>
           <span className='fas fa-clock' />
-          <p>{props.data.updated_at?.slice(0, -5).replace('T', ' ')}</p>
+          <p>{
+            props.data.updated_at?.includes('T')? props.data.updated_at.slice(0, -5).replace('T', ' '):props.data.updated_at??''
+          }</p>
         </div>
 
         <Tag tag={props.data.tag} />

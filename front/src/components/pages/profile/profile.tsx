@@ -45,6 +45,22 @@ export default function profile(): React.ReactElement {
     GetFavorite().then(res => SetFavoriteList(res));
   }, []);
 
+  const FavoriteList = () => {
+    if (isLoading) return <Loading />;
+    const list = data.filter(a => favorite_list.includes(a.id ?? -1));
+    return (
+      <IndexedContainer len={list.length} width='300px' per={6}>
+        {list.map((item, i) => {
+          return (
+            <div className={css.card_wrapper} key={`favorite_${i}`}>
+              <CategolyCard key={`card_${item.id}`} {...item} />
+            </div>
+          );
+        })}
+      </IndexedContainer>
+    );
+  };
+
   return (
     <>
       <Helmet title='プロフィール - TAGether' />
@@ -52,15 +68,7 @@ export default function profile(): React.ReactElement {
       <div className={css.container}>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_categoly}>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            data
-              .filter(a => favorite_list.includes(a.id ?? -1))
-              .map(item => {
-                return <CategolyCard key={`card_${item.id}`} {...item} />;
-              })
-          )}
+          <FavoriteList />
         </div>
 
         <h2>解答履歴</h2>
