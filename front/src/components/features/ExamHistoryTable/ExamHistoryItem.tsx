@@ -45,15 +45,14 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
           <span>
             {props.item.total_question}問中{props.item.correct_count}問正解 ({isNaN(rate) ? 0 : rate}%)
           </span>
-          <span className={css.date}>{props.item.date}</span>
+          <span className={css.date}>{props.item.categoly.updated_at ?? ''}</span>
         </div>
 
-        {props.item.wrong_exam &&
-          (props.item.wrong_exam.length === 0 ? (
-            <span className={css.all_correct}>全問正解</span>
-          ) : (
-            <Button text='解き直し' icon='fas fa-edit' type='material' onClick={PushExamPage} />
-          ))}
+        {props.item.correct_count === props.item.total_question ? (
+          <span className={css.all_correct}>全問正解</span>
+        ) : (
+          <Button text='解き直し' icon='fas fa-edit' type='material' onClick={PushExamPage} />
+        )}
       </div>
 
       <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>

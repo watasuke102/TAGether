@@ -15,7 +15,6 @@ import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {FORM_ID, AnswerArea} from '@/features/Exam/AnswerArea';
-import ExamTable from '@/features/ExamTable/ExamTableComponent';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import {Shuffle} from '@/utils/ArrayUtil';
 import {useConfirmBeforeLeave} from '@/utils/ConfirmBeforeLeave';
@@ -36,6 +35,7 @@ interface Props {
   data: Categoly;
   history_id: string | string[] | undefined;
   tag_filter: string | string[] | undefined;
+  history?: ExamHistory;
 }
 
 export default function ExamPageComponent(props: Props): JSX.Element {
@@ -47,7 +47,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const [showExamStateTable, SetShowExamStateTable] = React.useState(false);
   const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
-  const [wrong_exam, SetWrongExam] = React.useState<Exam[]>([]);
 
   const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
   const nextButtonState_ref = React.useRef(NextButtonState.show_answer);
@@ -112,14 +111,20 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
       // 間違えた問題のやり直しでない and タグ全部でもない and 最後まで解いた
       // この条件を満たしているとき結果を保存する
-      if (props.history_id === undefined && props.tag_filter === undefined && examState.slice(-1)[0].checked) {
+      if (/*props.history === undefined && */ props.tag_filter === undefined && examState.slice(-1)[0].checked) {
         const exam_history: ExamHistory = {
-          id: props.data.id ?? 0,
-          title: props.data.title,
-          date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+          times: props.history ? props.history.times + 1 : 0,
+          original_title: props.history ? props.history.original_title : props.data.title,
+          categoly: {
+            ...props.data,
+            title: props.history
+              ? `${props.history.original_title} (解き直し：${props.history.times + 1}回目)`
+              : props.data.title,
+            updated_at: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+          },
           correct_count: correct_answers_ref.current,
           total_question: total_questions_ref.current,
-          wrong_exam: wrong_exam,
+          user_answers: examState_ref.current,
         };
         AddExamHistory(exam_history);
       }
@@ -194,11 +199,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     if (all_correct) {
       result.order = 0;
     } else {
-      // 1問でも間違っていたら、間違えた問題リストに追加
-      SetWrongExam(ls => {
-        ls.push(exam[index_ref.current]);
-        return ls;
-      });
       // 全問不正解の場合
       if (result.correctAnswerCount === 0) {
         result.order = 2;
@@ -298,7 +298,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   // 正解状況の表示
   function ShowExamState(): React.ReactElement | undefined {
     const state: ExamState = examState_ref.current[index_ref.current];
-    console.log('hi state:', state);
     if (!state.checked) return;
 
     const answer_length = exam[index_ref.current].answer.length;
@@ -426,7 +425,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   }
 
   // 読み込みが終わっていなかった場合
-  if (exam.length === 0 && props.history_id) {
+  if (exam.length === 0 && props.history) {
     return <p>読み込み中...</p>;
   }
 
@@ -503,7 +502,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
             <br />（{total_questions}問中{correct_answers}問正解）
           </p>
           <ButtonContainer>
-            {!props.history_id && !props.tag_filter && props.data.id !== undefined ? (
+            {!props.history && !props.tag_filter && props.data.id !== undefined ? (
               <Button
                 text={'編集する'}
                 icon={'fas fa-pen'}

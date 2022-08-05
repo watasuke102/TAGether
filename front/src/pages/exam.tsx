@@ -16,6 +16,7 @@ import {categoly_default} from '@/utils/DefaultValue';
 import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
+import ExamHistory from '@mytypes/ExamHistory';
 
 export default function ExamPage(): React.ReactElement {
   const router = useRouter();
@@ -38,7 +39,9 @@ export default function ExamPage(): React.ReactElement {
     SetData(categoly);
     SetIsLoading(false);
   };
+
   const [data, SetData] = React.useState<Categoly>(categoly_default());
+  const [history, SetHistory] = React.useState<ExamHistory | undefined>();
   useCategolyData(categoly => {
     if (id !== undefined) {
       // 通常
@@ -48,10 +51,14 @@ export default function ExamPage(): React.ReactElement {
       const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
       GetSpecifiedExamHistory(history_id_str).then(result => {
         if (result) {
+          SetHistory(result);
+          const exam: Exam[] = JSON.parse(result.categoly.list);
+          const wrong_exam = exam.filter((_, i) => result.user_answers[i].order !== 0);
+
           OnComplete({
             ...categoly_default(),
-            title: `やり直し: ${result.title}`,
-            list: JSON.stringify(result.wrong_exam),
+            title: result.categoly.title,
+            list: JSON.stringify(wrong_exam),
           });
         } else {
           throw new Error('[FATAL] cannot get ExamHistory');
@@ -81,5 +88,5 @@ export default function ExamPage(): React.ReactElement {
     }
   });
 
-  return isLoading ? <Loading /> : <ExamComponent data={data} history_id={history_id} tag_filter={tag} />;
+  return isLoading ? <Loading /> : <ExamComponent data={data} history_id={history_id} history={history} tag_filter={tag} />;
 }

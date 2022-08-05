@@ -14,7 +14,7 @@ function ExamHisotryInstance() {
   return LocalForage.createInstance({
     driver: LocalForage.INDEXEDDB,
     name: 'TAGether',
-    storeName: 'history',
+    storeName: 'history_v2',
     description: '問題の解答履歴',
   });
 }

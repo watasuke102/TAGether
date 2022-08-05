@@ -86,13 +86,11 @@ export default function profile(): React.ReactElement {
 
         <IndexedContainer len={history_list.length} per={8}>
           {history_list.map(item => {
-            const categoly: Categoly | undefined = data.find(a => a.id === item.id);
-            if (categoly === undefined) return <></>;
             return (
               <HistoryTable
                 key={`history_${item.history_key}`}
                 item={item}
-                categoly={categoly}
+                categoly={item.categoly}
                 isShuffleEnabled={isShuffleEnabled}
                 remove={() => {
                   RemoveExamHistory(item.history_key ?? '');

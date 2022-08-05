@@ -6,16 +6,17 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import Exam from './Exam';
+import Categoly from './Categoly';
 
 interface ExamHistory {
   history_key?: string;
-  id: number;
-  title: string;
-  date: string;
   total_question: number;
   correct_count: number;
-  wrong_exam: Exam[];
+
+  times: number;
+  categoly: Categoly;
+  user_answers: ExamState[];
+  original_title: string;
 }
 
 export default ExamHistory;
