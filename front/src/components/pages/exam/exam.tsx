@@ -117,6 +117,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           original_title: props.history ? props.history.original_title : props.data.title,
           categoly: {
             ...props.data,
+            id: -1,
             title: props.history
               ? `${props.history.original_title} (解き直し：${props.history.times + 1}回目)`
               : props.data.title,
