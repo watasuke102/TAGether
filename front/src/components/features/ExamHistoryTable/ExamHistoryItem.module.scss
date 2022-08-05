@@ -55,3 +55,20 @@ $gap: 16px;
   margin: auto;
   text-align: center;
 }
+
+.modal {
+  width: 60vw;
+  padding: 30px 50px;
+  text-align: center;
+
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+
+  .title {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+}

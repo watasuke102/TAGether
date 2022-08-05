@@ -24,6 +24,7 @@ interface Props {
 
 export default function ExamHistoryItem(props: Props): React.ReactElement {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isCategolyDetailOpen, setIsCategolyDetailOpen] = React.useState(false);
   const rate = Math.round((props.item.correct_count / props.item.total_question) * 10000) / 100;
 
   function PushExamPage() {
@@ -35,9 +36,9 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
   return (
     <>
       <div className={css.container}>
-        <Button text='削除' icon='fas fa-trash-alt' type='material' onClick={props.remove} />
+        <Button text='削除' icon='fas fa-trash-alt' type='material' onClick={() => setIsModalOpen(true)} />
 
-        <span className={css.categoly_link} onClick={() => setIsModalOpen(true)}>
+        <span className={css.categoly_link} onClick={() => setIsCategolyDetailOpen(true)}>
           {props.categoly.title}
         </span>
 
@@ -55,8 +56,34 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
         )}
       </div>
 
+      <Modal isOpen={isCategolyDetailOpen} close={() => setIsCategolyDetailOpen(false)}>
+        <Detail data={props.categoly} close={() => setIsCategolyDetailOpen(false)} />
+      </Modal>
+
       <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
-        <Detail {...{data: props.categoly, close: () => setIsModalOpen(false)}} />
+        <div className={css.modal}>
+          <span className={css.title}>{props.categoly.title}</span>
+          <p>この解答履歴を削除しますか？</p>
+          <div className={css.buttons}>
+            <Button
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+              type='filled'
+              icon='fas fa-times'
+              text='閉じる'
+            />
+            <Button
+              onClick={() => {
+                props.remove();
+                setIsModalOpen(false);
+              }}
+              type='filled'
+              icon='fas fa-trash-alt'
+              text='削除する'
+            />
+          </div>
+        </div>
       </Modal>
     </>
   );

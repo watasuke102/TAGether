@@ -18,7 +18,6 @@ import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
 import {useCategolyData} from '@/utils/Api';
 import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@/utils/ManageDB';
-import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 
 export default function profile(): React.ReactElement {
