@@ -78,7 +78,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         exam_state[i] = {
           order: AnswerState.AllCorrect,
           checked: false,
-          correct_answer_count: 0,
+          total_question: exam[i].answer.length,
+          correct_count: 0,
           user_answer: ans,
         };
       }
@@ -154,7 +155,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       const my_answers = ans[index_ref.current].user_answer.toString();
       const real_answers = exam[index_ref.current].answer.sort().toString();
       if (my_answers === real_answers) {
-        result.correct_answer_count++;
+        result.correct_count++;
         SetCorrectAnswers(n => n + 1);
       } else {
         all_correct = false;
@@ -170,7 +171,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           if (exam_state_ref.current[index_ref.current].user_answer[i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
-            result.correct_answer_count++;
+            result.correct_count++;
             SetCorrectAnswers(n => n + 1);
           }
         });
@@ -184,7 +185,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       result.order = AnswerState.AllCorrect;
     } else {
       // 全問不正解の場合
-      if (result.correct_answer_count === 0) {
+      if (result.correct_count === 0) {
         result.order = AnswerState.AllWrong;
       } else {
         // 部分正解
@@ -311,7 +312,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     // 問題数がひとつだった場合は「正解 or 不正解」
     if (answer_length === 1 || (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2)) {
       // 正解だった場合
-      if (state.correct_answer_count === 1) {
+      if (state.correct_count === 1) {
         icon = 'far fa-circle';
         result = '正解';
       } else {
@@ -321,10 +322,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     } else {
       // 問題が2つ以上だった場合は「n問正解」
       // 全問正解で○アイコン
-      if (state.correct_answer_count === answer_length) {
+      if (state.correct_count === answer_length) {
         icon = 'far fa-circle';
       }
-      result = state.correct_answer_count + '問正解';
+      result = state.correct_count + '問正解';
     }
     return (
       <div className={css.state_and_answer}>

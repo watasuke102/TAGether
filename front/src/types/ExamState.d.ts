@@ -11,7 +11,9 @@ interface ExamState {
   order: AnswerState;
   checked: boolean;
   user_answer: string[];
-  correct_answer_count: number;
+
+  total_question: number;
+  correct_count: number;
 }
 
 export default ExamState;

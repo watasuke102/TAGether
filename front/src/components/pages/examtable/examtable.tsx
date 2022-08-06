@@ -49,12 +49,13 @@ export default function ExamTable(props: Props): React.ReactElement {
   };
 
   const Result = (stat: ExamStatus) => {
-    if (stat.user_answer.length === 1) {
+    if (stat.total_question === 1) {
       if (stat.order === AnswerState.AllCorrect) return '正解';
       else return '不正解';
     }
     if (stat.order === AnswerState.AllCorrect) return '全問正解';
-    return `${stat.correct_answer_count}問正解`;
+    if (stat.correct_count === 0) return '不正解';
+    return `${stat.correct_count}問正解`;
   };
 
   return (
@@ -117,7 +118,7 @@ export default function ExamTable(props: Props): React.ReactElement {
               </td>
               {props.history && (
                 <>
-                  <td>{ParseAnswer(props.history.exam_state[i].userAnswer, exam)}</td>
+                  <td>{ParseAnswer(props.history.exam_state[i].user_answer, exam)}</td>
                   <td>{Result(props.history.exam_state[i])}</td>
                 </>
               )}
