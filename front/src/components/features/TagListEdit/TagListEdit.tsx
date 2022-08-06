@@ -7,7 +7,6 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './TagListEdit.module.scss';
-import EventEmitter from 'events';
 import {AnimatePresence, motion} from 'framer-motion';
 import React from 'react';
 import TagData from '@mytypes/TagData';

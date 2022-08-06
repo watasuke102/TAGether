@@ -7,7 +7,6 @@
 // This software is released under the MIT SUSHI-WARE License.
 //
 import css from './ExamHistoryItem.module.scss';
-import Router from 'next/router';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import Modal from '@/common/Modal/Modal';

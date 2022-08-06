@@ -12,7 +12,6 @@ import { useCategolyData } from '@/utils/Api';
 import { categoly_default } from '@/utils/DefaultValue';
 import { GetSpecifiedExamHistory } from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
-import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import { useRouter } from 'next/router';
 import React from 'react';
