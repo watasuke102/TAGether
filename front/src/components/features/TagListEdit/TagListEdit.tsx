@@ -55,8 +55,9 @@ export default function TagListEdit(props: Props): React.ReactElement {
   }, [is_picker_open]);
 
   function UpdateTag(e: TagData[]) {
-    SetCurrentTag(e);
-    props.SetTag(e);
+    const tag_list = Array.from(new Set(e));
+    SetCurrentTag(tag_list);
+    props.SetTag(tag_list);
   }
 
   function PickerOpen(e: React.MouseEvent) {
