@@ -23,6 +23,14 @@
   .title {
     font-size: 1.5em;
   }
+
+  .filter_selector {
+    display: flex;
+  }
+
+  & > span {
+    display: block;
+  }
 }
 
 // ボタン
