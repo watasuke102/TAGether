@@ -29,11 +29,13 @@ export default function ExamTable(props: Props): React.ReactElement {
   const [filter, SetFilter] = React.useState(0x07);
 
   const rate = props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100;
-  const exam: Exam[] = JSON.parse(props.data.list);
-  // 読み込みが終わっていなかった場合
-  if (exam.length === 0 && props.history) {
-    return <Loading />;
-  }
+  const exam: Exam[] = (() => {
+    let list: Exam[] = JSON.parse(props.data.list);
+    if (props.history) {
+      list = list.filter((_, i) => (filter & props.history?.user_answers[i].order) !== 0);
+    }
+    return list;
+  })();
 
   const UpdateFilter = (type: AnswerState, state: boolean) => {
     SetFilter(filter => {
@@ -51,30 +53,32 @@ export default function ExamTable(props: Props): React.ReactElement {
 
       <div className={css.examdata_container}>
         <span className={css.title}>{props.data.title}</span>
-        <div className={css.filter_selector}>
-          <SelectButton
-            type='multi'
-            desc='全問正解'
-            status={(filter & AnswerState.AllCorrect) !== 0}
-            onChange={f => UpdateFilter(AnswerState.AllCorrect, f)}
-          />
-          <SelectButton
-            type='multi'
-            desc='部分正解'
-            status={(filter & AnswerState.PartialCorrect) !== 0}
-            onChange={f => UpdateFilter(AnswerState.PartialCorrect, f)}
-          />
-          <SelectButton
-            type='multi'
-            desc='不正解'
-            status={(filter & AnswerState.AllWrong) !== 0}
-            onChange={f => UpdateFilter(AnswerState.AllWrong, f)}
-          />
-        </div>
         {props.history && (
-          <span>
-            {props.history.total_question}問中{props.history.correct_count}問正解、 正答率{rate}%
-          </span>
+          <>
+            <div className={css.filter_selector}>
+              <SelectButton
+                type='multi'
+                desc='全問正解'
+                status={(filter & AnswerState.AllCorrect) !== 0}
+                onChange={f => UpdateFilter(AnswerState.AllCorrect, f)}
+              />
+              <SelectButton
+                type='multi'
+                desc='部分正解'
+                status={(filter & AnswerState.PartialCorrect) !== 0}
+                onChange={f => UpdateFilter(AnswerState.PartialCorrect, f)}
+              />
+              <SelectButton
+                type='multi'
+                desc='不正解'
+                status={(filter & AnswerState.AllWrong) !== 0}
+                onChange={f => UpdateFilter(AnswerState.AllWrong, f)}
+              />
+            </div>
+            <span>
+              {props.history.total_question}問中{props.history.correct_count}問正解、 正答率{rate}%
+            </span>
+          </>
         )}
       </div>
 

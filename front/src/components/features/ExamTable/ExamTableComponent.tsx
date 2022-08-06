@@ -9,9 +9,9 @@
 import css from './ExamTableComponent.module.scss';
 import React from 'react';
 import {ParseAnswer} from '@/features/ParseAnswer';
+import AnswerState from '@mytypes/AnswerState';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
-import AnswerState from '@mytypes/AnswerState';
 
 interface Props {
   showCorrectAnswer: boolean;
