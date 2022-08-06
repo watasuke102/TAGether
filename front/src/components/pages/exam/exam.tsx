@@ -11,21 +11,22 @@ import {format} from 'date-fns';
 import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
+import BreakWithCR from '@/common/BreakWithCR/BreakWithCR';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
+import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import {FORM_ID, AnswerArea} from '@/features/Exam/AnswerArea';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import {Shuffle} from '@/utils/ArrayUtil';
 import {useConfirmBeforeLeave} from '@/utils/ConfirmBeforeLeave';
 import {AddExamHistory} from '@/utils/ManageDB';
+import AnswerState from '@mytypes/AnswerState';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamState from '@mytypes/ExamState';
-import Loading from '@/common/Loading/Loading';
-import AnswerState from '@mytypes/AnswerState';
 
 enum NextButtonState {
   show_answer,
@@ -342,12 +343,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
             <div>
               <h2>コメント</h2>
               <p>
-                {exam[index_ref.current].comment?.split('\n').map(s => (
-                  <>
-                    {s}
-                    <br />
-                  </>
-                ))}
+                <BreakWithCR str={exam[index_ref.current].comment ?? ''} />
               </p>
             </div>
           )}

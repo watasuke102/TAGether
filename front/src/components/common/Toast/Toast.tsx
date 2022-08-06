@@ -9,6 +9,7 @@
 import css from './Toast.module.scss';
 import {gsap, Power4} from 'gsap';
 import React from 'react';
+import BreakWithCR from '../BreakWithCR/BreakWithCR';
 
 interface Props {
   isOpen: boolean;
@@ -60,11 +61,7 @@ export default function Toast(props: Props): React.ReactElement {
   return (
     <div id={props.id} className={css.container} style={{top: props.top ?? 65}} onClick={props.close}>
       <span className={props.icon} />
-      {props.text.split('\n').map(s => (
-        <>
-          {s} <br />
-        </>
-      ))}
+      <BreakWithCR str={props.text} />
     </div>
   );
 }

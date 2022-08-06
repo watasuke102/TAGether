@@ -8,6 +8,7 @@
 //
 import css from './ExamTableComponent.module.scss';
 import React from 'react';
+import BreakWithCR from '@/common/BreakWithCR/BreakWithCR';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import AnswerState from '@mytypes/AnswerState';
 import Exam from '@mytypes/Exam';
@@ -76,17 +77,7 @@ export default function ExamTable(props: Props): React.ReactElement {
     list.push(
       <tr key={`item_${i} `}>
         <td>
-          {
-            // 問題
-            exam[i].question.split('\n').map(str => {
-              return (
-                <span key={`q_${i} `}>
-                  {str}
-                  <br />
-                </span>
-              );
-            })
-          }
+          <BreakWithCR str={exam[i].question} />
         </td>
         <td className={props.showCorrectAnswer ? '' : css.hide_correct_answer}>
           {ParseAnswer(exam[i].answer, props.exam[i])}
