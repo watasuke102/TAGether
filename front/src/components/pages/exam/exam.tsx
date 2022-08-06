@@ -44,8 +44,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   useConfirmBeforeLeave()(true);
 
   const exam: Exam[] = JSON.parse(props.data.list);
-  const [showExamStateTable, SetShowExamStateTable] = React.useState(false);
-  const [showCorrectAnswer, SetshowCorrectAnswer] = React.useState(false);
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
 
   const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
@@ -55,6 +53,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const [index, SetIndex] = React.useState(0);
   const index_ref = React.useRef(0);
   index_ref.current = index;
+
+  const [history_id, SetHistoryId] = React.useState(0);
 
   const [correct_answers, SetCorrectAnswers] = React.useState(0);
   const correct_answers_ref = React.useRef(0);
@@ -108,27 +108,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     window.addEventListener('keydown', e => Shortcut(e));
     return () => {
       window.removeEventListener('keydown', e => Shortcut(e));
-
-      // 間違えた問題のやり直しでない and タグ全部でもない and 最後まで解いた
-      // この条件を満たしているとき結果を保存する
-      if (/*props.history === undefined && */ props.tag_filter === undefined && examState.slice(-1)[0].checked) {
-        const exam_history: ExamHistory = {
-          times: props.history ? props.history.times + 1 : 0,
-          original_title: props.history ? props.history.original_title : props.data.title,
-          categoly: {
-            ...props.data,
-            id: -1,
-            title: props.history
-              ? `${props.history.original_title} (解き直し：${props.history.times + 1}回目)`
-              : props.data.title,
-            updated_at: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-          },
-          correct_count: correct_answers_ref.current,
-          total_question: total_questions_ref.current,
-          user_answers: examState_ref.current,
-        };
-        AddExamHistory(exam_history);
-      }
     };
   }, []);
 
@@ -157,6 +136,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   }, [index]);
 
   // 解答が合っているかどうか確認してstateに格納
+  // 最後の問題の答え合わせであれば、履歴を保存する
   function CheckAnswer(): void {
     let all_correct = true;
     const result: ExamState = examState_ref.current[index_ref.current];
@@ -212,6 +192,27 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       state[index_ref.current] = result;
       return state;
     });
+
+    // 最後の問題を答え合わせしたとき、履歴を保存する
+    if (index_ref.current === exam.length - 1) {
+      console.log('last q');
+      const exam_history: ExamHistory = {
+        times: props.history ? props.history.times + 1 : 0,
+        original_title: props.history ? props.history.original_title : props.data.title,
+        categoly: {
+          ...props.data,
+          id: -1,
+          title: props.history
+            ? `${props.history.original_title} (解き直し：${props.history.times + 1}回目)`
+            : props.data.title,
+          updated_at: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        },
+        correct_count: correct_answers_ref.current,
+        total_question: total_questions_ref.current,
+        user_answers: examState_ref.current,
+      };
+      AddExamHistory(exam_history).then(i => SetHistoryId(i));
+    }
   }
 
   // indexを増減する
@@ -235,8 +236,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       // 答えを表示、答え合わせをする
       case NextButtonState.show_answer:
         CheckAnswer();
-        // 最後の問題であれば、ボタンを終了ボタンに
         if (index_ref.current === exam.length - 1) {
+          // 終了ボタン
           SetNextButtonState(NextButtonState.finish_exam);
         } else {
           //そうでないなら次へボタン
@@ -357,74 +358,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     return Math.round((correct_answers / total_questions) * 10000) / 100;
   }
 
-  // 解答状況一覧を表示する
-  if (showExamStateTable) {
-    const list: React.ReactElement[] = [];
-    let users_answer: string = '';
-    exam.forEach(e => {
-      users_answer = '';
-      e.answer.forEach(e => (users_answer += e + ', '));
-      list.push(
-        <tr>
-          <td>
-            {e.question.split('\n').map(str => {
-              return (
-                <>
-                  {' '}
-                  {str}
-                  <br />{' '}
-                </>
-              );
-            })}
-          </td>
-          <td>{users_answer.slice(0, -2)}</td>
-          <td></td>
-        </tr>,
-      );
-    });
-
-    return (
-      <>
-        <div className={css.examdata_container}>
-          <h2>{props.data.title}</h2>
-          <div className={css.correct_rate_statuslist}>
-            <p>
-              {total_questions}問中{correct_answers}問正解、 正答率{CorrectRate()}%
-            </p>
-          </div>
-        </div>
-
-        {/* <ExamTable exam={exam} answers={answers} examState={examState} showCorrectAnswer={showCorrectAnswer} /> */}
-        <div className={css.button_container}>
-          <div className={css.buttons}>
-            <Button type={'material'} text={'もう一度'} icon={'fas fa-undo'} onClick={Router.reload} />
-            <Button
-              type={'material'}
-              text={'結果を共有'}
-              icon={'fas fa-upload'}
-              onClick={() => {
-                navigator.share({
-                  title: `${props.data.title} - TAGether`,
-                  text: `${
-                    props.data.title
-                  } の結果：${total_questions}問中${correct_answers}問正解（${CorrectRate()}%）\n#TAGether`,
-                });
-              }}
-            />
-            {/* 正しい答えの表示/非表示切り替え */}
-            <Button
-              type={'material'}
-              text={showCorrectAnswer ? '正解を非表示' : '正解を表示'}
-              icon={showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye'}
-              onClick={() => SetshowCorrectAnswer(f => !f)}
-            />
-            <Button type={'filled'} text={'前のページへ'} icon={'fas fa-arrow-left'} onClick={Router.back} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
   // 読み込みが終わっていなかった場合
   if (exam.length === 0 && props.history) {
     return <p>読み込み中...</p>;
@@ -518,8 +451,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
               icon={'fas fa-list'}
               type={'material'}
               onClick={() => {
-                SetIsModalOpen(false);
-                SetShowExamStateTable(true);
+                Router.push(`/examtable?history_id=${history_id}`);
               }}
             />
             <Button text={'前のページへ'} icon={'fas fa-arrow-left'} type={'filled'} onClick={Router.back} />
