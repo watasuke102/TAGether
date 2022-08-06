@@ -25,6 +25,7 @@ import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamState from '@mytypes/ExamState';
 import Loading from '@/common/Loading/Loading';
+import AnswerState from '@mytypes/AnswerState';
 
 enum NextButtonState {
   show_answer,
@@ -74,7 +75,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           ans = Shuffle(exam[0].answer);
         }
         exam_state[i] = {
-          order: 0,
+          order: AnswerState.AllCorrect,
           checked: false,
           correctAnswerCount: 0,
           userAnswer: ans,
@@ -179,14 +180,14 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
     // 全問正解
     if (all_correct) {
-      result.order = 0;
+      result.order = AnswerState.AllCorrect;
     } else {
       // 全問不正解の場合
       if (result.correctAnswerCount === 0) {
-        result.order = 2;
+        result.order = AnswerState.AllWrong;
       } else {
         // 部分正解
-        result.order = 1;
+        result.order = AnswerState.PartialCorrect;
       }
     }
     SetExamState(state => {

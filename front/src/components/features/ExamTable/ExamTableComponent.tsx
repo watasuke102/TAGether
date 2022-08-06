@@ -11,6 +11,7 @@ import React from 'react';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
+import AnswerState from '@mytypes/AnswerState';
 
 interface Props {
   showCorrectAnswer: boolean;
@@ -31,15 +32,15 @@ export default function ExamTable(props: Props): React.ReactElement {
 
     props.examState.forEach((e, i) => {
       switch (e.order) {
-        case 2:
+        case AnswerState.AllWrong:
           first.push(third[i]);
           third[i] = -1;
           break;
-        case 1:
+        case AnswerState.PartialCorrect:
           second.push(third[i]);
           third[i] = -1;
           break;
-        case 0:
+        case AnswerState.AllCorrect:
           break;
       }
     });

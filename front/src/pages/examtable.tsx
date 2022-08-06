@@ -39,14 +39,7 @@ export default function ExamTablePage(): React.ReactElement {
       GetSpecifiedExamHistory(history_id_str).then(result => {
         if (result) {
           SetHistory(result);
-          const exam: Exam[] = JSON.parse(result.categoly.list);
-          const wrong_exam = exam.filter((_, i) => result.user_answers[i].order !== 0);
-
-          OnComplete({
-            ...categoly_default(),
-            title: result.categoly.title,
-            list: JSON.stringify(wrong_exam),
-          });
+          OnComplete(result.categoly);
         } else {
           throw new Error('[FATAL] cannot get ExamHistory');
         }

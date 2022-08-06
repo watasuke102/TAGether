@@ -14,6 +14,7 @@ import {useCategolyData} from '@/utils/Api';
 import {Shuffle} from '@/utils/ArrayUtil';
 import {categoly_default} from '@/utils/DefaultValue';
 import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
+import AnswerState from '@mytypes/AnswerState';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
@@ -28,7 +29,7 @@ export default function ExamPage(): React.ReactElement {
     const begin_index = Array.isArray(begin) ? Number(begin[0]) : Number(begin ?? 0);
     let end_index = Array.isArray(end) ? Number(end[0]) : Number(end);
     if (!end_index || end_index <= 0) {
-      end_index = list.length-1;
+      end_index = list.length - 1;
     }
     list = list.slice(begin_index, end_index + 1);
 
@@ -53,11 +54,10 @@ export default function ExamPage(): React.ReactElement {
         if (result) {
           SetHistory(result);
           const exam: Exam[] = JSON.parse(result.categoly.list);
-          const wrong_exam = exam.filter((_, i) => result.user_answers[i].order !== 0);
+          const wrong_exam = exam.filter((_, i) => result.user_answers[i].order !== AnswerState.AllCorrect);
 
           OnComplete({
-            ...categoly_default(),
-            title: result.categoly.title,
+            ...result.categoly,
             list: JSON.stringify(wrong_exam),
           });
         } else {
@@ -88,5 +88,9 @@ export default function ExamPage(): React.ReactElement {
     }
   });
 
-  return isLoading ? <Loading /> : <ExamComponent data={data} history_id={history_id} history={history} tag_filter={tag} />;
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <ExamComponent data={data} history_id={history_id} history={history} tag_filter={tag} />
+  );
 }
