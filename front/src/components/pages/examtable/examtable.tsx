@@ -13,19 +13,29 @@ import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import ExamTableComponent from '@/features/ExamTable/ExamTableComponent';
-import {useCategolyData} from '@/utils/Api';
+import Categoly from '@mytypes/Categoly';
+import Exam from '@mytypes/Exam';
+import ExamHistory from '@mytypes/ExamHistory';
 
-export default function ExamTable(): React.ReactElement {
-  const [data, isLoading] = useCategolyData();
+interface Props {
+  data: Categoly;
+  history?: ExamHistory;
+}
+
+export default function ExamTable(props: Props): React.ReactElement {
   const [showCorrectAnswer, SetShowCorrectAnswer] = React.useState(false);
 
-  if (isLoading) return <Loading />;
+  const exam: Exam[] = JSON.parse(props.data.list);
+  // 読み込みが終わっていなかった場合
+  if (exam.length === 0 && props.history) {
+    return <Loading />;
+  }
 
   return (
     <>
-      <Helmet title={`問題一覧 : ${data[0].title} - TAGether`} />
+      <Helmet title={`問題一覧 : ${props.data.title} - TAGether`} />
       <div className={css.table}>
-        <ExamTableComponent exam={JSON.parse(data[0].list)} showCorrectAnswer={showCorrectAnswer} />
+        <ExamTableComponent exam={exam} showCorrectAnswer={showCorrectAnswer} />
       </div>
 
       <div className={css.button_container}>

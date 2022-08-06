@@ -24,6 +24,7 @@ import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamState from '@mytypes/ExamState';
+import Loading from '@/common/Loading/Loading';
 
 enum NextButtonState {
   show_answer,
@@ -360,7 +361,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
   // 読み込みが終わっていなかった場合
   if (exam.length === 0 && props.history) {
-    return <p>読み込み中...</p>;
+    return <Loading />;
   }
 
   const current_status = `${index + 1} / ${exam.length}`;
