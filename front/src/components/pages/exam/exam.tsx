@@ -199,7 +199,6 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
     // 最後の問題を答え合わせしたとき、履歴を保存する
     if (index_ref.current === exam.length - 1) {
-      console.log('last q');
       const exam_history: ExamHistory = {
         times: props.history ? props.history.times + 1 : 0,
         original_title: props.history ? props.history.original_title : props.data.title,
