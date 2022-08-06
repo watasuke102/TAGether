@@ -57,7 +57,7 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
       </div>
 
       <Modal isOpen={isCategolyDetailOpen} close={() => setIsCategolyDetailOpen(false)}>
-        <Detail data={props.categoly} close={() => setIsCategolyDetailOpen(false)} />
+        <Detail data={props.categoly} history={props.item} close={() => setIsCategolyDetailOpen(false)} />
       </Modal>
 
       <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>

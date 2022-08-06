@@ -15,12 +15,14 @@ import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Toast from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
-import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
+import ExamHistory from '@mytypes/ExamHistory';
+import ButtonInfo from '@mytypes/ButtonInfo';
 
 interface Props {
   data: Categoly;
+  history?: ExamHistory;
   close: () => void;
 }
 
@@ -47,12 +49,13 @@ export default function CategolyDetail(props: Props): React.ReactElement {
 
   function Push(s: string): void {
     let url: string = '';
+    const id_query = props.history ? `?history_id=${props.history.history_key ?? ''}` : `?id=${props.data.id}`;
     switch (s) {
       case 'edit':
-        url = `/edit?id=${props.data.id}`;
+        url = `/edit${id_query}`;
         break;
       case 'exam':
-        url = `/exam?id=${props.data.id}`;
+        url = `/exam${id_query}`;
         if (isExamShuffleEnabled) {
           url += '&shuffle=true';
         }
@@ -79,7 +82,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         }
         break;
       default:
-        url = `/examtable?id=${props.data.id}`;
+        url = `/examtable${id_query}`;
         break;
     }
     Router.push(url);
@@ -97,13 +100,19 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   );
 
   // prettier-ignore
-  const info: ButtonInfo[] = [
-    {text: '閉じる',        icon: 'fas fa-times',      onClick: props.close,                type: 'material'},
-    {text: '編集する',      icon: 'fas fa-pen',        onClick: () => Push('edit'),         type: 'material'},
-    {text: '問題一覧',      icon: 'fas fa-list',       onClick: () => Push('table'),        type: 'material'},
-    {text: '解答時の設定',  icon: 'fas fa-cog',        onClick: () => setIsModalOpen(true), type: 'material'},
-    {text: 'この問題を解く',icon: 'fas fa-arrow-right',onClick: () => Push('exam'),         type: 'filled'},
-  ];
+  const info: ButtonInfo[] = props.history ?
+    [
+      {text: '閉じる',             icon: 'fas fa-times',       onClick: props.close,                type: 'material'},
+      {text: '間違えた問題一覧',   icon: 'fas fa-list',        onClick: () => Push('table'),        type: 'material'},
+      {text: '解答時の設定',       icon: 'fas fa-cog',         onClick: () => setIsModalOpen(true), type: 'material'},
+      {text: '間違えた問題を解く', icon: 'fas fa-arrow-right', onClick: () => Push('exam'),         type: 'filled'},
+    ] : [
+      {text: '閉じる',        icon: 'fas fa-times',       onClick: props.close,                type: 'material'},
+      {text: '編集する',      icon: 'fas fa-pen',         onClick: () => Push('edit'),         type: 'material'},
+      {text: '問題一覧',      icon: 'fas fa-list',        onClick: () => Push('table'),        type: 'material'},
+      {text: '解答時の設定',  icon: 'fas fa-cog',         onClick: () => setIsModalOpen(true), type: 'material'},
+      {text: 'この問題を解く',icon: 'fas fa-arrow-right', onClick: () => Push('exam'),         type: 'filled'},
+    ];
 
   return (
     <>
@@ -112,9 +121,11 @@ export default function CategolyDetail(props: Props): React.ReactElement {
 
         <div className={css.updated_at}>
           <span className='fas fa-clock' />
-          <p>{
-            props.data.updated_at?.includes('T')? props.data.updated_at.slice(0, -5).replace('T', ' '):props.data.updated_at??''
-          }</p>
+          <p>
+            {props.data.updated_at?.includes('T')
+              ? props.data.updated_at.slice(0, -5).replace('T', ' ')
+              : props.data.updated_at ?? ''}
+          </p>
         </div>
 
         <Tag tag={props.data.tag} />
@@ -138,13 +149,13 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             value={beginQuestion}
             setValue={e => SetBeginQuestion(Math.max(0, Math.min(list.length, e)))}
           />
-          <span className={css.question_preview}>問題：{beginQuestion !== 0 && list[beginQuestion-1].question}</span>
+          <span className={css.question_preview}>問題：{beginQuestion !== 0 && list[beginQuestion - 1].question}</span>
           <Counter
             text='最後の問題番号'
             value={endQuestion}
             setValue={e => SetEndQuestion(Math.max(0, Math.min(list.length, e)))}
           />
-          <span className={css.question_preview}>問題：{endQuestion !== 0 && list[endQuestion-1].question}</span>
+          <span className={css.question_preview}>問題：{endQuestion !== 0 && list[endQuestion - 1].question}</span>
 
           <span className={css.head}>シャッフル</span>
           <p>
