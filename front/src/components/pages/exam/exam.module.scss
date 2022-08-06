@@ -120,20 +120,6 @@
   justify-content: space-between;
 }
 
-// 解答状況一覧
-.examdata_container {
-  position: sticky;
-  top: 60px;
-  width: 90%;
-  margin: auto;
-  padding: 0 15px;
-  background-color: rgba($color: $color-1, $alpha: 0.9);
-}
-
-.correct_rate_statuslist {
-  font-size: 22px;
-}
-
 // モーダルウィンドウ
 .modal {
   width: 60vw;
