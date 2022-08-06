@@ -29,15 +29,6 @@ export default function ExamTable(props: Props): React.ReactElement {
   const [show_correct_answer, SetShowCorrectAnswer] = React.useState(false);
   const [filter, SetFilter] = React.useState(0x07);
 
-  const rate = props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100;
-  const exam_list: Exam[] = (() => {
-    let list: Exam[] = JSON.parse(props.data.list);
-    if (props.history) {
-      list = list.filter((_, i) => (filter & props.history?.exam_state[i].order) !== 0);
-    }
-    return list;
-  })();
-
   const UpdateFilter = (type: AnswerState, state: boolean) => {
     SetFilter(filter => {
       if (state) {
@@ -57,6 +48,34 @@ export default function ExamTable(props: Props): React.ReactElement {
     if (stat.correct_count === 0) return '不正解';
     return `${stat.correct_count}問正解`;
   };
+
+  const rate = props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100;
+
+  const result_list = (() => {
+    let list = (JSON.parse(props.data.list) as Exam[]).map((exam, i) => (
+      <tr key={`tr-${i}`}>
+        <td>
+          <BreakWithCR str={exam.question} />
+        </td>
+        {/* 表示した上で透明にすることで、表示・非表示を切り替えたときに高さが変わるのを防ぐ */}
+        <td className={show_correct_answer ? '' : css.hide}>{ParseAnswer(exam.answer, exam)}</td>
+        <td className={show_correct_answer ? '' : css.hide}>
+          <BreakWithCR str={exam.comment ?? ''} />
+        </td>
+        {props.history && (
+          <>
+            <td>{ParseAnswer(props.history.exam_state[i].user_answer, exam)}</td>
+            <td>{Result(props.history.exam_state[i])}</td>
+          </>
+        )}
+      </tr>
+    ));
+
+    if (props.history) {
+      list = list.filter((_, i) => (filter & props.history?.exam_state[i].order) !== 0);
+    }
+    return list;
+  })();
 
   return (
     <>
@@ -106,24 +125,7 @@ export default function ExamTable(props: Props): React.ReactElement {
               </>
             )}
           </tr>
-          {exam_list.map((exam, i) => (
-            <tr key={`tr-${i}`}>
-              <td>
-                <BreakWithCR str={exam.question} />
-              </td>
-              {/* 表示した上で透明にすることで、表示・非表示を切り替えたときに高さが変わるのを防ぐ */}
-              <td className={show_correct_answer ? '' : css.hide}>{ParseAnswer(exam.answer, exam)}</td>
-              <td className={show_correct_answer ? '' : css.hide}>
-                <BreakWithCR str={exam.comment ?? ''} />
-              </td>
-              {props.history && (
-                <>
-                  <td>{ParseAnswer(props.history.exam_state[i].user_answer, exam)}</td>
-                  <td>{Result(props.history.exam_state[i])}</td>
-                </>
-              )}
-            </tr>
-          ))}
+          {result_list}
         </tbody>
       </table>
 
