@@ -33,6 +33,29 @@
   }
 }
 
+.table {
+  table-layout: fixed;
+  width: 90%;
+  margin: 0 auto;
+
+  th {
+    border-bottom: solid 2px;
+  }
+  td {
+    overflow-wrap: break-word;
+    padding: 8px 5px;
+    border-bottom: solid 1px;
+  }
+
+  .hide {
+    opacity: 0;
+  }
+
+  .result {
+    width: 100px;
+  }
+}
+
 // ボタン
 .button_container {
   position: fixed;

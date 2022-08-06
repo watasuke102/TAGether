@@ -7,7 +7,6 @@
 // This software is released under the MIT SUSHI-WARE License.
 import AnswerState from './AnswerState';
 
-//
 interface ExamState {
   order: AnswerState;
   checked: boolean;

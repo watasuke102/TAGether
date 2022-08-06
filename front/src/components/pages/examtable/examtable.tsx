@@ -10,14 +10,15 @@ import css from './examtable.module.scss';
 import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
+import BreakWithCR from '@/common/BreakWithCR/BreakWithCR';
 import Button from '@/common/Button/Button';
-import Loading from '@/common/Loading/Loading';
-import {MultiSelectBox, SelectButton} from '@/common/SelectBox';
-import ExamTableComponent from '@/features/ExamTable/ExamTableComponent';
+import {SelectButton} from '@/common/SelectBox';
+import {ParseAnswer} from '@/features/ParseAnswer';
 import AnswerState from '@mytypes/AnswerState';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
+import ExamStatus from '@mytypes/ExamState';
 
 interface Props {
   data: Categoly;
@@ -29,7 +30,7 @@ export default function ExamTable(props: Props): React.ReactElement {
   const [filter, SetFilter] = React.useState(0x07);
 
   const rate = props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100;
-  const exam: Exam[] = (() => {
+  const exam_list: Exam[] = (() => {
     let list: Exam[] = JSON.parse(props.data.list);
     if (props.history) {
       list = list.filter((_, i) => (filter & props.history?.user_answers[i].order) !== 0);
@@ -45,6 +46,15 @@ export default function ExamTable(props: Props): React.ReactElement {
         return filter & (~type & 0x07);
       }
     });
+  };
+
+  const Result = (stat: ExamStatus) => {
+    if (stat.userAnswer.length === 1) {
+      if (stat.order === AnswerState.AllCorrect) return '正解';
+      else return '不正解';
+    }
+    if (stat.order === AnswerState.AllCorrect) return '全問正解';
+    return `${stat.correctAnswerCount}問正解`;
   };
 
   return (
@@ -82,9 +92,39 @@ export default function ExamTable(props: Props): React.ReactElement {
         )}
       </div>
 
-      <div className={css.table}>
-        <ExamTableComponent exam={exam} showCorrectAnswer={showCorrectAnswer} />
-      </div>
+      <table className={css.table}>
+        <tbody>
+          <tr>
+            <th>問題</th>
+            <th>正解</th>
+            <th>コメント</th>
+            {props.history && (
+              <>
+                <th>自分の解答</th>
+                <th className={css.result}>結果</th>
+              </>
+            )}
+          </tr>
+          {exam_list.map((exam, i) => (
+            <tr key={`tr-${i}`}>
+              <td>
+                <BreakWithCR str={exam.question} />
+              </td>
+              {/* 表示した上で透明にすることで、表示・非表示を切り替えたときに高さが変わるのを防ぐ */}
+              <td className={showCorrectAnswer ? '' : css.hide}>{ParseAnswer(exam.answer, exam)}</td>
+              <td className={showCorrectAnswer ? '' : css.hide}>
+                <BreakWithCR str={exam.comment ?? ''} />
+              </td>
+              {props.history && (
+                <>
+                  <td>{ParseAnswer(props.history.user_answers[i].userAnswer, exam)}</td>
+                  <td>{Result(props.history.user_answers[i])}</td>
+                </>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <div className={css.button_container}>
         <div className={css.buttons}>
