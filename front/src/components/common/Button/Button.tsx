@@ -24,7 +24,7 @@ export default function Button(props: ButtonInfo): React.ReactElement {
   // アイコンと説明テキストのボタン
   const icon = props.icon === 'tagether' ? common.tagether : props.icon;
   return (
-    <button className={css.button + ' ' + common.button} onClick={() => props.onClick()}>
+    <button className={css.button + ' ' + common.button} onClick={() => props.OnClick()}>
       <div className={css.button_icon}>
         <span className={icon} />
       </div>

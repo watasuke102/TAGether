@@ -10,8 +10,8 @@ import AnswerState from './AnswerState';
 interface ExamState {
   order: AnswerState;
   checked: boolean;
-  userAnswer: string[];
-  correctAnswerCount: number;
+  user_answer: string[];
+  correct_answer_count: number;
 }
 
 export default ExamState;

@@ -38,7 +38,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                     {...{
                       text: '1つ上に移動',
                       icon: 'fas fa-caret-up',
-                      onClick: () => props.updater.Exam.Swap(i, i),
+                      OnClick: () => props.updater.Exam.Swap(i, i),
                       type: 'material',
                     }}
                   />
@@ -47,7 +47,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                   {...{
                     text: '1つ上に追加',
                     icon: 'fas fa-plus',
-                    onClick: () => props.updater.Exam.Insert(i),
+                    OnClick: () => props.updater.Exam.Insert(i),
                     type: 'material',
                   }}
                 />
@@ -63,7 +63,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                         type: 'material',
                         icon: 'fas fa-trash',
                         text: '削除',
-                        onClick: () => props.updater.Exam.Remove(i),
+                        OnClick: () => props.updater.Exam.Remove(i),
                       }}
                     />
                   )}
@@ -73,7 +73,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                     label: '問題文',
                     value: e.question,
                     rows: 2,
-                    onChange: ev => props.updater.Question.Update(i, ev.target.value),
+                    OnChange: ev => props.updater.Question.Update(i, ev.target.value),
                   }}
                 />
 
@@ -87,7 +87,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                             label: '答え(' + (j + 1) + ')',
                             value: answer,
                             rows: 2,
-                            onChange: ev => props.updater.Answer.Update(i, j, ev.target.value),
+                            OnChange: ev => props.updater.Answer.Update(i, j, ev.target.value),
                           }}
                         />
                         <div className={css.answer_area_buttons}>
@@ -96,7 +96,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                             {...{
                               text: '追加',
                               icon: 'fas fa-plus',
-                              onClick: () => props.updater.Answer.Insert(i, -1),
+                              OnClick: () => props.updater.Answer.Insert(i, -1),
                               type: 'material',
                             }}
                           />
@@ -109,7 +109,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                                   type: 'material',
                                   icon: 'fas fa-trash',
                                   text: '削除',
-                                  onClick: () => props.updater.Answer.Remove(i, j),
+                                  OnClick: () => props.updater.Answer.Remove(i, j),
                                 }}
                               />
                             )
@@ -128,7 +128,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                     {...{
                       text: '1つ下に移動',
                       icon: 'fas fa-caret-down',
-                      onClick: () => props.updater.Exam.Swap(i, i + 1),
+                      OnClick: () => props.updater.Exam.Swap(i, i + 1),
                       type: 'material',
                     }}
                   />
@@ -137,7 +137,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
                   {...{
                     text: '1つ下に追加',
                     icon: 'fas fa-plus',
-                    onClick: () => props.updater.Exam.Insert(i + 1),
+                    OnClick: () => props.updater.Exam.Insert(i + 1),
                     type: 'material',
                   }}
                 />
@@ -158,7 +158,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
               text: '下に追加',
               icon: 'fas fa-arrow-down',
               type: 'material',
-              onClick: () => {
+              OnClick: () => {
                 props.updater.Exam.Insert(-1);
                 // 追加した問題欄が表示されるように下にスクロール
                 bottom_div?.scrollIntoView({behavior: 'smooth'});
@@ -170,7 +170,7 @@ export default function ExamEditFormsOld(props: Props): React.ReactElement {
               text: '上に追加',
               icon: 'fas fa-arrow-up',
               type: 'material',
-              onClick: () => {
+              OnClick: () => {
                 props.updater.Exam.Insert(0);
                 // 追加した問題欄が表示されるように上にスクロール
                 top_div?.scrollIntoView({behavior: 'smooth'});

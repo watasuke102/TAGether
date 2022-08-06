@@ -20,7 +20,7 @@ import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '
 import ExamHistory from '@mytypes/ExamHistory';
 
 export default function profile(): React.ReactElement {
-  const [isModalOpen, SetIsModalOpen] = React.useState(false);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
   const [data, isLoading] = useCategolyData();
@@ -78,7 +78,7 @@ export default function profile(): React.ReactElement {
               {...{
                 text: '履歴を全消去',
                 icon: 'fas fa-trash-alt',
-                onClick: () => SetIsModalOpen(true),
+                OnClick: () => SetIsModalOpen(true),
                 type: 'filled',
               }}
             />
@@ -105,7 +105,7 @@ export default function profile(): React.ReactElement {
         </IndexedContainer>
       </div>
 
-      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
           <p>解答履歴をすべて削除しますか？</p>
           <div className={css.window_buttons}>
@@ -114,12 +114,12 @@ export default function profile(): React.ReactElement {
                 type: 'material',
                 icon: 'fas fa-times',
                 text: '閉じる',
-                onClick: () => SetIsModalOpen(false),
+                OnClick: () => SetIsModalOpen(false),
               }}
             />
             <Button
               {...{
-                onClick: () => {
+                OnClick: () => {
                   ClearExamHistory().then(InitExamHistory);
                   SetIsModalOpen(false);
                 },

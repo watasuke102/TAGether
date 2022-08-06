@@ -121,7 +121,7 @@ export function AnswerArea(props: Props): JSX.Element {
                 rows={1}
                 label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
                 value={props.answers[i]}
-                onChange={ev => {
+                OnChange={ev => {
                   const tmp = props.answers.concat();
                   tmp[i] = ev.target.value;
                   props.setAnswers(tmp);

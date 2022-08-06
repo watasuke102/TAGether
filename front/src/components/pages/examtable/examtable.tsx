@@ -26,14 +26,14 @@ interface Props {
 }
 
 export default function ExamTable(props: Props): React.ReactElement {
-  const [showCorrectAnswer, SetShowCorrectAnswer] = React.useState(false);
+  const [show_correct_answer, SetShowCorrectAnswer] = React.useState(false);
   const [filter, SetFilter] = React.useState(0x07);
 
   const rate = props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100;
   const exam_list: Exam[] = (() => {
     let list: Exam[] = JSON.parse(props.data.list);
     if (props.history) {
-      list = list.filter((_, i) => (filter & props.history?.user_answers[i].order) !== 0);
+      list = list.filter((_, i) => (filter & props.history?.exam_state[i].order) !== 0);
     }
     return list;
   })();
@@ -49,12 +49,12 @@ export default function ExamTable(props: Props): React.ReactElement {
   };
 
   const Result = (stat: ExamStatus) => {
-    if (stat.userAnswer.length === 1) {
+    if (stat.user_answer.length === 1) {
       if (stat.order === AnswerState.AllCorrect) return '正解';
       else return '不正解';
     }
     if (stat.order === AnswerState.AllCorrect) return '全問正解';
-    return `${stat.correctAnswerCount}問正解`;
+    return `${stat.correct_answer_count}問正解`;
   };
 
   return (
@@ -111,14 +111,14 @@ export default function ExamTable(props: Props): React.ReactElement {
                 <BreakWithCR str={exam.question} />
               </td>
               {/* 表示した上で透明にすることで、表示・非表示を切り替えたときに高さが変わるのを防ぐ */}
-              <td className={showCorrectAnswer ? '' : css.hide}>{ParseAnswer(exam.answer, exam)}</td>
-              <td className={showCorrectAnswer ? '' : css.hide}>
+              <td className={show_correct_answer ? '' : css.hide}>{ParseAnswer(exam.answer, exam)}</td>
+              <td className={show_correct_answer ? '' : css.hide}>
                 <BreakWithCR str={exam.comment ?? ''} />
               </td>
               {props.history && (
                 <>
-                  <td>{ParseAnswer(props.history.user_answers[i].userAnswer, exam)}</td>
-                  <td>{Result(props.history.user_answers[i])}</td>
+                  <td>{ParseAnswer(props.history.exam_state[i].userAnswer, exam)}</td>
+                  <td>{Result(props.history.exam_state[i])}</td>
                 </>
               )}
             </tr>
@@ -128,13 +128,13 @@ export default function ExamTable(props: Props): React.ReactElement {
 
       <div className={css.button_container}>
         <div className={css.buttons}>
-          <Button text='戻る' icon='fas fa-undo' onClick={Router.back} type='material' />
+          <Button text='戻る' icon='fas fa-undo' OnClick={Router.back} type='material' />
           {/* 正しい答えの表示/非表示切り替え */}
           <Button
-            onClick={() => SetShowCorrectAnswer(!showCorrectAnswer)}
+            OnClick={() => SetShowCorrectAnswer(!show_correct_answer)}
             type='material'
-            text={showCorrectAnswer ? '正解を非表示' : '正解を表示'}
-            icon={showCorrectAnswer ? 'fas fa-eye-slash' : 'fas fa-eye'}
+            text={show_correct_answer ? '正解を非表示' : '正解を表示'}
+            icon={show_correct_answer ? 'fas fa-eye-slash' : 'fas fa-eye'}
           />
         </div>
       </div>

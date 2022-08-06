@@ -15,7 +15,7 @@ interface ExamHistory {
 
   times: number;
   categoly: Categoly;
-  user_answers: ExamState[];
+  exam_state: ExamState[];
   original_title: string;
 }
 

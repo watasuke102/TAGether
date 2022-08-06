@@ -43,7 +43,7 @@ export default function Tag(): React.ReactElement {
       <div className={css.heading}>
         <h1>タグ一覧</h1>
         <div className={css.button}>
-          <Button type='filled' text='新規作成' icon='fas fa-plus' onClick={() => SetIsModalOpen(true)} />
+          <Button type='filled' text='新規作成' icon='fas fa-plus' OnClick={() => SetIsModalOpen(true)} />
         </div>
       </div>
 

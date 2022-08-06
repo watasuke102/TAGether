@@ -23,7 +23,7 @@ export default function ExamPage(): React.ReactElement {
   const router = useRouter();
   const {id, history_id, tag, shuffle, begin, end} = router.query;
 
-  const [isLoading, SetIsLoading] = React.useState(true);
+  const [is_loading, SetIsLoading] = React.useState(true);
   const OnComplete = (categoly: Categoly) => {
     let list: Exam[] = JSON.parse(categoly.list);
     const begin_index = Array.isArray(begin) ? Number(begin[0]) : Number(begin ?? 0);
@@ -54,7 +54,7 @@ export default function ExamPage(): React.ReactElement {
         if (result) {
           SetHistory(result);
           const exam: Exam[] = JSON.parse(result.categoly.list);
-          const wrong_exam = exam.filter((_, i) => result.user_answers[i].order !== AnswerState.AllCorrect);
+          const wrong_exam = exam.filter((_, i) => result.exam_state[i].order !== AnswerState.AllCorrect);
 
           OnComplete({
             ...result.categoly,
@@ -88,7 +88,7 @@ export default function ExamPage(): React.ReactElement {
     }
   });
 
-  return isLoading ? (
+  return is_loading ? (
     <Loading />
   ) : (
     <ExamComponent data={data} history_id={history_id} history={history} tag_filter={tag} />

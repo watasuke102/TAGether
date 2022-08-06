@@ -47,11 +47,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   useConfirmBeforeLeave()(true);
 
   const exam: Exam[] = JSON.parse(props.data.list);
-  const [isModalOpen, SetIsModalOpen] = React.useState(false);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
-  const [nextButtonState, SetNextButtonState] = React.useState(NextButtonState.show_answer);
-  const nextButtonState_ref = React.useRef(NextButtonState.show_answer);
-  nextButtonState_ref.current = nextButtonState;
+  const [next_button_state, SetNextButtonState] = React.useState(NextButtonState.show_answer);
+  const next_button_state_ref = React.useRef(NextButtonState.show_answer);
+  next_button_state_ref.current = next_button_state;
 
   const [index, SetIndex] = React.useState(0);
   const index_ref = React.useRef(0);
@@ -67,7 +67,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const total_questions_ref = React.useRef(0);
   total_questions_ref.current = total_questions;
 
-  const [examState, SetExamState] = React.useState(
+  const [exam_state, SetExamState] = React.useState(
     (() => {
       const exam_state: ExamState[] = Array<ExamState>(exam.length);
       for (let i = 0; i < exam.length; i++) {
@@ -78,21 +78,21 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         exam_state[i] = {
           order: AnswerState.AllCorrect,
           checked: false,
-          correctAnswerCount: 0,
-          userAnswer: ans,
+          correct_answer_count: 0,
+          user_answer: ans,
         };
       }
       return exam_state;
     })(),
   );
-  const examState_ref = React.useRef<ExamState[]>([]);
-  examState_ref.current = examState;
+  const exam_state_ref = React.useRef<ExamState[]>([]);
+  exam_state_ref.current = exam_state;
 
   // ショートカットキー
   const Shortcut = React.useCallback((e: KeyboardEvent) => {
     // Ctrl+Shift+矢印キー等で動かす
     // キーリピートでの入力とウィンドウが表示されている場合は無効
-    if (e.ctrlKey && e.shiftKey && !e.repeat && !isModalOpen) {
+    if (e.ctrlKey && e.shiftKey && !e.repeat && !is_modal_open) {
       switch (e.code) {
         case 'KeyH':
         case 'ArrowLeft':
@@ -119,8 +119,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     // どれか一つでも解答が入力されていたら終わり
     // Sortはanswerが埋まってるはずなのでスキップ
     if (exam[index].type !== 'Sort') {
-      for (let i = 0; i < examState[index].userAnswer.length; i++) {
-        if (examState[index].userAnswer[i] !== '') return;
+      for (let i = 0; i < exam_state[index].user_answer.length; i++) {
+        if (exam_state[index].user_answer[i] !== '') return;
       }
     }
 
@@ -142,19 +142,19 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   // 最後の問題の答え合わせであれば、履歴を保存する
   function CheckAnswer(): void {
     let all_correct = true;
-    const result: ExamState = examState_ref.current[index_ref.current];
+    const result: ExamState = exam_state_ref.current[index_ref.current];
     result.checked = true;
 
     // 複数選択問題は、完全一致のみ正解にする
     if (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2) {
       // 空欄削除+ソート+文字列化した後、比較する
-      const ans = examState_ref.current.concat();
-      ans[index_ref.current].userAnswer = ans[index_ref.current].userAnswer.filter(e => e !== '').sort();
+      const ans = exam_state_ref.current.concat();
+      ans[index_ref.current].user_answer = ans[index_ref.current].user_answer.filter(e => e !== '').sort();
       SetExamState(ans);
-      const my_answers = ans[index_ref.current].userAnswer.toString();
+      const my_answers = ans[index_ref.current].user_answer.toString();
       const real_answers = exam[index_ref.current].answer.sort().toString();
       if (my_answers === real_answers) {
-        result.correctAnswerCount++;
+        result.correct_answer_count++;
         SetCorrectAnswers(n => n + 1);
       } else {
         all_correct = false;
@@ -167,10 +167,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').forEach(ans => {
-          if (examState_ref.current[index_ref.current].userAnswer[i] === ans && !correct) {
+          if (exam_state_ref.current[index_ref.current].user_answer[i] === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
-            result.correctAnswerCount++;
+            result.correct_answer_count++;
             SetCorrectAnswers(n => n + 1);
           }
         });
@@ -184,7 +184,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       result.order = AnswerState.AllCorrect;
     } else {
       // 全問不正解の場合
-      if (result.correctAnswerCount === 0) {
+      if (result.correct_answer_count === 0) {
         result.order = AnswerState.AllWrong;
       } else {
         // 部分正解
@@ -212,7 +212,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         },
         correct_count: correct_answers_ref.current,
         total_question: total_questions_ref.current,
-        user_answers: examState_ref.current,
+        exam_state: exam_state_ref.current,
       };
       AddExamHistory(exam_history).then(i => SetHistoryId(i));
     }
@@ -222,7 +222,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   function ChangeIndex(i: number): void {
     let button_state = NextButtonState.show_answer;
     // 解答済みの問題だった場合
-    if (examState[i].checked) {
+    if (exam_state[i].checked) {
       // 最後の問題であれば終了ボタン
       if (i === exam.length - 1) {
         button_state = NextButtonState.finish_exam;
@@ -235,7 +235,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     SetNextButtonState(button_state);
   }
   function IncrementIndex(): void {
-    switch (nextButtonState_ref.current) {
+    switch (next_button_state_ref.current) {
       // 答えを表示、答え合わせをする
       case NextButtonState.show_answer:
         CheckAnswer();
@@ -257,8 +257,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         // 次が並び替え問題なら、exam.answerをstate.answersにコピーしてシャッフル
         if (exam[next_index].type === 'Sort' && props.data.version === 2) {
           // 引数なしconcatで深いコピー
-          const tmp = examState.concat();
-          tmp[next_index].userAnswer = Shuffle(exam[next_index].answer);
+          const tmp = exam_state.concat();
+          tmp[next_index].user_answer = Shuffle(exam[next_index].answer);
           SetExamState(tmp);
         }
         break;
@@ -280,9 +280,9 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       icon: '',
       text: '',
       type: 'material',
-      onClick: () => IncrementIndex(),
+      OnClick: () => IncrementIndex(),
     };
-    switch (nextButtonState) {
+    switch (next_button_state) {
       case NextButtonState.show_answer:
         info.text = '答え合わせ';
         info.icon = 'far fa-circle';
@@ -302,7 +302,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
   // 正解状況の表示
   function ShowExamState(): React.ReactElement | undefined {
-    const state: ExamState = examState_ref.current[index_ref.current];
+    const state: ExamState = exam_state_ref.current[index_ref.current];
     if (!state.checked) return;
 
     const answer_length = exam[index_ref.current].answer.length;
@@ -311,7 +311,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     // 問題数がひとつだった場合は「正解 or 不正解」
     if (answer_length === 1 || (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2)) {
       // 正解だった場合
-      if (state.correctAnswerCount === 1) {
+      if (state.correct_answer_count === 1) {
         icon = 'far fa-circle';
         result = '正解';
       } else {
@@ -321,10 +321,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     } else {
       // 問題が2つ以上だった場合は「n問正解」
       // 全問正解で○アイコン
-      if (state.correctAnswerCount === answer_length) {
+      if (state.correct_answer_count === answer_length) {
         icon = 'far fa-circle';
       }
-      result = state.correctAnswerCount + '問正解';
+      result = state.correct_answer_count + '問正解';
     }
     return (
       <div className={css.state_and_answer}>
@@ -337,7 +337,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           {ParseAnswer(
             exam[index_ref.current].answer,
             exam[index_ref.current],
-            examState_ref.current[index_ref.current].userAnswer,
+            exam_state_ref.current[index_ref.current].user_answer,
           )}
           {exam[index_ref.current].comment && (
             <div>
@@ -395,14 +395,14 @@ export default function ExamPageComponent(props: Props): JSX.Element {
               version={props.data.version}
               index={index_ref.current}
               exam={exam[index_ref.current]}
-              answers={examState[index_ref.current].userAnswer}
+              answers={exam_state[index_ref.current].user_answer}
               setAnswers={list => {
-                const tmp = examState.concat();
-                tmp[index_ref.current].userAnswer = list;
+                const tmp = exam_state.concat();
+                tmp[index_ref.current].user_answer = list;
                 SetExamState(tmp);
               }}
-              disable={examState[index_ref.current].checked}
-              shortcutDisable={isModalOpen}
+              disable={exam_state[index_ref.current].checked}
+              shortcutDisable={is_modal_open}
             />
             {/* 入力中エンターを押して送信を無効化 */}
             <input id={css.dummy} />
@@ -419,13 +419,13 @@ export default function ExamPageComponent(props: Props): JSX.Element {
             // 次へボタンを右に寄せたいのでdiv
             <div></div>
           ) : (
-            <Button text='戻る' icon='fas fa-arrow-left' onClick={() => DecrementIndex()} type='material' />
+            <Button text='戻る' icon='fas fa-arrow-left' OnClick={() => DecrementIndex()} type='material' />
           )}
           {NextButton()}
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} close={() => SetIsModalOpen(false)}>
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
           <span className={css.head}>🎉問題終了🎉</span>
           <p>お疲れさまでした。</p>
@@ -439,7 +439,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
                 text={'編集する'}
                 icon={'fas fa-pen'}
                 type={'material'}
-                onClick={() => Router.push('/edit?id=' + props.data.id)}
+                OnClick={() => Router.push('/edit?id=' + props.data.id)}
               />
             ) : (
               <></>
@@ -448,11 +448,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
               text={'回答状況一覧'}
               icon={'fas fa-list'}
               type={'material'}
-              onClick={() => {
+              OnClick={() => {
                 Router.push(`/examtable?history_id=${history_id}`);
               }}
             />
-            <Button text={'前のページへ'} icon={'fas fa-arrow-left'} type={'filled'} onClick={Router.back} />
+            <Button text={'前のページへ'} icon={'fas fa-arrow-left'} type={'filled'} OnClick={Router.back} />
           </ButtonContainer>
         </div>
       </Modal>

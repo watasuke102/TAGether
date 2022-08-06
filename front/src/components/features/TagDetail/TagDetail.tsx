@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function TagDetail(props: Props): React.ReactElement {
-  const [isToastOpen, SetIsToastOpen] = React.useState(false);
+  const [is_toast_open, SetIsToastOpen] = React.useState(false);
   const [toast_body, SetToastBody] = React.useState('');
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
@@ -96,7 +96,7 @@ export default function TagDetail(props: Props): React.ReactElement {
                 rows: 1,
                 value: edited_name,
                 disabled: disabled,
-                onChange: e => SetEditedName(e.target.value),
+                OnChange: e => SetEditedName(e.target.value),
               }}
             />
             <Form
@@ -105,14 +105,14 @@ export default function TagDetail(props: Props): React.ReactElement {
                 rows: 4,
                 value: edited_desc,
                 disabled: disabled,
-                onChange: e => SetEditedDesc(e.target.value),
+                OnChange: e => SetEditedDesc(e.target.value),
               }}
             />
           </div>
 
           {/* ボタン */}
           <ButtonContainer>
-            <Button type='material' icon='fas fa-times' text='閉じる' onClick={props.close} />
+            <Button type='material' icon='fas fa-times' text='閉じる' OnClick={props.close} />
             {props.createMode ? (
               <></>
             ) : (
@@ -120,16 +120,16 @@ export default function TagDetail(props: Props): React.ReactElement {
                 type='material'
                 icon='fas fa-pen'
                 text='このタグのカテゴリを解く'
-                onClick={() => Router.push(`/exam?tag=${props.tag.name}`)}
+                OnClick={() => Router.push(`/exam?tag=${props.tag.name}`)}
               />
             )}
-            <Button type='filled' icon='fas fa-check' text='編集結果を適用' onClick={UpdateTag} />
+            <Button type='filled' icon='fas fa-check' text='編集結果を適用' OnClick={UpdateTag} />
           </ButtonContainer>
         </div>
 
         <Toast
           id='tag_detail'
-          isOpen={isToastOpen}
+          isOpen={is_toast_open}
           close={() => SetIsToastOpen(false)}
           top={20}
           icon='fas fa-bell'

@@ -15,7 +15,7 @@ import FeatureRequest from '@mytypes/FeatureRequest';
 import TagData from '@mytypes/TagData';
 
 function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): [T[], boolean] {
-  const [isLoading, SetIsLoading] = React.useState(true);
+  const [is_loading, SetIsLoading] = React.useState(true);
   const [data, SetData] = React.useState([init]);
   const router = useRouter();
   const {id} = router.query;
@@ -32,7 +32,7 @@ function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): 
       }))();
   }, [router.isReady]);
 
-  return [data, isLoading];
+  return [data, is_loading];
 }
 
 export const useRequestData = (onComplete?: (e: FeatureRequest[]) => void): [FeatureRequest[], boolean] =>
@@ -42,7 +42,7 @@ export const useTagData = (onComplete?: (e: TagData[]) => void): [TagData[], boo
 
 export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly[], boolean] => {
   const [data, SetData] = React.useState([categoly_default()]);
-  const [isLoading, SetIsLoading] = React.useState(true);
+  const [is_loading, SetIsLoading] = React.useState(true);
 
   const [categoly, isCategolyLoading] = useApiData<CategolyResponse>('categoly', {
     id: 0,
@@ -95,7 +95,7 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
     SetIsLoading(false);
   }, [isCategolyLoading, isTagLoading]);
 
-  return [data, isLoading];
+  return [data, is_loading];
 };
 
 export async function GetFromApi<T>(target: string, id?: string): Promise<T[]> {

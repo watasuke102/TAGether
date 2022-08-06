@@ -20,7 +20,7 @@ export default function ExamTablePage(): React.ReactElement {
   const router = useRouter();
   const {id, history_id} = router.query;
 
-  const [isLoading, SetIsLoading] = React.useState(true);
+  const [is_loading, SetIsLoading] = React.useState(true);
   const OnComplete = (categoly: Categoly) => {
     SetData(categoly);
     SetIsLoading(false);
@@ -46,5 +46,5 @@ export default function ExamTablePage(): React.ReactElement {
     } 
   });
 
-  return isLoading ? <Loading /> : <ExamTable data={data} history={history} />;
+  return is_loading ? <Loading /> : <ExamTable data={data} history={history} />;
 }

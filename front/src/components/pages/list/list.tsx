@@ -48,8 +48,8 @@ function AddCategoly(name: string, desc: string) {
 }
 
 export default function list(): React.ReactElement {
-  const [searchStr, SetSearchStr] = React.useState('');
-  const [radioState, SetRadioState] = React.useState('タイトル');
+  const [search_str, SetSearchStr] = React.useState('');
+  const [radio_state, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
   const [list, isLoading] = useCategolyData();
 
@@ -66,10 +66,10 @@ export default function list(): React.ReactElement {
     let searchResult: Categoly[] = [];
     cards = [];
     // 検索欄になにか記入されていたら、検索
-    if (searchStr !== '') {
+    if (search_str !== '') {
       list.forEach(e => {
         let text: string = '';
-        switch (radioState) {
+        switch (radio_state) {
           case 'タイトル':
             text = e.title;
             break;
@@ -85,7 +85,7 @@ export default function list(): React.ReactElement {
             break;
         }
         // 検索欄に入力された文字と一致したら検索結果に追加
-        if (text.indexOf(searchStr) !== -1) searchResult.push(e);
+        if (text.indexOf(search_str) !== -1) searchResult.push(e);
       });
     } else {
       searchResult = list;
@@ -129,16 +129,16 @@ export default function list(): React.ReactElement {
         <Form
           {...{
             label: '検索',
-            value: searchStr,
+            value: search_str,
             rows: 1,
-            onChange: ev => SetSearchStr(ev.target.value),
+            OnChange: ev => SetSearchStr(ev.target.value),
           }}
         />
         <Button
           {...{
             text: '入力のクリア',
             icon: 'fas fa-times',
-            onClick: () => SetSearchStr(''),
+            OnClick: () => SetSearchStr(''),
             type: 'filled',
           }}
         />
@@ -146,7 +146,7 @@ export default function list(): React.ReactElement {
         <div className={css.radiobutton_container}>
           <SingleSelectBox
             onChange={txt => SetRadioState(txt)}
-            status={radioState}
+            status={radio_state}
             list={['タイトル', 'タグ', '説明', 'ID']}
           />
         </div>
@@ -157,7 +157,7 @@ export default function list(): React.ReactElement {
             type='material'
             text={newer_first ? '古い順に並べる' : '新しい順に並べる'}
             icon={'fas fa-sort-numeric-' + (newer_first ? 'down-alt' : 'down')}
-            onClick={() => SetNewerFirst(!newer_first)}
+            OnClick={() => SetNewerFirst(!newer_first)}
           />
         </div>
       </div>
@@ -173,15 +173,15 @@ export default function list(): React.ReactElement {
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.add_categoly_window}>
           <h2>新規カテゴリの追加</h2>
-          <Form label='タイトル' value={categoly_name} rows={1} onChange={ev => SetCategolyName(ev.target.value)} />
-          <Form label='説明' value={categoly_desc} rows={3} onChange={ev => SetCategolyDesc(ev.target.value)} />
+          <Form label='タイトル' value={categoly_name} rows={1} OnChange={ev => SetCategolyName(ev.target.value)} />
+          <Form label='説明' value={categoly_desc} rows={3} OnChange={ev => SetCategolyDesc(ev.target.value)} />
           <div className={css.button_container}>
-            <Button type='material' icon='fas fa-times' text='キャンセル' onClick={() => SetIsModalOpen(false)} />
+            <Button type='material' icon='fas fa-times' text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
             <Button
               type='filled'
               icon='fas fa-check'
               text='作成する'
-              onClick={() => {
+              OnClick={() => {
                 if (categoly_name !== '') {
                   StartWaiting();
                   AddCategoly(categoly_name, categoly_desc);

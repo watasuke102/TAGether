@@ -27,13 +27,13 @@ export default function SelectButton(props: Props): React.ReactElement {
 
   const Operator = () => (
     <div className={css.operator}>
-      <Button icon='fas fa-angle-left' onClick={() => index > 0 && SetIndex(i => i - 1)} type='material' text='' />
+      <Button icon='fas fa-angle-left' OnClick={() => index > 0 && SetIndex(i => i - 1)} type='material' text='' />
       <span>
         {index + 1}/{max_page}
       </span>
       <Button
         icon='fas fa-angle-right'
-        onClick={() => index + 1 < max_page && SetIndex(i => i + 1)}
+        OnClick={() => index + 1 < max_page && SetIndex(i => i + 1)}
         type='material'
         text=''
       />

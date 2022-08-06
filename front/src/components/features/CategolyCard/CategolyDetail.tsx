@@ -27,12 +27,12 @@ interface Props {
 }
 
 export default function CategolyDetail(props: Props): React.ReactElement {
-  const [isToastOpen, SetIsToastOpen] = React.useState(false);
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isExamShuffleEnabled, SetIsExamShuffleEnabled] = React.useState(false);
-  const [isChoiceShuffleEnabled, SetIsChoiceShuffleEnabled] = React.useState(false);
-  const [beginQuestion, SetBeginQuestion] = React.useState(0);
-  const [endQuestion, SetEndQuestion] = React.useState(0);
+  const [is_toast_open, SetIsToastOpen] = React.useState(false);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
+  const [is_exam_shuffle_enabled, SetIsExamShuffleEnabled] = React.useState(false);
+  const [is_choice_shuffle_enabled, SetIsChoiceShuffleEnabled] = React.useState(false);
+  const [begin_question, SetBeginQuestion] = React.useState(0);
+  const [end_question, SetEndQuestion] = React.useState(0);
 
   const list: Exam[] = JSON.parse(props.data.list);
 
@@ -56,14 +56,14 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         break;
       case 'exam':
         url = `/exam${id_query}`;
-        if (isExamShuffleEnabled) {
+        if (is_exam_shuffle_enabled) {
           url += '&shuffle=true';
         }
-        if (isChoiceShuffleEnabled) {
+        if (is_choice_shuffle_enabled) {
           url += '&choiceShuffle=true';
         }
-        const begin = beginQuestion - 1;
-        const end = endQuestion - 1;
+        const begin = begin_question - 1;
+        const end = end_question - 1;
         if (begin > 0 && end > 0) {
           // 範囲が正当かどうかのチェック
           // 同じ数字だった場合も1問だけにするので間違いにはならない
@@ -91,30 +91,30 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   const Counter = (props: {text: string; value: number; setValue: (e: number) => void}) => (
     <div className={css.counter}>
       <span> {props.text} </span>
-      <Button text='10' icon='fas fa-minus' onClick={() => props.setValue(props.value - 10)} type='material' />
-      <Button text='1' icon='fas fa-minus' onClick={() => props.setValue(props.value - 1)} type='material' />
+      <Button text='10' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 10)} type='material' />
+      <Button text='1' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 1)} type='material' />
       <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
-      <Button text='1' icon='fas fa-plus' onClick={() => props.setValue(props.value + 1)} type='material' />
-      <Button text='10' icon='fas fa-plus' onClick={() => props.setValue(props.value + 10)} type='material' />
+      <Button text='1' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 1)} type='material' />
+      <Button text='10' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 10)} type='material' />
     </div>
   );
 
   // prettier-ignore
   const info: ButtonInfo[] = props.history ?
     [
-      {text: '閉じる',             icon: 'fas fa-times',       onClick: props.close,                type: 'material'},
-      {text: '間違えた問題一覧',   icon: 'fas fa-list',        onClick: () => Push('table'),        type: 'material'},
-      {text: '解答時の設定',       icon: 'fas fa-cog',         onClick: () => setIsModalOpen(true), type: 'material'},
+      {text: '閉じる',             icon: 'fas fa-times',       OnClick: props.close,                type: 'material'},
+      {text: '間違えた問題一覧',   icon: 'fas fa-list',        OnClick: () => Push('table'),        type: 'material'},
+      {text: '解答時の設定',       icon: 'fas fa-cog',         OnClick: () => SetIsModalOpen(true), type: 'material'},
       props.history.correct_count !== props.history.total_question ?
-        { text: '間違えた問題を解く', icon: 'fas fa-arrow-right', onClick: () => Push('exam'), type: 'filled' }
+        { text: '間違えた問題を解く', icon: 'fas fa-arrow-right', OnClick: () => Push('exam'), type: 'filled' }
         :
-        { text: '全問正解', icon: 'fas fa-check', onClick: () => undefined, type: 'material' },
+        { text: '全問正解', icon: 'fas fa-check', OnClick: () => undefined, type: 'material' },
     ] : [
-      {text: '閉じる',        icon: 'fas fa-times',       onClick: props.close,                type: 'material'},
-      {text: '編集する',      icon: 'fas fa-pen',         onClick: () => Push('edit'),         type: 'material'},
-      {text: '問題一覧',      icon: 'fas fa-list',        onClick: () => Push('table'),        type: 'material'},
-      {text: '解答時の設定',  icon: 'fas fa-cog',         onClick: () => setIsModalOpen(true), type: 'material'},
-      {text: 'この問題を解く',icon: 'fas fa-arrow-right', onClick: () => Push('exam'),         type: 'filled'},
+      {text: '閉じる',        icon: 'fas fa-times',       OnClick: props.close,                type: 'material'},
+      {text: '編集する',      icon: 'fas fa-pen',         OnClick: () => Push('edit'),         type: 'material'},
+      {text: '問題一覧',      icon: 'fas fa-list',        OnClick: () => Push('table'),        type: 'material'},
+      {text: '解答時の設定',  icon: 'fas fa-cog',         OnClick: () => SetIsModalOpen(true), type: 'material'},
+      {text: 'この問題を解く',icon: 'fas fa-arrow-right', OnClick: () => Push('exam'),         type: 'filled'},
     ];
 
   return (
@@ -142,23 +142,25 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         </ButtonContainer>
       </div>
 
-      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
           <p>設定は閉じてからも保持され、ページを離れると破棄されます。</p>
 
           <span className={css.head}>問題範囲の制限</span>
           <Counter
             text='最初の問題番号'
-            value={beginQuestion}
+            value={begin_question}
             setValue={e => SetBeginQuestion(Math.max(0, Math.min(list.length, e)))}
           />
-          <span className={css.question_preview}>問題：{beginQuestion !== 0 && list[beginQuestion - 1].question}</span>
+          <span className={css.question_preview}>
+            問題：{begin_question !== 0 && list[begin_question - 1].question}
+          </span>
           <Counter
             text='最後の問題番号'
-            value={endQuestion}
+            value={end_question}
             setValue={e => SetEndQuestion(Math.max(0, Math.min(list.length, e)))}
           />
-          <span className={css.question_preview}>問題：{endQuestion !== 0 && list[endQuestion - 1].question}</span>
+          <span className={css.question_preview}>問題：{end_question !== 0 && list[end_question - 1].question}</span>
 
           <span className={css.head}>シャッフル</span>
           <p>
@@ -168,26 +170,26 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           </p>
           <SelectButton
             type='single'
-            status={isExamShuffleEnabled}
+            status={is_exam_shuffle_enabled}
             desc='問題順をシャッフル'
             onChange={SetIsExamShuffleEnabled}
           />
           <SelectButton
             type='single'
-            status={isChoiceShuffleEnabled}
+            status={is_choice_shuffle_enabled}
             desc='選択問題の選択肢をシャッフル'
             onChange={SetIsChoiceShuffleEnabled}
           />
 
           <div className={css.button_container}>
-            <Button text='閉じる' icon='fas fa-times' onClick={() => setIsModalOpen(false)} type='material'></Button>
-            <Button text='この問題を解く' icon='fas fa-arrow-right' onClick={() => Push('exam')} type='filled' />
+            <Button text='閉じる' icon='fas fa-times' OnClick={() => SetIsModalOpen(false)} type='material'></Button>
+            <Button text='この問題を解く' icon='fas fa-arrow-right' OnClick={() => Push('exam')} type='filled' />
           </div>
         </div>
       </Modal>
       <Toast
         id='range_invalid_notice'
-        isOpen={isToastOpen}
+        isOpen={is_toast_open}
         close={() => SetIsToastOpen(false)}
         icon='fas fa-bell'
         text='範囲指定が不正です。最初の問題番号<=最後の問題番号になるように設定してください。'

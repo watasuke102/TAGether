@@ -11,11 +11,11 @@ import React from 'react';
 import Modal from '@/common/Modal/Modal';
 
 export default function useWaiting(): [() => React.ReactElement, () => void] {
-  const [isOpen, SetIsOpen] = React.useState(false);
+  const [is_open, SetIsOpen] = React.useState(false);
   return [
     () => (
       <div onClick={e => e.preventDefault()}>
-        <Modal isOpen={isOpen} close={() => undefined}>
+        <Modal isOpen={is_open} close={() => undefined}>
           <div className={css.modal}>
             <span>
               サーバーからの応答を待っています……

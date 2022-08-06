@@ -122,7 +122,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             text: '追加',
             icon: 'fas fa-plus',
             type: 'material',
-            onClick: () =>
+            OnClick: () =>
               type === 'Text' || type === 'Sort'
                 ? updater.Answer.Insert(current_page, -1)
                 : updater.QuestionChoices.Insert(current_page, -1),
@@ -137,7 +137,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 type: 'material',
                 icon: 'fas fa-trash',
                 text: '削除',
-                onClick: () =>
+                OnClick: () =>
                   type === 'Text' || type === 'Sort'
                     ? updater.Answer.Remove(current_page, index)
                     : updater.QuestionChoices.Remove(current_page, index),
@@ -170,7 +170,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 value={e}
                 rows={3}
                 layer={TabIndexList.Answer}
-                onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
+                OnChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
               />
               <div className={css.answer_area_buttons}>
                 {AddRemoveButtons('Text', i, exam[current_page].answer.length)}
@@ -204,7 +204,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   value={e}
                   rows={2}
                   layer={TabIndexList.Answer}
-                  onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
+                  OnChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
               <div className={css.answer_area_buttons}>
@@ -249,7 +249,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   value={e}
                   rows={2}
                   layer={TabIndexList.Answer}
-                  onChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
+                  OnChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
                 />
               </div>
               <div className={css.answer_area_buttons}>
@@ -284,7 +284,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               value={e}
                               rows={3}
                               layer={TabIndexList.Answer}
-                              onChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
+                              OnChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
                             />
                             <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
                             <div className={css.answer_area_buttons}>
@@ -311,25 +311,25 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       type: 'material',
       icon: 'fas fa-angle-double-left',
       text: '最初に挿入',
-      onClick: () => AddExam(0),
+      OnClick: () => AddExam(0),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-left',
       text: '1つ前に挿入',
-      onClick: () => AddExam(current_page),
+      OnClick: () => AddExam(current_page),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-right',
       text: '1つ後に挿入',
-      onClick: () => AddExam(current_page + 1),
+      OnClick: () => AddExam(current_page + 1),
     },
     {
       type: 'material',
       icon: 'fas fa-angle-double-right',
       text: '最後に挿入',
-      onClick: () => AddExam(-1),
+      OnClick: () => AddExam(-1),
     },
   ];
 
@@ -341,12 +341,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     <>
       <div className={css.button_list}>
         <div className={css.button_container}>
-          <Button type={'material'} icon={'fas fa-angle-double-left'} text={''} onClick={() => MovePageTo(0)} />
+          <Button type={'material'} icon={'fas fa-angle-double-left'} text={''} OnClick={() => MovePageTo(0)} />
           <Button
             type={'material'}
             icon={'fas fa-chevron-left'}
             text={''}
-            onClick={() => MovePageTo(current_page - 1)}
+            OnClick={() => MovePageTo(current_page - 1)}
           />
           <span className={css.current_page}>
             {current_page + 1}/{exam_length.current}
@@ -355,13 +355,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             type={'material'}
             icon={'fas fa-chevron-right'}
             text={''}
-            onClick={() => MovePageTo(current_page + 1)}
+            OnClick={() => MovePageTo(current_page + 1)}
           />
           <Button
             type={'material'}
             icon={'fas fa-angle-double-right'}
             text={''}
-            onClick={() => MovePageTo(exam_length.current - 1)}
+            OnClick={() => MovePageTo(exam_length.current - 1)}
           />
         </div>
 
@@ -370,12 +370,12 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             type={'material'}
             icon={'fas fa-trash'}
             text={'この問題を削除'}
-            onClick={() => {
+            OnClick={() => {
               if (current_page === exam_length.current - 1) MovePageTo(current_page - 1);
               updater.Exam.Remove(current_page);
             }}
           />
-          <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'} onClick={() => SetIsModalOpen(true)} />
+          <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'} OnClick={() => SetIsModalOpen(true)} />
         </div>
 
         <div className={css.append_exam}>
@@ -396,13 +396,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             value={exam[current_page].question}
             rows={6}
             layer={TabIndexList.Question}
-            onChange={ev => updater.Question.Update(current_page, ev.target.value)}
+            OnChange={ev => updater.Question.Update(current_page, ev.target.value)}
           />
           <Form
             label={'コメント（解説など）'}
             value={exam[current_page].comment ?? ''}
             rows={5}
-            onChange={ev => updater.Comment.Update(current_page, ev.target.value)}
+            OnChange={ev => updater.Comment.Update(current_page, ev.target.value)}
             layer={TabIndexList.Comment}
           />
         </div>
@@ -492,7 +492,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           </DragDropContext>
 
           <div className={css.button_container}>
-            <Button type={'filled'} icon={'fas fa-times'} text={'閉じる'} onClick={() => SetIsModalOpen(false)} />
+            <Button type={'filled'} icon={'fas fa-times'} text={'閉じる'} OnClick={() => SetIsModalOpen(false)} />
           </div>
         </div>
       </Modal>

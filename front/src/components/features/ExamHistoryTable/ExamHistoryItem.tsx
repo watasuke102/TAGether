@@ -21,18 +21,18 @@ interface Props {
 }
 
 export default function ExamHistoryItem(props: Props): React.ReactElement {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isCategolyDetailOpen, setIsCategolyDetailOpen] = React.useState(false);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
+  const [is_categoly_detail_open, SetIsCategolyDetailOpen] = React.useState(false);
   const rate = Math.round((props.item.correct_count / props.item.total_question) * 10000) / 100;
 
   return (
     <>
       <div className={css.container}>
         <div className={css.delete_button_wrapper}>
-          <Button text='削除' icon='fas fa-trash-alt' type='material' onClick={() => setIsModalOpen(true)} />
+          <Button text='削除' icon='fas fa-trash-alt' type='material' OnClick={() => SetIsModalOpen(true)} />
         </div>
 
-        <span className={css.categoly_link} onClick={() => setIsCategolyDetailOpen(true)}>
+        <span className={css.categoly_link} onClick={() => SetIsCategolyDetailOpen(true)}>
           {props.categoly.title}
         </span>
 
@@ -44,27 +44,27 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
         </div>
       </div>
 
-      <Modal isOpen={isCategolyDetailOpen} close={() => setIsCategolyDetailOpen(false)}>
-        <Detail data={props.categoly} history={props.item} close={() => setIsCategolyDetailOpen(false)} />
+      <Modal isOpen={is_categoly_detail_open} close={() => SetIsCategolyDetailOpen(false)}>
+        <Detail data={props.categoly} history={props.item} close={() => SetIsCategolyDetailOpen(false)} />
       </Modal>
 
-      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
           <span className={css.title}>{props.categoly.title}</span>
           <p>この解答履歴を削除しますか？</p>
           <div className={css.buttons}>
             <Button
-              onClick={() => {
-                setIsModalOpen(false);
+              OnClick={() => {
+                SetIsModalOpen(false);
               }}
               type='filled'
               icon='fas fa-times'
               text='閉じる'
             />
             <Button
-              onClick={() => {
+              OnClick={() => {
                 props.remove();
-                setIsModalOpen(false);
+                SetIsModalOpen(false);
               }}
               type='filled'
               icon='fas fa-trash-alt'

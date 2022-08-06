@@ -21,7 +21,7 @@ export default function Form(props: FormInfo): JSX.Element {
         rows={props.rows}
         spellCheck={false}
         tabIndex={props.layer ?? 1}
-        onChange={e => props.onChange(e)}
+        onChange={e => props.OnChange(e)}
         disabled={props.disabled}
       />
     </div>

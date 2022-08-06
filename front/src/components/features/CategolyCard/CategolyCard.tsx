@@ -16,7 +16,7 @@ import Detail from './CategolyDetail';
 import FavoriteStar from './FavoriteStar';
 
 export default function ExamCard(props: Categoly): React.ReactElement {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
   // タイトルを25文字以内に
   let title = props.title;
@@ -32,7 +32,7 @@ export default function ExamCard(props: Categoly): React.ReactElement {
   return (
     <>
       <div className={css.container}>
-        <Card onClick={() => setIsModalOpen(true)}>
+        <Card onClick={() => SetIsModalOpen(true)}>
           <div className={css.card}>
             <p className={css.title}>{title}</p>
             <p className={css.desc}> {desc} </p>
@@ -42,8 +42,8 @@ export default function ExamCard(props: Categoly): React.ReactElement {
         </Card>
       </div>
 
-      <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
-        <Detail {...{data: props, close: () => setIsModalOpen(false)}} />
+      <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
+        <Detail {...{data: props, close: () => SetIsModalOpen(false)}} />
       </Modal>
     </>
   );

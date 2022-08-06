@@ -32,13 +32,13 @@ interface Props {
 export const ExamContext = React.createContext<Exam[]>(exam_default());
 
 export default function Edit(props: Props): React.ReactElement {
-  const isFirstRendering = React.useRef(true);
+  const is_first_rendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
 
-  const [isToastOpen, SetIsToastOpen] = React.useState(false);
-  const [isJsonEdit, SetIsJsonEdit] = React.useState(false);
-  const [isOldForm, SetIsOldForm] = React.useState(props.data.version === 1);
-  const [registError, SetRegistError] = React.useState('');
+  const [is_toast_open, SetIsToastOpen] = React.useState(false);
+  const [is_json_edit, SetIsJsonEdit] = React.useState(false);
+  const [is_old_form, SetIsOldForm] = React.useState(props.data.version === 1);
+  const [regist_error, SetRegistError] = React.useState('');
 
   const [categoly, SetCategoly] = React.useState(props.data);
   const categoly_ref = React.useRef<Categoly>(categoly_default());
@@ -49,11 +49,11 @@ export default function Edit(props: Props): React.ReactElement {
 
   // 初回レンダリング時に実行されないようにしている
   React.useEffect(() => {
-    isFirstRendering.current = true;
+    is_first_rendering.current = true;
   }, []);
   React.useEffect(() => {
-    if (isFirstRendering.current) {
-      isFirstRendering.current = false;
+    if (is_first_rendering.current) {
+      is_first_rendering.current = false;
     } else {
       SetShowConfirmBeforeLeave(true);
     }
@@ -180,10 +180,10 @@ export default function Edit(props: Props): React.ReactElement {
     const tag: string[] = categoly.tag.map(e => String(e.id) ?? e.name);
     const api_body: CategolyResponse = {
       ...categoly,
-      version: isOldForm ? 1 : 2,
+      version: is_old_form ? 1 : 2,
       tag: tag.toString(),
       // インデントを削除
-      list: isJsonEdit ? JSON.stringify(JSON.parse(categoly.list)) : JSON.stringify(exam_tmp),
+      list: is_json_edit ? JSON.stringify(JSON.parse(categoly.list)) : JSON.stringify(exam_tmp),
     };
 
     const req = new XMLHttpRequest();
@@ -240,7 +240,7 @@ export default function Edit(props: Props): React.ReactElement {
             label: 'タイトル',
             value: categoly.title,
             rows: 1,
-            onChange: e => UpdateCategoly('title', e.target.value),
+            OnChange: e => UpdateCategoly('title', e.target.value),
           }}
         />
         <Form
@@ -248,7 +248,7 @@ export default function Edit(props: Props): React.ReactElement {
             label: '説明',
             value: categoly.description,
             rows: 3,
-            onChange: e => UpdateCategoly('desc', e.target.value),
+            OnChange: e => UpdateCategoly('desc', e.target.value),
           }}
         />
       </div>
@@ -266,25 +266,25 @@ export default function Edit(props: Props): React.ReactElement {
       <h2>問題</h2>
 
       <div className={css.buttons}>
-        <SelectButton type='single' status={isJsonEdit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
+        <SelectButton type='single' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
         {props.data.version !== 1 && (
-          <SelectButton type='single' status={isOldForm} desc='古い編集画面を使う' onChange={SetIsOldForm} />
+          <SelectButton type='single' status={is_old_form} desc='古い編集画面を使う' onChange={SetIsOldForm} />
         )}
         <div className={css.pushbutton_wrapper}>
-          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} onClick={() => RegistCategoly()} />
+          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} OnClick={() => RegistCategoly()} />
         </div>
       </div>
 
       <hr />
 
-      {isJsonEdit ? (
+      {is_json_edit ? (
         <>
           <p>注意：編集内容はリッチエディタと同期されません</p>
-          <Form label='JSON' value={categoly.list} rows={30} onChange={e => UpdateCategoly('list', e.target.value)} />
+          <Form label='JSON' value={categoly.list} rows={30} OnChange={e => UpdateCategoly('list', e.target.value)} />
         </>
       ) : (
         <>
-          {isOldForm ? (
+          {is_old_form ? (
             <ExamEditFormsOld
               exam={exam}
               register={RegistCategoly}
@@ -300,10 +300,10 @@ export default function Edit(props: Props): React.ReactElement {
 
       <Toast
         id={'toast_create'}
-        isOpen={isToastOpen}
+        isOpen={is_toast_open}
         close={() => SetIsToastOpen(false)}
         icon='fas fa-bell'
-        text={registError === '' ? '編集結果を適用しました' : `エラーが発生しました。\n${registError}`}
+        text={regist_error === '' ? '編集結果を適用しました' : `エラーが発生しました。\n${regist_error}`}
       />
     </>
   );

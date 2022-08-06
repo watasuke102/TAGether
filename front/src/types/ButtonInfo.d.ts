@@ -10,7 +10,7 @@ interface ButtonInfo {
   type: 'icon_desc' | 'material' | 'filled';
   icon: string;
   text: string;
-  onClick: () => void;
+  OnClick: () => void;
 }
 
 export default ButtonInfo;

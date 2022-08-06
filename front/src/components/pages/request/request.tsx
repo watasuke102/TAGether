@@ -57,7 +57,7 @@ export default function Request(): React.ReactElement {
             label: '意見',
             value: request,
             rows: 10,
-            onChange: e => SetRequest(e.target.value),
+            OnChange: e => SetRequest(e.target.value),
           }}
         />
         <div className={css.button}>
@@ -67,7 +67,7 @@ export default function Request(): React.ReactElement {
               icon: 'fas fa-paper-plane',
               text: '送信',
               type: 'filled',
-              onClick: SendRequest,
+              OnClick: SendRequest,
             }}
           />{' '}
         </div>
