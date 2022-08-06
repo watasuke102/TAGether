@@ -15,10 +15,10 @@ import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Toast from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
+import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
-import ButtonInfo from '@mytypes/ButtonInfo';
 
 interface Props {
   data: Categoly;
@@ -105,7 +105,10 @@ export default function CategolyDetail(props: Props): React.ReactElement {
       {text: '閉じる',             icon: 'fas fa-times',       onClick: props.close,                type: 'material'},
       {text: '間違えた問題一覧',   icon: 'fas fa-list',        onClick: () => Push('table'),        type: 'material'},
       {text: '解答時の設定',       icon: 'fas fa-cog',         onClick: () => setIsModalOpen(true), type: 'material'},
-      {text: '間違えた問題を解く', icon: 'fas fa-arrow-right', onClick: () => Push('exam'),         type: 'filled'},
+      props.history.correct_count !== props.history.total_question ?
+        { text: '間違えた問題を解く', icon: 'fas fa-arrow-right', onClick: () => Push('exam'), type: 'filled' }
+        :
+        { text: '全問正解', icon: 'fas fa-check', onClick: () => undefined, type: 'material' },
     ] : [
       {text: '閉じる',        icon: 'fas fa-times',       onClick: props.close,                type: 'material'},
       {text: '編集する',      icon: 'fas fa-pen',         onClick: () => Push('edit'),         type: 'material'},
