@@ -18,7 +18,6 @@ import Detail from '../CategolyCard/CategolyDetail';
 interface Props {
   categoly: Categoly;
   item: ExamHistory;
-  isShuffleEnabled: boolean;
   remove: () => void;
 }
 
@@ -29,8 +28,7 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
 
   function PushExamPage() {
     const history_id = props.item.history_key ?? -1;
-    const shuffle = props.isShuffleEnabled;
-    Router.push(`/exam?history_id=${history_id}&shuffle=${shuffle}`);
+    Router.push(`/exam?history_id=${history_id}`);
   }
 
   return (

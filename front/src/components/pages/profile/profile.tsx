@@ -13,7 +13,6 @@ import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
-import {SelectButton} from '@/common/SelectBox';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
 import {useCategolyData} from '@/utils/Api';
@@ -22,7 +21,6 @@ import ExamHistory from '@mytypes/ExamHistory';
 
 export default function profile(): React.ReactElement {
   const [isModalOpen, SetIsModalOpen] = React.useState(false);
-  const [isShuffleEnabled, SetIsShuffleEnabled] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
   const [data, isLoading] = useCategolyData();
@@ -71,6 +69,8 @@ export default function profile(): React.ReactElement {
           <FavoriteList />
         </div>
 
+        <hr />
+
         <h2>解答履歴</h2>
         <div className={css.buttons}>
           <div className={css.allclear_button}>
@@ -83,12 +83,6 @@ export default function profile(): React.ReactElement {
               }}
             />
           </div>
-          <SelectButton
-            type='single'
-            status={isShuffleEnabled}
-            desc='解き直しのとき、問題順をシャッフルする'
-            onChange={e => SetIsShuffleEnabled(e)}
-          />
         </div>
 
         <IndexedContainer len={history_list.length} per={8}>
@@ -98,7 +92,6 @@ export default function profile(): React.ReactElement {
                 key={`history_${item.history_key}`}
                 item={item}
                 categoly={item.categoly}
-                isShuffleEnabled={isShuffleEnabled}
                 remove={() => {
                   RemoveExamHistory(item.history_key ?? '');
                   const tmp = history_list.concat();
