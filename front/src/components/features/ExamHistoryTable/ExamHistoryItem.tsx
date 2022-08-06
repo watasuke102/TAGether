@@ -26,15 +26,12 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
   const [isCategolyDetailOpen, setIsCategolyDetailOpen] = React.useState(false);
   const rate = Math.round((props.item.correct_count / props.item.total_question) * 10000) / 100;
 
-  function PushExamPage() {
-    const history_id = props.item.history_key ?? -1;
-    Router.push(`/exam?history_id=${history_id}`);
-  }
-
   return (
     <>
       <div className={css.container}>
-        <Button text='削除' icon='fas fa-trash-alt' type='material' onClick={() => setIsModalOpen(true)} />
+        <div className={css.delete_button_wrapper}>
+          <Button text='削除' icon='fas fa-trash-alt' type='material' onClick={() => setIsModalOpen(true)} />
+        </div>
 
         <span className={css.categoly_link} onClick={() => setIsCategolyDetailOpen(true)}>
           {props.categoly.title}
@@ -46,12 +43,6 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
           </span>
           <span className={css.date}>{props.item.categoly.updated_at ?? ''}</span>
         </div>
-
-        {props.item.correct_count === props.item.total_question ? (
-          <span className={css.all_correct}>全問正解</span>
-        ) : (
-          <Button text='解き直し' icon='fas fa-edit' type='material' onClick={PushExamPage} />
-        )}
       </div>
 
       <Modal isOpen={isCategolyDetailOpen} close={() => setIsCategolyDetailOpen(false)}>

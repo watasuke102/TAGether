@@ -11,14 +11,19 @@
 
 .container {
   display: grid;
-  grid-template-columns: 85px 1fr 230px 135px;
+  grid-template-columns: 85px 1fr 230px;
+
+  .delete_button_wrapper {
+    margin: auto;
+  }
 
   @media screen and (max-width: 600px) {
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 85px 1fr;
     gap: 8px;
 
-    button:last-child {
-      grid-row: 2/3;
+    // button {
+    .delete_button_wrapper {
+      grid-row: 1/3;
     }
 
     span:last-child {
