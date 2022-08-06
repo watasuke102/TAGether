@@ -119,8 +119,19 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         {/* 問題の追加/削除 */}
         <Button
           {...{
-            text: '追加',
+            text: '1つ下に追加',
             icon: 'fas fa-plus',
+            type: 'material',
+            OnClick: () =>
+              type === 'Text' || type === 'Sort'
+                ? updater.Answer.Insert(current_page, index + 1)
+                : updater.QuestionChoices.Insert(current_page, index + 1),
+          }}
+        />
+        <Button
+          {...{
+            text: '最後に追加',
+            icon: 'fas fa-arrow-down',
             type: 'material',
             OnClick: () =>
               type === 'Text' || type === 'Sort'
