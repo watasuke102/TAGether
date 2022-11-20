@@ -89,14 +89,16 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   }
 
   const Counter = (props: {text: string; value: number; setValue: (e: number) => void}) => (
-    <div className={css.counter}>
-      <span> {props.text} </span>
-      <Button text='10' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 10)} type='material' />
-      <Button text='1' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 1)} type='material' />
-      <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
-      <Button text='1' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 1)} type='material' />
-      <Button text='10' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 10)} type='material' />
-    </div>
+    <>
+      <span className={css.counter_name}> {props.text} </span>
+      <div className={css.counter}>
+        <Button text='10' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 10)} type='material' />
+        <Button text='1' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 1)} type='material' />
+        <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
+        <Button text='1' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 1)} type='material' />
+        <Button text='10' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 10)} type='material' />
+      </div>
+    </>
   );
 
   // prettier-ignore
@@ -144,7 +146,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
-          <p>設定は閉じてからも保持され、ページを離れると破棄されます。</p>
+          <p>これらの設定はカテゴリ詳細を閉じるまで保持されます。</p>
 
           <span className={css.head}>問題範囲の制限</span>
           <Counter
@@ -155,6 +157,9 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           <span className={css.question_preview}>
             問題：{begin_question !== 0 && list[begin_question - 1].question}
           </span>
+
+          <hr />
+
           <Counter
             text='最後の問題番号'
             value={end_question}
@@ -181,10 +186,10 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             onChange={SetIsChoiceShuffleEnabled}
           />
 
-          <div className={css.button_container}>
+          <ButtonContainer>
             <Button text='閉じる' icon='fas fa-times' OnClick={() => SetIsModalOpen(false)} type='material'></Button>
             <Button text='この問題を解く' icon='fas fa-arrow-right' OnClick={() => Push('exam')} type='filled' />
-          </div>
+          </ButtonContainer>
         </div>
       </Modal>
       <Toast

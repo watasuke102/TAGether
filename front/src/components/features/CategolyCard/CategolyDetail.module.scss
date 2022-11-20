@@ -55,13 +55,14 @@
   }
 }
 
+.counter_name {
+  font-size: 1.2em;
+  margin: auto 0;
+}
 .counter {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  span {
-    margin: auto 0;
-  }
   .value {
     width: 72px;
     text-align: center;
@@ -70,7 +71,9 @@
 }
 
 .modal {
-  width: 600px;
+  width: 90vw;
+  max-height: 95vh;
+  overflow-y: scroll;
   padding: 30px 50px;
   .head {
     display: block;
@@ -87,9 +90,25 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  .button_container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
+}
+
+@media screen and (max-width: 450px) {
+  .counter {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, 1fr);
+    // ボタンの間隔をあける
+    & > * {
+      margin: 8px 0;
+      &:first-child {
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
+      }
+    }
+    .value {
+      width: 100%;
+      grid-row: 1 / 3;
+      margin: auto;
+    }
   }
 }
