@@ -142,9 +142,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   // 解答が合っているかどうか確認してstateに格納
   // 最後の問題の答え合わせであれば、履歴を保存する
   function CheckAnswer(): void {
-    let all_correct = true;
     const result: ExamState = exam_state_ref.current[index_ref.current];
     result.checked = true;
+    let all_correct = true;
+    let total_questions = total_questions_ref.current;
+    let correct_answers = correct_answers_ref.current;
 
     // 複数選択問題は、完全一致のみ正解にする
     if (exam[index_ref.current].type === 'MultiSelect' && props.data.version === 2) {
@@ -156,11 +158,13 @@ export default function ExamPageComponent(props: Props): JSX.Element {
       const real_answers = exam[index_ref.current].answer.sort().toString();
       if (my_answers === real_answers) {
         result.correct_count++;
-        SetCorrectAnswers(n => n + 1);
+        correct_answers++;
+        SetCorrectAnswers(correct_answers);
       } else {
         all_correct = false;
       }
-      SetTotalQuestions(n => n + 1);
+      total_questions++;
+      SetTotalQuestions(total_questions);
       // 空欄削除+ソートされたものに変えておく
     } else {
       let correct: boolean = false;
@@ -172,11 +176,13 @@ export default function ExamPageComponent(props: Props): JSX.Element {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correct_count++;
-            SetCorrectAnswers(n => n + 1);
+            correct_answers++;
+            SetCorrectAnswers(correct_answers);
           }
         });
         if (!correct) all_correct = false;
-        SetTotalQuestions(n => n + 1);
+        total_questions++;
+        SetTotalQuestions(total_questions);
       });
     }
 
@@ -210,8 +216,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
             : props.data.title,
           updated_at: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         },
-        correct_count: correct_answers_ref.current,
-        total_question: total_questions_ref.current,
+        correct_count: correct_answers,
+        total_question: total_questions,
         exam_state: exam_state_ref.current,
       };
       AddExamHistory(exam_history).then(i => SetHistoryId(i));
