@@ -42,9 +42,7 @@ interface Props {
 }
 
 export default function ExamPageComponent(props: Props): JSX.Element {
-  // 警告を無効化することはないのでは？
-  // 解答中はもちろん、解き終わったあとも結果を見ようとするかもしれない
-  useConfirmBeforeLeave()(true);
+  const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
 
   const exam: Exam[] = JSON.parse(props.data.list);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -109,6 +107,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     }
   }, []);
   React.useEffect(() => {
+    SetShowConfirmBeforeLeave(true);
     window.addEventListener('keydown', e => Shortcut(e));
     return () => {
       window.removeEventListener('keydown', e => Shortcut(e));
@@ -205,6 +204,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
 
     // 最後の問題を答え合わせしたとき、履歴を保存する
     if (index_ref.current === exam.length - 1) {
+      SetShowConfirmBeforeLeave(false);
       const exam_history: ExamHistory = {
         times: props.history ? props.history.times + 1 : 0,
         original_title: props.history ? props.history.original_title : props.data.title,
