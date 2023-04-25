@@ -2,14 +2,18 @@
 # if you use this under product environment, run "start.sh product"
 set -e
 
-if [[ \
-  ! -e "$(dirname "$1")/front/env.json" || \
-  ! -e "$(dirname "$1")/back/src/env.json" \
-]]; then
-  echo -ne "\e[31m"
-  echo -e  "[FATAL] NOT FOUND: 'env.json'"
-  echo -e  "        See 'README.md' to setup"
-  echo -ne "\e[m"
+failed=0
+if [[ ! -e "$(dirname "$1")/front/env.json" ]]; then
+  echo -e "\e[31m[FATAL] NOT FOUND: '/front/env.json'"
+  failed=1
+fi
+if [[ ! -e "$(dirname "$1")/back/src/env.json" ]]; then
+  echo -e "\e[31m[FATAL] NOT FOUND: '/back/env.json'"
+  failed=1
+fi
+if [[ $failed -eq 1 ]]; then
+  echo -e "        See 'README.md' to setup\e[m"
+  exit 1
 fi
 
 echo -e "\e[32;7m[info] Started setup script (env: ${1:-not_product})\e[m"
