@@ -15,7 +15,7 @@ const app = Express();
 app.use(Express.json());
 app.use((_, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, Content-Type');
-  res.header('Access-Control-Allow-Methods', 'POST, PUT, GET');
+  res.header('Access-Control-Allow-Methods', 'POST, PUT, GET, DELETE');
   res.header('Access-Control-Allow-Origin', Config.AllowOrigin);
   next();
 });
@@ -23,6 +23,7 @@ app.use((_, res, next) => {
 app.get('/categoly/:id?', Api.GetCategoly);
 app.post('/categoly', Api.AddCategoly);
 app.put('/categoly', Api.UpdateCategoly);
+app.delete('/categoly', Api.DeleteCategoly);
 
 app.get('/request/:id?', Api.GetRequest);
 app.post('/request', Api.AddRequest);

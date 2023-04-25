@@ -21,7 +21,7 @@ function Success(resp, data) {
   resp.status(200);
 }
 function Error(resp, mes) {
-  resp.json({ message: mes });
+  resp.json({message: mes});
   resp.status(400);
 }
 
@@ -30,19 +30,17 @@ function WebHook(title, field) {
   const Request = require('request');
   Request.post({
     url: Config.Webhook,
-    headers: { 'content-type': 'application/json' },
+    headers: {'content-type': 'application/json'},
     body: JSON.stringify({
       avatar_url: 'https://data.watasuke.net/icon.png',
-      embeds: [{ title: title, fields: field }],
+      embeds: [{title: title, fields: field}],
     }),
   });
 }
 
 function Query(query, req, resp) {
   if (Config.AllowOrigin != '*' && req.headers.origin != Config.AllowOrigin) {
-    Log(
-      `BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`
-    );
+    Log(`BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`);
     resp.status(444).end();
     return;
   }
@@ -52,7 +50,7 @@ function Query(query, req, resp) {
     ...Config.MySql,
   });
   let isFailed = false;
-  connection.connect((err) => {
+  connection.connect(err => {
     if (err) {
       console.error(err);
       Error(err, err.sqlMessage);
@@ -78,8 +76,7 @@ exports.GetCategoly = (req, res) => {
 };
 
 exports.AddCategoly = (req, res) => {
-  let query =
-    'INSERT INTO exam (title, version, description, tag, list) values ';
+  let query = 'INSERT INTO exam (title, version, description, tag, list) values ';
   query += `(${MySql.escape(req.body.title)},`;
   query += ` ${MySql.escape(req.body.version)},`;
   query += ` ${MySql.escape(req.body.description)},`;
@@ -88,8 +85,8 @@ exports.AddCategoly = (req, res) => {
   Query(query, req, res);
 
   WebHook('新規カテゴリ追加', [
-    { name: '名前', value: req.body.title },
-    { name: '説明', value: req.body.description },
+    {name: '名前', value: req.body.title},
+    {name: '説明', value: req.body.description},
   ]);
 };
 
@@ -99,6 +96,12 @@ exports.UpdateCategoly = (req, res) => {
   query += `description=${MySql.escape(req.body.description)},`;
   query += `tag=${MySql.escape(req.body.tag)},`;
   query += `list=${MySql.escape(req.body.list)} `;
+  query += `WHERE id=${MySql.escape(req.body.id)}`;
+  Query(query, req, res);
+};
+
+exports.DeleteCategoly = (req, res) => {
+  let query = 'UPDATE exam SET deleted=true ';
   query += `WHERE id=${MySql.escape(req.body.id)}`;
   Query(query, req, res);
 };
@@ -115,7 +118,7 @@ exports.AddRequest = (req, res) => {
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
 
-  WebHook('新規要望が投稿されました', [{ name: '内容', value: req.body.body }]);
+  WebHook('新規要望が投稿されました', [{name: '内容', value: req.body.body}]);
 };
 
 // タグ
@@ -132,8 +135,8 @@ exports.AddTag = (req, res) => {
   Query(query, req, res);
 
   WebHook('新規タグ追加', [
-    { name: '名前', value: req.body.name },
-    { name: '説明', value: req.body.description },
+    {name: '名前', value: req.body.name},
+    {name: '説明', value: req.body.description},
   ]);
 };
 
