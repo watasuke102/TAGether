@@ -14,7 +14,7 @@ import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
-import {SingleSelectBox} from '@/common/SelectBox';
+import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import {useWaiting} from '@/common/Waiting';
@@ -32,6 +32,7 @@ function AddCategoly(name: string, desc: string) {
     description: desc,
     tag: '',
     list: JSON.stringify([exam_initial]),
+    deleted: 0,
   };
   const req = new XMLHttpRequest();
   req.onreadystatechange = () => {
@@ -48,6 +49,7 @@ function AddCategoly(name: string, desc: string) {
 }
 
 export default function list(): React.ReactElement {
+  const [show_only_trash, SetShowOnlyTrash] = React.useState(false);
   const [search_str, SetSearchStr] = React.useState('');
   const [radio_state, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
@@ -90,15 +92,16 @@ export default function list(): React.ReactElement {
     } else {
       searchResult = list;
     }
+    const categoly_list = searchResult.filter(e => e.deleted === Number(show_only_trash));
     // 検索結果からカードを生成
-    if (searchResult.length === 0) {
+    if (categoly_list.length === 0) {
       cards.push(
         <p key={'result_404'} className={css.notfound}>
           見つかりませんでした
         </p>,
       );
     } else {
-      searchResult.forEach(element => {
+      categoly_list.forEach(element => {
         cards.push(
           <div className={css.card_wrapper}>
             <CategolyCard key={`card_${element.id}`} {...element} />
@@ -125,6 +128,12 @@ export default function list(): React.ReactElement {
       <Helmet title='カテゴリ一覧 - TAGether' />
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
+        <SelectButton
+          type='multi'
+          desc='ゴミ箱内のカテゴリのみ表示'
+          status={show_only_trash}
+          onChange={SetShowOnlyTrash}
+        />
         {/* 検索欄 */}
         <Form
           {...{

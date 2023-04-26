@@ -101,7 +101,7 @@ exports.UpdateCategoly = (req, res) => {
 };
 
 exports.DeleteCategoly = (req, res) => {
-  let query = 'UPDATE exam SET deleted=true ';
+  let query = 'UPDATE exam SET deleted = if (deleted = 0, 1, 0) ';
   query += `WHERE id=${MySql.escape(req.body.id)}`;
   Query(query, req, res);
 };

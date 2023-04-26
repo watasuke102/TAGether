@@ -14,6 +14,7 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Toast from '@/common/Toast/Toast';
+import {useWaiting} from '@/common/Waiting';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
@@ -29,6 +30,8 @@ interface Props {
 export default function CategolyDetail(props: Props): React.ReactElement {
   const [is_toast_open, SetIsToastOpen] = React.useState(false);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
+  const [is_delete_modal_open, SetIsDeleteModalOpen] = React.useState(false);
+  const [Waiting, StartWaiting] = useWaiting();
   const [is_exam_shuffle_enabled, SetIsExamShuffleEnabled] = React.useState(false);
   const [is_choice_shuffle_enabled, SetIsChoiceShuffleEnabled] = React.useState(false);
   const [begin_question, SetBeginQuestion] = React.useState(0);
@@ -104,7 +107,6 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   // prettier-ignore
   const info: ButtonInfo[] = props.history ?
     [
-      {text: '閉じる',             icon: 'fas fa-times',       OnClick: props.close,                type: 'material'},
       {text: '間違えた問題一覧',   icon: 'fas fa-list',        OnClick: () => Push('table'),        type: 'material'},
       {text: '解答時の設定',       icon: 'fas fa-cog',         OnClick: () => SetIsModalOpen(true), type: 'material'},
       props.history.correct_count !== props.history.total_question ?
@@ -112,7 +114,6 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         :
         { text: '全問正解', icon: 'fas fa-check', OnClick: () => undefined, type: 'material' },
     ] : [
-      {text: '閉じる',        icon: 'fas fa-times',       OnClick: props.close,                type: 'material'},
       {text: '編集する',      icon: 'fas fa-pen',         OnClick: () => Push('edit'),         type: 'material'},
       {text: '問題一覧',      icon: 'fas fa-list',        OnClick: () => Push('table'),        type: 'material'},
       {text: '解答時の設定',  icon: 'fas fa-cog',         OnClick: () => SetIsModalOpen(true), type: 'material'},
@@ -122,6 +123,10 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   return (
     <>
       <div className={css.container}>
+        <div className={css.button_container}>
+          <Button text='' icon='fas fa-times' OnClick={props.close} type='material' />
+          <Button text={props.data.deleted === 0 ?'ゴミ箱に移動':'ゴミ箱から取り出す'} icon='fas fa-trash-alt' OnClick={() => SetIsDeleteModalOpen(true)} type='material' />
+        </div>
         <textarea disabled={true} value={props.data.title} id={css.title} />
 
         <div className={css.updated_at}>
@@ -143,6 +148,47 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           ))}
         </ButtonContainer>
       </div>
+
+      <Modal isOpen={is_delete_modal_open} close={() => SetIsDeleteModalOpen(false)}>
+        <div className={css.delete_confirm_modal}>
+          {props.data.deleted ? (
+            <p>このカテゴリをゴミ箱から取り出しますか？</p>
+          ) : (
+            <p>このカテゴリをゴミ箱に移動しますか？</p>
+          )}
+          <div className={css.button_container}>
+            <Button
+              text='閉じる'
+              icon='fas fa-times'
+              type='material'
+              OnClick={() => {
+                SetIsDeleteModalOpen(false);
+              }}
+            />
+            <Button
+              text='確定'
+              icon='fas fa-check'
+              type='filled'
+              OnClick={() => {
+                if (!props.data.id) {
+                  return;
+                }
+                const req = new XMLHttpRequest();
+                req.onreadystatechange = () => {
+                  if (req.readyState === 4 && req.status === 200) {
+                    window.location.reload();
+                  }
+                };
+                req.open('DELETE', process.env.API_URL + '/categoly');
+                req.setRequestHeader('Content-Type', 'application/json');
+                req.send(JSON.stringify({id: props.data.id}));
+                StartWaiting();
+              }}
+            />
+          </div>
+        </div>
+      </Modal>
+      <Waiting />
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>

@@ -16,6 +16,7 @@ interface CategolyResponse {
   description: string;
   tag: string;
   list: string;
+  deleted: number;
 }
 
 export default CategolyResponse;

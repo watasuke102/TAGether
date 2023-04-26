@@ -52,6 +52,7 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
     description: '',
     tag: '',
     list: JSON.stringify(exam_default(), undefined, '  '),
+    deleted: 0,
   });
   const [tags, isTagLoading] = useTagData();
 
@@ -88,6 +89,7 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
         description: list_item.description,
         list: list_item.list,
         tag: data_tag,
+        deleted: list_item.deleted,
       });
     });
     if (onComplete) onComplete(res);

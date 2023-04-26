@@ -15,8 +15,8 @@
   padding: 25px 20px;
 
   display: grid;
-  // タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
-  grid-template-rows: 90px 30px auto 1fr auto;
+  // ボタン, タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
+  grid-template-rows: auto 90px 30px auto 1fr auto;
 
   textarea {
     width: 100%;
@@ -28,6 +28,12 @@
       cursor: text;
     }
   }
+}
+
+.button_container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 #title {
@@ -90,6 +96,12 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.delete_confirm_modal {
+  width: 60vw;
+  padding: 30px 50px;
+  text-align: center;
 }
 
 @media screen and (max-width: 450px) {

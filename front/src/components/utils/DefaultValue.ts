@@ -20,6 +20,7 @@ export function categoly_default(): Categoly {
     description: '',
     tag: [],
     list: JSON.stringify(exam_default(), undefined, '  '),
+    deleted: 0,
   };
 }
 

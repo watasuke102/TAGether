@@ -32,7 +32,8 @@ GET において、URL 末尾に id を含めると、特定の id を取得で�
 | desc       | string | 問題カテゴリの説明                          |
 | tag        | string | 問題カテゴリに付けられたタグ (カンマ区切り) |
 | list       | json   | 問題の中身                                  |
+| deleted    | int    | 1 であれば削除済みのカテゴリ                |
 
-POST 時は id 及び updated_at 以外、PUT 時は updated_at 以外を json としてリクエストしてください
+POST 時は id, updated_at, deleted 以外、PUT 時は updated_at, deleted 以外を json としてリクエストしてください
 
 DELETE 時は id のみを json としてリクエストしてください
