@@ -6,15 +6,15 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT SUSHI-WARE License.
 //
-import Loading from '@/common/Loading/Loading';
 import {ExamTable} from '@/pages/examtable';
-import { useCategolyData } from '@/utils/Api';
-import { categoly_default } from '@/utils/DefaultValue';
-import { GetSpecifiedExamHistory } from '@/utils/ManageDB';
+import {useRouter} from 'next/router';
+import React from 'react';
+import Loading from '@/common/Loading/Loading';
+import {useCategolyData} from '@/utils/Api';
+import {categoly_default} from '@/utils/DefaultValue';
+import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
-import { useRouter } from 'next/router';
-import React from 'react';
 
 export default function ExamTablePage(): React.ReactElement {
   const router = useRouter();
@@ -43,7 +43,7 @@ export default function ExamTablePage(): React.ReactElement {
           throw new Error('[FATAL] cannot get ExamHistory');
         }
       });
-    } 
+    }
   });
 
   return is_loading ? <Loading /> : <ExamTable data={data} history={history} />;

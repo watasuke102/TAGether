@@ -20,6 +20,7 @@ import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
+import {CsvExport} from './CsvExport/CsvExport';
 
 interface Props {
   data: Categoly;
@@ -30,6 +31,7 @@ interface Props {
 export default function CategolyDetail(props: Props): React.ReactElement {
   const [is_toast_open, SetIsToastOpen] = React.useState(false);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
+  const [is_csv_export_open, set_is_csv_export_open] = React.useState(false);
   const [is_delete_modal_open, SetIsDeleteModalOpen] = React.useState(false);
   const [Waiting, StartWaiting] = useWaiting();
   const [is_exam_shuffle_enabled, SetIsExamShuffleEnabled] = React.useState(false);
@@ -125,7 +127,18 @@ export default function CategolyDetail(props: Props): React.ReactElement {
       <div className={css.container}>
         <div className={css.button_container}>
           <Button text='' icon='fas fa-times' OnClick={props.close} type='material' />
-          <Button text={props.data.deleted === 0 ?'ゴミ箱に移動':'ゴミ箱から取り出す'} icon='fas fa-trash-alt' OnClick={() => SetIsDeleteModalOpen(true)} type='material' />
+          <Button
+            text='csvとしてダウンロード'
+            icon='fas fa-download'
+            OnClick={() => set_is_csv_export_open(true)}
+            type='material'
+          />
+          <Button
+            text={props.data.deleted === 0 ? 'ゴミ箱に移動' : 'ゴミ箱から取り出す'}
+            icon='fas fa-trash-alt'
+            OnClick={() => SetIsDeleteModalOpen(true)}
+            type='material'
+          />
         </div>
         <textarea disabled={true} value={props.data.title} id={css.title} />
 
@@ -148,6 +161,8 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           ))}
         </ButtonContainer>
       </div>
+
+      <CsvExport data={props.data} is_opening={is_csv_export_open} close={() => set_is_csv_export_open(false)} />
 
       <Modal isOpen={is_delete_modal_open} close={() => SetIsDeleteModalOpen(false)}>
         <div className={css.delete_confirm_modal}>

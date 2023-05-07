@@ -1,0 +1,46 @@
+/*
+ TAGether - Share self-made exam for classmates
+ CsvExport.module.scss
+
+ CopyRight (c) 2020-2022 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT SUSHI-WARE License.
+*/
+
+@import '../../../common/variable';
+
+.container {
+  padding: 16px 12px;
+  min-width: 440px;
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.lang_select {
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: auto 1fr;
+  gap: 8px 20px;
+  padding: 0 8px;
+  align-items: center;
+}
+
+.selectbox_desc {
+  font-size: 1.3em;
+}
+
+.selectbox {
+  display: flex;
+  justify-content: end;
+}
+
+.button_container {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+}
