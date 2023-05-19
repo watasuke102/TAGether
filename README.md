@@ -67,10 +67,6 @@ React (next.js) によるフロントエンド
 
 </details>
 
-## Tips
-
-起動すると生成される /public/sw.js の先頭あたりに`self.__WB_DISABLE_DEV_LOGS = true;`を記述すると、やかましい workbox のログが出なくなる
-
 ## LICENSE
 
 MIT SUSHI-WARE LICENSE
