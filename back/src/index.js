@@ -4,7 +4,7 @@
 // CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
-// This software is released under the MIT SUSHI-WARE License.
+// This software is released under the MIT or MIT SUSHI-WARE License.
 //
 const Config = require('./env.json');
 const Express = require('express');
@@ -32,9 +32,4 @@ app.get('/tag/:id?', Api.GetTag);
 app.post('/tag', Api.AddTag);
 app.put('/tag', Api.UpdateTag);
 
-app.listen(Config.Port, () =>
-  console.info(
-    '[Info] Listening on port %o...',
-    `http://localhost:${Config.Port}`
-  )
-);
+app.listen(Config.Port, () => console.info('[Info] Listening on port %o...', `http://localhost:${Config.Port}`));
