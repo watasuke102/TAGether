@@ -65,7 +65,7 @@
   <g
      id="layer1"
      inkscape:groupmode="layer"
-     inkscape:label="レイヤー 1">
+     inkscape:label="main">
     <path
        d="m 131.23333,67.73333 a 63.5,63.5 0 0 1 -63.499737,63.5 A 63.5,63.5 0 0 1 4.2333298,67.733857 63.5,63.5 0 0 1 67.732539,4.2333298 63.5,63.5 0 0 1 131.23333,67.732275 l -63.5,0.0011 z"
        sodipodi:arc-type="slice"
@@ -79,7 +79,7 @@
        id="path836"
        style="opacity:0.999;fill:#e6e6e6;stroke-width:1.41984;fill-opacity:1" />
     <g
-       aria-label="🔖 "
+       aria-label="tag"
        transform="matrix(0.71703348,0,0,0.71703346,16.805824,31.439608)"
        id="text837"
        style="font-style:normal;font-weight:normal;font-size:112.299px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.39448;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers">

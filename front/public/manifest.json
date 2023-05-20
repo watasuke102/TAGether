@@ -13,6 +13,12 @@
       "src": "/static/icon.png",
       "sizes": "480x480",
       "type": "image/png"
+    },
+    {
+      "src": "/static/icon-maskable.png",
+      "sizes": "480x480",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
