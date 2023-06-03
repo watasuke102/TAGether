@@ -16,6 +16,7 @@ export default class Doc extends Document {
         <Head>
           <meta charSet='utf8' />
           <link rel='icon' href='/static/icon.ico' />
+          <link rel='apple-touch-icon' href='/static/icon-maskable.png' sizes='480x480' />
           <link rel='manifest' href='/manifest.json' />
         </Head>
         <body>
