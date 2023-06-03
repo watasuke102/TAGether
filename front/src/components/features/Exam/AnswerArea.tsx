@@ -9,7 +9,7 @@
 import css from './AnswerArea.module.scss';
 import {useRouter} from 'next/router';
 import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
+import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {Move, Shuffle} from '@/utils/ArrayUtil';

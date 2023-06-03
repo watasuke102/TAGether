@@ -9,7 +9,7 @@
 import css from './ExamEditForms.module.scss';
 import {ExamContext} from '@/pages/edit';
 import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
+import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
