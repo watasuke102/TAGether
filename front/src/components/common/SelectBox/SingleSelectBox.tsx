@@ -21,7 +21,7 @@ export default function SingleSelectBox(props: Props): React.ReactElement {
       {props.list.map((str, i) => {
         return (
           <SelectButton
-            type='single'
+            type='radio'
             id={i === 0 ? 'singleselect-first' : ''}
             key={`select_${str}`}
             status={props.status === str}

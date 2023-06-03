@@ -10,7 +10,7 @@ import css from './SelectButton.module.scss';
 import React from 'react';
 
 interface Props {
-  type: 'multi' | 'single';
+  type: 'check' | 'radio';
   status: boolean;
   desc: string;
   id?: string;
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function SelectButton(props: Props): React.ReactElement {
-  const style = props.type === 'multi' ? css.multi : css.single;
+  const style = props.type === 'check' ? css.multi : css.single;
 
   return (
     <div
@@ -38,7 +38,7 @@ export default function SelectButton(props: Props): React.ReactElement {
           // multiだったらチェックマーク、singleだったらラジオボタンのような円形
           !props.status ? (
             <></>
-          ) : props.type === 'multi' ? (
+          ) : props.type === 'check' ? (
             <span className={`fas fa-check ${css.multi_checked}`} />
           ) : (
             <div className={css.single_checked} />

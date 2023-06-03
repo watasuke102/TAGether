@@ -197,7 +197,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <div key={`examform-select-${i}`}>
               <div className={css.select_form}>
                 <SelectButton
-                  type='single'
+                  type='radio'
                   desc={''}
                   tabIndex={TabIndexList.SelectCorrectAnswer}
                   status={Number(exam[current_page].answer[0]) === i && exam[current_page].answer[0] !== ''}
@@ -232,7 +232,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             <div key={`examform-multiselect-${i}`}>
               <div className={css.select_form}>
                 <SelectButton
-                  type='multi'
+                  type='check'
                   desc={''}
                   tabIndex={TabIndexList.SelectCorrectAnswer}
                   status={exam[current_page].answer.indexOf(String(i)) !== -1}
@@ -426,28 +426,28 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           */}
           <div className={css.type_select}>
             <SelectButton
-              type='single'
+              type='radio'
               desc='テキスト'
               tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'Text'}
               onChange={() => updater.Type.Update(current_page, 'Text')}
             />
             <SelectButton
-              type='single'
+              type='radio'
               desc='選択問題'
               tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'Select'}
               onChange={() => updater.Type.Update(current_page, 'Select')}
             />
             <SelectButton
-              type='single'
+              type='radio'
               desc='複数選択'
               tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'MultiSelect'}
               onChange={() => updater.Type.Update(current_page, 'MultiSelect')}
             />
             <SelectButton
-              type='single'
+              type='radio'
               desc='並び替え'
               tabIndex={TabIndexList.TypeSelect}
               status={(exam[current_page].type ?? 'Text') === 'Sort'}

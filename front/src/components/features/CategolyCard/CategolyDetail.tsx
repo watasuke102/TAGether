@@ -235,13 +235,13 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             （シャッフルされた問題から範囲制限を行うわけではありません）
           </p>
           <SelectButton
-            type='single'
+            type='radio'
             status={is_exam_shuffle_enabled}
             desc='問題順をシャッフル'
             onChange={SetIsExamShuffleEnabled}
           />
           <SelectButton
-            type='single'
+            type='radio'
             status={is_choice_shuffle_enabled}
             desc='選択問題の選択肢をシャッフル'
             onChange={SetIsChoiceShuffleEnabled}

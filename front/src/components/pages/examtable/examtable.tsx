@@ -87,19 +87,19 @@ export default function ExamTable(props: Props): React.ReactElement {
           <>
             <div className={css.filter_selector}>
               <SelectButton
-                type='multi'
+                type='check'
                 desc='全問正解'
                 status={(filter & AnswerState.AllCorrect) !== 0}
                 onChange={f => UpdateFilter(AnswerState.AllCorrect, f)}
               />
               <SelectButton
-                type='multi'
+                type='check'
                 desc='部分正解'
                 status={(filter & AnswerState.PartialCorrect) !== 0}
                 onChange={f => UpdateFilter(AnswerState.PartialCorrect, f)}
               />
               <SelectButton
-                type='multi'
+                type='check'
                 desc='不正解'
                 status={(filter & AnswerState.AllWrong) !== 0}
                 onChange={f => UpdateFilter(AnswerState.AllWrong, f)}

@@ -139,7 +139,7 @@ export function AnswerArea(props: Props): JSX.Element {
           {question_choices.map((choice, i) => (
             <div className={css.select_button} key={`examform_checkbox_${i}`}>
               <SelectButton
-                type='single'
+                type='radio'
                 id={i === 0 ? 'select-first' : ''}
                 desc={choice.choice}
                 status={Number(props.answers[0]) === choice.index && props.answers[0] !== ''}
@@ -159,7 +159,7 @@ export function AnswerArea(props: Props): JSX.Element {
           {question_choices.map((choice, i) => (
             <div className={css.select_button} key={`examform_checkbox_${i}`}>
               <SelectButton
-                type='multi'
+                type='check'
                 id={i === 0 ? 'select-first' : ''}
                 desc={choice.choice}
                 status={props.answers.indexOf(String(choice.index)) !== -1}

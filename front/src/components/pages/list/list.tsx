@@ -129,7 +129,7 @@ export default function list(): React.ReactElement {
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
         <SelectButton
-          type='multi'
+          type='check'
           desc='ゴミ箱内のカテゴリのみ表示'
           status={show_only_trash}
           onChange={SetShowOnlyTrash}

@@ -96,7 +96,7 @@ export function CsvExport(props: Props): React.ReactElement {
     <Modal isOpen={props.is_opening} close={props.close}>
       <div className={css.container}>
         <SelectButton
-          type='multi'
+          type='check'
           desc='WordHolic用のCSVを作成する'
           status={wordholic_mode}
           onChange={set_wordholic_mode}

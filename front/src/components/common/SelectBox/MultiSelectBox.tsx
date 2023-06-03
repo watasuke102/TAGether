@@ -22,7 +22,7 @@ export default function MultiSelectBox(props: Props): React.ReactElement {
         const index = props.status.indexOf(str);
         return (
           <CheckBox
-            type='multi'
+            type='check'
             id={i === 0 ? 'multiselect-first' : ''}
             key={`select_${str}`}
             status={index !== -1}
