@@ -266,9 +266,9 @@ export default function Edit(props: Props): React.ReactElement {
       <h2>問題</h2>
 
       <div className={css.buttons}>
-        <SelectButton type='single' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
+        <SelectButton type='multi' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
         {props.data.version !== 1 && (
-          <SelectButton type='single' status={is_old_form} desc='古い編集画面を使う' onChange={SetIsOldForm} />
+          <SelectButton type='multi' status={is_old_form} desc='古い編集画面を使う' onChange={SetIsOldForm} />
         )}
         <div className={css.pushbutton_wrapper}>
           <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} OnClick={() => RegistCategoly()} />
