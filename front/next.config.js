@@ -1,11 +1,11 @@
-const withPWA = require('next-pwa');
 const path = require('path');
 const env = require('./env.json');
 
+const withPWA = require('next-pwa')({
+  dest: 'public',
+});
+
 module.exports = withPWA({
-  pwa: {
-    dest: 'public',
-  },
   env: env,
   webpack(conf, _opt) {
     conf.resolve.alias['@'] = path.join(__dirname, 'src/components');
