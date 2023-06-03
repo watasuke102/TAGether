@@ -37,6 +37,7 @@ enum TabIndexList {
 const QUESTION_ID = 'ExamEdit_Question';
 
 export default function ExamEditForms(props: Props): React.ReactElement {
+  const is_first_rendering = React.useRef(true);
   const ForceRender = useForceRender();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
@@ -89,6 +90,13 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   }, [Shortcut]);
 
   React.useEffect(() => {
+    is_first_rendering.current = true;
+  }, []);
+  React.useEffect(() => {
+    if (is_first_rendering.current) {
+      is_first_rendering.current = false;
+      return;
+    }
     current_page_ref.current = current_page;
     document.getElementById(QUESTION_ID)?.focus();
   }, [current_page]);
