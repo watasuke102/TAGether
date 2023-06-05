@@ -38,14 +38,23 @@ export default function TagListEdit(props: Props): React.ReactElement {
   const [search_box, SetSearchBox] = React.useState('');
   const [current_tag, SetCurrentTag] = React.useState(props.current_tag);
   const [tag_list, SetTagList] = React.useState(props.tags);
+  const is_first_click = React.useRef(true);
 
   React.useEffect(() => {
     // いつも通りReact.useCallbackとrefを使おうとすると、
     // ピッカーを開くためのクリックでこれが発火してしまい、
     // refはすでに変わっているので閉じてしまう（開けなくなってしまう）
     const CloseOnClickOutside = (ev: MouseEvent) => {
-      if (!is_picker_open) return;
-      if (!document.getElementById(PICKER_ID)?.contains(ev.target as Node)) {
+      const picker = document.getElementById(PICKER_ID);
+      if (!picker) return;
+
+      if (is_first_click.current) {
+        is_first_click.current = false;
+        return;
+      }
+
+      if (!picker.contains(ev.target as Node)) {
+        is_first_click.current = true;
         SetIsPickerOpen(false);
       }
     };
