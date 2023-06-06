@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   mysql:
@@ -8,7 +8,7 @@ services:
       - ./docker/mysql:/docker-entrypoint-initdb.d
       - ./docker/data:/var/lib/mysql
     ports:
-      - '3334:3306'
+      - "3334:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tagether
@@ -19,26 +19,26 @@ services:
     image: phpmyadmin/phpmyadmin
     links:
       - mysql:db
-    ports: 
-      - '8888:80'
-    depends_on: 
+    ports:
+      - "8888:80"
+    depends_on:
       - mysql
 
   back:
-    image: node
+    image: node:18
     volumes:
       - ./back:/back
-    ports: 
-      - '8079:80'
+    ports:
+      - "8079:80"
     working_dir: /back
     entrypoint: "npm start"
     depends_on:
       - mysql
 
   front:
-    image: node
+    image: node:18
     ports:
-      - '3009:3009'
+      - "3009:3009"
     volumes:
       - ./front:/front
     working_dir: /front
