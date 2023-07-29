@@ -107,7 +107,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
     } else {
       SetCurrentPage(to);
     }
-    ForceRender();
   }
 
   function AddExam(at: number) {
