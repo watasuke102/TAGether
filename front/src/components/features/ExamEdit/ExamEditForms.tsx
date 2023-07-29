@@ -42,8 +42,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
   const [current_page, SetCurrentPage] = React.useState(0);
-  const current_page_ref = React.useRef(0);
-  current_page_ref.current = current_page;
 
   const exam = React.useContext(ExamContext);
   const exam_length = React.useRef(0);
@@ -52,42 +50,45 @@ export default function ExamEditForms(props: Props): React.ReactElement {
   const updater = UpdateExam(props.updater, exam.concat());
 
   // ショートカットキー
-  const Shortcut = React.useCallback((e: KeyboardEvent) => {
-    // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
-    if (e.ctrlKey && e.shiftKey && !e.repeat) {
-      switch (e.code) {
-        case 'KeyH':
-        case 'ArrowLeft':
-          MovePageTo(current_page_ref.current - 1);
-          break;
-        case 'KeyL':
-        case 'ArrowRight':
-          MovePageTo(current_page_ref.current + 1);
-          break;
-        case 'KeyA':
-          updater.Type.Update(current_page, 'Text');
-          break;
-        case 'KeyS':
-          updater.Type.Update(current_page, 'Select');
-          break;
-        case 'KeyZ':
-          updater.Type.Update(current_page, 'MultiSelect');
-          break;
-        case 'KeyX':
-          updater.Type.Update(current_page, 'Sort');
-          break;
-        default:
-          return;
-      }
-      ForceRender();
-      e.preventDefault();
-    }
-  }, []);
-
   React.useEffect(() => {
-    window.addEventListener('keydown', e => Shortcut(e));
-    return () => window.removeEventListener('keydown', e => Shortcut(e));
-  }, [Shortcut]);
+    const Shortcut = (e: KeyboardEvent) => {
+      // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
+      if (e.ctrlKey && e.shiftKey && !e.repeat) {
+        switch (e.code) {
+          case 'KeyH':
+          case 'ArrowLeft':
+            MovePageTo(current_page - 1);
+            break;
+          case 'KeyL':
+          case 'ArrowRight':
+            MovePageTo(current_page + 1);
+            break;
+          case 'KeyA':
+            updater.Type.Update(current_page, 'Text');
+            ForceRender();
+            break;
+          case 'KeyS':
+            updater.Type.Update(current_page, 'Select');
+            ForceRender();
+            break;
+          case 'KeyZ':
+            updater.Type.Update(current_page, 'MultiSelect');
+            ForceRender();
+            break;
+          case 'KeyX':
+            updater.Type.Update(current_page, 'Sort');
+            ForceRender();
+            break;
+          default:
+            return;
+        }
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', Shortcut);
+    return () => window.removeEventListener('keydown', Shortcut);
+  }, [current_page]);
 
   React.useEffect(() => {
     is_first_rendering.current = true;
@@ -97,7 +98,6 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       is_first_rendering.current = false;
       return;
     }
-    current_page_ref.current = current_page;
     document.getElementById(QUESTION_ID)?.focus();
   }, [current_page]);
 
