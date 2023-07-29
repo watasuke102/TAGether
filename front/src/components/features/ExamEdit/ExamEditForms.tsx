@@ -8,8 +8,8 @@
 //
 import css from './ExamEditForms.module.scss';
 import {ExamContext} from '@/pages/edit';
-import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
+import React from 'react';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
@@ -38,7 +38,6 @@ const QUESTION_ID = 'ExamEdit_Question';
 
 export default function ExamEditForms(props: Props): React.ReactElement {
   const is_first_rendering = React.useRef(true);
-  const ForceRender = useForceRender();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
   const [current_page, SetCurrentPage] = React.useState(0);
@@ -65,19 +64,15 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             break;
           case 'KeyA':
             updater.Type.Update(current_page, 'Text');
-            ForceRender();
             break;
           case 'KeyS':
             updater.Type.Update(current_page, 'Select');
-            ForceRender();
             break;
           case 'KeyZ':
             updater.Type.Update(current_page, 'MultiSelect');
-            ForceRender();
             break;
           case 'KeyX':
             updater.Type.Update(current_page, 'Sort');
-            ForceRender();
             break;
           default:
             return;

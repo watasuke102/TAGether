@@ -292,7 +292,7 @@ export default function Edit(props: Props): React.ReactElement {
             />
           ) : (
             <ExamContext.Provider value={exam}>
-              <ExamEditForms updater={e => SetExam(e)} />
+              <ExamEditForms updater={e => SetExam(e.concat())} />
             </ExamContext.Provider>
           )}
         </>
