@@ -7,9 +7,9 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 //
 import css from './AnswerArea.module.scss';
+import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import {useRouter} from 'next/router';
 import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {Move, Shuffle} from '@/utils/ArrayUtil';
@@ -37,62 +37,102 @@ export function AnswerArea(props: Props): JSX.Element {
   answers_ref.current = props.answers;
 
   // ショートカットキー
-  const Shortcut = React.useCallback(
-    (e: KeyboardEvent) => {
-      // Ctrl + Shift + ↓↑ or jkで動かす
-      if (e.ctrlKey && e.shiftKey && !e.repeat && !props.disable) {
-        let direction = 0;
-        switch (e.code) {
-          case 'KeyJ':
-          case 'ArrowDown':
-            e.preventDefault();
-            direction = 1;
-            break;
-          case 'KeyK':
-          case 'ArrowUp':
-            e.preventDefault();
-            direction = -1;
-            break;
-          default:
-            return;
-        }
-        if (exam_ref.current.type !== 'Sort') return;
-        // 一つ上下に移動させる
-        const from_element = document.activeElement;
-        const index = Number(from_element?.attributes.getNamedItem('sort_index')?.value);
-        if (Number.isNaN(index)) return;
-        const to = index + direction;
-        if (to < 0 || to >= exam_ref.current.answer.length) return;
-        MoveAnswerOnSort(index, to);
-        // 移動先の要素にフォーカスする
-        const to_element = document.querySelector<HTMLElement>(`[sort_index="${to}"]`);
-        to_element?.focus();
-        // アニメーションを発生させる
-        if (to_element) {
-          const e = to_element.parentElement;
-          if (!e) return;
-          e.animate(
-            [{transform: `translateY(${(e.clientHeight + 20) * -direction}px)`}, {transform: 'translateY(0px)'}],
-            {duration: 300, easing: 'ease-out'},
-          );
-        }
-        if (from_element instanceof HTMLElement) {
-          const e = from_element.parentElement;
-          if (!e) return;
-          // prettier-ignore
-          e.animate(
-            [{ transform: `translateY(${(e.clientHeight + 20) * direction}px)` }, { transform: 'translateY(0px)' }],
-            { duration: 300, easing: 'ease-out' }
-          );
-        }
-      }
-    },
-    [props.answers],
-  );
   React.useEffect(() => {
+    const Shortcut = (e: KeyboardEvent) => {
+      if (!e.ctrlKey || !e.shiftKey || e.repeat || props.disable) {
+        return;
+      }
+
+      if (exam_ref.current.type === 'Select' || exam_ref.current.type === 'MultiSelect') {
+        const num = e.code.match(/(Digit|Numpad)([1-9])/);
+        if (!num || !num[2]) {
+          return;
+        }
+        switch (exam_ref.current.type) {
+          case 'Select':
+            set_select_choice(Number(num[2]) - 1);
+            break;
+          case 'MultiSelect':
+            toggle_multi_select(Number(num[2]) - 1);
+            break;
+        }
+        e.preventDefault();
+        return;
+      }
+
+      if (exam_ref.current.type !== 'Sort') {
+        return;
+      }
+      let direction = 0;
+      // Ctrl + Shift + ↓↑ or jkで動かす
+      switch (e.code) {
+        case 'KeyJ':
+        case 'ArrowDown':
+          direction = 1;
+          break;
+        case 'KeyK':
+        case 'ArrowUp':
+          direction = -1;
+          break;
+        default:
+          return;
+      }
+      e.preventDefault();
+      // 一つ上下に移動させる
+      const from_element = document.activeElement;
+      const index = Number(from_element?.attributes.getNamedItem('sort_index')?.value);
+      if (Number.isNaN(index)) return;
+      const to = index + direction;
+      if (to < 0 || to >= exam_ref.current.answer.length) return;
+      MoveAnswerOnSort(index, to);
+      // 移動先の要素にフォーカスする
+      const to_element = document.querySelector<HTMLElement>(`[sort_index="${to}"]`);
+      to_element?.focus();
+      // アニメーションを発生させる
+      if (to_element) {
+        const e = to_element.parentElement;
+        if (!e) return;
+        e.animate(
+          [{transform: `translateY(${(e.clientHeight + 20) * -direction}px)`}, {transform: 'translateY(0px)'}],
+          {duration: 300, easing: 'ease-out'},
+        );
+      }
+      if (from_element instanceof HTMLElement) {
+        const e = from_element.parentElement;
+        if (!e) return;
+        // prettier-ignore
+        e.animate(
+          [{ transform: `translateY(${(e.clientHeight + 20) * direction}px)` }, { transform: 'translateY(0px)' }],
+          { duration: 300, easing: 'ease-out' }
+        );
+      }
+    };
+
     window.addEventListener('keydown', Shortcut);
     return () => window.removeEventListener('keydown', Shortcut);
-  }, []);
+  }, [props.answers]);
+
+  const set_select_choice = React.useCallback(
+    (index: number) => {
+      if (props.disable) return;
+      props.setAnswers([String(index)]);
+    },
+    [props.disable],
+  );
+
+  const toggle_multi_select = React.useCallback(
+    (index: number) => {
+      if (props.disable || index >= (props.exam.question_choices?.length ?? 0)) return;
+      let tmp = props.answers.concat();
+      if (tmp.includes(String(index))) {
+        tmp = tmp.filter(e => e !== String(index));
+      } else {
+        tmp.push(String(index));
+      }
+      props.setAnswers(tmp);
+    },
+    [props.disable, props.answers],
+  );
 
   const question_choices = React.useMemo(() => {
     const list =
@@ -144,8 +184,9 @@ export function AnswerArea(props: Props): JSX.Element {
                 desc={choice.choice}
                 status={Number(props.answers[0]) === choice.index && props.answers[0] !== ''}
                 onChange={f => {
-                  if (!f || props.disable) return;
-                  props.setAnswers([String(choice.index)]);
+                  if (f) {
+                    set_select_choice(choice.index);
+                  }
                 }}
               />
             </div>
@@ -163,16 +204,7 @@ export function AnswerArea(props: Props): JSX.Element {
                 id={i === 0 ? 'select-first' : ''}
                 desc={choice.choice}
                 status={props.answers.indexOf(String(choice.index)) !== -1}
-                onChange={f => {
-                  if (props.disable) return;
-                  let tmp = props.answers.concat();
-                  if (f) {
-                    tmp.push(String(choice.index));
-                  } else {
-                    tmp = tmp.filter(e => e !== String(choice.index));
-                  }
-                  props.setAnswers(tmp);
-                }}
+                onChange={() => toggle_multi_select(choice.index)}
               />
             </div>
           ))}
