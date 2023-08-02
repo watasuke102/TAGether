@@ -182,19 +182,21 @@ export default function Edit(props: Props): React.ReactElement {
       ...categoly,
       version: is_old_form ? 1 : 2,
       tag: tag.toString(),
-      // インデントを削除
-      list: is_json_edit
-        ? JSON.stringify(JSON.parse(categoly.list))
-        : JSON.stringify(
-            exam_tmp.map(e => {
-              return {
-                ...e,
-                question_choices: e.question_choices?.map(e => e.trim()) ?? [],
-                answer: e.answer.map(e => e.trim()),
-              };
-            }),
-          ),
     };
+    if (is_json_edit) {
+      // インデントを削除
+      api_body.list = JSON.stringify(JSON.parse(categoly.list));
+    } else {
+      api_body.list = JSON.stringify(
+        exam_tmp.map(e => {
+          return {
+            ...e,
+            question_choices: e.question_choices?.map(e => e.trim()) ?? [],
+            answer: e.answer.map(e => e.trim()),
+          };
+        }),
+      );
+    }
 
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
