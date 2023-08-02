@@ -14,18 +14,24 @@ import CategolyResponse from '@mytypes/CategolyResponse';
 import FeatureRequest from '@mytypes/FeatureRequest';
 import TagData from '@mytypes/TagData';
 
-function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void): [T[], boolean] {
+function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void, without_list?: boolean): [T[], boolean] {
   const [is_loading, SetIsLoading] = React.useState(true);
   const [data, SetData] = React.useState([init]);
   const router = useRouter();
   const {id} = router.query;
   let id_str = '';
-  if (target === 'categoly') id_str = Array.isArray(id) ? id[0] : id ?? '';
+  let parameter = '';
+  if (target === 'categoly') {
+    id_str = Array.isArray(id) ? id[0] : id ?? '';
+    if (without_list === true) {
+      parameter = '?without_list=true';
+    }
+  }
 
   React.useEffect(() => {
     if (!router.isReady) return;
     (async () =>
-      GetFromApi<T>(target, id_str).then(res => {
+      GetFromApi<T>(target, id_str, parameter).then(res => {
         if (onComplete) onComplete(res);
         SetData(res);
         SetIsLoading(false);
@@ -40,7 +46,7 @@ export const useRequestData = (onComplete?: (e: FeatureRequest[]) => void): [Fea
 export const useTagData = (onComplete?: (e: TagData[]) => void): [TagData[], boolean] =>
   useApiData<TagData>('tag', tagdata_default(), onComplete);
 
-export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly[], boolean] => {
+export const useCategolyData = (without_list: boolean, onComplete?: (e: Categoly[]) => void): [Categoly[], boolean] => {
   const [data, SetData] = React.useState([categoly_default()]);
   const [is_loading, SetIsLoading] = React.useState(true);
 
@@ -87,7 +93,7 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
         updated_at: list_item.updated_at,
         version: list_item.version,
         description: list_item.description,
-        list: list_item.list,
+        list: list_item.list ?? '',
         tag: data_tag,
         deleted: list_item.deleted,
       });
@@ -100,12 +106,12 @@ export const useCategolyData = (onComplete?: (e: Categoly[]) => void): [Categoly
   return [data, is_loading];
 };
 
-export async function GetFromApi<T>(target: string, id?: string): Promise<T[]> {
+export async function GetFromApi<T>(target: string, id?: string, parameter?: string): Promise<T[]> {
   // 渡されたURLクエリ (context.query.id) からidを取得
   // APIでカテゴリを取得する
   let data: T[] = [];
   try {
-    data = await (await fetch(`${process.env.API_URL ?? ''}/${target}/${id ?? ''}`)).json();
+    data = await (await fetch(`${process.env.API_URL ?? ''}/${target}/${id ?? ''}${parameter ?? ''}`)).json();
   } catch {
     data = [];
   }

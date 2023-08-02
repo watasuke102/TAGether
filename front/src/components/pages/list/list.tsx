@@ -53,7 +53,7 @@ export default function list(): React.ReactElement {
   const [search_str, SetSearchStr] = React.useState('');
   const [radio_state, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
-  const [list, isLoading] = useCategolyData();
+  const [list, isLoading] = useCategolyData(true);
 
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [categoly_name, SetCategolyName] = React.useState('');

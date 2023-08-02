@@ -15,7 +15,7 @@ interface CategolyResponse {
   title: string;
   description: string;
   tag: string;
-  list: string;
+  list?: string;
   deleted: number;
 }
 

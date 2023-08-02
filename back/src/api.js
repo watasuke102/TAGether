@@ -70,7 +70,9 @@ function Query(query, req, resp) {
 
 // カテゴリ
 exports.GetCategoly = (req, res) => {
-  let query = 'SELECT * FROM exam';
+  let query = `SELECT id, title, description, tag, ${
+    req.query.without_list == 'true' ? '' : 'list,'
+  } updated_at, version, deleted FROM exam`;
   if (req.params.id) query += ' WHERE id = ' + MySql.escape(req.params.id);
   Query(query, req, res);
 };

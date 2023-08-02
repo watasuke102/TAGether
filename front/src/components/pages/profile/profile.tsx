@@ -23,7 +23,7 @@ export default function profile(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
-  const [data, isLoading] = useCategolyData();
+  const [data, isLoading] = useCategolyData(true);
 
   const InitExamHistory = () => {
     GetExamHistory().then(res => {

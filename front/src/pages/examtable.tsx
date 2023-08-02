@@ -28,7 +28,7 @@ export default function ExamTablePage(): React.ReactElement {
 
   const [data, SetData] = React.useState<Categoly>(categoly_default());
   const [history, SetHistory] = React.useState<ExamHistory | undefined>();
-  useCategolyData(categoly => {
+  useCategolyData(false, categoly => {
     if (id !== undefined) {
       // 通常
       OnComplete(categoly[0]);
