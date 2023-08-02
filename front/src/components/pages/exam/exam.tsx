@@ -379,22 +379,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         {/* 問題文、解答欄 */}
         <div className={css.exam}>
           <div className={css.question_area}>
-            <div>
-              <span id={css.mondai}>問題</span>
-            </div>
-            <div className={css.question_text}>
-              <p>
-                {exam[index].question.split('\n').map(str => {
-                  return (
-                    <>
-                      {' '}
-                      {str}
-                      <br />{' '}
-                    </>
-                  );
-                })}
-              </p>
-            </div>
+            <BreakWithCR str={exam[index].question} />
           </div>
 
           <form>

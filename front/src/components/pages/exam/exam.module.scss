@@ -27,13 +27,8 @@
 }
 
 .question_area {
-  display: grid;
-  grid-template-columns: 80px 1fr;
   font-size: 20px;
   border-bottom: 3px solid;
-}
-
-.question_text {
   word-break: break-word;
 }
 
@@ -141,6 +136,8 @@
   .exam,
   .state_and_answer {
     width: 90vw;
+  }
+  .state_and_answer {
     margin-top: 50px;
   }
 
