@@ -143,6 +143,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   function CheckAnswer(): void {
     const result: ExamState = exam_state_ref.current[index_ref.current];
     result.checked = true;
+    result.user_answer = result.user_answer.map(e => e.trim());
     let all_correct = true;
     let total_questions = total_questions_ref.current;
     let correct_answers = correct_answers_ref.current;
@@ -171,7 +172,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         correct = false;
         // '&'で区切る（AもしくはBみたいな数種類の正解を用意できる）
         e.split('&').forEach(ans => {
-          if (exam_state_ref.current[index_ref.current].user_answer[i] === ans && !correct) {
+          if (result.user_answer[i].trim() === ans && !correct) {
             // 合ってたら正解数と全体の正解数をインクリメント
             correct = true;
             result.correct_count++;
