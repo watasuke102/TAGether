@@ -174,7 +174,7 @@ export default function list(): React.ReactElement {
       {isLoading ? (
         <Loading />
       ) : (
-        <IndexedContainer len={list.length} width='300px'>
+        <IndexedContainer len={list.filter(e => e.deleted === Number(show_only_trash)).length} width='300px'>
           {CardList()}
         </IndexedContainer>
       )}
