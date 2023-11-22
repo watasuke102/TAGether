@@ -7,7 +7,6 @@ CREATE TABLE `exam` (
   `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tag`         text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `list` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`list`)),
-  `tag`         text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `deleted`     boolean NOT NULL DEFAULT false,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
