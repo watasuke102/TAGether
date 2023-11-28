@@ -106,7 +106,8 @@ exports.AddCategoly = (req, res) => {
 
 exports.UpdateCategoly = (req, res) => {
   const id = MySql.escape(req.body.id);
-  Query(`SELECT * FROM exam WHERE id=${id}`, req, res, (err, res, resp) => {
+  // eslint-disable-next-line no-unused-vars
+  Query(`SELECT * FROM exam WHERE id=${id}`, req, res, (err, res, _) => {
     if (err) {
       Log('ERROR (exam query for Webhook)', err);
       return;
@@ -169,7 +170,8 @@ exports.AddTag = (req, res) => {
 
 exports.UpdateTag = (req, res) => {
   const id = MySql.escape(req.body.id);
-  Query(`SELECT * FROM tag WHERE id=${id}`, req, res, (err, res, resp) => {
+  // eslint-disable-next-line no-unused-vars
+  Query(`SELECT * FROM tag WHERE id=${id}`, req, res, (err, res, _) => {
     if (err) {
       Log('ERROR (tag query for Webhook)', err);
       return;
