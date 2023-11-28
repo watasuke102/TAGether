@@ -9,11 +9,11 @@
 const Config = require('./env.json');
 const MySql = require('mysql');
 
-function Log(mes) {
+function Log(...mes) {
   const DateFormat = require('date-fns');
   const date = new Date();
   date.setHours(date.getHours() + 9);
-  console.info(DateFormat.format(date, '[yyyy-MM-dd HH:mm:ss]'), mes);
+  console.info(DateFormat.format(date, '[yyyy-MM-dd HH:mm:ss]'), ...mes);
 }
 
 function Success(resp, data) {
@@ -28,17 +28,32 @@ function Error(resp, mes) {
 function WebHook(title, field) {
   if (Config.Webhook === '') return;
   const Request = require('request');
-  Request.post({
-    url: Config.Webhook,
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify({
-      avatar_url: 'https://data.watasuke.net/icon.png',
-      embeds: [{title: title, fields: field}],
-    }),
-  });
+  Request.post(
+    {
+      url: Config.Webhook,
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({
+        avatar_url: 'https://data.watasuke.net/icon.png',
+        embeds: [{title: title, fields: field}],
+      }),
+    },
+    (err, res) => {
+      if (err) {
+        Log('Webhook error:', err);
+      }
+      if (res) {
+        Log(`Webhook res (${res.statusCode}):`, res.statusMessage);
+      }
+    },
+  );
 }
 
-function Query(query, req, resp) {
+function HandleQueryDefault(err, res, resp) {
+  if (err) Error(resp, err.sqlMessage);
+  else Success(resp, res);
+}
+
+function Query(query, req, resp, handler) {
   if (Config.AllowOrigin != '*' && req.headers.origin != Config.AllowOrigin) {
     Log(`BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`);
     resp.status(444).end();
@@ -52,7 +67,7 @@ function Query(query, req, resp) {
   let isFailed = false;
   connection.connect(err => {
     if (err) {
-      console.error(err);
+      Log('ERROR', err);
       Error(err, err.sqlMessage);
       isFailed = true;
     }
@@ -60,10 +75,7 @@ function Query(query, req, resp) {
   if (isFailed) return;
 
   Log(`(Host: ${req.headers.host}) ${query}`);
-  connection.query(query, (err, res) => {
-    if (err) Error(resp, err.sqlMessage);
-    else Success(resp, res);
-  });
+  connection.query(query, (err, res) => (handler ?? HandleQueryDefault)(err, res, resp));
 
   connection.end();
 }
@@ -93,12 +105,25 @@ exports.AddCategoly = (req, res) => {
 };
 
 exports.UpdateCategoly = (req, res) => {
+  const id = MySql.escape(req.body.id);
+  Query(`SELECT * FROM exam WHERE id=${id}`, req, res, (err, res, resp) => {
+    if (err) {
+      Log('ERROR (exam query for Webhook)', err);
+      return;
+    }
+    if (req.body.list === res[0].list) {
+      // no diff
+      return;
+    }
+    WebHook('カテゴリ更新', [{name: 'カテゴリ名', value: req.body.title}]);
+  });
+
   let query = 'UPDATE exam SET ';
   query += `title=${MySql.escape(req.body.title)},`;
   query += `description=${MySql.escape(req.body.description)},`;
   query += `tag=${MySql.escape(req.body.tag)},`;
   query += `list=${MySql.escape(req.body.list)} `;
-  query += `WHERE id=${MySql.escape(req.body.id)}`;
+  query += `WHERE id=${id}`;
   Query(query, req, res);
 };
 
@@ -120,7 +145,7 @@ exports.AddRequest = (req, res) => {
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
 
-  WebHook('新規要望が投稿されました', [{name: '内容', value: req.body.body}]);
+  WebHook('新規要望', [{name: '内容', value: req.body.body}]);
 };
 
 // タグ
@@ -143,9 +168,20 @@ exports.AddTag = (req, res) => {
 };
 
 exports.UpdateTag = (req, res) => {
+  const id = MySql.escape(req.body.id);
+  Query(`SELECT * FROM tag WHERE id=${id}`, req, res, (err, res, resp) => {
+    if (err) {
+      Log('ERROR (tag query for Webhook)', err);
+      return;
+    }
+    WebHook('タグ更新', [
+      {name: 'diff (name)', value: `\`\`\`diff\n- ${res[0].name}\n+ ${req.body.name}\n\`\`\``},
+      {name: 'diff (description)', value: `\`\`\`diff\n- ${res[0].description}\n+ ${req.body.description}\n\`\`\``},
+    ]);
+  });
   let query = 'UPDATE tag SET ';
   query += `name=${MySql.escape(req.body.name)},`;
   query += `description=${MySql.escape(req.body.description)} `;
-  query += `WHERE id=${MySql.escape(req.body.id)}`;
+  query += `WHERE id=${id}`;
   Query(query, req, res);
 };
