@@ -16,7 +16,7 @@ app.use(Express.json());
 app.use((_, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, Content-Type');
   res.header('Access-Control-Allow-Methods', 'POST, PUT, GET, DELETE');
-  res.header('Access-Control-Allow-Origin', Config.AllowOrigin);
+  res.header('Access-Control-Allow-Origin', Config.allow_origin);
   next();
 });
 
@@ -32,4 +32,4 @@ app.get('/tag/:id?', Api.GetTag);
 app.post('/tag', Api.AddTag);
 app.put('/tag', Api.UpdateTag);
 
-app.listen(Config.Port, () => console.info('[Info] Listening on port %o...', `http://localhost:${Config.Port}`));
+app.listen(Config.port, () => console.info('[Info] Listening on port %o...', `http://localhost:${Config.port}`));

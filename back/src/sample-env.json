@@ -1,8 +1,12 @@
 {
-  "Port": 80,
-  "AllowOrigin": "*",
-  "Webhook": "",
-  "MySql": {
+  "port": 80,
+  "allow_origin": "*",
+  "webhook": {
+    "categoly_add": "",
+    "tag_request_add": "",
+    "update": ""
+  },
+  "mysql": {
     "host": "mysql",
     "user": "root",
     "password": "root",

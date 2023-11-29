@@ -25,12 +25,12 @@ function Error(resp, mes) {
   resp.status(400);
 }
 
-function WebHook(title, field) {
-  if (Config.Webhook === '') return;
+function WebHook(url, title, field) {
+  if (url === '') return;
   const Request = require('request');
   Request.post(
     {
-      url: Config.Webhook,
+      url,
       headers: {'content-type': 'application/json'},
       body: JSON.stringify({
         avatar_url: 'https://data.watasuke.net/icon.png',
@@ -54,7 +54,7 @@ function HandleQueryDefault(err, res, resp) {
 }
 
 function Query(query, req, resp, handler) {
-  if (Config.AllowOrigin != '*' && req.headers.origin != Config.AllowOrigin) {
+  if (Config.allow_origin != '*' && req.headers.origin != Config.allow_origin) {
     Log(`BLOCKED from ${req.headers.origin} (IP => ${req.connection.remoteAddress})`);
     resp.status(444).end();
     return;
@@ -62,7 +62,7 @@ function Query(query, req, resp, handler) {
 
   const connection = MySql.createConnection({
     stringifyObjects: true,
-    ...Config.MySql,
+    ...Config.mysql,
   });
   let isFailed = false;
   connection.connect(err => {
@@ -98,7 +98,7 @@ exports.AddCategoly = (req, res) => {
   query += ` ${MySql.escape(req.body.list)})`;
   Query(query, req, res);
 
-  WebHook('新規カテゴリ追加', [
+  WebHook(Config.webhook.categoly_add, '新規カテゴリ追加', [
     {name: '名前', value: req.body.title},
     {name: '説明', value: req.body.description},
   ]);
@@ -116,7 +116,7 @@ exports.UpdateCategoly = (req, res) => {
       // no diff
       return;
     }
-    WebHook('カテゴリ更新', [{name: 'カテゴリ名', value: req.body.title}]);
+    WebHook(Config.webhook.update, 'カテゴリ更新', [{name: 'カテゴリ名', value: req.body.title}]);
   });
 
   let query = 'UPDATE exam SET ';
@@ -146,7 +146,7 @@ exports.AddRequest = (req, res) => {
   query += `(${MySql.escape(req.body.body)})`;
   Query(query, req, res);
 
-  WebHook('新規要望', [{name: '内容', value: req.body.body}]);
+  WebHook(Config.webhook.tag_request_add, '新規要望', [{name: '内容', value: req.body.body}]);
 };
 
 // タグ
@@ -162,7 +162,7 @@ exports.AddTag = (req, res) => {
   query += ` ${MySql.escape(req.body.description)})`;
   Query(query, req, res);
 
-  WebHook('新規タグ追加', [
+  WebHook(Config.webhook.tag_request_add, '新規タグ追加', [
     {name: '名前', value: req.body.name},
     {name: '説明', value: req.body.description},
   ]);
@@ -176,7 +176,7 @@ exports.UpdateTag = (req, res) => {
       Log('ERROR (tag query for Webhook)', err);
       return;
     }
-    WebHook('タグ更新', [
+    WebHook(Config.webhook.update, 'タグ更新', [
       {name: 'diff (name)', value: `\`\`\`diff\n- ${res[0].name}\n+ ${req.body.name}\n\`\`\``},
       {name: 'diff (description)', value: `\`\`\`diff\n- ${res[0].description}\n+ ${req.body.description}\n\`\`\``},
     ]);
