@@ -252,6 +252,11 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         } else {
           //そうでないなら次へボタン
           SetNextButtonState(NextButtonState.next_question);
+          // スクロールをリセット
+          // 正解が下に表示される場合はリセットしない
+          if (document.body.clientWidth > 700) {
+            window.scrollTo({ top: 0 })
+          }
         }
         break;
 
@@ -268,6 +273,9 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           tmp[next_index].user_answer = Shuffle(exam[next_index].answer);
           SetExamState(tmp);
         }
+
+        // スクロールをリセット
+        window.scrollTo({ top: 0 })
         break;
 
       // 終了ボタンを押したらモーダルウィンドウを表示
@@ -280,6 +288,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     if (index_ref.current === 0) return;
     // indexの変更
     ChangeIndex(index_ref.current - 1);
+    // スクロールをリセット
+    window.scrollTo({ top: 0 })
   }
 
   function NextButton(): React.ReactElement {
