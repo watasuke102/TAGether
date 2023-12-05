@@ -16,7 +16,6 @@ import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {Move} from '@/utils/ArrayUtil';
-import {useForceRender} from '@/utils/ForceRender';
 import UpdateExam from '@/utils/UpdateExam';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Exam from '@mytypes/Exam';
