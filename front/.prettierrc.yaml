@@ -6,6 +6,8 @@ trailingComma: 'all'
 jsxSingleQuote: true
 bracketSpacing: false
 
+plugins:
+  - '@trivago/prettier-plugin-sort-imports'
 # importの種類ごとに改行を挟まない
 importOrderSeparation: false
 importOrderCaseInsensitive: false

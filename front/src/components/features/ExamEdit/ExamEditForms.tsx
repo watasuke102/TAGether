@@ -1,11 +1,9 @@
 // TAGether - Share self-made exam for classmates
-// ExamEditForms.tsx
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 import css from './ExamEditForms.module.scss';
 import {ExamContext} from '@/pages/edit';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';

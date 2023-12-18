@@ -1,11 +1,9 @@
 // TAGether - Share self-made exam for classmates
-// _app.tsx
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 import {AppProps} from 'next/app';
 import Head from 'next/head';
 import NProgress from 'nprogress';

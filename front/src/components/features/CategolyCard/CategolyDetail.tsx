@@ -1,11 +1,9 @@
 // TAGether - Share self-made exam for classmates
-// CategolyDetail.tsx
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 import css from './CategolyDetail.module.scss';
 import Router from 'next/router';
 import React from 'react';

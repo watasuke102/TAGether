@@ -1,11 +1,9 @@
 // TAGether - Share self-made exam for classmates
-// exam.tsx
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 import css from './exam.module.scss';
 import {format} from 'date-fns';
 import Router from 'next/router';
@@ -255,7 +253,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
           // スクロールをリセット
           // 正解が下に表示される場合はリセットしない
           if (document.body.clientWidth > 700) {
-            window.scrollTo({ top: 0 });
+            window.scrollTo({top: 0});
           }
         }
         break;
@@ -275,7 +273,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
         }
 
         // スクロールをリセット
-        window.scrollTo({ top: 0 });
+        window.scrollTo({top: 0});
         break;
 
       // 終了ボタンを押したらモーダルウィンドウを表示
@@ -289,7 +287,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
     // indexの変更
     ChangeIndex(index_ref.current - 1);
     // スクロールをリセット
-    window.scrollTo({ top: 0 });
+    window.scrollTo({top: 0});
   }
 
   function NextButton(): React.ReactElement {

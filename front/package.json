@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "fmt": "prettier --write src/",
     "check": "npm run lint && npm run fmt && npm run build",
     "dev": "next dev -p 3009",
@@ -16,10 +16,12 @@
   "license": "ISC",
   "dependencies": {
     "@hello-pangea/dnd": "^16.5.0",
+    "@planetscale/database": "^1.13.0",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "date-fns": "^2.30.0",
+    "drizzle-orm": "^0.29.1",
     "framer-motion": "^10.16.16",
     "gsap": "^3.12.4",
     "localforage": "^1.10.0",
@@ -37,9 +39,14 @@
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
+    "drizzle-kit": "^0.20.7",
     "eslint": "^8.56.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-next": "^14.0.4",
+    "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "prettier": "^3.1.1"
   }
 }

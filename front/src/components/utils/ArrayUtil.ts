@@ -1,11 +1,9 @@
-// TAGether - Share self-made data for classmates
-// Shuffle.ts
+// TAGether - Share self-made exam for classmates
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 
 // Fisher–Yates法によって配列をシャッフルして返す
 export function Shuffle<T>(e: Array<T>): Array<T> {

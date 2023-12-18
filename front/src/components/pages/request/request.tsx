@@ -1,11 +1,9 @@
 // TAGether - Share self-made exam for classmates
-// request.tsx
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 import css from './request.module.scss';
 import {useRouter} from 'next/router';
 import React from 'react';
@@ -44,7 +42,6 @@ export default function Request(): React.ReactElement {
       <p>
         開発状況（ToDo）は<a href='https://0e0.pw/lusM'>こちら</a>
       </p>
-
       {/* 機能要望の送信フォーム */}
       <p>
         もし要望がある場合は、気軽に投稿してください。
@@ -72,7 +69,6 @@ export default function Request(): React.ReactElement {
           />{' '}
         </div>
       </div>
-
       <hr />
       {isLoading ? (
         <Loading />

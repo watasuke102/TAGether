@@ -1,11 +1,9 @@
 // TAGether - Share self-made exam for classmates
-// ParseAnswer.tsx
+// CopyRight (c) 2020-2023 watasuke
 //
-// CopyRight (c) 2020-2022 Watasuke
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-//
 import css from './ParseAnswer.module.scss';
 import React from 'react';
 import Exam from '@mytypes/Exam';
