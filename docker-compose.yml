@@ -25,7 +25,7 @@ services:
       - mysql
 
   back:
-    image: node:18
+    image: node:20
     volumes:
       - ./back:/back
     ports:
@@ -36,7 +36,7 @@ services:
       - mysql
 
   front:
-    image: node:18
+    image: node:20
     ports:
       - "3009:3009"
     volumes:
