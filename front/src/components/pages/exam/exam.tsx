@@ -4,11 +4,12 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './exam.module.scss';
 import {format} from 'date-fns';
-import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
+import {useRouter} from 'next/navigation';
 import BreakWithCR from '@/common/BreakWithCR/BreakWithCR';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
@@ -62,6 +63,8 @@ export default function ExamPageComponent(props: Props): JSX.Element {
   const [total_questions, SetTotalQuestions] = React.useState(0);
   const total_questions_ref = React.useRef(0);
   total_questions_ref.current = total_questions;
+
+  const router = useRouter();
 
   const [exam_state, SetExamState] = React.useState(
     (() => {
@@ -439,7 +442,7 @@ export default function ExamPageComponent(props: Props): JSX.Element {
                 text={'編集する'}
                 icon={'fas fa-pen'}
                 type={'material'}
-                OnClick={() => Router.push('/edit?id=' + props.data.id)}
+                OnClick={() => router.push('/edit?id=' + props.data.id)}
               />
             ) : (
               <></>
@@ -449,10 +452,10 @@ export default function ExamPageComponent(props: Props): JSX.Element {
               icon={'fas fa-list'}
               type={'material'}
               OnClick={() => {
-                Router.push(`/examtable?history_id=${history_id}`);
+                router.push(`/examtable?history_id=${history_id}`);
               }}
             />
-            <Button text={'前のページへ'} icon={'fas fa-arrow-left'} type={'filled'} OnClick={Router.back} />
+            <Button text={'前のページへ'} icon={'fas fa-arrow-left'} type={'filled'} OnClick={router.back} />
           </ButtonContainer>
         </div>
       </Modal>

@@ -4,8 +4,9 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './tag.module.scss';
-import Router, {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import {Card} from '@/common/Card';
@@ -60,7 +61,7 @@ export default function Tag(): React.ReactElement {
         isOpen={is_modal_open}
         tag={{name: '', description: '', updated_at: ''}}
         close={() => SetIsModalOpen(false)}
-        onComplete={Router.reload}
+        onComplete={router.refresh}
       />
     </>
   );

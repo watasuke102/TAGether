@@ -4,6 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './profile.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';

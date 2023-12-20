@@ -10,8 +10,6 @@
 @import 'variable';
 // reseter.css
 @import url('https://cdn.jsdelivr.net/gh/krishdevdb/reseter.css@1.20/css/reseter.min.css');
-// fonts
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400&display=swap');
 // icon
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css');
 
@@ -21,7 +19,7 @@ body {
   color: $color-fg;
   overflow-x: hidden;
   font-family: 'M PLUS 1p', sans-serif;
-  font-size: 0.9rem;
+  font-size: 9pt;
 
   h2 {
     font-size: 1.7em;

@@ -5,7 +5,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './CategolyDetail.module.scss';
-import Router from 'next/router';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
@@ -36,6 +36,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   const [is_choice_shuffle_enabled, SetIsChoiceShuffleEnabled] = React.useState(false);
   const [begin_question, SetBeginQuestion] = React.useState(0);
   const [end_question, SetEndQuestion] = React.useState(0);
+  const router = useRouter();
 
   const list: Exam[] = JSON.parse(props.data.list);
 
@@ -88,7 +89,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         url = `/examtable${id_query}`;
         break;
     }
-    Router.push(url);
+    router.push(url);
   }
 
   const Counter = (props: {text: string; value: number; setValue: (e: number) => void}) => (

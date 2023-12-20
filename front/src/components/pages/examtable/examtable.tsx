@@ -4,10 +4,11 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './examtable.module.scss';
-import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
+import {useRouter} from 'next/navigation';
 import BreakWithCR from '@/common/BreakWithCR/BreakWithCR';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
@@ -26,6 +27,7 @@ interface Props {
 export default function ExamTable(props: Props): React.ReactElement {
   const [show_correct_answer, SetShowCorrectAnswer] = React.useState(false);
   const [filter, SetFilter] = React.useState(0x07);
+  const router = useRouter();
 
   const UpdateFilter = (type: AnswerState, state: boolean) => {
     SetFilter(filter => {
@@ -129,7 +131,7 @@ export default function ExamTable(props: Props): React.ReactElement {
 
       <div className={css.button_container}>
         <div className={css.buttons}>
-          <Button text='戻る' icon='fas fa-undo' OnClick={Router.back} type='material' />
+          <Button text='戻る' icon='fas fa-undo' OnClick={router.back} type='material' />
           {/* 正しい答えの表示/非表示切り替え */}
           <Button
             OnClick={() => SetShowCorrectAnswer(!show_correct_answer)}
