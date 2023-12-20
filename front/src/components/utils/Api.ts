@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {useRouter} from 'next/router';
+import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import {categoly_default, request_default, tagdata_default, exam_default} from '@/utils/DefaultValue';
 import Categoly from '@mytypes/Categoly';
@@ -15,8 +15,9 @@ import TagData from '@mytypes/TagData';
 function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void, without_list?: boolean): [T[], boolean] {
   const [is_loading, SetIsLoading] = React.useState(true);
   const [data, SetData] = React.useState([init]);
-  const router = useRouter();
-  const {id} = router.query;
+  const search_params = useSearchParams();
+
+  const id = search_params.get('id');
   let id_str = '';
   let parameter = '';
   if (target === 'categoly') {
@@ -27,14 +28,12 @@ function useApiData<T>(target: string, init: T, onComplete?: (e: T[]) => void, w
   }
 
   React.useEffect(() => {
-    if (!router.isReady) return;
-    (async () =>
-      GetFromApi<T>(target, id_str, parameter).then(res => {
-        if (onComplete) onComplete(res);
-        SetData(res);
-        SetIsLoading(false);
-      }))();
-  }, [router.isReady]);
+    GetFromApi<T>(target, id_str, parameter).then(res => {
+      if (onComplete) onComplete(res);
+      SetData(res);
+      SetIsLoading(false);
+    });
+  }, []);
 
   return [data, is_loading];
 }

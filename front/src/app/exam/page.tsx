@@ -4,8 +4,9 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import {ExamComponent} from '@/pages/exam';
-import {useRouter} from 'next/router';
+import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import {useCategolyData} from '@/utils/Api';
@@ -18,8 +19,13 @@ import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 
 export default function ExamPage(): React.ReactElement {
-  const router = useRouter();
-  const {id, history_id, tag, shuffle, begin, end} = router.query;
+  const search_params = useSearchParams();
+  const id = search_params.get('id');
+  const history_id = search_params.get('history_id');
+  const tag = search_params.get('tag');
+  const shuffle = search_params.get('shuffle');
+  const begin = search_params.get('begin');
+  const end = search_params.get('end');
 
   const [is_loading, SetIsLoading] = React.useState(true);
   const OnComplete = (categoly: Categoly) => {
@@ -89,6 +95,6 @@ export default function ExamPage(): React.ReactElement {
   return is_loading ? (
     <Loading />
   ) : (
-    <ExamComponent data={data} history_id={history_id} history={history} tag_filter={tag} />
+    <ExamComponent data={data} history_id={history_id ?? ''} history={history} tag_filter={tag ?? ''} />
   );
 }

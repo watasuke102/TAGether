@@ -4,10 +4,11 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './list.module.scss';
-import Router from 'next/router';
 import React from 'react';
 import Helmet from 'react-helmet';
+import {useRouter} from 'next/navigation';
 import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
@@ -22,7 +23,7 @@ import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';
 
-function AddCategoly(name: string, desc: string) {
+function AddCategoly(name: string, desc: string, on_complete: (inserted_id: number) => void) {
   const exam_initial: Exam = {type: 'Text', question: '問題文', answer: ['解答']};
   const api_body: CategolyResponse = {
     version: 2,
@@ -37,7 +38,7 @@ function AddCategoly(name: string, desc: string) {
     if (req.readyState === 4) {
       const result = JSON.parse(req.responseText);
       if (req.status === 200) {
-        Router.push(`/edit?id=${result.insertId}`);
+        on_complete(result.inserted_id);
       }
     }
   };
@@ -58,6 +59,7 @@ export default function list(): React.ReactElement {
   const [categoly_desc, SetCategolyDesc] = React.useState('');
 
   const [is_toast_open, SetIsToastOpen] = React.useState(false);
+  const router = useRouter();
 
   const [Waiting, StartWaiting] = useWaiting();
 
@@ -191,7 +193,7 @@ export default function list(): React.ReactElement {
               OnClick={() => {
                 if (categoly_name !== '') {
                   StartWaiting();
-                  AddCategoly(categoly_name, categoly_desc);
+                  AddCategoly(categoly_name, categoly_desc, inserted_id => router.push(`/edit?id=${inserted_id}`));
                 } else {
                   SetIsToastOpen(true);
                 }

@@ -4,8 +4,9 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import {ExamTable} from '@/pages/examtable';
-import {useRouter} from 'next/router';
+import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import {useCategolyData} from '@/utils/Api';
@@ -15,8 +16,9 @@ import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 
 export default function ExamTablePage(): React.ReactElement {
-  const router = useRouter();
-  const {id, history_id} = router.query;
+  const search_params = useSearchParams();
+  const id = search_params.get('id');
+  const history_id = search_params.get('history_id');
 
   const [is_loading, SetIsLoading] = React.useState(true);
   const OnComplete = (categoly: Categoly) => {

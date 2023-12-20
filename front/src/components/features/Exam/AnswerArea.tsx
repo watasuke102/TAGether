@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './AnswerArea.module.scss';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
-import {useRouter} from 'next/router';
+import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
@@ -27,7 +27,7 @@ interface Props {
 export const FORM_ID = 'ExamFirstQuestion';
 
 export function AnswerArea(props: Props): JSX.Element {
-  const router = useRouter();
+  const search_params = useSearchParams();
   const exam_ref = React.useRef<Exam>(exam_default()[0]);
   exam_ref.current = props.exam;
 
@@ -137,7 +137,7 @@ export function AnswerArea(props: Props): JSX.Element {
       props.exam.question_choices?.map((e, i) => {
         return {index: i, choice: e};
       }) ?? [];
-    return router.query.choiceShuffle === 'true' ? Shuffle(list) : list;
+    return search_params.get('choiceShuffle') === 'true' ? Shuffle(list) : list;
   }, [props.index]);
 
   const MoveAnswerOnSort = (from: number, to: number) => {

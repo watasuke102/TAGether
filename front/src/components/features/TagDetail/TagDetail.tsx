@@ -5,8 +5,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './TagDetail.module.scss';
-import Router from 'next/router';
 import React from 'react';
+import {useRouter} from 'next/navigation';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
@@ -27,6 +27,7 @@ export default function TagDetail(props: Props): React.ReactElement {
   const [toast_body, SetToastBody] = React.useState('');
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
+  const router = useRouter();
   const disabled: boolean = !props.createMode && props.tag.id === undefined;
 
   function UpdateTag() {
@@ -118,7 +119,7 @@ export default function TagDetail(props: Props): React.ReactElement {
                 type='material'
                 icon='fas fa-pen'
                 text='このタグのカテゴリを解く'
-                OnClick={() => Router.push(`/exam?tag=${props.tag.name}`)}
+                OnClick={() => router.push(`/exam?tag=${props.tag.name}`)}
               />
             )}
             <Button type='filled' icon='fas fa-check' text='編集結果を適用' OnClick={UpdateTag} />

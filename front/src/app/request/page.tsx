@@ -4,8 +4,9 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './request.module.scss';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
@@ -26,7 +27,7 @@ export default function Request(): React.ReactElement {
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
-        router.reload();
+        router.refresh();
       }
     };
     req.open('POST', process.env.API_URL + '/request');
