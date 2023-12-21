@@ -4,11 +4,10 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-interface TagData {
-  id?: number;
-  name: string;
-  updated_at: Date;
-  description: string;
-}
+import type {Config} from 'drizzle-kit';
 
-export default TagData;
+const config: Config = {
+  schema: './src/db/schema.ts',
+  out: './src/drizzle',
+};
+export default config;
