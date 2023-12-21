@@ -13,7 +13,7 @@ import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
 import {useWaiting} from '@/common/Waiting';
-import {useRequestData} from '@/utils/Api';
+import {useRequestData} from '@utils/ApiHooks';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');

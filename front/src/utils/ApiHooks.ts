@@ -27,16 +27,3 @@ export function useCategoryData(id: number | string): [Categoly, boolean, boolea
   const {data, isLoading, error} = useSWR(`/api/category/${id}`, fetcher);
   return [data?.at(0), isLoading, !!error];
 }
-
-export async function GetFromApi<T>(target: string, id?: string, parameter?: string): Promise<T[]> {
-  // 渡されたURLクエリ (context.query.id) からidを取得
-  // APIでカテゴリを取得する
-  let data: T[] = [];
-  try {
-    data = await (await fetch(`${process.env.API_URL ?? ''}/${target}/${id ?? ''}${parameter ?? ''}`)).json();
-  } catch {
-    data = [];
-  }
-  // 取得したデータを返す
-  return Array.isArray(data) && data.length > 0 ? data : [];
-}

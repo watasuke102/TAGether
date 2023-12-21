@@ -28,6 +28,9 @@
       "@/*": [
         "src/components/*"
       ],
+      "@utils/*": [
+        "@utils/*"
+      ],
       "@mytypes/*": [
         "src/types/*"
       ]
