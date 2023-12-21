@@ -14,7 +14,7 @@ interface Categoly {
   description: string;
   tag: TagData[];
   list: string;
-  deleted: number;
+  deleted: boolean;
 }
 
 export default Categoly;

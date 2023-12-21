@@ -8,12 +8,14 @@
 import {Edit} from '@/pages/edit';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
-import {useCategolyData, useTagData} from '@/utils/Api';
+import {useCategoryData, useTagData} from '@/utils/Api';
+import {useSearchParams} from 'next/navigation';
 
 export default function EditPage(): React.ReactElement {
-  // クエリパラメータでcategoly[0]に編集したいカテゴリがあるはず
-  const [categoly, isCategolyLoading] = useCategolyData(false);
+  const search_params = useSearchParams();
+  const id = search_params?.get('id');
+  const [categoly, isCategolyLoading] = useCategoryData(id ?? '');
   const [tags, isTagLoading] = useTagData();
 
-  return isTagLoading || isCategolyLoading ? <Loading /> : <Edit data={categoly[0]} tags={tags} />;
+  return isTagLoading || isCategolyLoading ? <Loading /> : <Edit data={categoly} tags={tags} />;
 }

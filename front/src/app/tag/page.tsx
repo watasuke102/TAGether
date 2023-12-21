@@ -17,7 +17,7 @@ import TagData from '@mytypes/TagData';
 
 export default function Tag(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
-  const [tag, isLoading] = useTagData();
+  const [tags, isLoading, error] = useTagData();
   const router = useRouter();
 
   function TagItem(e: TagData) {
@@ -35,7 +35,8 @@ export default function Tag(): React.ReactElement {
     );
   }
 
-  if (isLoading) return <Loading />;
+  if (error) return <span>Error</span>;
+  if (isLoading || !tags) return <Loading />;
 
   return (
     <>
@@ -47,12 +48,12 @@ export default function Tag(): React.ReactElement {
       </div>
 
       <div className={css.container}>
-        {tag.length === 0 ? (
+        {tags.length === 0 ? (
           <p>見つかりませんでした</p>
         ) : isLoading ? (
           <Loading />
         ) : (
-          tag.map(e => <TagItem key={`tagcard_${e.id ?? ''}`} {...e} />)
+          tags.map(e => <TagItem key={`tagcard_${e.id ?? ''}`} {...e} />)
         )}
       </div>
 

@@ -18,7 +18,7 @@ import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import {useWaiting} from '@/common/Waiting';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
-import {useCategolyData} from '@/utils/Api';
+import {useAllCategoryData} from '@/utils/Api';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';
@@ -52,7 +52,7 @@ export default function list(): React.ReactElement {
   const [search_str, SetSearchStr] = React.useState('');
   const [radio_state, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
-  const [list, isLoading] = useCategolyData(true);
+  const [list, isLoading] = useAllCategoryData();
 
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [categoly_name, SetCategolyName] = React.useState('');
@@ -64,6 +64,9 @@ export default function list(): React.ReactElement {
   const [Waiting, StartWaiting] = useWaiting();
 
   function CardList(): React.ReactElement[] {
+    if (!list || list.length === 0) {
+      return [];
+    }
     let cards: React.ReactElement[] = [];
     let searchResult: Categoly[] = [];
     cards = [];
@@ -92,7 +95,7 @@ export default function list(): React.ReactElement {
     } else {
       searchResult = list;
     }
-    const categoly_list = searchResult.filter(e => e.deleted === Number(show_only_trash));
+    const categoly_list = searchResult.filter(e => e.deleted === show_only_trash);
     // 検索結果からカードを生成
     if (categoly_list.length === 0) {
       cards.push(
@@ -174,7 +177,7 @@ export default function list(): React.ReactElement {
       {isLoading ? (
         <Loading />
       ) : (
-        <IndexedContainer len={list.filter(e => e.deleted === Number(show_only_trash)).length} width='300px'>
+        <IndexedContainer len={list.filter(e => e.deleted === show_only_trash).length} width='300px'>
           {CardList()}
         </IndexedContainer>
       )}

@@ -14,7 +14,7 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
-import {useCategolyData} from '@/utils/Api';
+import {useAllCategoryData} from '@/utils/Api';
 import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@/utils/ManageDB';
 import ExamHistory from '@mytypes/ExamHistory';
 
@@ -22,7 +22,7 @@ export default function profile(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
-  const [data, isLoading] = useCategolyData(true);
+  const [data, isLoading] = useAllCategoryData();
 
   const InitExamHistory = () => {
     GetExamHistory().then(res => {
