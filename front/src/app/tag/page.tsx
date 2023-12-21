@@ -12,7 +12,7 @@ import Button from '@/common/Button/Button';
 import {Card} from '@/common/Card';
 import Loading from '@/common/Loading/Loading';
 import TagDetail from '@/features/TagDetail/TagDetail';
-import {useTagData} from '@/utils/Api';
+import {useTagData} from '@utils/ApiHooks';
 import TagData from '@mytypes/TagData';
 
 export default function Tag(): React.ReactElement {

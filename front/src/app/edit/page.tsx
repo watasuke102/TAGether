@@ -8,7 +8,7 @@
 import {Edit} from '@/pages/edit';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
-import {useCategoryData, useTagData} from '@/utils/Api';
+import {useCategoryData, useTagData} from '@utils/ApiHooks';
 import {useSearchParams} from 'next/navigation';
 
 export default function EditPage(): React.ReactElement {

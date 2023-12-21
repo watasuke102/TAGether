@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {exam, tag} from 'src/db/schema';
 import {connect_drizzle} from '../../../db/drizzle';
-import {replace_tag_of_category} from '@/utils/ReplaceTagOfCategory';
+import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
 
 export async function GET(): Promise<Response> {
   const db = await connect_drizzle();

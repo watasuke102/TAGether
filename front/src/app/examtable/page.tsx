@@ -9,9 +9,9 @@ import {ExamTable} from '@/pages/examtable';
 import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
-import {useCategolyData} from '@/utils/Api';
-import {categoly_default} from '@/utils/DefaultValue';
-import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
+import { useCategolyData } from '@utils/ApiHooks';
+import {categoly_default} from '@utils/DefaultValue';
+import {GetSpecifiedExamHistory} from '@utils/ManageDB';
 import Categoly from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 

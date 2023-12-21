@@ -14,8 +14,8 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
-import {useAllCategoryData} from '@/utils/Api';
-import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@/utils/ManageDB';
+import {useAllCategoryData} from '@utils/ApiHooks';
+import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@utils/ManageDB';
 import ExamHistory from '@mytypes/ExamHistory';
 
 export default function profile(): React.ReactElement {

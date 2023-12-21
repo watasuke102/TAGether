@@ -18,7 +18,7 @@ import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import {useWaiting} from '@/common/Waiting';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
-import {useAllCategoryData} from '@/utils/Api';
+import {useAllCategoryData} from '@utils/ApiHooks';
 import Categoly from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';

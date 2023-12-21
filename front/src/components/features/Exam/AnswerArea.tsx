@@ -10,8 +10,8 @@ import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import {Move, Shuffle} from '@/utils/ArrayUtil';
-import {exam_default} from '@/utils/DefaultValue';
+import {Move, Shuffle} from '@utils/ArrayUtil';
+import {exam_default} from '@utils/DefaultValue';
 import Exam from '@mytypes/Exam';
 
 interface Props {

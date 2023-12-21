@@ -9,7 +9,7 @@ import React from 'react';
 import Button from '@/common/Button/Button';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
-import {Shuffle} from '@/utils/ArrayUtil';
+import {Shuffle} from '@utils/ArrayUtil';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 
