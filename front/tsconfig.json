@@ -29,7 +29,7 @@
         "src/components/*"
       ],
       "@utils/*": [
-        "@utils/*"
+        "src/utils/*"
       ],
       "@mytypes/*": [
         "src/types/*"

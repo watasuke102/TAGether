@@ -6,34 +6,17 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './request.module.scss';
-import {useRouter} from 'next/navigation';
 import React from 'react';
 import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
-import {useWaiting} from '@/common/Waiting';
-import {useRequestData} from '@utils/ApiHooks';
+import {useRequestData, new_request, mutate_request} from '@utils/api/request';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [requests, isLoading] = useRequestData();
-  const [Waiting, StartWaiting] = useWaiting();
-  const router = useRouter();
-
-  const SendRequest = () => {
-    if (request === '') return;
-    StartWaiting();
-    const req = new XMLHttpRequest();
-    req.onreadystatechange = () => {
-      if (req.readyState === 4) {
-        router.refresh();
-      }
-    };
-    req.open('POST', process.env.API_URL + '/request');
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.send(JSON.stringify({body: request}));
-  };
 
   return (
     <div className={css.container}>
@@ -59,15 +42,18 @@ export default function Request(): React.ReactElement {
           }}
         />
         <div className={css.button}>
-          {' '}
           <Button
-            {...{
-              icon: 'fas fa-paper-plane',
-              text: '送信',
-              type: 'filled',
-              OnClick: SendRequest,
+            icon='fas fa-paper-plane'
+            text='送信'
+            type='filled'
+            OnClick={() => {
+              if (request === '') return;
+              new_request(request).then(() => {
+                SetRequest('');
+                mutate_request();
+              });
             }}
-          />{' '}
+          />
         </div>
       </div>
       <hr />
@@ -99,7 +85,6 @@ export default function Request(): React.ReactElement {
           </tbody>
         </table>
       )}
-      <Waiting />
     </div>
   );
 }

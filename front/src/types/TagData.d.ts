@@ -7,7 +7,7 @@
 interface TagData {
   id?: number;
   name: string;
-  updated_at: Date;
+  updated_at: Date | string;
   description: string;
 }
 

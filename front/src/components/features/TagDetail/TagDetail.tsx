@@ -13,13 +13,13 @@ import Modal from '@/common/Modal/Modal';
 import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import TagData from '@mytypes/TagData';
+import {mutate_tag, new_tag, update_tag} from '@utils/api/tag';
 
 interface Props {
   tag: TagData;
   isOpen: boolean;
   close: () => void;
   createMode?: boolean;
-  onComplete?: (e: TagData) => void;
 }
 
 export default function TagDetail(props: Props): React.ReactElement {
@@ -30,7 +30,7 @@ export default function TagDetail(props: Props): React.ReactElement {
   const router = useRouter();
   const disabled: boolean = !props.createMode && props.tag.id === undefined;
 
-  function UpdateTag() {
+  const UpdateTag = React.useCallback(() => {
     if (disabled) {
       SetToastBody('編集できないタグです');
       SetIsToastOpen(true);
@@ -42,40 +42,20 @@ export default function TagDetail(props: Props): React.ReactElement {
       return;
     }
 
-    const req = new XMLHttpRequest();
-    req.onreadystatechange = () => {
-      if (req.readyState === 4) {
-        const result = JSON.parse(req.responseText);
-        if (req.status === 200) {
-          if (props.onComplete) {
-            props.onComplete({
-              id: props.tag.id ?? result.insertId,
-              name: edited_name,
-              updated_at: '',
-              description: edited_desc,
-            });
-          }
-          // 新規作成モードであれば終了
-          if (props.createMode) {
-            return;
-          }
-          SetToastBody('編集結果を適用しました');
-        } else {
-          SetToastBody('適用できませんでした');
-        }
+    if (props.createMode) {
+      new_tag({name: edited_name, description: edited_desc}).then(() => {
+        SetToastBody('タグを追加しました');
         SetIsToastOpen(true);
-      }
-    };
-    req.open(props.createMode ? 'POST' : 'PUT', process.env.API_URL + '/tag');
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.send(
-      JSON.stringify({
-        id: props.tag.id,
-        name: edited_name,
-        description: edited_desc,
-      }),
-    );
-  }
+        mutate_tag();
+      });
+    } else {
+      update_tag(props.tag?.id ?? -1, {name: edited_name, description: edited_desc}).then(() => {
+        SetToastBody('編集結果を適用しました');
+        SetIsToastOpen(true);
+        mutate_tag();
+      });
+    }
+  }, [edited_name, edited_desc]);
 
   return (
     <>

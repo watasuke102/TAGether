@@ -24,3 +24,15 @@ export async function GET(): Promise<Response> {
 
   return Response.json(replace_tag_of_category(categories, tags));
 }
+
+export type NewCategory = {
+  title: string;
+  description: string;
+  list: string;
+};
+export async function POST(req: Request): Promise<Response> {
+  const data: NewCategory = await req.json();
+  const db = await connect_drizzle();
+  const result = await db.insert(exam).values({...data, version: 2, tag: ''});
+  return Response.json({inserted_id: result[0].insertId});
+}
