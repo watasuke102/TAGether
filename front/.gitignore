@@ -1,6 +1,0 @@
-node_modules
-.next
-env.json
-
-/public/sw*
-/public/workbox*

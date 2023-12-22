@@ -5,7 +5,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
-import {SelectButton} from './';
+import {SelectButton} from '.';
 
 interface Props {
   status: string;
