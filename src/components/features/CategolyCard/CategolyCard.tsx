@@ -8,12 +8,12 @@ import css from './CategolyCard.module.scss';
 import React from 'react';
 import {Card} from '@/common/Card';
 import Modal from '@/common/Modal/Modal';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import Tag from '../TagContainer/TagContainer';
 import Detail from './CategolyDetail';
 import FavoriteStar from './FavoriteStar';
 
-export default function ExamCard(props: Categoly): React.ReactElement {
+export default function ExamCard(props: AllCategoryDataType): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
   // タイトルを25文字以内に

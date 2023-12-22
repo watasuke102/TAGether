@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import Categoly from './Categoly';
+import {AllCategoryDataType} from './Categoly';
 
 interface ExamHistory {
   history_key?: string;
@@ -12,7 +12,7 @@ interface ExamHistory {
   correct_count: number;
 
   times: number;
-  categoly: Categoly;
+  categoly: AllCategoryDataType;
   exam_state: ExamState[];
   original_title: string;
 }

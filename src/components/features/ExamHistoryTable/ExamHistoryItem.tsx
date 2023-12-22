@@ -8,12 +8,12 @@ import css from './ExamHistoryItem.module.scss';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import Modal from '@/common/Modal/Modal';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 import Detail from '../CategolyCard/CategolyDetail';
 
 interface Props {
-  categoly: Categoly;
+  categoly: AllCategoryDataType;
   item: ExamHistory;
   remove: () => void;
 }

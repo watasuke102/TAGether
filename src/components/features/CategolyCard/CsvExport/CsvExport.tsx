@@ -10,11 +10,11 @@ import Button from '@/common/Button/Button';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import {Shuffle} from '@utils/ArrayUtil';
-import Categoly from '@mytypes/Categoly';
+import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 
 interface Props {
-  data: Categoly;
+  data: CategoryDataType;
   is_opening: boolean;
   close: () => void;
 }

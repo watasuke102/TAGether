@@ -6,15 +6,16 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import TagData from './TagData';
 
-interface Categoly {
-  id?: number;
-  updated_at?: string;
-  version: number;
+export interface AllCategoryDataType {
+  id: number;
+  updated_at: string;
   title: string;
   description: string;
   tag: TagData[];
-  list: string;
   deleted: boolean;
 }
 
-export default Categoly;
+export interface CategoryDataType extends AllCategoryDataType {
+  version: number;
+  list: string;
+}
