@@ -14,7 +14,7 @@ export const exam = mysqlTable('exam', {
   title: text('title').notNull(),
   description: text('description').notNull(),
   tag: text('tag').notNull(),
-  list: json('list').notNull().$type<CategolyResponse>(),
+  list: text('list').notNull(),
   deleted: boolean('deleted').notNull().default(false),
 });
 
@@ -29,5 +29,5 @@ export const request = mysqlTable('request', {
   id: int('id').notNull().primaryKey().autoincrement(),
   updated_at: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
   body: text('body').notNull(),
-  answer: text('answer').notNull(),
+  answer: text('answer'),
 });
