@@ -13,7 +13,7 @@ import {Shuffle} from '@/utils/ArrayUtil';
 import {categoly_default} from '@/utils/DefaultValue';
 import {GetSpecifiedExamHistory} from '@/utils/ManageDB';
 import AnswerState from '@mytypes/AnswerState';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 
@@ -27,11 +27,11 @@ export default function ExamPage(): React.ReactElement {
   const end = search_params?.get('end');
 
   const [category, is_loading] = useCategoryData(id ?? '');
-  const [data, SetData] = React.useState<Categoly>(categoly_default());
+  const [data, SetData] = React.useState<AllCategoryDataType>(categoly_default());
   const [history, SetHistory] = React.useState<ExamHistory | undefined>();
 
   // const [is_loading, SetIsLoading] = React.useState(true);
-  const OnComplete = (categoly: Categoly) => {
+  const OnComplete = (categoly: AllCategoryDataType) => {
     let list: Exam[] = JSON.parse(categoly?.list ?? '[]');
     const begin_index = Array.isArray(begin) ? Number(begin[0]) : Number(begin ?? 0);
     let end_index = Array.isArray(end) ? Number(end[0]) : Number(end);

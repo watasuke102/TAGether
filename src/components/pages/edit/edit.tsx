@@ -18,13 +18,13 @@ import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
 import {exam_default, categoly_default} from '@utils/DefaultValue';
 import UpdateExam from '@utils/UpdateExam';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import CategolyResponse from '@mytypes/CategolyResponse';
 import Exam from '@mytypes/Exam';
 import TagData from '@mytypes/TagData';
 
 interface Props {
-  data: Categoly;
+  data: AllCategoryDataType;
   tags: TagData[];
 }
 
@@ -40,7 +40,7 @@ export default function Edit(props: Props): React.ReactElement {
   const [regist_error, SetRegistError] = React.useState('');
 
   const [categoly, SetCategoly] = React.useState(props.data);
-  const categoly_ref = React.useRef<Categoly>(categoly_default());
+  const categoly_ref = React.useRef<AllCategoryDataType>(categoly_default());
   categoly_ref.current = categoly;
   const [exam, SetExam] = React.useState<Exam[]>(JSON.parse(props.data.list));
   const exam_ref = React.useRef<Exam[]>(exam_default());

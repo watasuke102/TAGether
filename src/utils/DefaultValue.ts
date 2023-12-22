@@ -4,12 +4,12 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import Categoly from '@mytypes/Categoly';
+import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import FeatureRequest from '@mytypes/FeatureRequest';
 import TagData from '@mytypes/TagData';
 
-export function categoly_default(): Categoly {
+export function categoly_default(): CategoryDataType {
   return {
     id: 0,
     updated_at: '',
@@ -18,7 +18,7 @@ export function categoly_default(): Categoly {
     description: '',
     tag: [],
     list: JSON.stringify(exam_default(), undefined, '  '),
-    deleted: 0,
+    deleted: false,
   };
 }
 

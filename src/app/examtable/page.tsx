@@ -10,7 +10,7 @@ import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import {categoly_default} from '@utils/DefaultValue';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 
 export default function ExamTablePage(): React.ReactElement {
@@ -24,7 +24,7 @@ export default function ExamTablePage(): React.ReactElement {
   //   SetIsLoading(false);
   // };
 
-  const [data, SetData] = React.useState<Categoly>(categoly_default());
+  const [data, SetData] = React.useState<AllCategoryDataType>(categoly_default());
   const [history, SetHistory] = React.useState<ExamHistory | undefined>();
   // useAllCategoryData(false, categoly => {
   //   if (id !== undefined) {

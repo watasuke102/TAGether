@@ -22,7 +22,7 @@ import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
 import {AddExamHistory} from '@utils/ManageDB';
 import AnswerState from '@mytypes/AnswerState';
 import ButtonInfo from '@mytypes/ButtonInfo';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamState from '@mytypes/ExamState';
@@ -34,7 +34,7 @@ enum NextButtonState {
 }
 
 interface Props {
-  data: Categoly;
+  data: AllCategoryDataType;
   history_id: string | string[] | undefined;
   tag_filter: string | string[] | undefined;
   history?: ExamHistory;

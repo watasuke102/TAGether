@@ -19,7 +19,7 @@ import Toast from '@/common/Toast/Toast';
 import {useWaiting} from '@/common/Waiting';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import {useAllCategoryData, new_category} from '@utils/api/category';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 
 export default function list(): React.ReactElement {
   const [show_only_trash, SetShowOnlyTrash] = React.useState(false);
@@ -42,7 +42,7 @@ export default function list(): React.ReactElement {
       return [];
     }
     let cards: React.ReactElement[] = [];
-    let searchResult: Categoly[] = [];
+    let searchResult: AllCategoryDataType[] = [];
     cards = [];
     // 検索欄になにか記入されていたら、検索
     if (search_str !== '') {

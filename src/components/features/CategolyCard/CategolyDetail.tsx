@@ -14,14 +14,15 @@ import {SelectButton} from '@/common/SelectBox';
 import Toast from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
-import Categoly from '@mytypes/Categoly';
-import Exam from '@mytypes/Exam';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 import {CsvExport} from './CsvExport/CsvExport';
-import {mutate_category, toggle_delete_category} from '@utils/api/category';
+import {mutate_category, toggle_delete_category, useCategoryData} from '@utils/api/category';
+import Exam from '@mytypes/Exam';
+import Loading from '@/common/Loading/Loading';
 
 interface Props {
-  data: Categoly;
+  data: AllCategoryDataType;
   history?: ExamHistory;
   close: () => void;
 }
@@ -36,19 +37,8 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   const [begin_question, SetBeginQuestion] = React.useState(0);
   const [end_question, SetEndQuestion] = React.useState(0);
   const router = useRouter();
-
-  const list: Exam[] = JSON.parse(props.data.list);
-
-  // スマホ対策
-  const UpdateContainersHeight = (): void => {
-    document.documentElement.style.setProperty('--container_height', (window.innerHeight / 100) * 90 + 'px');
-  };
-  UpdateContainersHeight();
-
-  React.useEffect(() => {
-    window.addEventListener('resize', UpdateContainersHeight);
-    return () => window.removeEventListener('resize', UpdateContainersHeight);
-  }, []);
+  const [category, is_loading] = useCategoryData(props.data.id ?? -1);
+  const list: Exam[] = JSON.parse(category?.list ?? '[]');
 
   function Push(s: string): void {
     let url: string = '';
@@ -132,7 +122,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             type='material'
           />
           <Button
-            text={props.data.deleted ? 'ゴミ箱に移動' : 'ゴミ箱から取り出す'}
+            text={props.data.deleted ? 'ゴミ箱から取り出す' : 'ゴミ箱に移動'}
             icon='fas fa-trash-alt'
             OnClick={() => SetIsDeleteModalOpen(true)}
             type='material'
@@ -160,7 +150,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         </ButtonContainer>
       </div>
 
-      <CsvExport data={props.data} is_opening={is_csv_export_open} close={() => set_is_csv_export_open(false)} />
+      <CsvExport data={category} is_opening={is_csv_export_open} close={() => set_is_csv_export_open(false)} />
 
       <Modal isOpen={is_delete_modal_open} close={() => SetIsDeleteModalOpen(false)}>
         <div className={css.delete_confirm_modal}>
@@ -194,52 +184,56 @@ export default function CategolyDetail(props: Props): React.ReactElement {
       </Modal>
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
-        <div className={css.modal}>
-          <p>これらの設定はカテゴリ詳細を閉じるまで保持されます。</p>
+        {is_loading ? (
+          <Loading />
+        ) : (
+          <div className={css.modal}>
+            <p>これらの設定はカテゴリ詳細を閉じるまで保持されます。</p>
 
-          <span className={css.head}>問題範囲の制限</span>
-          <Counter
-            text='最初の問題番号'
-            value={begin_question}
-            setValue={e => SetBeginQuestion(Math.max(0, Math.min(list.length, e)))}
-          />
-          <span className={css.question_preview}>
-            問題：{begin_question !== 0 && list[begin_question - 1].question}
-          </span>
+            <span className={css.head}>問題範囲の制限</span>
+            <Counter
+              text='最初の問題番号'
+              value={begin_question}
+              setValue={e => SetBeginQuestion(Math.max(0, Math.min(list.length, e)))}
+            />
+            <span className={css.question_preview}>
+              問題：{begin_question !== 0 && list[begin_question - 1].question}
+            </span>
 
-          <hr />
+            <hr />
 
-          <Counter
-            text='最後の問題番号'
-            value={end_question}
-            setValue={e => SetEndQuestion(Math.max(0, Math.min(list.length, e)))}
-          />
-          <span className={css.question_preview}>問題：{end_question !== 0 && list[end_question - 1].question}</span>
+            <Counter
+              text='最後の問題番号'
+              value={end_question}
+              setValue={e => SetEndQuestion(Math.max(0, Math.min(list.length, e)))}
+            />
+            <span className={css.question_preview}>問題：{end_question !== 0 && list[end_question - 1].question}</span>
 
-          <span className={css.head}>シャッフル</span>
-          <p>
-            問題範囲を制限してからシャッフルが行われます。
-            <br />
-            （シャッフルされた問題から範囲制限を行うわけではありません）
-          </p>
-          <SelectButton
-            type='radio'
-            status={is_exam_shuffle_enabled}
-            desc='問題順をシャッフル'
-            onChange={SetIsExamShuffleEnabled}
-          />
-          <SelectButton
-            type='radio'
-            status={is_choice_shuffle_enabled}
-            desc='選択問題の選択肢をシャッフル'
-            onChange={SetIsChoiceShuffleEnabled}
-          />
+            <span className={css.head}>シャッフル</span>
+            <p>
+              問題範囲を制限してからシャッフルが行われます。
+              <br />
+              （シャッフルされた問題から範囲制限を行うわけではありません）
+            </p>
+            <SelectButton
+              type='radio'
+              status={is_exam_shuffle_enabled}
+              desc='問題順をシャッフル'
+              onChange={SetIsExamShuffleEnabled}
+            />
+            <SelectButton
+              type='radio'
+              status={is_choice_shuffle_enabled}
+              desc='選択問題の選択肢をシャッフル'
+              onChange={SetIsChoiceShuffleEnabled}
+            />
 
-          <ButtonContainer>
-            <Button text='閉じる' icon='fas fa-times' OnClick={() => SetIsModalOpen(false)} type='material'></Button>
-            <Button text='この問題を解く' icon='fas fa-arrow-right' OnClick={() => Push('exam')} type='filled' />
-          </ButtonContainer>
-        </div>
+            <ButtonContainer>
+              <Button text='閉じる' icon='fas fa-times' OnClick={() => SetIsModalOpen(false)} type='material'></Button>
+              <Button text='この問題を解く' icon='fas fa-arrow-right' OnClick={() => Push('exam')} type='filled' />
+            </ButtonContainer>
+          </div>
+        )}
       </Modal>
       <Toast
         id='range_invalid_notice'

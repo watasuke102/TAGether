@@ -14,13 +14,13 @@ import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
 import {ParseAnswer} from '@/features/ParseAnswer';
 import AnswerState from '@mytypes/AnswerState';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamStatus from '@mytypes/ExamState';
 
 interface Props {
-  data: Categoly;
+  data: AllCategoryDataType;
   history?: ExamHistory;
 }
 

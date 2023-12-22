@@ -8,16 +8,16 @@ import {mutate} from 'swr';
 import useImmSWR from 'swr/immutable';
 import axios, {AxiosPromise} from 'axios';
 import {fetcher, useApiData} from './common';
-import Categoly from '@mytypes/Categoly';
+import {AllCategoryDataType, CategoryDataType} from '@mytypes/Categoly';
 import {NewCategory} from 'src/app/api/category/route';
 import {PutCategory} from 'src/app/api/category/[id]/route';
 
 const category_key = '/api/category';
 
 export const mutate_category = (): Promise<void> => mutate(category_key);
-export const useAllCategoryData = useApiData<Categoly>(category_key);
-export function useCategoryData(id: number | string): [Categoly, boolean, boolean] {
-  const {data, isLoading, error} = useImmSWR( `${category_key}/${id}`, fetcher);
+export const useAllCategoryData = useApiData<AllCategoryDataType>(category_key);
+export function useCategoryData(id: number | string): [CategoryDataType, boolean, boolean] {
+  const {data, isLoading, error} = useImmSWR(`${category_key}/${id}`, fetcher);
   return [data?.at(0), isLoading, !!error];
 }
 
@@ -30,6 +30,6 @@ export async function update_category(id: number | string, data: PutCategory): P
 }
 
 export async function toggle_delete_category(id: number | string): Promise<AxiosPromise> {
-  // eslint-disable-next-line drizzle/enforce-delete-with-where 
+  // eslint-disable-next-line drizzle/enforce-delete-with-where
   return axios.delete(`${category_key}/${id}`);
 }
