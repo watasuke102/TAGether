@@ -8,8 +8,8 @@
 import css from './list.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import {useRouter} from 'next/navigation';
 import Button from '@/common/Button/Button';
+import {useRouter} from 'next/navigation';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
@@ -18,34 +18,8 @@ import Form from '@/common/TextForm/Form';
 import Toast from '@/common/Toast/Toast';
 import {useWaiting} from '@/common/Waiting';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
-import {useAllCategoryData} from '@utils/ApiHooks';
+import {useAllCategoryData, new_category} from '@utils/api/category';
 import Categoly from '@mytypes/Categoly';
-import CategolyResponse from '@mytypes/CategolyResponse';
-import Exam from '@mytypes/Exam';
-
-function AddCategoly(name: string, desc: string, on_complete: (inserted_id: number) => void) {
-  const exam_initial: Exam = {type: 'Text', question: '問題文', answer: ['解答']};
-  const api_body: CategolyResponse = {
-    version: 2,
-    title: name,
-    description: desc,
-    tag: '',
-    list: JSON.stringify([exam_initial]),
-    deleted: 0,
-  };
-  const req = new XMLHttpRequest();
-  req.onreadystatechange = () => {
-    if (req.readyState === 4) {
-      const result = JSON.parse(req.responseText);
-      if (req.status === 200) {
-        on_complete(result.inserted_id);
-      }
-    }
-  };
-  req.open('POST', process.env.API_URL + '/categoly');
-  req.setRequestHeader('Content-Type', 'application/json');
-  req.send(JSON.stringify(api_body));
-}
 
 export default function list(): React.ReactElement {
   const [show_only_trash, SetShowOnlyTrash] = React.useState(false);
@@ -194,12 +168,16 @@ export default function list(): React.ReactElement {
               icon='fas fa-check'
               text='作成する'
               OnClick={() => {
-                if (categoly_name !== '') {
-                  StartWaiting();
-                  AddCategoly(categoly_name, categoly_desc, inserted_id => router.push(`/edit?id=${inserted_id}`));
-                } else {
+                if (categoly_name === '') {
                   SetIsToastOpen(true);
+                  return;
                 }
+                StartWaiting();
+                new_category({
+                  title: categoly_name,
+                  description: categoly_desc,
+                  list: JSON.stringify({type: 'Text', question: '問題文', answer: ['解答']}),
+                }).then(result => router.push(`/edit?id=${result.data.inserted_id}`));
               }}
             />
           </div>

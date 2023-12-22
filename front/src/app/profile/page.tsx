@@ -14,7 +14,7 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
-import {useAllCategoryData} from '@utils/ApiHooks';
+import {useAllCategoryData} from '@utils/api/category';
 import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@utils/ManageDB';
 import ExamHistory from '@mytypes/ExamHistory';
 

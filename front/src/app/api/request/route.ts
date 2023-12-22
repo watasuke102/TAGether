@@ -12,3 +12,10 @@ export async function GET(): Promise<Response> {
   const requests = await db.select().from(request);
   return Response.json(requests);
 }
+
+export async function POST(req: Request): Promise<Response> {
+  const body: string = await req.text();
+  const db = await connect_drizzle();
+  const result = await db.insert(request).values({body});
+  return Response.json({inserted_id: result[0].insertId});
+}

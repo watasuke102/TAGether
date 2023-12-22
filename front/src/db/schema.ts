@@ -4,8 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {int, mysqlTable, timestamp, text, boolean, json} from 'drizzle-orm/mysql-core';
-import CategolyResponse from '@mytypes/CategolyResponse';
+import {int, mysqlTable, timestamp, text, boolean} from 'drizzle-orm/mysql-core';
 
 export const exam = mysqlTable('exam', {
   id: int('id').notNull().primaryKey().autoincrement(),

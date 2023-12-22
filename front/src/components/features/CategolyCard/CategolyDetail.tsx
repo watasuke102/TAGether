@@ -12,13 +12,13 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Toast from '@/common/Toast/Toast';
-import {useWaiting} from '@/common/Waiting';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import Categoly from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import {CsvExport} from './CsvExport/CsvExport';
+import {mutate_category, toggle_delete_category} from '@utils/api/category';
 
 interface Props {
   data: Categoly;
@@ -31,7 +31,6 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [is_csv_export_open, set_is_csv_export_open] = React.useState(false);
   const [is_delete_modal_open, SetIsDeleteModalOpen] = React.useState(false);
-  const [Waiting, StartWaiting] = useWaiting();
   const [is_exam_shuffle_enabled, SetIsExamShuffleEnabled] = React.useState(false);
   const [is_choice_shuffle_enabled, SetIsChoiceShuffleEnabled] = React.useState(false);
   const [begin_question, SetBeginQuestion] = React.useState(0);
@@ -133,7 +132,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             type='material'
           />
           <Button
-            text={props.data.deleted === 0 ? 'ゴミ箱に移動' : 'ゴミ箱から取り出す'}
+            text={props.data.deleted ? 'ゴミ箱に移動' : 'ゴミ箱から取り出す'}
             icon='fas fa-trash-alt'
             OnClick={() => SetIsDeleteModalOpen(true)}
             type='material'
@@ -187,22 +186,12 @@ export default function CategolyDetail(props: Props): React.ReactElement {
                 if (!props.data.id) {
                   return;
                 }
-                const req = new XMLHttpRequest();
-                req.onreadystatechange = () => {
-                  if (req.readyState === 4 && req.status === 200) {
-                    window.location.reload();
-                  }
-                };
-                req.open('DELETE', process.env.API_URL + '/categoly');
-                req.setRequestHeader('Content-Type', 'application/json');
-                req.send(JSON.stringify({id: props.data.id}));
-                StartWaiting();
+                toggle_delete_category(props.data.id).then(() => mutate_category());
               }}
             />
           </div>
         </div>
       </Modal>
-      <Waiting />
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>

@@ -12,3 +12,14 @@ export async function GET(): Promise<Response> {
   const tags = await db.select().from(tag);
   return Response.json(tags);
 }
+
+export type PostTag = {
+  name: string;
+  description: string;
+};
+export async function POST(req: Request): Promise<Response> {
+  const data: PostTag = await req.json();
+  const db = await connect_drizzle();
+  const result = await db.insert(tag).values(data);
+  return Response.json({inserted_id: result[0].insertId});
+}

@@ -6,19 +6,17 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './tag.module.scss';
-import {useRouter} from 'next/navigation';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import {Card} from '@/common/Card';
 import Loading from '@/common/Loading/Loading';
 import TagDetail from '@/features/TagDetail/TagDetail';
-import {useTagData} from '@utils/ApiHooks';
+import {useTagData} from '@utils/api/tag';
 import TagData from '@mytypes/TagData';
 
 export default function Tag(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [tags, isLoading, error] = useTagData();
-  const router = useRouter();
 
   function TagItem(e: TagData) {
     const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -29,7 +27,7 @@ export default function Tag(): React.ReactElement {
             <span className={css.name}>{e.name}</span>
             <span className={css.desc}>{e.description}</span>
           </div>
-          <TagDetail tag={e} isOpen={is_modal_open} close={() => SetIsModalOpen(false)} onComplete={router.reload} />
+          <TagDetail tag={e} isOpen={is_modal_open} close={() => SetIsModalOpen(false)} />
         </Card>
       </div>
     );
@@ -62,7 +60,6 @@ export default function Tag(): React.ReactElement {
         isOpen={is_modal_open}
         tag={{name: '', description: '', updated_at: ''}}
         close={() => SetIsModalOpen(false)}
-        onComplete={router.refresh}
       />
     </>
   );
