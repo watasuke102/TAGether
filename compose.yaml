@@ -1,14 +1,12 @@
-version: "3"
-
 services:
   mysql:
     image: mysql
-    command: mysqld --default-authentication-plugin=mysql_native_password
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
     volumes:
       - ./docker/mysql:/docker-entrypoint-initdb.d
       - ./docker/data:/var/lib/mysql
     ports:
-      - "3334:3306"
+      - '3334:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tagether
@@ -20,28 +18,16 @@ services:
     links:
       - mysql:db
     ports:
-      - "8888:80"
-    depends_on:
-      - mysql
-
-  back:
-    image: node:20
-    volumes:
-      - ./back:/back
-    ports:
-      - "8079:80"
-    working_dir: /back
-    entrypoint: "npm start"
+      - '8888:80'
     depends_on:
       - mysql
 
   front:
     image: node:20
+    user: node
     ports:
-      - "3009:3009"
+      - '3009:3009'
     volumes:
-      - ./front:/front
+      - .:/front
     working_dir: /front
-    entrypoint: "npm run dev"
-    depends_on:
-      - back
+    entrypoint: 'npm run dev'

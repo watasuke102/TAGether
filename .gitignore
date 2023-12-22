@@ -1,3 +1,7 @@
 /docker/data
 node_modules
-.idea
+.next
+env.json
+
+/public/sw*
+/public/workbox*
