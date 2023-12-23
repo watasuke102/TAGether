@@ -15,17 +15,6 @@ interface Props {
 }
 
 export default function Modal(props: Props): React.ReactElement {
-  // スマホ対策
-  function UpdateContainersHeight(): void {
-    if (!process.browser) return;
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
-  }
-
-  React.useEffect(() => {
-    window.addEventListener('resize', UpdateContainersHeight);
-    return () => window.removeEventListener('resize', UpdateContainersHeight);
-  }, []);
-
   const transition = {duration: 0.4};
   return (
     <AnimatePresence>
