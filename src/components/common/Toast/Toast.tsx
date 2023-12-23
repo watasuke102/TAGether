@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './Toast.module.scss';
-import {gsap, Power4} from 'gsap';
+import {AnimatePresence, motion} from 'framer-motion';
 import React, {Dispatch} from 'react';
 import BreakWithCR from '../BreakWithCR/BreakWithCR';
 
@@ -16,8 +16,6 @@ type State = {
   text: string;
 };
 type Action = {type: 'open'; icon?: string; text: string} | {type: 'close'};
-
-const component_id = 'common_toast';
 
 function reduce(current: State, action: Action): State {
   if (action.type === 'close') {
@@ -47,7 +45,10 @@ export function ToastProvider({children}: {children: React.ReactNode}): JSX.Elem
 export function useToastOperator() {
   const {dispatch} = React.useContext(ToastContext);
   return {
-    open: (text: string, icon?: string) => dispatch({type: 'open', text, icon}),
+    open: (text: string, icon?: string) => {
+      dispatch({type: 'open', text, icon});
+      setTimeout(() => dispatch({type: 'close'}), 5000);
+    },
     close: () => dispatch({type: 'close'}),
   };
 }
@@ -58,48 +59,26 @@ export function Toast(): React.ReactElement {
     return <></>;
   }
 
-  React.useEffect(() => {
-    const target = `#${component_id}`;
-    if (!state.is_open) {
-      gsap.to(target, {
-        duration: 0,
-        translateX: '120%',
-        opacity: 0,
-      });
-      return;
-    }
-
-    const timeline = gsap.timeline();
-    timeline
-      .to(target, {
-        duration: 0,
-        opacity: 1,
-        translateX: '120%',
-      })
-      .to(target, {
-        ease: Power4.easeOut,
-        duration: 0.5,
-        translateX: '0%',
-      })
-      .to(
-        target,
-        {
-          duration: 1,
-          opacity: 0,
-        },
-        '+=4',
-      )
-      .to(target, {
-        duration: 0,
-        translateX: '120%',
-        onComplete: () => dispatch({type: 'close'}),
-      });
-  }, [state.is_open]);
-
   return (
-    <div id={component_id} className={css.container} onClick={() => dispatch({type: 'close'})}>
-      <span className={state.icon ?? 'fas fa-bell'} />
-      <BreakWithCR str={state.text} />
-    </div>
+    <AnimatePresence>
+      {state.is_open && (
+        <motion.div
+          variants={{
+            init: {transform: 'translateX(128%)', opacity: 1},
+            main: {transform: 'translateX(0)', opacity: 1},
+            out: {transform: 'translateX(0)', opacity: 0},
+          }}
+          transition={{duration: 0.2, ease: 'circIn'}}
+          initial='init'
+          animate='main'
+          exit='out'
+          className={css.container}
+          onClick={() => dispatch({type: 'close'})}
+        >
+          <span className={state.icon ?? 'fas fa-bell'} />
+          <BreakWithCR str={state.text} />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
