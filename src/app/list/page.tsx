@@ -15,13 +15,16 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import Toast from '@/common/Toast/Toast';
 import {useWaiting} from '@/common/Waiting';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import {useAllCategoryData, new_category} from '@utils/api/category';
 import {AllCategoryDataType} from '@mytypes/Categoly';
+import {useToastOperator} from '@/common/Toast/Toast';
 
 export default function list(): React.ReactElement {
+  const router = useRouter();
+  const Toast = useToastOperator();
+
   const [show_only_trash, SetShowOnlyTrash] = React.useState(false);
   const [search_str, SetSearchStr] = React.useState('');
   const [radio_state, SetRadioState] = React.useState('タイトル');
@@ -31,9 +34,6 @@ export default function list(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [categoly_name, SetCategolyName] = React.useState('');
   const [categoly_desc, SetCategolyDesc] = React.useState('');
-
-  const [is_toast_open, SetIsToastOpen] = React.useState(false);
-  const router = useRouter();
 
   const [Waiting, StartWaiting] = useWaiting();
 
@@ -170,6 +170,7 @@ export default function list(): React.ReactElement {
               OnClick={() => {
                 if (categoly_name === '') {
                   SetIsToastOpen(true);
+                  Toast.open('カテゴリのタイトルを設定してください');
                   return;
                 }
                 StartWaiting();
@@ -183,13 +184,6 @@ export default function list(): React.ReactElement {
           </div>
         </div>
       </Modal>
-      <Toast
-        id='name_empty_notice'
-        isOpen={is_toast_open}
-        close={() => SetIsToastOpen(false)}
-        icon='fas fa-exclamation-triangle'
-        text='カテゴリのタイトルを設定してください'
-      />
       <Waiting />
     </>
   );

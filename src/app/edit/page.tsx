@@ -14,7 +14,7 @@ import Loading from '@/common/Loading/Loading';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import Toast from '@/common/Toast/Toast';
+import {useToastOperator} from '@/common/Toast/Toast';
 import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
 import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
@@ -59,10 +59,9 @@ export default function Edit(): JSX.Element {
   const is_first_rendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
 
-  const [is_toast_open, SetIsToastOpen] = React.useState(false);
+  const Toast = useToastOperator();
   const [is_json_edit, SetIsJsonEdit] = React.useState(false);
-  const [is_old_form, SetIsOldForm] = React.useState(category.version === 1);
-  const [regist_error, SetRegistError] = React.useState('');
+  const [is_old_form, SetIsOldForm] = React.useState(category?.version === 1);
 
   // 初回レンダリング時に実行されないようにしている
   React.useEffect(() => {
@@ -77,6 +76,7 @@ export default function Edit(): JSX.Element {
   }, [exam, category]);
 
   React.useEffect(() => {
+    console.log(fetched_category);
     if (isCategoryLoading) {
       return;
     }
@@ -102,8 +102,7 @@ export default function Edit(): JSX.Element {
 
   // カテゴリ登録
   const RegistCategoly = React.useCallback(() => {
-    // トーストを閉じる
-    SetIsToastOpen(false);
+    Toast.close();
 
     // prettier-ignore
     const exam_result = is_json_edit
@@ -190,8 +189,7 @@ export default function Edit(): JSX.Element {
         result_str.push(`・使用できない記号が含まれています\n(ページ: ${list})`);
       }
       if (failed) {
-        SetIsToastOpen(true);
-        SetRegistError(result_str.join('\n'));
+        Toast.open(result_str.join('\n'));
         return;
       }
     } // exam形式の確認おわり
@@ -204,14 +202,12 @@ export default function Edit(): JSX.Element {
     };
     update_category(category.id, request_data)
       .then(() => {
-        SetRegistError('');
-        SetIsToastOpen(true);
+        Toast.open('編集結果を適用しました');
         // 確認ダイアログを無効化
         SetShowConfirmBeforeLeave(false);
       })
       .catch(err => {
-        SetRegistError(err.toString());
-        SetIsToastOpen(true);
+        Toast.open(`エラーが発生しました。\n${err.toString()}`);
       });
     console.groupCollapsed('Category update request');
     console.log(request_data);
@@ -240,7 +236,7 @@ export default function Edit(): JSX.Element {
         <li>\\ 以外で記号 \ は使用できません（必ず空白無しで偶数個記述すること）</li>
         <li>&amp;を2つ以上連続して入力することは許可されません</li>
       </ul>
-      {isTagLoading || isCategoryLoading ? (
+      {isTagLoading || isCategoryLoading || exam.length === 0 ? (
         <Loading />
       ) : (
         <>
@@ -306,13 +302,6 @@ export default function Edit(): JSX.Element {
           )}
         </>
       )}
-      <Toast
-        id={'toast_create'}
-        isOpen={is_toast_open}
-        close={() => SetIsToastOpen(false)}
-        icon='fas fa-bell'
-        text={regist_error === '' ? '編集結果を適用しました' : `エラーが発生しました。\n${regist_error}`}
-      />
     </>
   );
 }

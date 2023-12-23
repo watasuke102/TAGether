@@ -4,24 +4,63 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './Toast.module.scss';
 import {gsap, Power4} from 'gsap';
-import React from 'react';
+import React, {Dispatch} from 'react';
 import BreakWithCR from '../BreakWithCR/BreakWithCR';
 
-interface Props {
-  isOpen: boolean;
-  close: () => void;
-  top?: number;
-  id: string;
-  icon: string;
+type State = {
+  is_open: boolean;
+  icon?: string;
   text: string;
+};
+type Action = {type: 'open'; icon?: string; text: string} | {type: 'close'};
+
+const component_id = 'common_toast';
+
+function reduce(current: State, action: Action): State {
+  if (action.type === 'close') {
+    return {...current, is_open: false};
+  }
+  return {is_open: true, icon: action.icon, text: action.text};
 }
 
-export default function Toast(props: Props): React.ReactElement {
+type ContextType = {
+  state: State;
+  dispatch: Dispatch<Action>;
+};
+const ToastContext = React.createContext<ContextType>({
+  state: {is_open: false, text: ''},
+  dispatch: () => {},
+});
+
+export function ToastProvider({children}: {children: React.ReactNode}): JSX.Element {
+  const [state, dispatch] = React.useReducer(reduce, {
+    is_open: false,
+    icon: '',
+    text: '',
+  });
+  return <ToastContext.Provider value={{state, dispatch}}>{children}</ToastContext.Provider>;
+}
+
+export function useToastOperator() {
+  const {dispatch} = React.useContext(ToastContext);
+  return {
+    open: (text: string, icon?: string) => dispatch({type: 'open', text, icon}),
+    close: () => dispatch({type: 'close'}),
+  };
+}
+
+export function Toast(): React.ReactElement {
+  const {state, dispatch} = React.useContext(ToastContext);
+  if (!state || !dispatch) {
+    return <></>;
+  }
+
   React.useEffect(() => {
-    const target = '#' + props.id;
-    if (!props.isOpen) {
+    const target = `#${component_id}`;
+    if (!state.is_open) {
       gsap.to(target, {
         duration: 0,
         translateX: '120%',
@@ -53,13 +92,14 @@ export default function Toast(props: Props): React.ReactElement {
       .to(target, {
         duration: 0,
         translateX: '120%',
-        onComplete: () => props.close(),
+        onComplete: () => dispatch({type: 'close'}),
       });
-  }, [props.isOpen]);
+  }, [state.is_open]);
+
   return (
-    <div id={props.id} className={css.container} style={{top: props.top ?? 65}} onClick={props.close}>
-      <span className={props.icon} />
-      <BreakWithCR str={props.text} />
+    <div id={component_id} className={css.container} onClick={() => dispatch({type: 'close'})}>
+      <span className={state.icon ?? 'fas fa-bell'} />
+      <BreakWithCR str={state.text} />
     </div>
   );
 }
