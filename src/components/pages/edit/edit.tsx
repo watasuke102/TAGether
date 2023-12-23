@@ -16,19 +16,33 @@ import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
 import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
-import {exam_default, categoly_default} from '@utils/DefaultValue';
+import {exam_default} from '@utils/DefaultValue';
 import UpdateExam from '@utils/UpdateExam';
-import {AllCategoryDataType} from '@mytypes/Categoly';
-import CategolyResponse from '@mytypes/CategolyResponse';
+import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import TagData from '@mytypes/TagData';
+import {update_category} from '@utils/api/category';
 
 interface Props {
-  data: AllCategoryDataType;
+  data: CategoryDataType;
   tags: TagData[];
 }
 
 export const ExamContext = React.createContext<Exam[]>(exam_default());
+
+type ActionType = {type: 'title' | 'desc' | 'list'; value: string} | {type: 'tag'; tags: TagData[]};
+function reduce_category(current: CategoryDataType, action: ActionType): CategoryDataType {
+  switch (action.type) {
+    case 'title':
+      return {...current, title: action.value};
+    case 'desc':
+      return {...current, description: action.value};
+    case 'list':
+      return {...current, list: action.value};
+    case 'tag':
+      return {...current, tag: action.tags};
+  }
+}
 
 export default function Edit(props: Props): React.ReactElement {
   const is_first_rendering = React.useRef(true);
@@ -39,12 +53,8 @@ export default function Edit(props: Props): React.ReactElement {
   const [is_old_form, SetIsOldForm] = React.useState(props.data.version === 1);
   const [regist_error, SetRegistError] = React.useState('');
 
-  const [categoly, SetCategoly] = React.useState(props.data);
-  const categoly_ref = React.useRef<AllCategoryDataType>(categoly_default());
-  categoly_ref.current = categoly;
+  const [category, dispatch_category] = React.useReducer(reduce_category, props.data);
   const [exam, SetExam] = React.useState<Exam[]>(JSON.parse(props.data.list));
-  const exam_ref = React.useRef<Exam[]>(exam_default());
-  exam_ref.current = exam;
 
   // 初回レンダリング時に実行されないようにしている
   React.useEffect(() => {
@@ -56,7 +66,7 @@ export default function Edit(props: Props): React.ReactElement {
     } else {
       SetShowConfirmBeforeLeave(true);
     }
-  }, [exam, categoly]);
+  }, [exam, category]);
 
   // ショートカットキー
   const Shortcut = React.useCallback(
@@ -66,7 +76,7 @@ export default function Edit(props: Props): React.ReactElement {
         RegistCategoly();
       }
     },
-    [exam, categoly],
+    [exam, category],
   );
 
   React.useEffect(() => {
@@ -74,36 +84,31 @@ export default function Edit(props: Props): React.ReactElement {
     return () => window.removeEventListener('keydown', e => Shortcut(e));
   }, []);
 
-  function UpdateCategoly(type: 'title' | 'desc' | 'list', v: string) {
-    // 普通に代入すると浅いコピーになってしまった
-    const stat = JSON.parse(JSON.stringify(categoly));
-    // prettier-ignore
-    switch (type) {
-      case 'title': stat.title       = v; break;
-      case 'desc':  stat.description = v; break;
-      case 'list':  stat.list        = v; break;
-    }
-    SetCategoly(stat);
-  }
-
   // カテゴリ登録
-  function RegistCategoly(): void {
+  const RegistCategoly = React.useCallback(() => {
     // トーストを閉じる
     SetIsToastOpen(false);
 
-    // 編集用
-    const exam_tmp = exam_ref.current;
-    const categoly = categoly_ref.current;
+    // prettier-ignore
+    const exam_result = is_json_edit
+      ? JSON.parse(category.list)
+      : exam.map(e => {
+        return {
+          ...e,
+          question_choices: e.question_choices?.map(e => e.trim()) ?? [],
+          answer: e.answer.map(e => e.trim()),
+        };
+      });
 
     // データが正しいか判定し、誤りがあればエラーを返す
     {
       let failed: boolean = false;
       const result_str: string[] = [];
-      if (categoly.title === '') {
+      if (category.title === '') {
         failed = true;
         result_str.push('・タイトルを設定してください');
       }
-      if (categoly.tag.length > 8) {
+      if (category.tag.length > 8) {
         failed = true;
         result_str.push('・タグは8個以下にしてください');
       }
@@ -112,10 +117,10 @@ export default function Edit(props: Props): React.ReactElement {
       const blank_exam = new Set<number>();
       // &が2連続以上している問題
       const irregular_symbol_exam = new Set<number>();
-      exam_tmp.forEach((e, i) => {
+      exam_result.forEach((e, i) => {
         switch (e.type) {
           case undefined:
-            exam_tmp[i].type = 'Text';
+            exam_result[i].type = 'Text';
             break;
           // 選択系のタイプの場合、choicesに空欄があるかチェック
           case 'Select':
@@ -175,49 +180,27 @@ export default function Edit(props: Props): React.ReactElement {
       }
     } // exam形式の確認おわり
 
-    // 登録の準備
-    const tag: string[] = categoly.tag.map(e => String(e.id) ?? e.name);
-    const api_body: CategolyResponse = {
-      ...categoly,
-      version: is_old_form ? 1 : 2,
-      tag: tag.toString(),
+    const request_data = {
+      title: category.title,
+      description: category.description,
+      tag: category.tag.map(e => String(e.id) ?? e.name).join(','),
+      list: exam_result,
     };
-    if (is_json_edit) {
-      // インデントを削除
-      api_body.list = JSON.stringify(JSON.parse(categoly.list));
-    } else {
-      api_body.list = JSON.stringify(
-        exam_tmp.map(e => {
-          return {
-            ...e,
-            question_choices: e.question_choices?.map(e => e.trim()) ?? [],
-            answer: e.answer.map(e => e.trim()),
-          };
-        }),
-      );
-    }
-
-    const req = new XMLHttpRequest();
-    req.onreadystatechange = () => {
-      if (req.readyState === 4) {
-        const result = JSON.parse(req.responseText);
-        if (req.status === 200) {
-          SetRegistError('');
-          SetIsToastOpen(true);
-          // 確認ダイアログを無効化
-          SetShowConfirmBeforeLeave(false);
-        } else {
-          // エラーはcreate/edit関わらずToastで表示する
-          SetRegistError(result.message);
-          SetIsToastOpen(true);
-        }
-      }
-    };
-    req.open('PUT', process.env.API_URL + '/categoly');
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.send(JSON.stringify(api_body));
-    console.log('BODY: ' + JSON.stringify(api_body));
-  }
+    update_category(props.data.id, request_data)
+      .then(() => {
+        SetRegistError('');
+        SetIsToastOpen(true);
+        // 確認ダイアログを無効化
+        SetShowConfirmBeforeLeave(false);
+      })
+      .catch(err => {
+        SetRegistError(err.toString());
+        SetIsToastOpen(true);
+      });
+    console.groupCollapsed('Category update request');
+    console.log(request_data);
+    console.groupEnd();
+  }, [category, exam]);
 
   return (
     <>
@@ -249,17 +232,17 @@ export default function Edit(props: Props): React.ReactElement {
         <Form
           {...{
             label: 'タイトル',
-            value: categoly.title,
+            value: category.title,
             rows: 1,
-            OnChange: e => UpdateCategoly('title', e.target.value),
+            OnChange: e => dispatch_category({type: 'title', value: e.target.value}),
           }}
         />
         <Form
           {...{
             label: '説明',
-            value: categoly.description,
+            value: category.description,
             rows: 3,
-            OnChange: e => UpdateCategoly('desc', e.target.value),
+            OnChange: e => dispatch_category({type: 'desc', value: e.target.value}),
           }}
         />
       </div>
@@ -267,12 +250,8 @@ export default function Edit(props: Props): React.ReactElement {
       <h2>タグ</h2>
       <TagListEdit
         tags={props.tags}
-        current_tag={categoly.tag}
-        SetTag={(e: TagData[]) => {
-          const tmp = categoly;
-          tmp.tag = e;
-          SetCategoly(tmp);
-        }}
+        current_tag={category.tag}
+        SetTag={(e: TagData[]) => dispatch_category({type: 'tag', tags: e})}
       />
       <h2>問題</h2>
 
@@ -291,7 +270,12 @@ export default function Edit(props: Props): React.ReactElement {
       {is_json_edit ? (
         <>
           <p>注意：編集内容はリッチエディタと同期されません</p>
-          <Form label='JSON' value={categoly.list} rows={30} OnChange={e => UpdateCategoly('list', e.target.value)} />
+          <Form
+            label='JSON'
+            value={category.list}
+            rows={30}
+            OnChange={e => dispatch_category({type: 'list', value: e.target.value})}
+          />
         </>
       ) : (
         <>
