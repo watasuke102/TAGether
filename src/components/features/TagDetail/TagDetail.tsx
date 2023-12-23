@@ -11,7 +11,7 @@ import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import Form from '@/common/TextForm/Form';
-import Toast from '@/common/Toast/Toast';
+import {useToastOperator} from '@/common/Toast/Toast';
 import TagData from '@mytypes/TagData';
 import {mutate_tag, new_tag, update_tag} from '@utils/api/tag';
 
@@ -23,8 +23,7 @@ interface Props {
 }
 
 export default function TagDetail(props: Props): React.ReactElement {
-  const [is_toast_open, SetIsToastOpen] = React.useState(false);
-  const [toast_body, SetToastBody] = React.useState('');
+  const Toast = useToastOperator();
   const [edited_name, SetEditedName] = React.useState(props.tag.name);
   const [edited_desc, SetEditedDesc] = React.useState(props.tag.description);
   const router = useRouter();
@@ -32,26 +31,22 @@ export default function TagDetail(props: Props): React.ReactElement {
 
   const UpdateTag = React.useCallback(() => {
     if (disabled) {
-      SetToastBody('編集できないタグです');
-      SetIsToastOpen(true);
+      Toast.open('編集できないタグです');
       return;
     }
     if (edited_name === '') {
-      SetToastBody('タグ名を入力してください');
-      SetIsToastOpen(true);
+      Toast.open('タグ名を入力してください');
       return;
     }
 
     if (props.createMode) {
       new_tag({name: edited_name, description: edited_desc}).then(() => {
-        SetToastBody('タグを追加しました');
-        SetIsToastOpen(true);
+        Toast.open('タグを追加しました');
         mutate_tag();
       });
     } else {
       update_tag(props.tag?.id ?? -1, {name: edited_name, description: edited_desc}).then(() => {
-        SetToastBody('編集結果を適用しました');
-        SetIsToastOpen(true);
+        Toast.open('編集結果を適用しました');
         mutate_tag();
       });
     }
@@ -105,15 +100,6 @@ export default function TagDetail(props: Props): React.ReactElement {
             <Button type='filled' icon='fas fa-check' text='編集結果を適用' OnClick={UpdateTag} />
           </ButtonContainer>
         </div>
-
-        <Toast
-          id='tag_detail'
-          isOpen={is_toast_open}
-          close={() => SetIsToastOpen(false)}
-          top={20}
-          icon='fas fa-bell'
-          text={toast_body}
-        />
       </Modal>
     </>
   );

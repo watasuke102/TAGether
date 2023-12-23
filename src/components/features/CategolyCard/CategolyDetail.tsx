@@ -11,7 +11,7 @@ import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
-import Toast from '@/common/Toast/Toast';
+import {useToastOperator} from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import {AllCategoryDataType} from '@mytypes/Categoly';
@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function CategolyDetail(props: Props): React.ReactElement {
-  const [is_toast_open, SetIsToastOpen] = React.useState(false);
+  const Toast = useToastOperator();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [is_csv_export_open, set_is_csv_export_open] = React.useState(false);
   const [is_delete_modal_open, SetIsDeleteModalOpen] = React.useState(false);
@@ -63,7 +63,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           if (begin <= end) {
             url += `&begin=${begin}&end=${end}`;
           } else {
-            SetIsToastOpen(true);
+            Toast.open('範囲指定が不正です。最初の問題番号<=最後の問題番号になるように設定してください。');
           }
         } else {
           if (begin > 0) {
@@ -235,13 +235,6 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           </div>
         )}
       </Modal>
-      <Toast
-        id='range_invalid_notice'
-        isOpen={is_toast_open}
-        close={() => SetIsToastOpen(false)}
-        icon='fas fa-bell'
-        text='範囲指定が不正です。最初の問題番号<=最後の問題番号になるように設定してください。'
-      />
     </>
   );
 }

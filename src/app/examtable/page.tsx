@@ -22,7 +22,6 @@ export default function ExamTablePage(): React.ReactElement {
   const [data, is_loading] = useCategoryData(id ?? -1);
 
   React.useEffect(() => {
-    console.log(id, history_id, data, history);
     if (id) {
       return;
     }
