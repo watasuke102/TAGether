@@ -9,40 +9,36 @@ import {ExamTable} from '@/pages/examtable';
 import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
-import {categoly_default} from '@utils/DefaultValue';
-import {AllCategoryDataType} from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
+import {useCategoryData} from '@utils/api/category';
+import {GetSpecifiedExamHistory} from '@utils/ManageDB';
 
 export default function ExamTablePage(): React.ReactElement {
   const search_params = useSearchParams();
   const id = search_params.get('id');
   const history_id = search_params.get('history_id');
 
-  const [is_loading, SetIsLoading] = React.useState(true);
-  // const OnComplete = (categoly: Categoly) => {
-  //   SetData(categoly);
-  //   SetIsLoading(false);
-  // };
-
-  const [data, SetData] = React.useState<AllCategoryDataType>(categoly_default());
   const [history, SetHistory] = React.useState<ExamHistory | undefined>();
-  // useAllCategoryData(false, categoly => {
-  //   if (id !== undefined) {
-  //     // 通常
-  //     OnComplete(categoly[0]);
-  //   } else if (history_id !== undefined) {
-  //     // 履歴からの解き直し
-  //     const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
-  //     GetSpecifiedExamHistory(history_id_str).then(result => {
-  //       if (result) {
-  //         SetHistory(result);
-  //         OnComplete(result.categoly);
-  //       } else {
-  //         throw new Error('[FATAL] cannot get ExamHistory');
-  //       }
-  //     });
-  //   }
-  // });
+  const [data, is_loading] = useCategoryData(id ?? -1);
 
-  return is_loading ? <Loading /> : <ExamTable data={data} history={history} />;
+  React.useEffect(() => {
+    console.log(id, history_id, data, history);
+    if (id) {
+      return;
+    }
+    const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
+    GetSpecifiedExamHistory(history_id_str).then(result => {
+      if (result) {
+        SetHistory(result);
+      } else {
+        throw new Error('[FATAL] cannot get ExamHistory');
+      }
+    });
+  }, [search_params, is_loading]);
+
+  if ((id && is_loading) || (history_id && !history)) {
+    return <Loading />;
+  }
+
+  return <ExamTable data={data} history={history} />;
 }

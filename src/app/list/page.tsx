@@ -176,7 +176,7 @@ export default function list(): React.ReactElement {
                 new_category({
                   title: categoly_name,
                   description: categoly_desc,
-                  list: JSON.stringify({type: 'Text', question: '問題文', answer: ['解答']}),
+                  list: JSON.stringify([{type: 'Text', question: '問題文', answer: ['解答']}]),
                 }).then(result => router.push(`/edit?id=${result.data.inserted_id}`));
               }}
             />
