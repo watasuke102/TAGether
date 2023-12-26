@@ -8,15 +8,14 @@
 import css from './edit.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
-import {useSearchParams} from 'next/navigation';
 import {useCategoryData} from '@utils/api/category';
 import Loading from '@/common/Loading/Loading';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {useToastOperator} from '@/common/Toast/Toast';
-import ExamEditForms from '@/features/ExamEdit/ExamEditForms';
-import ExamEditFormsOld from '@/features/ExamEdit/ExamEditFormsOld';
+import ExamEditForms from './_components/OldForms/ExamEditFormsOld';
+import ExamEditFormsOld from './_components/ExamEditForms';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useTagData} from '@utils/api/tag';
 import {update_category} from '@utils/api/category';
@@ -28,6 +27,8 @@ import {CategoryDataType} from '@mytypes/Categoly';
 import TagData from '@mytypes/TagData';
 import {validate_category} from '@utils/ValidateCategory';
 import {PutCategory} from '../api/category/[id]/route';
+import {useImmerReducer} from 'use-immer';
+import {edit_reducer} from './_components/EditReducer';
 
 export const ExamContext = React.createContext<Exam[]>(exam_default());
 
@@ -50,13 +51,24 @@ function reduce_category(current: CategoryDataType, action: ActionType): Categor
   }
 }
 
-export default function Edit(): JSX.Element {
-  const search_params = useSearchParams();
-  const id = search_params?.get('id');
-  const [fetched_category, isCategoryLoading] = useCategoryData(id ?? '');
+type Props = {
+  searchParams: {
+    id?: string;
+  };
+};
+
+export default function Edit(props: Props): JSX.Element {
+  const [fetched_category, isCategoryLoading] = useCategoryData(props.searchParams.id ?? '');
   const [tags, isTagLoading] = useTagData();
   const [category, dispatch_category] = React.useReducer(reduce_category, categoly_default());
   const [exam, SetExam] = React.useState<Exam[]>([]);
+  const [x, y] = useImmerReducer(edit_reducer, {
+    title: 'title',
+    current_editing: 0,
+    desc: 'description',
+    list: '',
+    exam: [] as Exam[],
+  });
 
   const is_first_rendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
