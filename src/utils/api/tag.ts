@@ -14,7 +14,7 @@ import {PostTag} from 'src/app/api/tag/route';
 const tag_key = '/api/tag';
 
 export const mutate_tag = (): Promise<void> => mutate(tag_key);
-export const useTagData = useApiData<TagData>('/api/tag');
+export const useTagData = useApiData<TagData>(tag_key);
 
 export async function new_tag(data: PostTag): Promise<AxiosPromise> {
   return axios.post(tag_key, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
