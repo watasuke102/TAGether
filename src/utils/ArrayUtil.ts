@@ -5,7 +5,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 
-// Fisher–Yates法によって配列をシャッフルして返す
+/// Fisher–Yates法によって配列をシャッフルして返す
 export function Shuffle<T>(e: Array<T>): Array<T> {
   // 引数なしconcatで深いコピー
   const data = e.concat();
@@ -18,12 +18,23 @@ export function Shuffle<T>(e: Array<T>): Array<T> {
   return data;
 }
 
-// from番目の要素をto番目に持ってくる
-// ex: Move([1, 2, 3, 4, 5], 0, 4) => [2, 3, 4, 5, 1]
+/// from番目の要素をto番目に持ってくる
+/// ex: Move([1, 2, 3, 4, 5], 0, 4) => [2, 3, 4, 5, 1]
 export function Move<T>(e: Array<T>, from: number, to: number): Array<T> {
   if (from === to) return e;
   const data = e.concat();
   data.splice(to + (from < to ? 1 : 0), 0, data[from]);
   data.splice(from + (from > to ? 1 : 0), 1);
+  return data;
+}
+
+/// i番目の要素とj番目の要素を入れ替え
+/// ex: Move([1, 2, 3, 4, 5], 0, 4) => [5, 2, 3, 4, 1]
+export function Swap<T>(e: Array<T>, i: number, j: number): Array<T> {
+  if (i === j) return e;
+  const data = e.concat();
+  const tmp = data[i];
+  data[i] = data[j];
+  data[j] = tmp;
   return data;
 }
