@@ -7,17 +7,13 @@
 'use client';
 import css from './EditPage.module.scss';
 import React from 'react';
-import Helmet from 'react-helmet';
 import ExamEditForms from '../Forms/ExamEditForms';
-import ExamEditFormsOld from '../OldForms/ExamEditFormsOld';
 import {PutCategory} from '../../../api/category/[id]/route';
-import Loading from '@/common/Loading/Loading';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {useToastOperator} from '@/common/Toast/Toast';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
-import UpdateExam from '@utils/UpdateExam';
 import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
 import {exam_default} from '@utils/DefaultValue';
 import {update_category} from '@utils/api/category';
@@ -51,7 +47,6 @@ export function EditPage(props: Props): JSX.Element {
   const [category, dispatch_category] = React.useReducer(reduce_category, props.category);
   const [exam, SetExam] = React.useState<Exam[]>(JSON.parse(props.category.list));
   const [is_json_edit, SetIsJsonEdit] = React.useState(false);
-  const [is_old_form, SetIsOldForm] = React.useState(props.category.version === 1);
 
   const is_first_rendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
@@ -154,9 +149,6 @@ export function EditPage(props: Props): JSX.Element {
       <h2>問題</h2>
       <div className={css.buttons}>
         <SelectButton type='check' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
-        {category.version !== 1 && (
-          <SelectButton type='check' status={is_old_form} desc='古い編集画面を使う' onChange={SetIsOldForm} />
-        )}
         <div className={css.pushbutton_wrapper}>
           <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} OnClick={() => RegistCategoly()} />
         </div>
@@ -173,19 +165,9 @@ export function EditPage(props: Props): JSX.Element {
           />
         </>
       ) : (
-        <>
-          {is_old_form ? (
-            <ExamEditFormsOld
-              exam={exam}
-              register={RegistCategoly}
-              updater={UpdateExam(SetExam, JSON.parse(JSON.stringify(exam)))}
-            />
-          ) : (
-            <ExamContext.Provider value={exam}>
-              <ExamEditForms updater={e => SetExam(e.concat())} />
-            </ExamContext.Provider>
-          )}
-        </>
+        <ExamContext.Provider value={exam}>
+          <ExamEditForms updater={e => SetExam(e.concat())} />
+        </ExamContext.Provider>
       )}
     </>
   );
