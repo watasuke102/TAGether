@@ -40,5 +40,5 @@ export function tagdata_default(): TagData {
 }
 
 export function exam_default(): Exam[] {
-  return [{question: '', answer: [''], comment: ''}];
+  return [{question: '', question_choices: [''], answer: [''], comment: ''}];
 }
