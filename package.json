@@ -3,7 +3,9 @@
   "version": "2.1.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "test": "vitest run --exclude docker",
     "lint": "eslint src --fix",
     "fmt": "prettier --write src/",
     "check": "npm run lint && npm run fmt && npm run build",
@@ -35,7 +37,8 @@
     "react-helmet": "^6.1.0",
     "sass": "^1.69.5",
     "swr": "^2.2.4",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "use-immer": "^0.9.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
@@ -50,6 +53,9 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unused-imports": "^3.0.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "vite": "^5.0.10",
+    "vite-tsconfig-paths": "^4.2.2",
+    "vitest": "^1.1.0"
   }
 }
