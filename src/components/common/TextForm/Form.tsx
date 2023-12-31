@@ -7,16 +7,21 @@
 import css from './Form.module.scss';
 import React from 'react';
 import FormInfo from '@mytypes/FormInfo';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 
 export default function Form(props: FormInfo): JSX.Element {
   return (
     <div>
-      {props.label && <label className={css.label}>{props.label}</label>}
-      <textarea
+      {props.label && (
+        <label htmlFor={props.id ?? ''} className={css.label}>
+          {props.label}
+        </label>
+      )}
+      <ReactTextareaAutosize
         id={props.id ?? ''}
         className={css.form}
         value={props.value}
-        rows={props.rows}
+        minRows={props.rows}
         spellCheck={false}
         tabIndex={props.layer ?? 1}
         onChange={e => props.OnChange(e)}

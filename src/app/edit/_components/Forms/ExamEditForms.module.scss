@@ -35,11 +35,6 @@
   margin: 15px 20px;
   padding-bottom: 150px;
 
-  textarea {
-    padding: 15px;
-    width: 100%;
-  }
-
   .type_select {
     display: grid;
     grid-template-columns: 48% 48%;
@@ -52,6 +47,7 @@
     width: 47%;
     display: flex;
     flex-direction: column;
+    gap: 16px;
     padding-bottom: 80px;
 
     .select_form {
@@ -81,11 +77,7 @@
 
   .answer_area_buttons {
     display: flex;
-    justify-content: left;
-
-    button {
-      margin: 5px 15px 20px 0;
-    }
+    justify-content: space-between;
   }
 }
 

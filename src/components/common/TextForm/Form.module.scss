@@ -10,25 +10,24 @@
 @import '../variable';
 
 .label {
-  font-size: 22px;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
 .form {
-  font-family: 'M PLUS 1p', sans-serif;
-  color: $color-bg;
-  display: flex;
   resize: vertical;
   width: 100%;
-  padding: 5px 5px;
-  font-size: 18px;
+  padding: 2px 4px;
+  font-size: 1.4em;
+  color: $color-bg;
   background-color: $color-4;
   border: none;
   box-shadow: none;
+  font-family: 'M PLUS 1p', sans-serif;
   transition: box-shadow 0.3s;
-}
-
-.form:focus {
-  border: none;
-  outline: none;
-  box-shadow: 0 0 3px 2.5px $color-1;
+  &:focus {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 3px 2.5px $color-1;
+  }
 }
