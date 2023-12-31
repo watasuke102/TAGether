@@ -11,7 +11,17 @@ import {Move} from '@utils/ArrayUtil';
 import TagData from '@mytypes/TagData';
 
 type ReducerType = (current: StateType, action: Action) => StateType;
-export const ExamReducerContext = React.createContext<ReducerType | null>(null);
+export const ExamReducerContext = React.createContext<[StateType, React.Dispatch<Action>]>([
+  {
+    current_editing: 0,
+    title: '',
+    desc: '',
+    list: '',
+    exam: [],
+    tags: [],
+  },
+  () => undefined,
+]);
 
 // state.current_editingに依存するもの: prefix 'q:'
 export type Action =
@@ -119,6 +129,7 @@ export const edit_reducer: ReducerType = (current, action) => {
       } else {
         current.exam[current.current_editing].answer.splice(index, 1);
       }
+      current.exam[current.current_editing].answer = current.exam[current.current_editing].answer.filter(e => e !== '');
       break;
     }
 
