@@ -16,6 +16,7 @@ import Form from '@/common/TextForm/Form';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import ExamType from '@mytypes/ExamType';
 import Loading from '../../loading';
+import {useShortcut} from '@utils/useShortcut';
 
 enum TabIndexList {
   TypeSelect = 1,
@@ -48,41 +49,19 @@ export default function ExamEditForms(): React.ReactElement {
   );
 
   // ショートカットキー
-  React.useEffect(() => {
-    const Shortcut = (e: KeyboardEvent) => {
-      // Ctrl+Shift+矢印キー等で動かす （キーリピートは無視）
-      if (e.ctrlKey && e.shiftKey && !e.repeat) {
-        switch (e.code) {
-          case 'KeyH':
-          case 'ArrowLeft':
-            step_page_with_adding(-1);
-            break;
-          case 'KeyL':
-          case 'ArrowRight':
-            step_page_with_adding(1);
-            break;
-          case 'KeyA':
-            dispatch({type: 'q:type/set', data: 'Text'});
-            break;
-          case 'KeyS':
-            dispatch({type: 'q:type/set', data: 'Select'});
-            break;
-          case 'KeyZ':
-            dispatch({type: 'q:type/set', data: 'MultiSelect'});
-            break;
-          case 'KeyX':
-            dispatch({type: 'q:type/set', data: 'Sort'});
-            break;
-          default:
-            return;
-        }
-        e.preventDefault();
-      }
-    };
-
-    window.addEventListener('keydown', Shortcut);
-    return () => window.removeEventListener('keydown', Shortcut);
-  }, [state]);
+  useShortcut(
+    [
+      {keycode: 'KeyH', handler: () => step_page_with_adding(-1)},
+      {keycode: 'ArrowLeft', handler: () => step_page_with_adding(-1)},
+      {keycode: 'KeyL', handler: () => step_page_with_adding(1)},
+      {keycode: 'ArrowRight', handler: () => step_page_with_adding(1)},
+      {keycode: 'KeyA', handler: () => dispatch({type: 'q:type/set', data: 'Text'})},
+      {keycode: 'KeyS', handler: () => dispatch({type: 'q:type/set', data: 'Select'})},
+      {keycode: 'KeyZ', handler: () => dispatch({type: 'q:type/set', data: 'MultiSelect'})},
+      {keycode: 'KeyX', handler: () => dispatch({type: 'q:type/set', data: 'Sort'})},
+    ],
+    {ctrl: true, shift: true},
+  );
 
   React.useEffect(() => {
     is_first_rendering.current = true;
