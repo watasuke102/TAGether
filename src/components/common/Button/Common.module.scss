@@ -22,13 +22,6 @@
   }
 }
 
-.tagether {
-  content: url('/static/icon.svg');
-  width: 100%;
-  height: 100%;
-  transform: translateY(0px) !important;
-}
-
 // アイコンとテキストが通常通り表示されていない時はアイコンサイズを増やす
 @media screen and (max-height: 600px) {
   .tagether {

@@ -4,31 +4,30 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-'use client';
 import css from './Header.module.scss';
 import React from 'react';
-import Button from '@/common/Button/Button';
-import ButtonInfo from '@mytypes/ButtonInfo';
-import {useRouter} from 'next/navigation';
+import Link from 'next/link';
 
 export default function Header(): React.ReactElement {
-  const router = useRouter();
   // prettier-ignore
-  const info: ButtonInfo[] = [
-    { text: 'TAGether',     icon: 'tagether',           OnClick: () => router.push('/'),        type: 'icon_desc' },
-    { text: 'カテゴリ一覧', icon: 'fas fa-book',        OnClick: () => router.push('/list'),    type: 'icon_desc' },
-    { text: 'タグ一覧',     icon: 'fas fa-tag',         OnClick: () => router.push('/tag'),     type: 'icon_desc' },
-    { text: 'プロフィール', icon: 'fas fa-user',        OnClick: () => router.push('/profile'), type: 'icon_desc' },
-    { text: '機能要望',     icon: 'fas fa-comment-alt', OnClick: () => router.push('/request'), type: 'icon_desc' },
+  const info = [
+    {href: '/'       , icon: 'tagether',           text: 'TAGether'},
+    {href: '/list'   , icon: 'fas fa-book',        text: 'カテゴリ一覧'},
+    {href: '/tag'    , icon: 'fas fa-tag',         text: 'タグ一覧'},
+    {href: '/profile', icon: 'fas fa-user',        text: 'プロフィール'},
+    {href: '/request', icon: 'fas fa-comment-alt', text: '機能要望'},
   ];
 
   return (
     <header className={css.header}>
-      <div className={css.buttons}>
-        {info.map(e => (
-          <Button key={`headerbutton_${e.text}`} {...e} />
-        ))}
-      </div>
+      {info.map(e => (
+        <Link href={e.href} className={css.item} key={e.text}>
+          <div className={css.icon_wrapper}>
+            <span className={`${css.icon} ${e.icon === 'tagether' ? css.tagether : e.icon}`} />
+          </div>
+          <span className={css.text}>{e.text}</span>
+        </Link>
+      ))}
     </header>
   );
 }
