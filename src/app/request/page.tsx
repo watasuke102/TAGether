@@ -12,7 +12,6 @@ import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
 import {useRequestData, new_request, mutate_request} from '@utils/api/request';
-import ReactTextareaAutosize from 'react-textarea-autosize';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
