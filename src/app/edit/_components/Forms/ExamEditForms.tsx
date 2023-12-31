@@ -13,12 +13,11 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import ButtonInfo from '@mytypes/ButtonInfo';
-import ExamType from '@mytypes/ExamType';
 import Loading from '../../loading';
 import {useShortcut} from '@utils/useShortcut';
+import {AnswerEditArea} from '../AnswerEditArea/AnswerEditArea';
 
-enum TabIndexList {
+export enum TabIndexList {
   TypeSelect = 1,
   Question,
   Answer,
@@ -74,209 +73,6 @@ export default function ExamEditForms(): React.ReactElement {
     document.getElementById(QUESTION_ID)?.focus();
   }, [state.current_editing]);
 
-  function AddRemoveButtons(type: ExamType, index: number, length: number) {
-    return (
-      <>
-        {/* 問題の追加/削除 */}
-        <Button
-          {...{
-            text: '1つ下に追加',
-            icon: 'fas fa-plus',
-            type: 'material',
-            OnClick: () =>
-              dispatch({
-                type: type === 'Text' || type === 'Sort' ? 'q:answer/insert' : 'q:choice/insert',
-                at: index + 1,
-              }),
-          }}
-        />
-        <Button
-          {...{
-            text: '最後に追加',
-            icon: 'fas fa-arrow-down',
-            type: 'material',
-            OnClick: () =>
-              dispatch({
-                type: type === 'Text' || type === 'Sort' ? 'q:answer/insert' : 'q:choice/insert',
-                at: length,
-              }),
-          }}
-        />
-        {
-          // 解答欄を1つ削除するボタン
-          // 解答欄が1つしかないときは無効
-          length !== 1 && (
-            <Button
-              {...{
-                type: 'material',
-                icon: 'fas fa-trash',
-                text: '削除',
-                OnClick: () =>
-                  dispatch({
-                    type: type === 'Text' || type === 'Sort' ? 'q:answer/remove' : 'q:choice/remove',
-                    at: index,
-                  }),
-              }}
-            />
-          )
-        }
-      </>
-    );
-  }
-
-  function AnswerEditArea() {
-    let result: React.ReactElement[] | React.ReactElement;
-    const type = state.exam[state.current_editing].type ?? 'Text';
-
-    switch (type) {
-      case 'Text':
-        result = state.exam[state.current_editing].answer.map((e, i) => {
-          return (
-            <div key={`examform-text-${i}`}>
-              <Form
-                label={`答え (${i + 1})`}
-                value={e}
-                rows={3}
-                layer={TabIndexList.Answer}
-                OnChange={e => dispatch({type: 'q:answer/set', index: i, data: e.target.value})}
-              />
-              <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('Text', i, state.exam[state.current_editing].answer.length)}
-              </div>
-            </div>
-          );
-        });
-        break;
-
-      case 'Select':
-        result = state.exam[state.current_editing].question_choices?.map((e, i) => {
-          return (
-            <div key={`examform-select-${i}`}>
-              <div className={css.select_form}>
-                <SelectButton
-                  type='radio'
-                  desc={''}
-                  tabIndex={TabIndexList.SelectCorrectAnswer}
-                  status={
-                    Number(state.exam[state.current_editing].answer[0]) === i &&
-                    state.exam[state.current_editing].answer[0] !== ''
-                  }
-                  onChange={() => dispatch({type: 'q:answer/set_single', data: String(i)})}
-                />
-                <Form
-                  value={e}
-                  rows={2}
-                  layer={TabIndexList.Answer}
-                  OnChange={ev => dispatch({type: 'q:choice/set', index: i, data: ev.target.value})}
-                />
-              </div>
-              <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('Select', i, state.exam[state.current_editing].question_choices?.length ?? 0)}
-              </div>
-            </div>
-          );
-        }) ?? <>invalid</>;
-        break;
-
-      case 'MultiSelect':
-        result = state.exam[state.current_editing].question_choices?.map((e, i) => {
-          return (
-            <div key={`examform-multiselect-${i}`}>
-              <div className={css.select_form}>
-                <SelectButton
-                  type='check'
-                  desc={''}
-                  tabIndex={TabIndexList.SelectCorrectAnswer}
-                  status={state.exam[state.current_editing].answer.indexOf(String(i)) !== -1}
-                  onChange={() => dispatch({type: 'q:answer/toggle_multi', data: String(i)})}
-                />
-                <Form
-                  value={e}
-                  rows={2}
-                  layer={TabIndexList.Answer}
-                  OnChange={ev => dispatch({type: 'q:choice/set', index: i, data: ev.target.value})}
-                />
-              </div>
-              <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('MultiSelect', i, state.exam[state.current_editing].question_choices?.length ?? 0)}
-              </div>
-            </div>
-          );
-        }) ?? <>invalid</>;
-        break;
-
-      case 'Sort':
-        result = (
-          <DragDropContext
-            onDragEnd={(e: DropResult) => {
-              if (e.destination) {
-                dispatch({type: 'q:answer/move', from: e.source.index, to: e.destination.index});
-              }
-            }}
-          >
-            <Droppable droppableId='examform_sort_droppable'>
-              {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {state.exam[state.current_editing].answer.map((e, i) => {
-                    const id = `examform-sort-${i}`;
-                    return (
-                      <Draggable key={id} draggableId={id} index={i}>
-                        {provided => (
-                          <div className={css.sort_forms} ref={provided.innerRef} {...provided.draggableProps}>
-                            <Form
-                              label={`答え (${i + 1})`}
-                              value={e}
-                              rows={3}
-                              layer={TabIndexList.Answer}
-                              OnChange={ev => dispatch({type: 'q:answer/set', index: i, data: ev.target.value})}
-                            />
-                            <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
-                            <div className={css.answer_area_buttons}>
-                              {AddRemoveButtons('Sort', i, state.exam[state.current_editing].answer.length)}
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        );
-        break;
-    }
-    return <>{result}</>;
-  }
-
-  const append_exam_button: ButtonInfo[] = [
-    {
-      type: 'material',
-      icon: 'fas fa-angle-double-left',
-      text: '最初に挿入',
-      OnClick: () => dispatch({type: 'exam/insert', at: -1}),
-    },
-    {
-      type: 'material',
-      icon: 'fas fa-arrow-left',
-      text: '1つ前に挿入',
-      OnClick: () => dispatch({type: 'exam/insert', at: state.current_editing}),
-    },
-    {
-      type: 'material',
-      icon: 'fas fa-arrow-right',
-      text: '1つ後に挿入',
-      OnClick: () => dispatch({type: 'exam/insert', at: state.current_editing + 1}),
-    },
-    {
-      type: 'material',
-      icon: 'fas fa-angle-double-right',
-      text: '最後に挿入',
-      OnClick: () => dispatch({type: 'exam/insert', at: state.exam.length}),
-    },
-  ];
-
   if (!state.exam[state.current_editing]) {
     return <Loading />;
   }
@@ -321,9 +117,30 @@ export default function ExamEditForms(): React.ReactElement {
 
         <div className={css.append_exam}>
           <ButtonContainer>
-            {append_exam_button.map(e => (
-              <Button key={`append_exam_button_${e.text}`} {...e} />
-            ))}
+            <Button
+              type='material'
+              icon='fas fa-angle-double-left'
+              text='最初に挿入'
+              OnClick={() => dispatch({type: 'exam/insert', at: -1})}
+            />
+            <Button
+              type='material'
+              icon='fas fa-arrow-left'
+              text='1つ前に挿入'
+              OnClick={() => dispatch({type: 'exam/insert', at: state.current_editing})}
+            />
+            <Button
+              type='material'
+              icon='fas fa-arrow-right'
+              text='1つ後に挿入'
+              OnClick={() => dispatch({type: 'exam/insert', at: state.current_editing + 1})}
+            />
+            <Button
+              type='material'
+              icon='fas fa-angle-double-right'
+              text='最後に挿入'
+              OnClick={() => dispatch({type: 'exam/insert', at: state.exam.length})}
+            />
           </ButtonContainer>
         </div>
       </div>
@@ -350,8 +167,8 @@ export default function ExamEditForms(): React.ReactElement {
 
         {/* 答え編集欄（右側） */}
         <div className={css.qa_list}>
-          {/* 
-            問題の形式を変更するチェックボックス 
+          {/*
+            問題の形式を変更するチェックボックス
             表示される文字列と、実際に設定される値が異なるため、一つずつ付けている
           */}
           <div className={css.type_select}>
@@ -384,7 +201,7 @@ export default function ExamEditForms(): React.ReactElement {
               onChange={() => dispatch({type: 'q:type/set', data: 'Sort'})}
             />
           </div>
-          {AnswerEditArea()}
+          <AnswerEditArea />
         </div>
       </div>
 

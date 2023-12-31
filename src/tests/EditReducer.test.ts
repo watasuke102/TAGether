@@ -75,11 +75,11 @@ test('q:type/setのとき、current_editing番目のExamのtypeが、渡したEx
   ).toBe(new_type);
 });
 
-test('q:answer/set_singleのとき、current_editing番目のExamのanswerが渡された文字列を唯一の要素とする配列になる', () => {
-  const data = 'single select answer';
+test('q:answer/set_singleのとき、current_editing番目のExamのanswerが、渡されたchoiceのindexを唯一の要素とする配列になる', () => {
+  const index = 2;
   expect(
-    edit_reducer(dup(initial_state), {type: 'q:answer/set_single', data}).exam[initial_state.current_editing].answer,
-  ).toStrictEqual([data]);
+    edit_reducer(dup(initial_state), {type: 'q:answer/set_single', index}).exam[initial_state.current_editing].answer,
+  ).toStrictEqual([String(index)]);
 });
 
 describe('q:answer/toggle_multiのとき、current_editing番目のExamのanswerが編集される', () => {
@@ -88,15 +88,15 @@ describe('q:answer/toggle_multiのとき、current_editing番目のExamのanswer
     current_editing: 0,
     exam: [empty_exam],
   };
-  const data = 'multi select answer';
-  const first = edit_reducer(dup(initial), {type: 'q:answer/toggle_multi', data});
-  test('配列内に渡された文字列が存在しないとき、文字列を要素として加える', () => {
-    expect(initial.exam[0].answer.indexOf(data)).toBe(-1);
-    expect(first.exam[0].answer.indexOf(data)).not.toBe(-1);
+  const index = 2;
+  const first = edit_reducer(dup(initial), {type: 'q:answer/toggle_multi', index});
+  test('渡されたchoiceのindexが配列内に存在しないとき、文字列を要素として加える', () => {
+    expect(initial.exam[0].answer.indexOf(String(index))).toBe(-1);
+    expect(first.exam[0].answer.indexOf(String(index))).not.toBe(-1);
   });
-  test('配列内に渡された文字列が存在する場合、その要素を取り除く', () => {
-    const second = edit_reducer(dup(first), {type: 'q:answer/toggle_multi', data});
-    expect(second.exam[0].answer.indexOf(data)).toBe(-1);
+  test('渡されたchoiceのindexが配列内に存在する場合、その要素を取り除く', () => {
+    const second = edit_reducer(dup(first), {type: 'q:answer/toggle_multi', index});
+    expect(second.exam[0].answer.indexOf(String(index))).toBe(-1);
   });
 });
 
