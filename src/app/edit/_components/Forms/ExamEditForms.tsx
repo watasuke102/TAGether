@@ -5,23 +5,17 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './ExamEditForms.module.scss';
-import {ExamContext} from '../EditPage/EditPage';
-import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import React from 'react';
+import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
+import {ExamReducerContext} from '../EditReducer';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import {Move} from '@utils/ArrayUtil';
-import UpdateExam from '@utils/UpdateExam';
 import ButtonInfo from '@mytypes/ButtonInfo';
-import Exam from '@mytypes/Exam';
 import ExamType from '@mytypes/ExamType';
-
-interface Props {
-  updater: (e: Exam[]) => void;
-}
+import Loading from '../../loading';
 
 enum TabIndexList {
   TypeSelect = 1,
@@ -33,17 +27,25 @@ enum TabIndexList {
 
 const QUESTION_ID = 'ExamEdit_Question';
 
-export default function ExamEditForms(props: Props): React.ReactElement {
+export default function ExamEditForms(): React.ReactElement {
+  const [state, dispatch] = React.useContext(ExamReducerContext);
+  const exam_len = state.exam.length;
   const is_first_rendering = React.useRef(true);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
 
-  const [current_page, SetCurrentPage] = React.useState(0);
-
-  const exam = React.useContext(ExamContext);
-  const exam_length = React.useRef(0);
-  exam_length.current = exam.length;
-
-  const updater = UpdateExam(props.updater, exam.concat());
+  const step_page_with_adding = React.useCallback(
+    (dir: 1 | -1) => {
+      if (dir === -1 && state.current_editing === 0) {
+        dispatch({type: 'exam/insert', at: 0});
+        return;
+      }
+      if (dir === 1 && state.current_editing === state.exam.length - 1) {
+        dispatch({type: 'exam/insert', at: state.exam.length});
+      }
+      dispatch({type: dir === -1 ? 'index/prev' : 'index/next'});
+    },
+    [state.current_editing],
+  );
 
   // ショートカットキー
   React.useEffect(() => {
@@ -53,23 +55,23 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         switch (e.code) {
           case 'KeyH':
           case 'ArrowLeft':
-            MovePageTo(current_page - 1);
+            step_page_with_adding(-1);
             break;
           case 'KeyL':
           case 'ArrowRight':
-            MovePageTo(current_page + 1);
+            step_page_with_adding(1);
             break;
           case 'KeyA':
-            updater.Type.Update(current_page, 'Text');
+            dispatch({type: 'q:type/set', data: 'Text'});
             break;
           case 'KeyS':
-            updater.Type.Update(current_page, 'Select');
+            dispatch({type: 'q:type/set', data: 'Select'});
             break;
           case 'KeyZ':
-            updater.Type.Update(current_page, 'MultiSelect');
+            dispatch({type: 'q:type/set', data: 'MultiSelect'});
             break;
           case 'KeyX':
-            updater.Type.Update(current_page, 'Sort');
+            dispatch({type: 'q:type/set', data: 'Sort'});
             break;
           default:
             return;
@@ -80,7 +82,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
     window.addEventListener('keydown', Shortcut);
     return () => window.removeEventListener('keydown', Shortcut);
-  }, [current_page]);
+  }, [state]);
 
   React.useEffect(() => {
     is_first_rendering.current = true;
@@ -91,26 +93,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       return;
     }
     document.getElementById(QUESTION_ID)?.focus();
-  }, [current_page]);
-
-  // ページ移動
-  // 0より小さい値を指定した場合は最初に問題追加+ページを0に
-  // 逆も同様
-  function MovePageTo(to: number) {
-    if (to < 0) {
-      AddExam(0);
-    } else if (to > exam_length.current - 1) {
-      AddExam(-1);
-    } else {
-      SetCurrentPage(to);
-    }
-  }
-
-  function AddExam(at: number) {
-    const old_exam_len = exam_length.current;
-    updater.Exam.Insert(at);
-    SetCurrentPage(at === -1 ? old_exam_len : at);
-  }
+  }, [state.current_editing]);
 
   function AddRemoveButtons(type: ExamType, index: number, length: number) {
     return (
@@ -122,9 +105,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             icon: 'fas fa-plus',
             type: 'material',
             OnClick: () =>
-              type === 'Text' || type === 'Sort'
-                ? updater.Answer.Insert(current_page, index + 1)
-                : updater.QuestionChoices.Insert(current_page, index + 1),
+              dispatch({
+                type: type === 'Text' || type === 'Sort' ? 'q:answer/insert' : 'q:choice/insert',
+                at: index + 1,
+              }),
           }}
         />
         <Button
@@ -133,9 +117,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             icon: 'fas fa-arrow-down',
             type: 'material',
             OnClick: () =>
-              type === 'Text' || type === 'Sort'
-                ? updater.Answer.Insert(current_page, -1)
-                : updater.QuestionChoices.Insert(current_page, -1),
+              dispatch({
+                type: type === 'Text' || type === 'Sort' ? 'q:answer/insert' : 'q:choice/insert',
+                at: length,
+              }),
           }}
         />
         {
@@ -148,9 +133,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 icon: 'fas fa-trash',
                 text: '削除',
                 OnClick: () =>
-                  type === 'Text' || type === 'Sort'
-                    ? updater.Answer.Remove(current_page, index)
-                    : updater.QuestionChoices.Remove(current_page, index),
+                  dispatch({
+                    type: type === 'Text' || type === 'Sort' ? 'q:answer/remove' : 'q:choice/remove',
+                    at: index,
+                  }),
               }}
             />
           )
@@ -161,18 +147,11 @@ export default function ExamEditForms(props: Props): React.ReactElement {
 
   function AnswerEditArea() {
     let result: React.ReactElement[] | React.ReactElement;
-    const type = exam[current_page].type ?? 'Text';
-    // Select系はquestion_choicesを使用するので、choicesがなければ初期化
-    // (length ?? 0) < 1にすることで、choicesが存在しなかった場合かならず初期化される
-    if ((type === 'Select' || type === 'MultiSelect') && (exam[current_page].question_choices?.length ?? 0) < 1) {
-      const tmp = exam.concat();
-      tmp[current_page].question_choices = [''];
-      props.updater(tmp);
-    }
+    const type = state.exam[state.current_editing].type ?? 'Text';
 
     switch (type) {
       case 'Text':
-        result = exam[current_page].answer.map((e, i) => {
+        result = state.exam[state.current_editing].answer.map((e, i) => {
           return (
             <div key={`examform-text-${i}`}>
               <Form
@@ -180,10 +159,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                 value={e}
                 rows={3}
                 layer={TabIndexList.Answer}
-                OnChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
+                OnChange={e => dispatch({type: 'q:answer/set', index: i, data: e.target.value})}
               />
               <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('Text', i, exam[current_page].answer.length)}
+                {AddRemoveButtons('Text', i, state.exam[state.current_editing].answer.length)}
               </div>
             </div>
           );
@@ -191,7 +170,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'Select':
-        result = exam[current_page].question_choices?.map((e, i) => {
+        result = state.exam[state.current_editing].question_choices?.map((e, i) => {
           return (
             <div key={`examform-select-${i}`}>
               <div className={css.select_form}>
@@ -199,26 +178,21 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   type='radio'
                   desc={''}
                   tabIndex={TabIndexList.SelectCorrectAnswer}
-                  status={Number(exam[current_page].answer[0]) === i && exam[current_page].answer[0] !== ''}
-                  onChange={f => {
-                    if (!f) return;
-                    if (exam[current_page].answer.length > 1) {
-                      const tmp = exam.concat();
-                      tmp[current_page].answer = [''];
-                      props.updater(tmp);
-                    }
-                    updater.Answer.Update(current_page, 0, String(i));
-                  }}
+                  status={
+                    Number(state.exam[state.current_editing].answer[0]) === i &&
+                    state.exam[state.current_editing].answer[0] !== ''
+                  }
+                  onChange={() => dispatch({type: 'q:answer/set_single', data: String(i)})}
                 />
                 <Form
                   value={e}
                   rows={2}
                   layer={TabIndexList.Answer}
-                  OnChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
+                  OnChange={ev => dispatch({type: 'q:choice/set', index: i, data: ev.target.value})}
                 />
               </div>
               <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('Select', i, exam[current_page].question_choices?.length ?? 0)}
+                {AddRemoveButtons('Select', i, state.exam[state.current_editing].question_choices?.length ?? 0)}
               </div>
             </div>
           );
@@ -226,7 +200,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         break;
 
       case 'MultiSelect':
-        result = exam[current_page].question_choices?.map((e, i) => {
+        result = state.exam[state.current_editing].question_choices?.map((e, i) => {
           return (
             <div key={`examform-multiselect-${i}`}>
               <div className={css.select_form}>
@@ -234,36 +208,18 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                   type='check'
                   desc={''}
                   tabIndex={TabIndexList.SelectCorrectAnswer}
-                  status={exam[current_page].answer.indexOf(String(i)) !== -1}
-                  onChange={f => {
-                    // チェックが付けられた時は追加する
-                    if (f) {
-                      updater.Answer.Insert(current_page, -1, String(i));
-                      // デフォルトで存在する空欄要素を排除
-                      const tmp = exam.concat();
-                      tmp[current_page].answer = tmp[current_page].answer
-                        .filter(e => e !== '')
-                        .sort((a, b) => Number(a) - Number(b));
-                      props.updater(tmp);
-                    } else {
-                      // チェックが外された時は該当要素を削除
-                      const tmp = exam.concat();
-                      tmp[current_page].answer = tmp[current_page].answer
-                        .filter(e => e !== String(i) && e !== '')
-                        .sort((a, b) => Number(a) - Number(b));
-                      props.updater(tmp);
-                    }
-                  }}
+                  status={state.exam[state.current_editing].answer.indexOf(String(i)) !== -1}
+                  onChange={() => dispatch({type: 'q:answer/toggle_multi', data: String(i)})}
                 />
                 <Form
                   value={e}
                   rows={2}
                   layer={TabIndexList.Answer}
-                  OnChange={ev => updater.QuestionChoices.Update(current_page, i, ev.target.value)}
+                  OnChange={ev => dispatch({type: 'q:choice/set', index: i, data: ev.target.value})}
                 />
               </div>
               <div className={css.answer_area_buttons}>
-                {AddRemoveButtons('MultiSelect', i, exam[current_page].question_choices?.length ?? 0)}
+                {AddRemoveButtons('MultiSelect', i, state.exam[state.current_editing].question_choices?.length ?? 0)}
               </div>
             </div>
           );
@@ -274,16 +230,15 @@ export default function ExamEditForms(props: Props): React.ReactElement {
         result = (
           <DragDropContext
             onDragEnd={(e: DropResult) => {
-              if (!e.destination) return;
-              const tmp = exam.concat();
-              tmp[current_page].answer = Move(tmp[current_page].answer, e.source.index, e.destination.index);
-              props.updater(tmp);
+              if (e.destination) {
+                dispatch({type: 'q:answer/move', from: e.source.index, to: e.destination.index});
+              }
             }}
           >
             <Droppable droppableId='examform_sort_droppable'>
               {provided => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {exam[current_page].answer.map((e, i) => {
+                  {state.exam[state.current_editing].answer.map((e, i) => {
                     const id = `examform-sort-${i}`;
                     return (
                       <Draggable key={id} draggableId={id} index={i}>
@@ -294,11 +249,11 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                               value={e}
                               rows={3}
                               layer={TabIndexList.Answer}
-                              OnChange={ev => updater.Answer.Update(current_page, i, ev.target.value)}
+                              OnChange={ev => dispatch({type: 'q:answer/set', index: i, data: ev.target.value})}
                             />
                             <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
                             <div className={css.answer_area_buttons}>
-                              {AddRemoveButtons('Sort', i, exam[current_page].answer.length)}
+                              {AddRemoveButtons('Sort', i, state.exam[state.current_editing].answer.length)}
                             </div>
                           </div>
                         )}
@@ -321,57 +276,52 @@ export default function ExamEditForms(props: Props): React.ReactElement {
       type: 'material',
       icon: 'fas fa-angle-double-left',
       text: '最初に挿入',
-      OnClick: () => AddExam(0),
+      OnClick: () => dispatch({type: 'exam/insert', at: -1}),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-left',
       text: '1つ前に挿入',
-      OnClick: () => AddExam(current_page),
+      OnClick: () => dispatch({type: 'exam/insert', at: state.current_editing}),
     },
     {
       type: 'material',
       icon: 'fas fa-arrow-right',
       text: '1つ後に挿入',
-      OnClick: () => AddExam(current_page + 1),
+      OnClick: () => dispatch({type: 'exam/insert', at: state.current_editing + 1}),
     },
     {
       type: 'material',
       icon: 'fas fa-angle-double-right',
       text: '最後に挿入',
-      OnClick: () => AddExam(-1),
+      OnClick: () => dispatch({type: 'exam/insert', at: state.exam.length}),
     },
   ];
 
-  if (exam[current_page] === undefined) {
-    return <>Loading...</>;
+  if (!state.exam[state.current_editing]) {
+    return <Loading />;
   }
 
   return (
     <>
       <div className={css.button_list}>
         <div className={css.button_container}>
-          <Button type={'material'} icon={'fas fa-angle-double-left'} text={''} OnClick={() => MovePageTo(0)} />
           <Button
             type={'material'}
-            icon={'fas fa-chevron-left'}
+            icon={'fas fa-angle-double-left'}
             text={''}
-            OnClick={() => MovePageTo(current_page - 1)}
+            OnClick={() => dispatch({type: 'index/first'})}
           />
-          <span className={css.current_page}>
-            {current_page + 1}/{exam_length.current}
+          <Button type={'material'} icon={'fas fa-chevron-left'} text={''} OnClick={() => step_page_with_adding(-1)} />
+          <span className={css.current_editing}>
+            {state.current_editing + 1}/{exam_len}
           </span>
-          <Button
-            type={'material'}
-            icon={'fas fa-chevron-right'}
-            text={''}
-            OnClick={() => MovePageTo(current_page + 1)}
-          />
+          <Button type={'material'} icon={'fas fa-chevron-right'} text={''} OnClick={() => step_page_with_adding(1)} />
           <Button
             type={'material'}
             icon={'fas fa-angle-double-right'}
             text={''}
-            OnClick={() => MovePageTo(exam_length.current - 1)}
+            OnClick={() => dispatch({type: 'index/last'})}
           />
         </div>
 
@@ -381,8 +331,10 @@ export default function ExamEditForms(props: Props): React.ReactElement {
             icon={'fas fa-trash'}
             text={'この問題を削除'}
             OnClick={() => {
-              if (current_page === exam_length.current - 1) MovePageTo(current_page - 1);
-              updater.Exam.Remove(current_page);
+              if (state.current_editing === exam_len - 1) {
+                dispatch({type: 'index/prev'});
+              }
+              dispatch({type: 'exam/remove', at: state.current_editing});
             }}
           />
           <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'} OnClick={() => SetIsModalOpen(true)} />
@@ -403,16 +355,16 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <Form
             id={QUESTION_ID}
             label={'問題文'}
-            value={exam[current_page].question}
+            value={state.exam[state.current_editing].question}
             rows={6}
             layer={TabIndexList.Question}
-            OnChange={ev => updater.Question.Update(current_page, ev.target.value)}
+            OnChange={e => dispatch({type: 'q:question/set', data: e.target.value})}
           />
           <Form
             label={'コメント（解説など）'}
-            value={exam[current_page].comment ?? ''}
+            value={state.exam[state.current_editing].comment ?? ''}
             rows={5}
-            OnChange={ev => updater.Comment.Update(current_page, ev.target.value)}
+            OnChange={e => dispatch({type: 'q:comment/set', data: e.target.value})}
             layer={TabIndexList.Comment}
           />
         </div>
@@ -428,29 +380,29 @@ export default function ExamEditForms(props: Props): React.ReactElement {
               type='radio'
               desc='テキスト'
               tabIndex={TabIndexList.TypeSelect}
-              status={(exam[current_page].type ?? 'Text') === 'Text'}
-              onChange={() => updater.Type.Update(current_page, 'Text')}
+              status={(state.exam[state.current_editing].type ?? 'Text') === 'Text'}
+              onChange={() => dispatch({type: 'q:type/set', data: 'Text'})}
             />
             <SelectButton
               type='radio'
               desc='選択問題'
               tabIndex={TabIndexList.TypeSelect}
-              status={(exam[current_page].type ?? 'Text') === 'Select'}
-              onChange={() => updater.Type.Update(current_page, 'Select')}
+              status={(state.exam[state.current_editing].type ?? 'Text') === 'Select'}
+              onChange={() => dispatch({type: 'q:type/set', data: 'Select'})}
             />
             <SelectButton
               type='radio'
               desc='複数選択'
               tabIndex={TabIndexList.TypeSelect}
-              status={(exam[current_page].type ?? 'Text') === 'MultiSelect'}
-              onChange={() => updater.Type.Update(current_page, 'MultiSelect')}
+              status={(state.exam[state.current_editing].type ?? 'Text') === 'MultiSelect'}
+              onChange={() => dispatch({type: 'q:type/set', data: 'MultiSelect'})}
             />
             <SelectButton
               type='radio'
               desc='並び替え'
               tabIndex={TabIndexList.TypeSelect}
-              status={(exam[current_page].type ?? 'Text') === 'Sort'}
-              onChange={() => updater.Type.Update(current_page, 'Sort')}
+              status={(state.exam[state.current_editing].type ?? 'Text') === 'Sort'}
+              onChange={() => dispatch({type: 'q:type/set', data: 'Sort'})}
             />
           </div>
           {AnswerEditArea()}
@@ -463,14 +415,15 @@ export default function ExamEditForms(props: Props): React.ReactElement {
           <p>右のアイコンをドラッグすると並び替えができます</p>
           <DragDropContext
             onDragEnd={(e: DropResult) => {
-              if (!e.destination) return;
-              props.updater(Move(exam, e.source.index, e.destination.index));
+              if (e.destination) {
+                dispatch({type: 'exam/move', from: e.source.index, to: e.destination.index});
+              }
             }}
           >
             <Droppable droppableId={'question_list'}>
               {provided => (
                 <div className={css.question_list} ref={provided.innerRef} {...provided.droppableProps}>
-                  {exam.map((e, i) => {
+                  {state.exam.map((e, i) => {
                     return (
                       <Draggable
                         key={`draggable_${i}-${e.question.slice(0, 5)}`}
@@ -482,7 +435,7 @@ export default function ExamEditForms(props: Props): React.ReactElement {
                             className={css.dragable_question_card}
                             ref={provided.innerRef}
                             onClick={() => {
-                              MovePageTo(i);
+                              dispatch({type: 'index/jump', at: i});
                               SetIsModalOpen(false);
                             }}
                             {...provided.draggableProps}

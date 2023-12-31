@@ -15,28 +15,14 @@ import Form from '@/common/TextForm/Form';
 import {useToastOperator} from '@/common/Toast/Toast';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
-import {exam_default} from '@utils/DefaultValue';
-import {update_category} from '@utils/api/category';
+import {mutate_category, update_category} from '@utils/api/category';
 import Exam from '@mytypes/Exam';
 import {CategoryDataType} from '@mytypes/Categoly';
 import TagData from '@mytypes/TagData';
 import {validate_category} from '@utils/ValidateCategory';
-
-export const ExamContext = React.createContext<Exam[]>(exam_default());
-
-type ActionType = {type: 'title' | 'desc' | 'list'; value: string} | {type: 'tag'; tags: TagData[]};
-function reduce_category(current: CategoryDataType, action: ActionType): CategoryDataType {
-  switch (action.type) {
-    case 'title':
-      return {...current, title: action.value};
-    case 'desc':
-      return {...current, description: action.value};
-    case 'list':
-      return {...current, list: action.value};
-    case 'tag':
-      return {...current, tag: action.tags};
-  }
-}
+import {useImmerReducer} from 'use-immer';
+import {edit_reducer, ExamReducerContext} from '../EditReducer';
+import {useShortcut} from '@utils/useShortcut';
 
 type Props = {
   category: CategoryDataType;
@@ -44,9 +30,15 @@ type Props = {
 };
 
 export function EditPage(props: Props): JSX.Element {
-  const [category, dispatch_category] = React.useReducer(reduce_category, props.category);
-  const [exam, SetExam] = React.useState<Exam[]>(JSON.parse(props.category.list));
   const [is_json_edit, SetIsJsonEdit] = React.useState(false);
+  const [edit_states, dispatch] = useImmerReducer(edit_reducer, {
+    title: props.category.title,
+    current_editing: 0,
+    desc: props.category.description,
+    list: props.category.list,
+    exam: JSON.parse(props.category.list) as Exam[],
+    tags: props.tags,
+  });
 
   const is_first_rendering = React.useRef(true);
   const SetShowConfirmBeforeLeave = useConfirmBeforeLeave();
@@ -62,36 +54,20 @@ export function EditPage(props: Props): JSX.Element {
     } else {
       SetShowConfirmBeforeLeave(true);
     }
-  }, [exam, category]);
-
-  // ショートカットキー
-  const Shortcut = React.useCallback(
-    (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.code === 'KeyS' && !e.repeat && !e.shiftKey) {
-        e.preventDefault();
-        RegistCategoly();
-      }
-    },
-    [exam, category],
-  );
-
-  React.useEffect(() => {
-    window.addEventListener('keydown', e => Shortcut(e));
-    return () => window.removeEventListener('keydown', e => Shortcut(e));
-  }, []);
+  }, [edit_states]);
 
   // カテゴリ登録
   const RegistCategoly = React.useCallback(() => {
     Toast.close();
     const request_data: PutCategory = {
-      title: category.title,
-      description: category.description,
-      tag: category.tag.map(e => String(e.id) ?? e.name).join(','),
+      title: edit_states.title,
+      description: edit_states.desc,
+      tag: edit_states.tags.map(e => String(e.id) ?? e.name).join(','),
       list: JSON.stringify(
         // prettier-ignore
         is_json_edit
-          ? JSON.parse(category.list)
-          : exam.map(e => {
+          ? JSON.parse(edit_states.list)
+          : edit_states.exam.map(e => {
             return {
               ...e,
               question_choices: e.question_choices?.map(e => e.trim()) ?? [],
@@ -106,9 +82,10 @@ export function EditPage(props: Props): JSX.Element {
       Toast.open(validation_error.join('\n'));
       return;
     }
-    update_category(category.id, request_data)
+    update_category(props.category.id, request_data)
       .then(() => {
         Toast.open('編集結果を適用しました');
+        mutate_category();
         // 確認ダイアログを無効化
         SetShowConfirmBeforeLeave(false);
       })
@@ -118,7 +95,8 @@ export function EditPage(props: Props): JSX.Element {
     console.groupCollapsed('Category update request');
     console.log(request_data);
     console.groupEnd();
-  }, [category, exam]);
+  }, [edit_states]);
+  useShortcut([{keycode: 'KeyS', handler: RegistCategoly}], {ctrl: true});
 
   return (
     <>
@@ -126,25 +104,25 @@ export function EditPage(props: Props): JSX.Element {
         <Form
           {...{
             label: 'タイトル',
-            value: category.title,
+            value: edit_states.title,
             rows: 1,
-            OnChange: e => dispatch_category({type: 'title', value: e.target.value}),
+            OnChange: e => dispatch({type: 'title/set', data: e.target.value}),
           }}
         />
         <Form
           {...{
             label: '説明',
-            value: category.description,
+            value: edit_states.desc,
             rows: 3,
-            OnChange: e => dispatch_category({type: 'desc', value: e.target.value}),
+            OnChange: e => dispatch({type: 'desc/set', data: e.target.value}),
           }}
         />
       </div>
       <h2>タグ</h2>
       <TagListEdit
         tags={props.tags}
-        current_tag={category.tag}
-        SetTag={(e: TagData[]) => dispatch_category({type: 'tag', tags: e})}
+        current_tag={edit_states.tags}
+        SetTag={(e: TagData[]) => dispatch({type: 'tags/set', data: e})}
       />
       <h2>問題</h2>
       <div className={css.buttons}>
@@ -159,15 +137,15 @@ export function EditPage(props: Props): JSX.Element {
           <p>注意：編集内容はリッチエディタと同期されません</p>
           <Form
             label='JSON'
-            value={category.list}
+            value={edit_states.list}
             rows={30}
-            OnChange={e => dispatch_category({type: 'list', value: e.target.value})}
+            OnChange={e => dispatch({type: 'list/set', data: e.target.value})}
           />
         </>
       ) : (
-        <ExamContext.Provider value={exam}>
-          <ExamEditForms updater={e => SetExam(e.concat())} />
-        </ExamContext.Provider>
+        <ExamReducerContext.Provider value={[edit_states, dispatch]}>
+          <ExamEditForms />
+        </ExamReducerContext.Provider>
       )}
     </>
   );
