@@ -7,7 +7,8 @@
 import React from 'react';
 import Exam from '@mytypes/Exam';
 import ExamType from '@mytypes/ExamType';
-import {Swap} from '@utils/ArrayUtil';
+import {Move} from '@utils/ArrayUtil';
+import TagData from '@mytypes/TagData';
 
 type ReducerType = (current: StateType, action: Action) => StateType;
 export const ExamReducerContext = React.createContext<ReducerType | null>(null);
@@ -15,8 +16,19 @@ export const ExamReducerContext = React.createContext<ReducerType | null>(null);
 // state.current_editingに依存するもの: prefix 'q:'
 export type Action =
   | {
-      type: 'title/set' | 'desc/set' | 'list/set' | 'q:question/set' | 'q:comment/set';
+      type:
+        | 'title/set'
+        | 'desc/set'
+        | 'list/set'
+        | 'q:question/set'
+        | 'q:comment/set'
+        | 'q:answer/set_single'
+        | 'q:answer/toggle_multi';
       data: string;
+    }
+  | {
+      type: 'tags/set';
+      data: TagData[];
     }
   | {
       type: 'q:type/set';
@@ -39,7 +51,7 @@ export type Action =
       at: number;
     }
   | {
-      type: 'exam/swap' | 'q:answer/swap' | 'q:choice/swap';
+      type: 'exam/move' | 'q:answer/move' | 'q:choice/move';
       from: number;
       to: number;
     }
@@ -53,6 +65,7 @@ export type StateType = {
   desc: string;
   list: string;
   exam: Exam[];
+  tags: TagData[];
 };
 
 export const edit_reducer: ReducerType = (current, action) => {
@@ -65,6 +78,9 @@ export const edit_reducer: ReducerType = (current, action) => {
       break;
     case 'list/set':
       current.list = action.data;
+      break;
+    case 'tags/set':
+      current.tags = action.data;
       break;
     case 'q:question/set':
       current.exam[current.current_editing].question = action.data;
@@ -93,19 +109,31 @@ export const edit_reducer: ReducerType = (current, action) => {
       answer[action.index] = action.data;
       current.exam[current.current_editing].answer = answer;
       break;
-
-    case 'exam/swap':
-      current.exam = Swap(current.exam, action.from, action.to);
+    case 'q:answer/set_single':
+      current.exam[current.current_editing].answer = [action.data];
       break;
-    case 'q:answer/swap':
-      current.exam[current.current_editing].answer = Swap(
+    case 'q:answer/toggle_multi': {
+      const index = current.exam[current.current_editing].answer.indexOf(action.data);
+      if (index === -1) {
+        current.exam[current.current_editing].answer.push(action.data);
+      } else {
+        current.exam[current.current_editing].answer.splice(index, 1);
+      }
+      break;
+    }
+
+    case 'exam/move':
+      current.exam = Move(current.exam, action.from, action.to);
+      break;
+    case 'q:answer/move':
+      current.exam[current.current_editing].answer = Move(
         current.exam[current.current_editing].answer,
         action.from,
         action.to,
       );
       break;
-    case 'q:choice/swap':
-      current.exam[current.current_editing].question_choices = Swap(
+    case 'q:choice/move':
+      current.exam[current.current_editing].question_choices = Move(
         current.exam[current.current_editing].question_choices ?? [],
         action.from,
         action.to,
@@ -131,9 +159,7 @@ export const edit_reducer: ReducerType = (current, action) => {
       break;
     }
     case 'q:answer/insert': {
-      if (current.exam[current.current_editing].answer.length > 1) {
-        current.exam[current.current_editing].answer.splice(Math.max(action.at, 0), 0, '');
-      }
+      current.exam[current.current_editing].answer.splice(Math.max(action.at, 0), 0, '');
       break;
     }
     case 'q:answer/remove': {
@@ -148,9 +174,7 @@ export const edit_reducer: ReducerType = (current, action) => {
       if (!current.exam[current.current_editing].question_choices) {
         break;
       }
-      if (current.exam[current.current_editing].question_choices?.length ?? 0 > 1) {
-        current.exam[current.current_editing].question_choices?.splice(Math.max(action.at, 0), 0, '');
-      }
+      current.exam[current.current_editing].question_choices?.splice(Math.max(action.at, 0), 0, '');
       break;
     }
     case 'q:choice/remove': {
