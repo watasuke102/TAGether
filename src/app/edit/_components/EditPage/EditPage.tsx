@@ -23,6 +23,7 @@ import {validate_category} from '@utils/ValidateCategory';
 import {useImmerReducer} from 'use-immer';
 import {edit_reducer, ExamReducerContext} from '../EditReducer';
 import {useShortcut} from '@utils/useShortcut';
+import CheckIcon from '@assets/check.svg';
 
 type Props = {
   category: CategoryDataType;
@@ -128,7 +129,7 @@ export function EditPage(props: Props): JSX.Element {
       <div className={css.buttons}>
         <SelectButton type='check' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
         <div className={css.pushbutton_wrapper}>
-          <Button type={'filled'} icon={'fas fa-check'} text={'編集を適用'} OnClick={() => RegistCategoly()} />
+          <Button type={'filled'} icon={<CheckIcon />} text={'編集を適用'} OnClick={() => RegistCategoly()} />
         </div>
       </div>
       <hr />

@@ -12,6 +12,8 @@ import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import {Shuffle} from '@utils/ArrayUtil';
 import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
+import CloseIcon from '@assets/close.svg';
+import DownloadIcon from '@assets/download.svg';
 
 interface Props {
   data: CategoryDataType;
@@ -120,8 +122,8 @@ export function CsvExport(props: Props): React.ReactElement {
           </div>
         )}
         <div className={css.button_container}>
-          <Button text='閉じる' icon='fas fa-times' type='material' OnClick={props.close} />
-          <Button text='ダウンロード' icon='fas fa-download' type='filled' OnClick={download_csv} />
+          <Button text='閉じる' icon={<CloseIcon />} type='material' OnClick={props.close} />
+          <Button text='ダウンロード' icon={<DownloadIcon />} type='filled' OnClick={download_csv} />
         </div>
       </div>
     </Modal>

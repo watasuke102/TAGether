@@ -13,6 +13,7 @@ import Form from '@/common/TextForm/Form';
 import {Move, Shuffle} from '@utils/ArrayUtil';
 import {exam_default} from '@utils/DefaultValue';
 import Exam from '@mytypes/Exam';
+import ListIcon from '@assets/list.svg';
 
 interface Props {
   version: number;
@@ -226,12 +227,14 @@ export function AnswerArea(props: Props): JSX.Element {
                       {provided => (
                         <div className={css.examform_sort_item} ref={provided.innerRef} {...provided.draggableProps}>
                           <span>{e}</span>
-                          <span
-                            className={`fas fa-list ${css.icon}`}
+                          <div
+                            className={css.icon}
                             id={i === 0 ? 'sort-first-draghandle' : ''}
                             {...{sort_index: i}}
                             {...provided.dragHandleProps}
-                          />
+                          >
+                        <ListIcon />
+                        </div>
                         </div>
                       )}
                     </Draggable>

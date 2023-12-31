@@ -19,6 +19,7 @@
   "dependencies": {
     "@hello-pangea/dnd": "^16.5.0",
     "@planetscale/database": "^1.13.0",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",

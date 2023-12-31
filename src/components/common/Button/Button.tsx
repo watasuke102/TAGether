@@ -14,10 +14,8 @@ export default function Button(props: ButtonInfo): React.ReactElement {
   const css = props.type === 'material' ? material : filled;
   return (
     <button className={css.button + ' ' + common.button} onClick={() => props.OnClick()}>
-      <div className={css.button_icon}>
-        <span className={props.icon} />
-      </div>
-      <span className={css.button_text}>{props.text}</span>
+      <div className={css.button_icon}>{props.icon}</div>
+      {props.text !== '' && <span className={css.button_text}>{props.text}</span>}
     </button>
   );
 }

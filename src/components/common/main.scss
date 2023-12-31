@@ -10,8 +10,6 @@
 @import 'variable';
 // reseter.css
 @import url('https://cdn.jsdelivr.net/gh/krishdevdb/reseter.css@1.20/css/reseter.min.css');
-// icon
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css');
 
 body {
   margin: 15px;
@@ -39,6 +37,11 @@ body {
 
   th {
     text-align: center;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
   }
 
   details > *:not(summary) {

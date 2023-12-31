@@ -8,10 +8,11 @@
 import css from './Toast.module.scss';
 import {AnimatePresence, motion} from 'framer-motion';
 import React, {Dispatch} from 'react';
+import NotificationsIcon from '@assets/notifications.svg';
 
 type State = {
   is_open: boolean;
-  icon?: string;
+  icon?: React.ReactNode;
   text: string;
 };
 type Action = {type: 'open'; icon?: string; text: string} | {type: 'close'};
@@ -80,7 +81,7 @@ export function Toast(): React.ReactElement {
           className={css.container}
           onClick={() => dispatch({type: 'close'})}
         >
-          <span className={state.icon ?? 'fas fa-bell'} />
+          {state.icon ?? <NotificationsIcon />}
           <span className={css.text}>{state.text}</span>
         </motion.div>
       )}

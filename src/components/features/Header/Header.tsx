@@ -7,24 +7,27 @@
 import css from './Header.module.scss';
 import React from 'react';
 import Link from 'next/link';
+import TAGetherIcon from 'public/static/icon.svg';
+import ListIcon from '@assets/list.svg';
+import TagIcon from '@assets/tag.svg';
+import ProfileIcon from '@assets/profile.svg';
+import RequestIcon from '@assets/request.svg';
 
 export default function Header(): React.ReactElement {
   // prettier-ignore
   const info = [
-    {href: '/'       , icon: 'tagether',           text: 'TAGether'},
-    {href: '/list'   , icon: 'fas fa-book',        text: 'カテゴリ一覧'},
-    {href: '/tag'    , icon: 'fas fa-tag',         text: 'タグ一覧'},
-    {href: '/profile', icon: 'fas fa-user',        text: 'プロフィール'},
-    {href: '/request', icon: 'fas fa-comment-alt', text: '機能要望'},
+    {href: '/'       , icon: <TAGetherIcon />, text: 'TAGether'    },
+    {href: '/list'   , icon: <ListIcon />    , text: 'カテゴリ一覧'},
+    {href: '/tag'    , icon: <TagIcon />     , text: 'タグ一覧'    },
+    {href: '/profile', icon: <ProfileIcon /> , text: 'プロフィール'},
+    {href: '/request', icon: <RequestIcon /> , text: '機能要望'    },
   ];
 
   return (
     <header className={css.header}>
       {info.map(e => (
         <Link href={e.href} className={css.item} key={e.text}>
-          <div className={css.icon_wrapper}>
-            <span className={`${css.icon} ${e.icon === 'tagether' ? css.tagether : e.icon}`} />
-          </div>
+          <div className={css.icon}>{e.icon}</div>
           <span className={css.text}>{e.text}</span>
         </Link>
       ))}

@@ -14,6 +14,10 @@ import Form from '@/common/TextForm/Form';
 import {useToastOperator} from '@/common/Toast/Toast';
 import TagData from '@mytypes/TagData';
 import {mutate_tag, new_tag, update_tag} from '@utils/api/tag';
+import TagIcon from '@assets/tag.svg';
+import CloseIcon from '@assets/close.svg';
+import CheckIcon from '@assets/check.svg';
+import EditIcon from '@assets/edit.svg';
 
 interface Props {
   tag: TagData;
@@ -57,7 +61,9 @@ export default function TagDetail(props: Props): React.ReactElement {
       <Modal isOpen={props.isOpen} close={props.close}>
         <div className={css.modal}>
           <div className={css.heading}>
-            <span className='fas fa-tag' />
+            <div className={css.icon_wrapper}>
+              <TagIcon />
+            </div>
             <span>{props.createMode ? 'タグの新規作成' : 'タグ詳細・編集'}</span>
             <hr />
           </div>
@@ -86,18 +92,18 @@ export default function TagDetail(props: Props): React.ReactElement {
 
           {/* ボタン */}
           <ButtonContainer>
-            <Button type='material' icon='fas fa-times' text='閉じる' OnClick={props.close} />
+            <Button type='material' icon={<CloseIcon />} text='閉じる' OnClick={props.close} />
             {props.createMode ? (
               <></>
             ) : (
               <Button
                 type='material'
-                icon='fas fa-pen'
+                icon={<EditIcon />}
                 text='このタグのカテゴリを解く'
                 OnClick={() => router.push(`/exam?tag=${props.tag.name}`)}
               />
             )}
-            <Button type='filled' icon='fas fa-check' text='編集結果を適用' OnClick={UpdateTag} />
+            <Button type='filled' icon={<CheckIcon />} text='編集結果を適用' OnClick={UpdateTag} />
           </ButtonContainer>
         </div>
       </Modal>

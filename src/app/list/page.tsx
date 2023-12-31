@@ -20,6 +20,10 @@ import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import {useAllCategoryData, new_category} from '@utils/api/category';
 import {AllCategoryDataType} from '@mytypes/Categoly';
 import {useToastOperator} from '@/common/Toast/Toast';
+import AddIcon from '@assets/add.svg';
+import CloseIcon from '@assets/close.svg';
+import CheckIcon from '@assets/check.svg';
+import SortIcon from '@assets/sort.svg';
 
 export default function list(): React.ReactElement {
   const router = useRouter();
@@ -93,7 +97,9 @@ export default function list(): React.ReactElement {
     // カテゴリ作成ページへ飛ぶカードを追加
     cards.unshift(
       <div key={'newcategoly'} className={css.card} onClick={() => SetIsModalOpen(true)}>
-        <span className='fas fa-plus' />
+        <div className={css.create_icon}>
+          <AddIcon />
+        </div>
         <p id={css.create_new}>新規作成</p>
       </div>,
     );
@@ -123,7 +129,7 @@ export default function list(): React.ReactElement {
         <Button
           {...{
             text: '入力のクリア',
-            icon: 'fas fa-times',
+            icon: <CloseIcon />,
             OnClick: () => SetSearchStr(''),
             type: 'filled',
           }}
@@ -142,7 +148,7 @@ export default function list(): React.ReactElement {
           <Button
             type='material'
             text={newer_first ? '古い順に並べる' : '新しい順に並べる'}
-            icon={'fas fa-sort-numeric-' + (newer_first ? 'down-alt' : 'down')}
+            icon={<SortIcon />}
             OnClick={() => SetNewerFirst(!newer_first)}
           />
         </div>
@@ -162,10 +168,10 @@ export default function list(): React.ReactElement {
           <Form label='タイトル' value={categoly_name} OnChange={ev => SetCategolyName(ev.target.value)} />
           <Form label='説明' value={categoly_desc} OnChange={ev => SetCategolyDesc(ev.target.value)} />
           <div className={css.button_container}>
-            <Button type='material' icon='fas fa-times' text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
+            <Button type='material' icon={<CloseIcon />} text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
             <Button
               type='filled'
-              icon='fas fa-check'
+              icon={<CheckIcon />}
               text='作成する'
               OnClick={() => {
                 if (categoly_name === '') {
