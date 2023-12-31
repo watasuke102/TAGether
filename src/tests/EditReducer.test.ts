@@ -8,6 +8,7 @@ import {describe, expect, test} from 'vitest';
 import {StateType, edit_reducer} from 'src/app/edit/_components/EditReducer';
 import ExamType from 'src/types/ExamType';
 import Exam from '@mytypes/Exam';
+import TagData from '@mytypes/TagData';
 
 const initial_state: StateType = (() => {
   const initial_exam: Exam[] = [...Array(10)].map((_, i) => {
@@ -24,6 +25,7 @@ const initial_state: StateType = (() => {
     desc: 'description',
     list: JSON.stringify(initial_exam),
     exam: initial_exam,
+    tags: [],
   };
 })();
 const empty_exam: Exam = {
@@ -47,6 +49,10 @@ test('list/setのとき、listが渡した文字列で置き換えられる', ()
   const new_desc = 'new description';
   expect(edit_reducer(dup(initial_state), {type: 'desc/set', data: new_desc}).desc).toBe(new_desc);
 });
+test('tags/setのとき、tagsが渡したTagDataで置き換えられる', () => {
+  const new_tag: TagData[] = [{name: 'new tag', description: 'desc', updated_at: ''}];
+  expect(edit_reducer(dup(initial_state), {type: 'tags/set', data: new_tag}).tags).toStrictEqual(new_tag);
+});
 
 test('q:question/setのとき、current_editing番目のExamが持つquestionが、渡した文字列で置き換えられる', () => {
   const new_question = 'new question';
@@ -67,6 +73,31 @@ test('q:type/setのとき、current_editing番目のExamのtypeが、渡したEx
   expect(
     edit_reducer(dup(initial_state), {type: 'q:type/set', data: new_type}).exam[initial_state.current_editing].type,
   ).toBe(new_type);
+});
+
+test('q:answer/set_singleのとき、current_editing番目のExamのanswerが渡された文字列を唯一の要素とする配列になる', () => {
+  const data = 'single select answer';
+  expect(
+    edit_reducer(dup(initial_state), {type: 'q:answer/set_single', data}).exam[initial_state.current_editing].answer,
+  ).toStrictEqual([data]);
+});
+
+describe('q:answer/toggle_multiのとき、current_editing番目のExamのanswerが編集される', () => {
+  const initial: StateType = {
+    ...initial_state,
+    current_editing: 0,
+    exam: [empty_exam],
+  };
+  const data = 'multi select answer';
+  const first = edit_reducer(dup(initial), {type: 'q:answer/toggle_multi', data});
+  test('配列内に渡された文字列が存在しないとき、文字列を要素として加える', () => {
+    expect(initial.exam[0].answer.indexOf(data)).toBe(-1);
+    expect(first.exam[0].answer.indexOf(data)).not.toBe(-1);
+  });
+  test('配列内に渡された文字列が存在する場合、その要素を取り除く', () => {
+    const second = edit_reducer(dup(first), {type: 'q:answer/toggle_multi', data});
+    expect(second.exam[0].answer.indexOf(data)).toBe(-1);
+  });
 });
 
 test('q:choice/setのとき、current_editing番目Examのchoiceのうちindex番目が、渡した文字列で置き換えられる', () => {
@@ -90,42 +121,38 @@ test('q:choice/setのとき、current_editing番目Examのanswerのうちindex�
   }
 });
 
-test('exam/swapのとき、current_editing番目Examのchoiceにおいて、fromとtoに設定した位置の要素が入れ替えられる', () => {
+test('exam/moveのとき、examにおいて、fromに指定した位置の要素がtoに移動する', () => {
   const from = 0;
   const to = 1;
   expect(initial_state.exam[from]).not.toStrictEqual(initial_state.exam[to]);
-  const swapped = edit_reducer(dup(initial_state), {type: 'exam/swap', from, to});
-  expect(swapped.exam[from]).toStrictEqual(initial_state.exam[to]);
+  const swapped = edit_reducer(dup(initial_state), {type: 'exam/move', from, to});
+  expect(swapped.exam.length).toStrictEqual(initial_state.exam.length);
   expect(swapped.exam[to]).toStrictEqual(initial_state.exam[from]);
 });
-test('q:choice/swapのとき、current_editing番目Examのanswerにおいて、fromとtoに設定した位置の要素が入れ替えられる', () => {
+test('q:answer/moveのとき、current_editing番目Examのanswerにおいて、fromに指定した位置の要素がtoに移動する', () => {
   const from = 0;
   const to = 1;
-  expect(initial_state.exam[initial_state.current_editing].question_choices?.at(from)).not.toStrictEqual(
-    initial_state.exam[initial_state.current_editing].question_choices?.at(to),
-  );
-  const swapped = edit_reducer(dup(initial_state), {type: 'q:choice/swap', from, to});
+  expect(initial_state.exam[from]).not.toStrictEqual(initial_state.exam[to]);
+  const swapped = edit_reducer(dup(initial_state), {type: 'q:answer/move', from, to});
   expect(swapped.current_editing).toBe(initial_state.current_editing);
-  expect(swapped.exam[initial_state.current_editing].question_choices?.at(from)).toStrictEqual(
-    initial_state.exam[initial_state.current_editing].question_choices?.at(to),
+  expect(swapped.exam[swapped.current_editing].answer.length).toBe(
+    initial_state.exam[initial_state.current_editing].answer.length,
   );
-  expect(swapped.exam[initial_state.current_editing].question_choices?.at(to)).toStrictEqual(
-    initial_state.exam[initial_state.current_editing].question_choices?.at(from),
+  expect(swapped.exam[swapped.current_editing].answer[to]).toBe(
+    initial_state.exam[initial_state.current_editing].answer[from],
   );
 });
-test('q:answer/swapのとき、fromとtoに設定した位置の要素が入れ替えられる', () => {
+test('q:choice/moveのとき、current_editing番目Examのchoiceにおいて、fromに指定した位置の要素がtoに移動する', () => {
   const from = 0;
   const to = 1;
-  expect(initial_state.exam[initial_state.current_editing].answer[from]).not.toStrictEqual(
-    initial_state.exam[initial_state.current_editing].answer[to],
-  );
-  const swapped = edit_reducer(dup(initial_state), {type: 'q:answer/swap', from, to});
+  expect(initial_state.exam[from]).not.toStrictEqual(initial_state.exam[to]);
+  const swapped = edit_reducer(dup(initial_state), {type: 'q:choice/move', from, to});
   expect(swapped.current_editing).toBe(initial_state.current_editing);
-  expect(swapped.exam[initial_state.current_editing].answer[from]).toStrictEqual(
-    initial_state.exam[initial_state.current_editing].answer[to],
+  expect((swapped.exam[swapped.current_editing].question_choices ?? []).length).toBe(
+    (initial_state.exam[initial_state.current_editing].question_choices ?? []).length,
   );
-  expect(swapped.exam[initial_state.current_editing].answer[to]).toStrictEqual(
-    initial_state.exam[initial_state.current_editing].answer[from],
+  expect(swapped.exam[swapped.current_editing].question_choices?.at(to)).toBe(
+    initial_state.exam[initial_state.current_editing].question_choices?.at(from),
   );
 });
 
