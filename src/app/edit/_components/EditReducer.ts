@@ -26,15 +26,12 @@ export const ExamReducerContext = React.createContext<[StateType, React.Dispatch
 // state.current_editingに依存するもの: prefix 'q:'
 export type Action =
   | {
-      type:
-        | 'title/set'
-        | 'desc/set'
-        | 'list/set'
-        | 'q:question/set'
-        | 'q:comment/set'
-        | 'q:answer/set_single'
-        | 'q:answer/toggle_multi';
+      type: 'title/set' | 'desc/set' | 'list/set' | 'q:question/set' | 'q:comment/set';
       data: string;
+    }
+  | {
+      type: 'q:answer/set_single' | 'q:answer/toggle_multi';
+      index: number;
     }
   | {
       type: 'tags/set';
@@ -120,12 +117,13 @@ export const edit_reducer: ReducerType = (current, action) => {
       current.exam[current.current_editing].answer = answer;
       break;
     case 'q:answer/set_single':
-      current.exam[current.current_editing].answer = [action.data];
+      current.exam[current.current_editing].answer = [String(action.index)];
       break;
     case 'q:answer/toggle_multi': {
-      const index = current.exam[current.current_editing].answer.indexOf(action.data);
+      const data = String(action.index);
+      const index = current.exam[current.current_editing].answer.indexOf(data);
       if (index === -1) {
-        current.exam[current.current_editing].answer.push(action.data);
+        current.exam[current.current_editing].answer.push(data);
       } else {
         current.exam[current.current_editing].answer.splice(index, 1);
       }

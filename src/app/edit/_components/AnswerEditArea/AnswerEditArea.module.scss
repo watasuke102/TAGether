@@ -1,0 +1,40 @@
+/*
+ TAGether - Share self-made exam for classmates
+ ExamEditForms.module.scss
+
+ CopyRight (c) 2020-2022 Watasuke
+ Email  : <watasuke102@gmail.com>
+ Twitter: @Watasuke102
+ This software is released under the MIT or MIT SUSHI-WARE License.
+*/
+@import '../../../../components/common/variable';
+
+.editor_wrapper {
+  display: grid;
+  align-items: center;
+  // prettier-ignore
+  grid-template:
+    "check form    dragger" auto
+    "check     buttons dragger"       auto / auto 1fr auto;
+  gap: 4px 8px;
+  margin-bottom: 16px;
+}
+.check {
+  grid-area: check;
+}
+.form {
+  grid-area: form;
+}
+.dragger {
+  grid-area: dragger;
+  font-size: 1.5em;
+  border: 1px solid $color-fg;
+  border-radius: 6px;
+  padding: 4px;
+  margin: auto;
+}
+.button_container {
+  grid-area: buttons;
+  display: flex;
+  justify-content: space-between;
+}
