@@ -8,6 +8,7 @@ import css from './FavoriteStar.module.scss';
 import {gsap, Power4} from 'gsap';
 import React from 'react';
 import {UpdateFavorite, GetFavorite} from '@utils/ManageDB';
+import StarIcon from '@assets/star.svg';
 
 interface Props {
   id: number;
@@ -63,7 +64,9 @@ export default function FavoriteStar(props: Props): React.ReactElement {
       style={{color: favorite_status ? starred_color : unstarred_color}}
       onClick={clicked}
     >
-      <span className='fas fa-star' id={`icon-${props.id}`} />
+      <div id={`icon-${props.id}`}>
+        <StarIcon />
+      </div>
     </div>
   );
 }

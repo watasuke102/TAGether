@@ -11,6 +11,8 @@ import Modal from '@/common/Modal/Modal';
 import {AllCategoryDataType} from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 import Detail from '../CategolyCard/CategolyDetail';
+import DeleteIcon from '@assets/delete.svg';
+import CloseIcon from '@assets/close.svg';
 
 interface Props {
   categoly: AllCategoryDataType;
@@ -27,7 +29,7 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
     <>
       <div className={css.container}>
         <div className={css.delete_button_wrapper}>
-          <Button text='削除' icon='fas fa-trash-alt' type='material' OnClick={() => SetIsModalOpen(true)} />
+          <Button text='削除' icon={<DeleteIcon />} type='material' OnClick={() => SetIsModalOpen(true)} />
         </div>
 
         <span className={css.categoly_link} onClick={() => SetIsCategolyDetailOpen(true)}>
@@ -56,7 +58,7 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
                 SetIsModalOpen(false);
               }}
               type='filled'
-              icon='fas fa-times'
+              icon={<CloseIcon />}
               text='閉じる'
             />
             <Button
@@ -65,7 +67,7 @@ export default function ExamHistoryItem(props: Props): React.ReactElement {
                 SetIsModalOpen(false);
               }}
               type='filled'
-              icon='fas fa-trash-alt'
+              icon={<DeleteIcon />}
               text='削除する'
             />
           </div>

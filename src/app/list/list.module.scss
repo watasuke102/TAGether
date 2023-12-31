@@ -26,6 +26,9 @@
   text-align: center;
 }
 
+.create_icon {
+  width: 24px;
+}
 #create_new {
   margin: 0;
 }
@@ -47,6 +50,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 4px;
   width: 300px;
   height: auto;
   min-height: 100px;
@@ -56,10 +60,6 @@
   color: $color-fg;
   background-color: $color-transparent;
   transition: 0.3s;
-
-  span {
-    margin-right: 15px;
-  }
 
   &:hover {
     cursor: pointer;

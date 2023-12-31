@@ -18,6 +18,9 @@ import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
 import ExamStatus from '@mytypes/ExamState';
+import ArrowLeftIcon from '@assets/arrow-left.svg';
+import VisibleIcon from '@assets/visible.svg';
+import InvisibleIcon from '@assets/invisible.svg';
 
 interface Props {
   data: CategoryDataType;
@@ -131,13 +134,13 @@ export default function ExamTable(props: Props): React.ReactElement {
 
       <div className={css.button_container}>
         <div className={css.buttons}>
-          <Button text='戻る' icon='fas fa-undo' OnClick={router.back} type='material' />
+          <Button text='戻る' icon={<ArrowLeftIcon />} OnClick={router.back} type='material' />
           {/* 正しい答えの表示/非表示切り替え */}
           <Button
             OnClick={() => SetShowCorrectAnswer(!show_correct_answer)}
             type='material'
             text={show_correct_answer ? '正解を非表示' : '正解を表示'}
-            icon={show_correct_answer ? 'fas fa-eye-slash' : 'fas fa-eye'}
+            icon={show_correct_answer ? <InvisibleIcon /> : <VisibleIcon />}
           />
         </div>
       </div>

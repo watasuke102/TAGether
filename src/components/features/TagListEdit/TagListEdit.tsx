@@ -9,6 +9,8 @@ import {AnimatePresence, motion} from 'framer-motion';
 import React from 'react';
 import TagData from '@mytypes/TagData';
 import TagDetail from '../TagDetail/TagDetail';
+import AddIcon from '@assets/add.svg';
+import CloseIcon from '@assets/close.svg';
 
 interface Props {
   tags: TagData[];
@@ -84,14 +86,14 @@ export default function TagListEdit(props: Props): React.ReactElement {
     }
     const elements = list.map(e => (
       <div key={`taglist_${e.id}`} className={css.item} onClick={() => UpdateTag([...current_tag, e])}>
-        <div className='fas fa-plus' />
+        <AddIcon />
         <span>{e.name}</span>
       </div>
     ));
     // 新規作成欄
     elements.unshift(
       <div className={css.item} onClick={() => SetIsModalOpen(true)}>
-        <div className='fas fa-plus' />
+        <AddIcon />
         <span>新規作成...</span>
       </div>,
     );
@@ -102,7 +104,7 @@ export default function TagListEdit(props: Props): React.ReactElement {
     <>
       <div className={css.current_tag}>
         <div className={css.item} onClick={e => PickerOpen(e)}>
-          <div className='fas fa-plus' />
+          <AddIcon />
           <span>追加</span>
         </div>
         {/* タグ一覧（クリックで削除） */}
@@ -112,7 +114,7 @@ export default function TagListEdit(props: Props): React.ReactElement {
             className={css.item}
             onClick={() => UpdateTag(current_tag.filter((_, j) => j !== i))}
           >
-            <div className='fas fa-times' />
+            <CloseIcon />
             <span>{e.name}</span>
           </div>
         ))}
@@ -135,7 +137,7 @@ export default function TagListEdit(props: Props): React.ReactElement {
                 8つ未満になるように削除してください
               </span>
               <div className={css.close} onClick={() => SetIsPickerOpen(false)}>
-                <span className='fas fa-times' />
+                <CloseIcon />
               </div>
             </motion.div>
           ) : (
@@ -150,7 +152,7 @@ export default function TagListEdit(props: Props): React.ReactElement {
               </form>
 
               <div className={css.close} onClick={() => SetIsPickerOpen(false)}>
-                <span className='fas fa-times' />
+                <CloseIcon />
               </div>
 
               <div className={css.list}>

@@ -6,6 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './SelectButton.module.scss';
 import React from 'react';
+import CheckIcon from '@assets/check.svg';
 
 interface Props {
   type: 'check' | 'radio';
@@ -37,7 +38,9 @@ export default function SelectButton(props: Props): React.ReactElement {
           !props.status ? (
             <></>
           ) : props.type === 'check' ? (
-            <span className={`fas fa-check ${css.multi_checked}`} />
+            <div className={css.multi_checked}>
+              <CheckIcon />
+            </div>
           ) : (
             <div className={css.single_checked} />
           )

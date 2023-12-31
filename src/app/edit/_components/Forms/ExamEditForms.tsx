@@ -16,6 +16,15 @@ import Form from '@/common/TextForm/Form';
 import Loading from '../../loading';
 import {useShortcut} from '@utils/useShortcut';
 import {AnswerEditArea} from '../AnswerEditArea/AnswerEditArea';
+import ArrowLeftIcon from '@assets/arrow-left.svg';
+import ArrowRightIcon from '@assets/arrow-right.svg';
+import ChevronLeftIcon from '@assets/chevron-left.svg';
+import ChevronRightIcon from '@assets/chevron-right.svg';
+import DoubleChevronLeftIcon from '@assets/double-chevron-left.svg';
+import DoubleChevronRightIcon from '@assets/double-chevron-right.svg';
+import DeleteIcon from '@assets/delete.svg';
+import ListIcon from '@assets/list.svg';
+import CloseIcon from '@assets/close.svg';
 
 export enum TabIndexList {
   TypeSelect = 1,
@@ -83,18 +92,18 @@ export default function ExamEditForms(): React.ReactElement {
         <div className={css.button_container}>
           <Button
             type={'material'}
-            icon={'fas fa-angle-double-left'}
+            icon={<DoubleChevronLeftIcon />}
             text={''}
             OnClick={() => dispatch({type: 'index/first'})}
           />
-          <Button type={'material'} icon={'fas fa-chevron-left'} text={''} OnClick={() => step_page_with_adding(-1)} />
+          <Button type={'material'} icon={<ChevronLeftIcon />} text={''} OnClick={() => step_page_with_adding(-1)} />
           <span className={css.current_editing}>
             {state.current_editing + 1}/{exam_len}
           </span>
-          <Button type={'material'} icon={'fas fa-chevron-right'} text={''} OnClick={() => step_page_with_adding(1)} />
+          <Button type={'material'} icon={<ChevronRightIcon />} text={''} OnClick={() => step_page_with_adding(1)} />
           <Button
             type={'material'}
-            icon={'fas fa-angle-double-right'}
+            icon={<DoubleChevronRightIcon />}
             text={''}
             OnClick={() => dispatch({type: 'index/last'})}
           />
@@ -103,7 +112,7 @@ export default function ExamEditForms(): React.ReactElement {
         <div className={css.button_container}>
           <Button
             type={'material'}
-            icon={'fas fa-trash'}
+            icon={<DeleteIcon />}
             text={'この問題を削除'}
             OnClick={() => {
               if (state.current_editing === exam_len - 1) {
@@ -112,32 +121,32 @@ export default function ExamEditForms(): React.ReactElement {
               dispatch({type: 'exam/remove', at: state.current_editing});
             }}
           />
-          <Button type={'material'} icon={'fas fa-list'} text={'問題一覧'} OnClick={() => SetIsModalOpen(true)} />
+          <Button type={'material'} icon={<ListIcon />} text={'問題一覧'} OnClick={() => SetIsModalOpen(true)} />
         </div>
 
         <div className={css.append_exam}>
           <ButtonContainer>
             <Button
               type='material'
-              icon='fas fa-angle-double-left'
+              icon={<DoubleChevronLeftIcon />}
               text='最初に挿入'
               OnClick={() => dispatch({type: 'exam/insert', at: -1})}
             />
             <Button
               type='material'
-              icon='fas fa-arrow-left'
+              icon={<ArrowLeftIcon />}
               text='1つ前に挿入'
               OnClick={() => dispatch({type: 'exam/insert', at: state.current_editing})}
             />
             <Button
               type='material'
-              icon='fas fa-arrow-right'
+              icon={<ArrowRightIcon />}
               text='1つ後に挿入'
               OnClick={() => dispatch({type: 'exam/insert', at: state.current_editing + 1})}
             />
             <Button
               type='material'
-              icon='fas fa-angle-double-right'
+              icon={<DoubleChevronRightIcon />}
               text='最後に挿入'
               OnClick={() => dispatch({type: 'exam/insert', at: state.exam.length})}
             />
@@ -236,7 +245,9 @@ export default function ExamEditForms(): React.ReactElement {
                           >
                             <span className={css.q_index}>{i + 1}</span>
                             <span>{`${e.question.slice(0, 75)}${e.question.length > 75 ? '...' : ''}`}</span>
-                            <span className={`fas fa-list ${css.icon}`} {...provided.dragHandleProps} />
+                            <div className={css.icon} {...provided.dragHandleProps}>
+                              <ListIcon />
+                            </div>
                           </div>
                         )}
                       </Draggable>
@@ -249,7 +260,7 @@ export default function ExamEditForms(): React.ReactElement {
           </DragDropContext>
 
           <div className={css.button_container}>
-            <Button type={'filled'} icon={'fas fa-times'} text={'閉じる'} OnClick={() => SetIsModalOpen(false)} />
+            <Button type={'filled'} icon={<CloseIcon />} text={'閉じる'} OnClick={() => SetIsModalOpen(false)} />
           </div>
         </div>
       </Modal>

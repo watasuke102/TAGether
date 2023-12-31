@@ -13,6 +13,10 @@ import Form from '@/common/TextForm/Form';
 import Button from '@/common/Button/Button';
 import {TabIndexList} from '../Forms/ExamEditForms';
 import {SelectButton} from '@/common/SelectBox';
+import ArrowUpIcon from '@assets/arrow-up.svg';
+import ArrowDownIcon from '@assets/arrow-down.svg';
+import ListIcon from '@assets/list.svg';
+import DeleteIcon from '@assets/delete.svg';
 
 export function AnswerEditArea(): React.ReactElement {
   const [state, dispatch] = React.useContext(ExamReducerContext);
@@ -27,13 +31,13 @@ export function AnswerEditArea(): React.ReactElement {
       <div className={css.button_container}>
         <Button
           type='material'
-          icon='fas fa-arrow-up'
+          icon={<ArrowUpIcon />}
           text='最初に挿入'
           OnClick={() => dispatch({type: `q:${target_str}/insert`, at: -1})}
         />
         <Button
           type='material'
-          icon='fas fa-arrow-down'
+          icon={<ArrowDownIcon />}
           text='最後に挿入'
           OnClick={() => dispatch({type: `q:${target_str}/insert`, at: target_array.length})}
         />
@@ -96,18 +100,20 @@ export function AnswerEditArea(): React.ReactElement {
                               OnChange={ev => dispatch({type: `q:${target_str}/set`, index: i, data: ev.target.value})}
                             />
                           </div>
-                          <span className={`fas fa-list ${css.dragger}`} {...provided.dragHandleProps} />
+                          <div className={css.dragger} {...provided.dragHandleProps}>
+                            <ListIcon />
+                          </div>
                           <div className={css.button_container}>
                             <Button
                               text='1つ下に追加'
-                              icon='fas fa-arrow-down'
+                              icon={<ArrowDownIcon />}
                               type='material'
                               OnClick={() => dispatch({type: `q:${target_str}/insert`, at: i + 1})}
                             />
                             {target_array.length !== 1 && (
                               <Button
                                 text='削除'
-                                icon='fas fa-trash'
+                                icon={<DeleteIcon />}
                                 type='material'
                                 OnClick={() => dispatch({type: `q:${target_str}/remove`, at: i})}
                               />

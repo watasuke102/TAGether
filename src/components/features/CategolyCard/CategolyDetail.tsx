@@ -20,6 +20,17 @@ import {CsvExport} from './CsvExport/CsvExport';
 import {mutate_category, toggle_delete_category, useCategoryData} from '@utils/api/category';
 import Exam from '@mytypes/Exam';
 import Loading from '@/common/Loading/Loading';
+import MinusIcon from '@assets/minus.svg';
+import PlusIcon from '@assets/add.svg';
+import CloseIcon from '@assets/close.svg';
+import DownloadIcon from '@assets/download.svg';
+import DeleteIcon from '@assets/delete.svg';
+import EditIcon from '@assets/edit.svg';
+import SettingIcon from '@assets/setting.svg';
+import ArrowRightIcon from '@assets/arrow-right.svg';
+import CheckIcon from '@assets/check.svg';
+import ListIcon from '@assets/list.svg';
+import ClockIcon from '@assets/clock.svg';
 
 interface Props {
   data: AllCategoryDataType;
@@ -85,11 +96,11 @@ export default function CategolyDetail(props: Props): React.ReactElement {
     <>
       <span className={css.counter_name}> {props.text} </span>
       <div className={css.counter}>
-        <Button text='10' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 10)} type='material' />
-        <Button text='1' icon='fas fa-minus' OnClick={() => props.setValue(props.value - 1)} type='material' />
+        <Button text='10' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 10)} type='material' />
+        <Button text='1' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 1)} type='material' />
         <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
-        <Button text='1' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 1)} type='material' />
-        <Button text='10' icon='fas fa-plus' OnClick={() => props.setValue(props.value + 10)} type='material' />
+        <Button text='1' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 1)} type='material' />
+        <Button text='10' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 10)} type='material' />
       </div>
     </>
   );
@@ -97,33 +108,33 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   // prettier-ignore
   const info: ButtonInfo[] = props.history ?
     [
-      {text: '間違えた問題一覧',   icon: 'fas fa-list',        OnClick: () => Push('table'),        type: 'material'},
-      {text: '解答時の設定',       icon: 'fas fa-cog',         OnClick: () => SetIsModalOpen(true), type: 'material'},
+      {text: '間違えた問題一覧',   icon: <ListIcon />,        OnClick: () => Push('table'),        type: 'material'},
+      {text: '解答時の設定',       icon:<SettingIcon />,         OnClick: () => SetIsModalOpen(true), type: 'material'},
       props.history.correct_count !== props.history.total_question ?
-        { text: '間違えた問題を解く', icon: 'fas fa-arrow-right', OnClick: () => Push('exam'), type: 'filled' }
+        { text: '間違えた問題を解く', icon:<ArrowRightIcon />, OnClick: () => Push('exam'), type: 'filled' }
         :
-        { text: '全問正解', icon: 'fas fa-check', OnClick: () => undefined, type: 'material' },
+        { text: '全問正解', icon:<CheckIcon />, OnClick: () => undefined, type: 'material' },
     ] : [
-      {text: '編集する',      icon: 'fas fa-pen',         OnClick: () => Push('edit'),         type: 'material'},
-      {text: '問題一覧',      icon: 'fas fa-list',        OnClick: () => Push('table'),        type: 'material'},
-      {text: '解答時の設定',  icon: 'fas fa-cog',         OnClick: () => SetIsModalOpen(true), type: 'material'},
-      {text: 'この問題を解く',icon: 'fas fa-arrow-right', OnClick: () => Push('exam'),         type: 'filled'},
+      {text: '編集する',      icon:<EditIcon />,         OnClick: () => Push('edit'),         type: 'material'},
+      {text: '問題一覧',      icon:<ListIcon />,        OnClick: () => Push('table'),        type: 'material'},
+      {text: '解答時の設定',  icon:<SettingIcon />,         OnClick: () => SetIsModalOpen(true), type: 'material'},
+      {text: 'この問題を解く',icon:<ArrowRightIcon />, OnClick: () => Push('exam'),         type: 'filled'},
     ];
 
   return (
     <>
       <div className={css.container}>
         <div className={css.button_container}>
-          <Button text='' icon='fas fa-times' OnClick={props.close} type='material' />
+          <Button text='' icon={<CloseIcon />} OnClick={props.close} type='material' />
           <Button
             text='csvとしてダウンロード'
-            icon='fas fa-download'
+            icon={<DownloadIcon />}
             OnClick={() => set_is_csv_export_open(true)}
             type='material'
           />
           <Button
             text={props.data.deleted ? 'ゴミ箱から取り出す' : 'ゴミ箱に移動'}
-            icon='fas fa-trash-alt'
+            icon={<DeleteIcon />}
             OnClick={() => SetIsDeleteModalOpen(true)}
             type='material'
           />
@@ -131,7 +142,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         <textarea disabled={true} value={props.data.title} id={css.title} />
 
         <div className={css.updated_at}>
-          <span className='fas fa-clock' />
+          <ClockIcon />
           <p>
             {props.data.updated_at?.includes('T')
               ? props.data.updated_at.slice(0, -5).replace('T', ' ')
@@ -162,7 +173,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
           <div className={css.button_container}>
             <Button
               text='閉じる'
-              icon='fas fa-times'
+              icon={<CloseIcon />}
               type='material'
               OnClick={() => {
                 SetIsDeleteModalOpen(false);
@@ -170,7 +181,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             />
             <Button
               text='確定'
-              icon='fas fa-check'
+              icon={<CheckIcon />}
               type='filled'
               OnClick={() => {
                 if (!props.data.id) {
@@ -229,8 +240,8 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             />
 
             <ButtonContainer>
-              <Button text='閉じる' icon='fas fa-times' OnClick={() => SetIsModalOpen(false)} type='material'></Button>
-              <Button text='この問題を解く' icon='fas fa-arrow-right' OnClick={() => Push('exam')} type='filled' />
+              <Button text='閉じる' icon={<CloseIcon />} OnClick={() => SetIsModalOpen(false)} type='material'></Button>
+              <Button text='この問題を解く' icon={<ArrowRightIcon />} OnClick={() => Push('exam')} type='filled' />
             </ButtonContainer>
           </div>
         )}

@@ -23,9 +23,8 @@
   display: inline-flex;
   justify-content: center;
   text-align: center;
-  /*width: 120px;*/
-  padding: 5px;
   border-radius: 3px;
+  gap: 4px;
   background-color: $color-transparent;
   border: 1px solid $color-primary-2;
   transition: background-color 0.3s;
@@ -43,7 +42,7 @@
 
 // ボタンのなかみ
 .button_icon {
-  margin: auto 5px;
+  margin: auto 0;
   text-align: center;
   span {
     font-size: 25px;

@@ -17,6 +17,8 @@ import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
 import {useAllCategoryData} from '@utils/api/category';
 import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@utils/ManageDB';
 import ExamHistory from '@mytypes/ExamHistory';
+import DeleteIcon from '@assets/delete.svg';
+import CloseIcon from '@assets/close.svg';
 
 export default function profile(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -76,7 +78,7 @@ export default function profile(): React.ReactElement {
             <Button
               {...{
                 text: '履歴を全消去',
-                icon: 'fas fa-trash-alt',
+                icon: <DeleteIcon />,
                 OnClick: () => SetIsModalOpen(true),
                 type: 'filled',
               }}
@@ -111,7 +113,7 @@ export default function profile(): React.ReactElement {
             <Button
               {...{
                 type: 'material',
-                icon: 'fas fa-times',
+                icon: <CloseIcon />,
                 text: '閉じる',
                 OnClick: () => SetIsModalOpen(false),
               }}
@@ -123,7 +125,7 @@ export default function profile(): React.ReactElement {
                   SetIsModalOpen(false);
                 },
                 type: 'filled',
-                icon: 'fas fa-trash-alt',
+                icon: <DeleteIcon />,
                 text: '削除する',
               }}
             />

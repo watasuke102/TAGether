@@ -31,6 +31,9 @@
       "@utils/*": [
         "src/utils/*"
       ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
       "@mytypes/*": [
         "src/types/*"
       ]

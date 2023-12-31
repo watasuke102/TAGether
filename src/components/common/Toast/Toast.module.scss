@@ -11,7 +11,9 @@
 
 .container {
   z-index: 3000;
-  display: flex;
+  display: grid;
+  grid-template-columns: 24px auto;
+  gap: 4px;
   position: fixed;
   right: 10px;
   top: 65px;
@@ -26,9 +28,6 @@
   // 100だとはみ出してしまう
   transform: translateX(140%);
 
-  span {
-    margin-right: 10px;
-  }
   &:hover {
     cursor: pointer;
   }

@@ -12,6 +12,7 @@ import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
 import {useRequestData, new_request, mutate_request} from '@utils/api/request';
+import SendIcon from '@assets/send.svg';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
@@ -36,7 +37,7 @@ export default function Request(): React.ReactElement {
         <Form label='要望入力欄' value={request} OnChange={e => SetRequest(e.target.value)} />
         <div className={css.button}>
           <Button
-            icon='fas fa-paper-plane'
+            icon={<SendIcon />}
             text='送信'
             type='filled'
             OnClick={() => {
