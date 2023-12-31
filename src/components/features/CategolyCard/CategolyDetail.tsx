@@ -31,6 +31,7 @@ import ArrowRightIcon from '@assets/arrow-right.svg';
 import CheckIcon from '@assets/check.svg';
 import ListIcon from '@assets/list.svg';
 import ClockIcon from '@assets/clock.svg';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 
 interface Props {
   data: AllCategoryDataType;
@@ -139,19 +140,20 @@ export default function CategolyDetail(props: Props): React.ReactElement {
             type='material'
           />
         </div>
-        <textarea disabled={true} value={props.data.title} id={css.title} />
+        <ReactTextareaAutosize disabled={true} value={props.data.title} id={css.title} />
 
         <div className={css.updated_at}>
           <ClockIcon />
-          <p>
+          <span>
             {props.data.updated_at?.includes('T')
               ? props.data.updated_at.slice(0, -5).replace('T', ' ')
               : props.data.updated_at ?? ''}
-          </p>
+          </span>
         </div>
 
         <Tag tag={props.data.tag} />
 
+        {/* 自動リサイズではなく、空いている領域すべてを埋める */}
         <textarea disabled={true} value={props.data.description} id={css.desc} />
 
         <ButtonContainer>
