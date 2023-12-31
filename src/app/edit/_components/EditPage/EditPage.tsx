@@ -38,7 +38,7 @@ export function EditPage(props: Props): JSX.Element {
     desc: props.category.description,
     list: props.category.list,
     exam: JSON.parse(props.category.list) as Exam[],
-    tags: props.tags,
+    tags: props.category.tag,
   });
 
   const is_first_rendering = React.useRef(true);

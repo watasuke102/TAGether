@@ -16,18 +16,24 @@
 }
 
 .item {
+  display: flex;
+  gap: 4px;
   user-select: none;
   margin: 5px 10px;
   padding: 2px 4px;
   border: 1px solid $color-4;
 
-  div {
-    margin-right: 5px;
-  }
-
   &:hover {
     cursor: pointer;
   }
+}
+.item_icon {
+  width: 20px;
+  height: 20px;
+}
+
+.add_wrapper {
+  border-color: $color-primary-3;
 }
 
 .tag_picker {
@@ -36,8 +42,8 @@
   background-color: rgba($color: $color-0, $alpha: 0.9);
 
   .close {
-    font-size: 1.4em;
-    margin: auto;
+    width: 20px;
+    height: 20px;
 
     &:hover {
       cursor: pointer;

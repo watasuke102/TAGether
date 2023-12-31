@@ -86,14 +86,18 @@ export default function TagListEdit(props: Props): React.ReactElement {
     }
     const elements = list.map(e => (
       <div key={`taglist_${e.id}`} className={css.item} onClick={() => UpdateTag([...current_tag, e])}>
-        <AddIcon />
+        <div className={css.item_icon}>
+          <AddIcon />
+        </div>
         <span>{e.name}</span>
       </div>
     ));
     // 新規作成欄
     elements.unshift(
-      <div className={css.item} onClick={() => SetIsModalOpen(true)}>
-        <AddIcon />
+      <div className={`${css.item} ${css.add_wrapper}`} onClick={() => SetIsModalOpen(true)}>
+        <div className={css.item_icon}>
+          <AddIcon />
+        </div>
         <span>新規作成...</span>
       </div>,
     );
@@ -103,8 +107,10 @@ export default function TagListEdit(props: Props): React.ReactElement {
   return (
     <>
       <div className={css.current_tag}>
-        <div className={css.item} onClick={e => PickerOpen(e)}>
-          <AddIcon />
+        <div className={`${css.item} ${css.add_wrapper}`} onClick={e => PickerOpen(e)}>
+          <div className={css.item_icon}>
+            <AddIcon />
+          </div>
           <span>追加</span>
         </div>
         {/* タグ一覧（クリックで削除） */}
@@ -114,7 +120,9 @@ export default function TagListEdit(props: Props): React.ReactElement {
             className={css.item}
             onClick={() => UpdateTag(current_tag.filter((_, j) => j !== i))}
           >
-            <CloseIcon />
+            <div className={css.item_icon}>
+              <CloseIcon />
+            </div>
             <span>{e.name}</span>
           </div>
         ))}
