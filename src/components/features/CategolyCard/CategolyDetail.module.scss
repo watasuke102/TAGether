@@ -15,8 +15,8 @@
   padding: 25px 20px;
 
   display: grid;
-  // ボタン, タイトル, 日付, タグ, 詳細, チェックボックス, ボタン
-  grid-template-rows: auto 90px 30px auto 1fr auto;
+  // ボタン, タイトル, 日付, タグ, 詳細, ボタン
+  grid-template-rows: auto auto auto auto 1fr auto;
 
   textarea {
     width: 100%;
@@ -37,7 +37,6 @@
 }
 
 #title {
-  height: 90px;
   font-size: 30px;
   font-weight: bold;
 }
@@ -47,18 +46,13 @@
 }
 
 .updated_at {
-  display: inline-flex;
-  height: 25px;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  height: 100%;
   margin: auto 0;
   padding: 0 12px;
-
-  span {
-    margin-top: 4px;
-  }
-
-  p {
-    margin-left: 5px;
-  }
+  gap: 4px;
 }
 
 .counter_name {
