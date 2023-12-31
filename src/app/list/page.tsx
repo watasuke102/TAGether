@@ -159,8 +159,8 @@ export default function list(): React.ReactElement {
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.add_categoly_window}>
           <h2>新規カテゴリの追加</h2>
-          <Form label='タイトル' value={categoly_name} rows={1} OnChange={ev => SetCategolyName(ev.target.value)} />
-          <Form label='説明' value={categoly_desc} rows={3} OnChange={ev => SetCategolyDesc(ev.target.value)} />
+          <Form label='タイトル' value={categoly_name} OnChange={ev => SetCategolyName(ev.target.value)} />
+          <Form label='説明' value={categoly_desc} OnChange={ev => SetCategolyDesc(ev.target.value)} />
           <div className={css.button_container}>
             <Button type='material' icon='fas fa-times' text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
             <Button

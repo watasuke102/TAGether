@@ -7,7 +7,6 @@
 interface FormInfo {
   label?: string;
   value: string;
-  rows: number;
   id?: string;
   layer?: number;
   disabled?: boolean;

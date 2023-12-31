@@ -138,7 +138,6 @@ export function EditPage(props: Props): JSX.Element {
           <Form
             label='JSON'
             value={edit_states.list}
-            rows={30}
             OnChange={e => dispatch({type: 'list/set', data: e.target.value})}
           />
         </>

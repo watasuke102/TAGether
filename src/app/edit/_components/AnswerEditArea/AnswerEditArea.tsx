@@ -92,7 +92,6 @@ export function AnswerEditArea(): React.ReactElement {
                               id={id}
                               label={`答え (${i + 1})`}
                               value={e}
-                              rows={3}
                               layer={TabIndexList.Answer}
                               OnChange={ev => dispatch({type: `q:${target_str}/set`, index: i, data: ev.target.value})}
                             />

@@ -34,13 +34,7 @@ export default function Request(): React.ReactElement {
         以下の入力欄に要望を入力し、「送信」ボタンを押すことで送信できます。
       </p>
       <div className={css.form}>
-        <label htmlFor='request_area'>意見入力欄</label>
-        <ReactTextareaAutosize
-          id='request_area'
-          value={request}
-          minRows={4}
-          onChange={e => SetRequest(e.target.value)}
-        />
+        <Form label='要望入力欄' value={request} OnChange={e => SetRequest(e.target.value)} />
         <div className={css.button}>
           <Button
             icon='fas fa-paper-plane'

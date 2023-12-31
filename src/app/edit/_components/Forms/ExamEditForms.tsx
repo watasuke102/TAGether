@@ -152,14 +152,12 @@ export default function ExamEditForms(): React.ReactElement {
             id={QUESTION_ID}
             label={'問題文'}
             value={state.exam[state.current_editing].question}
-            rows={6}
             layer={TabIndexList.Question}
             OnChange={e => dispatch({type: 'q:question/set', data: e.target.value})}
           />
           <Form
             label={'コメント（解説など）'}
             value={state.exam[state.current_editing].comment ?? ''}
-            rows={5}
             OnChange={e => dispatch({type: 'q:comment/set', data: e.target.value})}
             layer={TabIndexList.Comment}
           />
