@@ -34,14 +34,6 @@
   }
 }
 
-@keyframes fadein {
-  from {
-    opacity: 0;
-    transform: translateX(120%);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0%);
-  }
+.text {
+  white-space: pre-wrap;
 }

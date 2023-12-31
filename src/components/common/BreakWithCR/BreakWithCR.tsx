@@ -14,7 +14,7 @@ export default function BreakWithCR({str}: {str: string}): React.ReactElement {
           {s}
           <br />
         </>
-      ))}{' '}
+      ))}
     </>
   );
 }
