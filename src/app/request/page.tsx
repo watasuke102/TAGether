@@ -12,6 +12,7 @@ import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
 import Form from '@/common/TextForm/Form';
 import {useRequestData, new_request, mutate_request} from '@utils/api/request';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
@@ -33,13 +34,12 @@ export default function Request(): React.ReactElement {
         以下の入力欄に要望を入力し、「送信」ボタンを押すことで送信できます。
       </p>
       <div className={css.form}>
-        <Form
-          {...{
-            label: '意見',
-            value: request,
-            rows: 10,
-            OnChange: e => SetRequest(e.target.value),
-          }}
+        <label htmlFor='request_area'>意見入力欄</label>
+        <ReactTextareaAutosize
+          id='request_area'
+          value={request}
+          minRows={4}
+          onChange={e => SetRequest(e.target.value)}
         />
         <div className={css.button}>
           <Button
