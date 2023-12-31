@@ -8,7 +8,6 @@
 import css from './Toast.module.scss';
 import {AnimatePresence, motion} from 'framer-motion';
 import React, {Dispatch} from 'react';
-import BreakWithCR from '../BreakWithCR/BreakWithCR';
 
 type State = {
   is_open: boolean;
@@ -42,14 +41,20 @@ export function ToastProvider({children}: {children: React.ReactNode}): JSX.Elem
   return <ToastContext.Provider value={{state, dispatch}}>{children}</ToastContext.Provider>;
 }
 
+const timeout_ids: NodeJS.Timeout[] = [];
 export function useToastOperator() {
   const {dispatch} = React.useContext(ToastContext);
   return {
     open: (text: string, icon?: string) => {
       dispatch({type: 'open', text, icon});
-      setTimeout(() => dispatch({type: 'close'}), 5000);
+      timeout_ids.push(setTimeout(() => dispatch({type: 'close'}), 5000));
     },
-    close: () => dispatch({type: 'close'}),
+    close: () => {
+      dispatch({type: 'close'});
+      while (timeout_ids.length > 0) {
+        clearTimeout(timeout_ids.pop());
+      }
+    },
   };
 }
 
@@ -68,7 +73,7 @@ export function Toast(): React.ReactElement {
             main: {transform: 'translateX(0)', opacity: 1},
             out: {transform: 'translateX(0)', opacity: 0},
           }}
-          transition={{duration: 0.2, ease: 'circIn'}}
+          transition={{duration: 0.4, ease: [0.22, 1, 0.36, 1]}}
           initial='init'
           animate='main'
           exit='out'
@@ -76,7 +81,7 @@ export function Toast(): React.ReactElement {
           onClick={() => dispatch({type: 'close'})}
         >
           <span className={state.icon ?? 'fas fa-bell'} />
-          <BreakWithCR str={state.text} />
+          <span className={css.text}>{state.text}</span>
         </motion.div>
       )}
     </AnimatePresence>
