@@ -156,7 +156,6 @@ export function AnswerArea(props: Props): JSX.Element {
             <div className={css.form} key={`examform_Text_${i}`}>
               <Form
                 id={FORM_ID}
-                rows={1}
                 label={`解答 ${props.exam.answer.length === 1 ? '' : `(${i + 1})`}`}
                 value={props.answers[i]}
                 OnChange={ev => {

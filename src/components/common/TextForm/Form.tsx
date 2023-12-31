@@ -21,7 +21,7 @@ export default function Form(props: FormInfo): JSX.Element {
         id={props.id ?? ''}
         className={css.form}
         value={props.value}
-        minRows={props.rows}
+        minRows={1}
         spellCheck={false}
         tabIndex={props.layer ?? 1}
         onChange={e => props.OnChange(e)}
