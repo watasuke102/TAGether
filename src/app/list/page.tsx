@@ -175,7 +175,6 @@ export default function list(): React.ReactElement {
               text='作成する'
               OnClick={() => {
                 if (categoly_name === '') {
-                  SetIsToastOpen(true);
                   Toast.open('カテゴリのタイトルを設定してください');
                   return;
                 }

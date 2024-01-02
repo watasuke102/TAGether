@@ -30,6 +30,7 @@ type Props = {
 
 export default function Exam(props: Props): JSX.Element {
   console.log(props);
+  return <></>;
   // const search_params = useSearchParams();
   // const id = search_params?.get('id');
   // const history_id = search_params?.get('history_id');
