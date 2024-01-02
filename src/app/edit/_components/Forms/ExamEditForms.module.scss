@@ -25,10 +25,6 @@
   margin: 10px 20px 15px;
 }
 
-.current_page {
-  font-size: 1.5em;
-}
-
 .form_container {
   display: flex;
   justify-content: space-between;
@@ -49,34 +45,6 @@
     flex-direction: column;
     gap: 16px;
     padding-bottom: 80px;
-
-    .select_form {
-      display: grid;
-      grid-template-columns: 50px 1fr;
-      padding-bottom: 5px;
-    }
-
-    .sort_forms {
-      display: grid;
-      grid-template-columns: 1fr 50px;
-
-      .icon {
-        border: 1px solid $color-fg;
-        border-radius: 6px;
-        padding: 4px;
-        margin: auto;
-        margin-bottom: 45px;
-      }
-    }
-  }
-
-  .answer {
-    width: 100%;
-  }
-
-  .answer_area_buttons {
-    display: flex;
-    justify-content: space-between;
   }
 }
 
