@@ -5,8 +5,8 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './FavoriteStar.module.scss';
-import {gsap, Power4} from 'gsap';
 import React from 'react';
+import {motion} from 'framer-motion';
 import {UpdateFavorite, GetFavorite} from '@utils/ManageDB';
 import StarIcon from '@assets/star.svg';
 
@@ -14,59 +14,25 @@ interface Props {
   id: number;
 }
 
-const starred_color = '#524a80';
-const unstarred_color = '#abb2bf';
-
 export default function FavoriteStar(props: Props): React.ReactElement {
-  const [favorite_status, SetFavoriteStatus] = React.useState(false);
+  // 既にお気に入り登録されているものにおいて、初回レンダリング時のアニメーションを抑制する
+  const [favorite_status, SetFavoriteStatus] = React.useState<'already' | true | false>(false);
   React.useEffect(() => {
-    GetFavorite().then(res => SetFavoriteStatus(res.includes(props.id ?? -1)));
+    GetFavorite().then(res => SetFavoriteStatus(res.includes(props.id ?? -1) ? 'already' : false));
   }, []);
 
-  const clicked = e => {
-    e.stopPropagation();
-    // Animation
-    const target = `#icon-${props.id}`;
-    const timeline = gsap.timeline();
-    // お気に入りを変更する前なので ! をつける
-    const color = !favorite_status ? starred_color : unstarred_color;
-    timeline
-      // 初期化
-      .to(target, {
-        duration: 0,
-        color: color,
-        scale: '1',
-      })
-      // アニメーション
-      .to(target, {
-        ease: Power4.easeOut,
-        duration: 0.3,
-        scale: '1.2',
-      })
-      // 終了処理
-      .to(target, {
-        ease: Power4.easeOut,
-        duration: 0.2,
-        color: color,
-        scale: '1',
-        onComplete: () => {
-          // hover要素を動作させる
-          document.getElementById(target.replace('#', ''))?.removeAttribute('style');
-          UpdateFavorite(props.id ?? -1);
-          SetFavoriteStatus(!favorite_status);
-        },
-      });
-  };
-
   return (
-    <div
-      className={css.favorite_button}
-      style={{color: favorite_status ? starred_color : unstarred_color}}
-      onClick={clicked}
+    <motion.div
+      className={css.favorite_button + (favorite_status ? ` ${css.starred}` : '')}
+      whileTap={{scale: 1.2}}
+      onClick={e => {
+        e.stopPropagation();
+        UpdateFavorite(props.id ?? -1);
+        SetFavoriteStatus(!favorite_status);
+      }}
     >
-      <div id={`icon-${props.id}`}>
-        <StarIcon />
-      </div>
-    </div>
+      {favorite_status === true && <motion.div className={css.animation_circle} />}
+      <StarIcon />
+    </motion.div>
   );
 }

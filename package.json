@@ -27,7 +27,6 @@
     "date-fns": "^2.30.0",
     "drizzle-orm": "^0.29.1",
     "framer-motion": "^10.16.16",
-    "gsap": "^3.12.4",
     "localforage": "^1.10.0",
     "mysql2": "^3.6.5",
     "next": "^14.0.4",

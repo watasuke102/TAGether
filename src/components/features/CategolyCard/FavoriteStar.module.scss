@@ -9,21 +9,61 @@
 */
 @import '../../common/variable';
 
+$size: 36px;
+$border_width: 2px;
+
 .favorite_button {
-  // お気に入りボタンがでかくなるのを防ぐ
-  width: 0;
-  margin-top: auto;
+  position: relative;
+  width: $size;
+  height: $size;
   font-size: 1.6em;
+  border: $border_width solid;
+  border-color: transparent;
+  border-radius: $size;
+  svg {
+    // animation_circleの後ろになってしまうのを防ぐ
+    position: absolute;
+    bottom: 1px;
+    padding: 2px;
+  }
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
-    span:hover {
-      color: $color-primary-1;
+    &:hover {
+      border-color: $color-primary-1;
+      cursor: pointer;
     }
   }
 }
 
-@keyframes pushed {
-  30% {
-    transform: scale(1.2);
+.starred {
+  color: $color-primary-1;
+}
+
+.animation_circle {
+  z-index: 0;
+  position: absolute;
+  left: -$border_width;
+  top: -$border_width;
+  width: $size;
+  height: $size;
+  border: solid $color-primary-1;
+  border-width: 2px;
+  border-radius: $size;
+  animation: starred 0.8s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+}
+@keyframes starred {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+    border-width: calc($size / 2);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+    border-width: 2px;
+    display: none;
   }
 }
