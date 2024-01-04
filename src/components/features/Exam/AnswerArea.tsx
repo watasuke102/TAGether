@@ -233,8 +233,8 @@ export function AnswerArea(props: Props): JSX.Element {
                             {...{sort_index: i}}
                             {...provided.dragHandleProps}
                           >
-                        <ListIcon />
-                        </div>
+                            <ListIcon />
+                          </div>
                         </div>
                       )}
                     </Draggable>
