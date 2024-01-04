@@ -11,16 +11,20 @@ import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
 export async function GET(): Promise<Response> {
   const db = await connect_drizzle();
   const tags = await db.select().from(tag);
-  const categories = await db
-    .select({
-      id: exam.id,
-      updated_at: exam.updated_at,
-      title: exam.title,
-      description: exam.description,
-      tag: exam.tag,
-      deleted: exam.deleted,
-    })
-    .from(exam);
+  const categories = (
+    await db
+      .select({
+        id: exam.id,
+        updated_at: exam.updated_at,
+        title: exam.title,
+        description: exam.description,
+        tag: exam.tag,
+        deleted: exam.deleted,
+      })
+      .from(exam)
+  ).map(e => {
+    return {...e, updated_at: e.updated_at.toISOString()};
+  });
 
   return Response.json(replace_tag_of_category(categories, tags));
 }
