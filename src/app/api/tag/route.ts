@@ -9,7 +9,9 @@ import {connect_drizzle} from '../../../db/drizzle';
 
 export async function GET(): Promise<Response> {
   const db = await connect_drizzle();
-  const tags = await db.select().from(tag);
+  const tags = (await db.select().from(tag)).map(e => {
+    return {...e, updated_at: e.updated_at.toISOString()};
+  });
   return Response.json(tags);
 }
 

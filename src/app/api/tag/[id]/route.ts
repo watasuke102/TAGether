@@ -10,7 +10,9 @@ import {eq} from 'drizzle-orm';
 
 export async function GET(_: Request, {params}: {params: {id: number}}): Promise<Response> {
   const db = await connect_drizzle();
-  const tags = await db.select().from(tag).where(eq(tag.id, params.id));
+  const tags = (await db.select().from(tag).where(eq(tag.id, params.id))).map(e => {
+    return {...e, updated_at: e.updated_at.toISOString()};
+  });
   return Response.json(tags);
 }
 
