@@ -3,7 +3,6 @@
   "version": "2.1.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "vitest run --exclude docker",
     "lint": "eslint src --fix",
