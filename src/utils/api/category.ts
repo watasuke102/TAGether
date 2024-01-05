@@ -11,6 +11,7 @@ import {fetcher, useApiData} from './common';
 import {AllCategoryDataType, CategoryDataType} from '@mytypes/Categoly';
 import {NewCategory} from 'src/app/api/category/route';
 import {PutCategory} from 'src/app/api/category/[id]/route';
+import {tag_key} from './tag';
 
 const category_key = '/api/category';
 
@@ -19,6 +20,11 @@ export const useAllCategoryData = useApiData<AllCategoryDataType>(category_key);
 export function useCategoryData(id: number | string): [CategoryDataType, boolean, boolean] {
   const {data, isLoading, error} = useImmSWR(`${category_key}/${id}`, fetcher);
   return [data?.at(0), isLoading, !!error];
+}
+// 特定のタグが付けられているすべてのカテゴリ
+export function useAllCategoryWithSpecTagData(tag_id: number | string): [CategoryDataType, boolean, boolean] {
+  const {data, isLoading, error} = useImmSWR(`${tag_key}/${tag_id}/all_category`, fetcher);
+  return [data, isLoading, !!error];
 }
 
 export async function new_category(data: NewCategory): Promise<AxiosPromise> {

@@ -11,7 +11,7 @@ import TagData from '@mytypes/TagData';
 import {PutTag} from 'src/app/api/tag/[id]/route';
 import {PostTag} from 'src/app/api/tag/route';
 
-const tag_key = '/api/tag';
+export const tag_key = '/api/tag';
 
 export const mutate_tag = (): Promise<void> => mutate(tag_key);
 export const useTagData = useApiData<TagData>(tag_key);
