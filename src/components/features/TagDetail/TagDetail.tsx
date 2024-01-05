@@ -100,7 +100,7 @@ export default function TagDetail(props: Props): React.ReactElement {
                 type='material'
                 icon={<EditIcon />}
                 text='このタグのカテゴリを解く'
-                OnClick={() => router.push(`/exam?tag=${props.tag.name}`)}
+                OnClick={() => router.push(`/exam?tag=${props.tag.id ?? ''}`)}
               />
             )}
             <Button type='filled' icon={<CheckIcon />} text='編集結果を適用' OnClick={UpdateTag} />

@@ -5,17 +5,12 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
-import {ExamComponent} from '@/pages/exam';
-import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
-import {Shuffle} from '@utils/ArrayUtil';
-import {categoly_default} from '@utils/DefaultValue';
-import {GetSpecifiedExamHistory} from '@utils/ManageDB';
-import AnswerState from '@mytypes/AnswerState';
-import {AllCategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
-import ExamHistory from '@mytypes/ExamHistory';
+import {useAllCategoryWithSpecTagData, useCategoryData} from '@utils/api/category';
+import {ExamPage} from './_components/ExamPage/ExamPage';
+import {Shuffle} from '@utils/ArrayUtil';
 
 type Props = {
   searchParams: {
@@ -23,21 +18,40 @@ type Props = {
     history_id?: string;
     tag?: string;
     shuffle?: string;
-    begin?: number;
-    end?: number;
+    choiceShuffle?: string;
+    begin?: string;
+    end?: string;
   };
 };
 
 export default function Exam(props: Props): JSX.Element {
-  console.log(props);
-  return <></>;
-  // const search_params = useSearchParams();
-  // const id = search_params?.get('id');
-  // const history_id = search_params?.get('history_id');
-  // const tag = search_params?.get('tag');
-  // const shuffle = search_params?.get('shuffle');
-  // const begin = search_params?.get('begin');
-  // const end = search_params?.get('end');
+  const [category, is_category_loading] = useCategoryData(props.searchParams.id ?? -1);
+  const [all_category_with_tag, is_all_category_with_tag_loading] = useAllCategoryWithSpecTagData(
+    props.searchParams.tag ?? '',
+  );
+  if (is_category_loading || is_all_category_with_tag_loading) {
+    return <Loading />;
+  }
+
+  const begin = Number(props.searchParams.begin);
+  const end = Number(props.searchParams.end);
+  let data = category;
+  if (props.searchParams.tag) {
+    data = all_category_with_tag;
+  }
+  let exam = (JSON.parse(data.list) as Exam[])
+    .filter((_, i) => !((begin && i < begin) || (end && i > end)))
+    .map(e => {
+      if (props.searchParams.choiceShuffle && Array.isArray(e.question_choices)) {
+        e.question_choices = Shuffle(e.question_choices);
+      }
+      return e;
+    });
+  if (props.searchParams.shuffle) {
+    exam = Shuffle(exam);
+  }
+
+  return <ExamPage exam={exam} title={data.title} />;
 
   // const [category, is_loading] = useCategoryData(id ?? '');
   // const [data, SetData] = React.useState<AllCategoryDataType>(categoly_default());

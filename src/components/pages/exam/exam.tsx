@@ -35,8 +35,6 @@ enum NextButtonState {
 
 interface Props {
   data: AllCategoryDataType;
-  history_id: string | string[] | undefined;
-  tag_filter: string | string[] | undefined;
   history?: ExamHistory;
 }
 

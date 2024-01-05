@@ -1,0 +1,65 @@
+// TAGether - Share self-made exam for classmates
+// CopyRight (c) 2020-2023 watasuke
+//
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT or MIT SUSHI-WARE License.
+@import '../../../../components/common/variable';
+.exam_area_wrapper {
+  margin: -16px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  width: 100dvw;
+  height: calc(100dvh - 48px);
+}
+
+.exam_status {
+  padding: 0px 8px;
+  max-height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-1;
+  font-size: 1.3em;
+}
+.current_index_status {
+  position: sticky;
+  top: 0;
+  text-align: center;
+  font-size: 1.5em;
+  background-color: $color-1;
+  border-bottom: 1px solid $color-fg;
+}
+
+.exam_area {
+  display: grid;
+  // prettier-ignore
+  grid-template:
+    'gap question  question' auto
+    'gap answer    result'   1fr
+    'button button button'   auto / 12px 1fr 1fr;
+  margin-top: 8px;
+}
+.question {
+  grid-area: question;
+  font-size: 1.7em;
+  white-space: pre-wrap;
+  border-bottom: 2px solid $color-fg;
+}
+.answer {
+  grid-area: answer;
+  font-size: 1.5em;
+  white-space: pre-wrap;
+}
+.result {
+  grid-area: result;
+  white-space: pre-wrap;
+}
+.button_container {
+  grid-area: button;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-top: 2px solid $color-fg;
+}
