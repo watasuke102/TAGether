@@ -21,10 +21,13 @@ export function useCategoryData(id: number | string): [CategoryDataType, boolean
   const {data, isLoading, error} = useImmSWR(`${category_key}/${id}`, fetcher);
   return [data?.at(0), isLoading, !!error];
 }
+
+export function fetch_category_data(id: number | string): Promise<CategoryDataType> {
+  return fetcher(`http://localhost:3009${category_key}/${id}`);
+}
 // 特定のタグが付けられているすべてのカテゴリ
-export function useAllCategoryWithSpecTagData(tag_id: number | string): [CategoryDataType, boolean, boolean] {
-  const {data, isLoading, error} = useImmSWR(`${tag_key}/${tag_id}/all_category`, fetcher);
-  return [data, isLoading, !!error];
+export function fetch_category_with_spec_tag_data(tag_id: number | string): Promise<CategoryDataType> {
+  return fetcher(`http://localhost:3009${tag_key}/${tag_id}/all_category`);
 }
 
 export async function new_category(data: NewCategory): Promise<AxiosPromise> {
