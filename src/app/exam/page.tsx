@@ -4,11 +4,10 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-'use client';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import Exam from '@mytypes/Exam';
-import {useAllCategoryWithSpecTagData, useCategoryData} from '@utils/api/category';
+import {fetcher} from '@utils/api/common';
 import {ExamPage} from './_components/ExamPage/ExamPage';
 import {Shuffle} from '@utils/ArrayUtil';
 
@@ -24,22 +23,17 @@ type Props = {
   };
 };
 
-export default function Exam(props: Props): JSX.Element {
-  const [category, is_category_loading] = useCategoryData(props.searchParams.id ?? -1);
-  const [all_category_with_tag, is_all_category_with_tag_loading] = useAllCategoryWithSpecTagData(
-    props.searchParams.tag ?? '',
-  );
-  if (is_category_loading || is_all_category_with_tag_loading) {
-    return <Loading />;
+export default async function Exam(props: Props): Promise<JSX.Element> {
+  let category;
+  if (props.searchParams.id) {
+    category = await fetcher(`http://localhost:3009/api/category/${props.searchParams.id}`);
+  } else if (props.searchParams.tag) {
+    category = await fetcher(`http://localhost:3009//${tag_id}/all_category`);
   }
 
   const begin = Number(props.searchParams.begin);
   const end = Number(props.searchParams.end);
-  let data = category;
-  if (props.searchParams.tag) {
-    data = all_category_with_tag;
-  }
-  let exam = (JSON.parse(data.list) as Exam[])
+  let exam = (JSON.parse(category[0].list) as Exam[])
     .filter((_, i) => !((begin && i < begin) || (end && i > end)))
     .map(e => {
       if (props.searchParams.choiceShuffle && Array.isArray(e.question_choices)) {
@@ -51,75 +45,5 @@ export default function Exam(props: Props): JSX.Element {
     exam = Shuffle(exam);
   }
 
-  return <ExamPage exam={exam} title={data.title} />;
-
-  // const [category, is_loading] = useCategoryData(id ?? '');
-  // const [data, SetData] = React.useState<AllCategoryDataType>(categoly_default());
-  // const [history, SetHistory] = React.useState<ExamHistory | undefined>();
-
-  // // const [is_loading, SetIsLoading] = React.useState(true);
-  // const OnComplete = (categoly: AllCategoryDataType) => {
-  //   let list: Exam[] = JSON.parse(categoly?.list ?? '[]');
-  //   const begin_index = Array.isArray(begin) ? Number(begin[0]) : Number(begin ?? 0);
-  //   let end_index = Array.isArray(end) ? Number(end[0]) : Number(end);
-  //   if (!end_index || end_index <= 0) {
-  //     end_index = list.length - 1;
-  //   }
-  //   list = list.slice(begin_index, end_index + 1);
-
-  //   if (shuffle === 'true') {
-  //     list = Shuffle(list);
-  //   }
-  //   categoly.list = JSON.stringify(list);
-  //   SetData(categoly);
-  // };
-
-  // if (is_loading) {
-  //   return <Loading />;
-  // }
-
-  // if (id !== undefined) {
-  //   // 通常
-  //   OnComplete(category[0]);
-  // } else if (history_id !== undefined) {
-  //   // 履歴からの解き直し
-  //   const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
-  //   GetSpecifiedExamHistory(history_id_str).then(result => {
-  //     if (result) {
-  //       SetHistory(result);
-  //       const exam: Exam[] = JSON.parse(result.categoly.list);
-  //       const wrong_exam = exam.filter((_, i) => result.exam_state[i].order !== AnswerState.AllCorrect);
-
-  //       OnComplete({
-  //         ...result.categoly,
-  //         list: JSON.stringify(wrong_exam),
-  //       });
-  //     } else {
-  //       throw new Error('[FATAL] cannot get ExamHistory');
-  //     }
-  //   });
-  // } else if (tag !== undefined) {
-  //   // 特定のタグ付き問題を解く
-  //   const filter = Array.isArray(tag) ? tag[0] : tag ?? '';
-  //   let list: Exam[] = [];
-  //   category.forEach(e => {
-  //     let tag_included = false;
-  //     // タグが含まれているかどうかをチェック
-  //     e.tag.forEach(tag => {
-  //       if (tag_included) return;
-  //       tag_included = tag.name === filter;
-  //     });
-  //     // タグが含まれているカテゴリであれば、問題を追加
-  //     if (tag_included) {
-  //       list = list.concat(JSON.parse(e.list));
-  //     }
-  //   });
-  //   OnComplete({
-  //     ...categoly_default(),
-  //     title: `タグ(${filter})`,
-  //     list: JSON.stringify(list),
-  //   });
-  // }
-
-  // return <ExamComponent data={data} history_id={history_id ?? ''} history={history} tag_filter={tag ?? ''} />;
+  return <ExamPage exam={exam} title={category[0].title} />;
 }

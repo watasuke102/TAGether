@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {mutate} from 'swr';
 import axios, {AxiosPromise} from 'axios';
-import {useApiData} from './common';
+import {fetcher, useApiData} from './common';
 import TagData from '@mytypes/TagData';
 import {PutTag} from 'src/app/api/tag/[id]/route';
 import {PostTag} from 'src/app/api/tag/route';
@@ -15,6 +15,9 @@ export const tag_key = '/api/tag';
 
 export const mutate_tag = (): Promise<void> => mutate(tag_key);
 export const useTagData = useApiData<TagData>(tag_key);
+export function fetch_tag(): Promise<TagData[]> {
+  return fetcher(`http://localhost:3009${tag_key}`);
+}
 
 export async function new_tag(data: PostTag): Promise<AxiosPromise> {
   return axios.post(tag_key, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
