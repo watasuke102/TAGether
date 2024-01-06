@@ -7,7 +7,7 @@
 import css from './ExamEditForms.module.scss';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
-import {ExamReducerContext} from '../EditReducer';
+import {EditReducerContext} from '../EditReducer';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
@@ -37,7 +37,7 @@ export enum TabIndexList {
 const QUESTION_ID = 'ExamEdit_Question';
 
 export default function ExamEditForms(): React.ReactElement {
-  const [state, dispatch] = React.useContext(ExamReducerContext);
+  const [state, dispatch] = React.useContext(EditReducerContext);
   const exam_len = state.exam.length;
   const is_first_rendering = React.useRef(true);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);

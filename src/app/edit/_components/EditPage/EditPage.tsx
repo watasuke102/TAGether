@@ -21,7 +21,7 @@ import {CategoryDataType} from '@mytypes/Categoly';
 import TagData from '@mytypes/TagData';
 import {validate_category} from '@utils/ValidateCategory';
 import {useImmerReducer} from 'use-immer';
-import {edit_reducer, ExamReducerContext} from '../EditReducer';
+import {edit_reducer, EditReducerContext} from '../EditReducer';
 import {useShortcut} from '@utils/useShortcut';
 import CheckIcon from '@assets/check.svg';
 
@@ -143,9 +143,9 @@ export function EditPage(props: Props): JSX.Element {
           />
         </>
       ) : (
-        <ExamReducerContext.Provider value={[edit_states, dispatch]}>
+        <EditReducerContext.Provider value={[edit_states, dispatch]}>
           <ExamEditForms />
-        </ExamReducerContext.Provider>
+        </EditReducerContext.Provider>
       )}
     </>
   );
