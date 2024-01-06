@@ -7,7 +7,7 @@
 import React from 'react';
 import Exam from '@mytypes/Exam';
 import ExamType from '@mytypes/ExamType';
-import {Move} from '@utils/ArrayUtil';
+import {Move, ToggleElement} from '@utils/ArrayUtil';
 import TagData from '@mytypes/TagData';
 
 type ReducerType = (current: StateType, action: Action) => StateType;
@@ -121,13 +121,7 @@ export const edit_reducer: ReducerType = (current, action) => {
       break;
     case 'q:answer/toggle_multi': {
       const data = String(action.index);
-      const index = current.exam[current.current_editing].answer.indexOf(data);
-      if (index === -1) {
-        current.exam[current.current_editing].answer.push(data);
-      } else {
-        current.exam[current.current_editing].answer.splice(index, 1);
-      }
-      current.exam[current.current_editing].answer = current.exam[current.current_editing].answer.filter(e => e !== '');
+      current.exam[current.current_editing].answer = ToggleElement(current.exam[current.current_editing].answer, data);
       break;
     }
 

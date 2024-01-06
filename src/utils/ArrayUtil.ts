@@ -38,3 +38,16 @@ export function Swap<T>(e: Array<T>, i: number, j: number): Array<T> {
   data[j] = tmp;
   return data;
 }
+
+/// 渡された要素が配列に含まれる時：その要素を含まない配列を返す
+/// 渡された要素が配列に含まれない時：その要素を含む配列を返す
+export function ToggleElement<T>(e: Array<T>, data: T): Array<T> {
+  const array = e.concat();
+  const index = array.indexOf(data);
+  if (index === -1) {
+    array.push(data);
+  } else {
+    array.splice(index, 1);
+  }
+  return array;
+}
