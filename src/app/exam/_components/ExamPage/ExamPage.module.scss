@@ -12,25 +12,6 @@
   height: calc(100dvh - 48px);
 }
 
-.exam_status {
-  padding: 0px 8px;
-  min-width: 172px;
-  max-height: 100%;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  background-color: $color-1;
-  font-size: 1.3em;
-}
-.current_index_status {
-  position: sticky;
-  top: 0;
-  text-align: center;
-  font-size: 1.5em;
-  background-color: $color-1;
-  border-bottom: 1px solid $color-fg;
-}
-
 .exam_area {
   display: grid;
   // prettier-ignore
@@ -50,8 +31,7 @@
 }
 .answer {
   grid-area: answer;
-  padding: 4px 8px;
-  font-size: 1.5em;
+  padding: 8px;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -60,16 +40,6 @@
   padding: 4px 12px;
   white-space: pre-wrap;
   word-wrap: break-word;
-}
-.scroll_area {
-  overflow-y: scroll;
-  scrollbar-color: $color-fg transparent;
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: $color-fg;
-  }
 }
 .button_container {
   grid-area: button;
