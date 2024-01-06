@@ -7,7 +7,7 @@
 import css from './AnswerEditArea.module.scss';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
-import {ExamReducerContext} from '../EditReducer';
+import {EditReducerContext} from '../EditReducer';
 import {useShortcut} from '@utils/useShortcut';
 import Form from '@/common/TextForm/Form';
 import Button from '@/common/Button/Button';
@@ -19,7 +19,7 @@ import ListIcon from '@assets/list.svg';
 import DeleteIcon from '@assets/delete.svg';
 
 export function AnswerEditArea(): React.ReactElement {
-  const [state, dispatch] = React.useContext(ExamReducerContext);
+  const [state, dispatch] = React.useContext(EditReducerContext);
   const exam = state.exam[state.current_editing];
 
   useShortcut([{keycode: 'KeyJ', handler: () => undefined}], {shift: true});

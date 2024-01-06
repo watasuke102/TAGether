@@ -11,7 +11,7 @@ import {Move, ToggleElement} from '@utils/ArrayUtil';
 import TagData from '@mytypes/TagData';
 
 type ReducerType = (current: StateType, action: Action) => StateType;
-export const ExamReducerContext = React.createContext<[StateType, React.Dispatch<Action>]>([
+export const EditReducerContext = React.createContext<[StateType, React.Dispatch<Action>]>([
   {
     current_editing: 0,
     title: '',
