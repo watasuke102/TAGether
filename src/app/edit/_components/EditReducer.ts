@@ -121,7 +121,10 @@ export const edit_reducer: ReducerType = (current, action) => {
       break;
     case 'q:answer/toggle_multi': {
       const data = String(action.index);
-      current.exam[current.current_editing].answer = ToggleElement(current.exam[current.current_editing].answer, data);
+      current.exam[current.current_editing].answer = ToggleElement(
+        current.exam[current.current_editing].answer,
+        data,
+      ).filter(e => e !== '');
       break;
     }
 
