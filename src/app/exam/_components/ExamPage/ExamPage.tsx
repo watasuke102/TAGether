@@ -6,11 +6,18 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './ExamPage.module.scss';
+import scroll_area from '../ScrollArea.module.scss';
 import React from 'react';
+import {useImmerReducer} from 'use-immer';
+import {ExamReducerContext, exam_reducer, init_state} from '../ExamReducer';
 import Exam from '@mytypes/Exam';
 import Button from '@/common/Button/Button';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
+import CircleIcon from '@assets/circle.svg';
+import CheckIcon from '@assets/check.svg';
+import {ExamStatusList} from '../ExamStatusList/ExamStatusListPage';
+import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
 
 type Props = {
   title: string;
@@ -18,79 +25,68 @@ type Props = {
 };
 
 export function ExamPage(props: Props): JSX.Element {
-  const [index, _set_index] = React.useState(0);
-  const handle_index_update_button = React.useCallback(
-    (action: number | 'prev' | 'next') => {
-      if (action === 'prev' && index > 0) {
-        _set_index(i => i - 1);
-      }
-      if (action === 'next' && index < props.exam.length - 1) {
-        _set_index(i => i + 1);
-      }
-      if (Number.isInteger(action)) {
-        _set_index(action);
-      }
-    },
-    [index, props.exam],
-  );
+  const [state, dispatch] = useImmerReducer(exam_reducer, init_state(props.exam));
 
   React.useEffect(() => {
-    document.title = `(${index + 1} / ${props.exam.length}) : ${props.title} - TAGether`;
-  }, [index]);
+    document.title = `(${state.index + 1} / ${props.exam.length}) : ${props.title} - TAGether`;
+  }, [state.index]);
 
   return (
-    <>
+    <ExamReducerContext.Provider value={[state, dispatch]}>
       <div className={css.exam_area_wrapper}>
-        <section className={`${css.exam_status} ${css.scroll_area}`}>
-          <div className={css.current_index_status}>{`${index + 1} / ${props.exam.length}`}</div>
-          {[...Array(1000)].map((e, i) => (
-            <span key={i}>{`00${i}`.slice(-3)}：1000問正解</span>
-          ))}
-        </section>
+        <ExamStatusList />
         <section className={css.exam_area}>
-          <div className={css.question}>
-            {props.exam[index].question}
-            {'00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'}
+          <div className={css.question}>{props.exam[state.index].question}</div>
+          <div className={`${css.answer} ${scroll_area.scroll_area}`}>
+            <ExamAnswerArea />
           </div>
-          <div className={`${css.answer} ${css.scroll_area}`}>
+          <div className={`${css.result} ${scroll_area.scroll_area}`}>
             {[...Array(100)].map((e, i) => (
-              <>
-                <span key={i}>
-                  {`00${i}`.slice(-3)}:{'0000000000000000000000000000000000000000000000000000' + i * i * i}
-                </span>
-                <br />
-              </>
-            ))}
-            answer
-          </div>
-          <div className={`${css.result} ${css.scroll_area}`}>
-            {[...Array(100)].map((e, i) => (
-              <>
-                <span key={i}>
-                  {`00${i}`.slice(-3)}:
-                  {'0000000000000000000012345678901234500000000000000000000000000000000' + i * i * i}
-                </span>
-                <br />
-              </>
+              <p key={'test' + i}>
+                {`00${i}`.slice(-3)}:{'0000000000000000000012345678901234500000000000000000000000000000000' + i * i * i}
+              </p>
             ))}
             result
           </div>
           <div className={css.button_container}>
+            {
+              // 戻るボタンを非表示にする時、divを置いて次へボタンを右寄せ
+              state.index === 0 ? (
+                <div></div>
+              ) : (
+                <Button
+                  type='material'
+                  text='前の問題'
+                  OnClick={() => dispatch({type: 'handle_button/prev'})}
+                  icon={<ArrowLeftIcon />}
+                />
+              )
+            }
             <Button
               type='material'
-              text='戻る'
-              OnClick={() => handle_index_update_button('prev')}
-              icon={<ArrowLeftIcon />}
-            />
-            <Button
-              type='material'
-              text='次へ'
-              OnClick={() => handle_index_update_button('next')}
-              icon={<ArrowRightIcon />}
+              OnClick={() => dispatch({type: 'handle_button/next'})}
+              {...(() => {
+                if (!state.exam_state[state.index].checked) {
+                  return {
+                    text: '答え合わせ',
+                    icon: <CircleIcon />,
+                  };
+                }
+                if (state.index === state.exam.length - 1) {
+                  return {
+                    text: '終了',
+                    icon: <CheckIcon />,
+                  };
+                }
+                return {
+                  text: '次の問題',
+                  icon: <ArrowRightIcon />,
+                };
+              })()}
             />
           </div>
         </section>
       </div>
-    </>
+    </ExamReducerContext.Provider>
   );
 }

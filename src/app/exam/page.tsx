@@ -5,7 +5,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
-import Loading from '@/common/Loading/Loading';
 import Exam from '@mytypes/Exam';
 import {fetcher} from '@utils/api/common';
 import {ExamPage} from './_components/ExamPage/ExamPage';
