@@ -18,6 +18,7 @@ import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
 import {ExamStatusList} from '../ExamStatusList/ExamStatusListPage';
 import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
+import {useShortcut} from '@utils/useShortcut';
 
 type Props = {
   title: string;
@@ -30,6 +31,15 @@ export function ExamPage(props: Props): JSX.Element {
   React.useEffect(() => {
     document.title = `(${state.index + 1} / ${props.exam.length}) : ${props.title} - TAGether`;
   }, [state.index]);
+  useShortcut(
+    [
+      {keycode: 'KeyH', handler: () => dispatch({type: 'handle_button/prev'})},
+      {keycode: 'ArrowLeft', handler: () => dispatch({type: 'handle_button/prev'})},
+      {keycode: 'KeyL', handler: () => dispatch({type: 'handle_button/next'})},
+      {keycode: 'ArrowRight', handler: () => dispatch({type: 'handle_button/next'})},
+    ],
+    {ctrl: true, shift: true},
+  );
 
   return (
     <ExamReducerContext.Provider value={[state, dispatch]}>
