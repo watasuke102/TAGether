@@ -5,7 +5,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {mutate} from 'swr';
-import useImmSWR from 'swr/immutable';
 import axios, {AxiosPromise} from 'axios';
 import {fetcher, useApiData} from './common';
 import {AllCategoryDataType, CategoryDataType} from '@mytypes/Categoly';
@@ -13,14 +12,10 @@ import {NewCategory} from 'src/app/api/category/route';
 import {PutCategory} from 'src/app/api/category/[id]/route';
 import {tag_key} from './tag';
 
-const category_key = '/api/category';
+export const category_key = '/api/category';
 
 export const mutate_category = (): Promise<void> => mutate(category_key);
 export const useAllCategoryData = useApiData<AllCategoryDataType>(category_key);
-export function useCategoryData(id: number | string): [CategoryDataType, boolean, boolean] {
-  const {data, isLoading, error} = useImmSWR(`${category_key}/${id}`, fetcher);
-  return [data?.at(0), isLoading, !!error];
-}
 
 export function fetch_category_data(id: number | string): Promise<CategoryDataType> {
   return fetcher(`http://localhost:3009${category_key}/${id}`);

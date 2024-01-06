@@ -10,7 +10,7 @@ import {useSearchParams} from 'next/navigation';
 import React from 'react';
 import Loading from '@/common/Loading/Loading';
 import ExamHistory from '@mytypes/ExamHistory';
-import {useCategoryData} from '@utils/api/category';
+import {useCategoryData} from '@utils/api/useCategoryData';
 import {GetSpecifiedExamHistory} from '@utils/ManageDB';
 
 export default function ExamTablePage(): React.ReactElement {
