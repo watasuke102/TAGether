@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 0 12px;
+  // padding: 0 12px;
   margin: auto;
 
   // ボタン本来の見た目を消す
@@ -55,13 +55,13 @@
   .text {
     display: none;
   }
-  .icon {
-    font-size: 1.3em;
-  }
 }
 
 // アイコンと説明が2段になっていたら少しアイコンサイズを増やす
 @media screen and (min-width: 701px) and (max-width: 900px) {
+  .header {
+    height: 84px;
+  }
   .item {
     flex-direction: column;
     text-align: center;
