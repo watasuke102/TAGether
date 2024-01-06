@@ -44,9 +44,9 @@ test('sort/moveのとき、examにおいて、fromに指定した位置の要素
   expect(init.exam[init.index].type).toBe('Sort');
   const from = 0;
   const to = 1;
-  expect(init.exam[from]).not.toStrictEqual(init.exam[to]);
+  expect(init.exam_state[init.index].user_answer[from]).not.toStrictEqual(init.exam_state[init.index].user_answer[to]);
   const moved = exam_reducer(dup(init), {type: 'sort/move', from, to});
-  expect(moved.exam_state[moved.index].user_answer[to]).toStrictEqual(init.exam[from]);
+  expect(moved.exam_state[moved.index].user_answer[to]).toStrictEqual(init.exam_state[init.index].user_answer[from]);
 });
 
 describe('index/set', () => {
