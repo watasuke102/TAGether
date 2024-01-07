@@ -40,12 +40,18 @@
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
 .result {
   grid-area: result;
   padding: 4px 12px;
   white-space: pre-wrap;
   word-wrap: break-word;
+  font-size: 1.4em;
 }
+.correct_answer_label {
+  margin: 0;
+}
+
 .button_container {
   grid-area: button;
   display: flex;

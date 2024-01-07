@@ -23,7 +23,9 @@ export function ExamStatusList(): JSX.Element {
             if (!e.checked) {
               return '未回答';
             }
-            // TODO: 部分正解
+            if (e.total_question === 1) {
+              return e.correct_count === 1 ? '正解' : '不正解';
+            }
             return e.correct_count + '問正解';
           })()}
         </span>

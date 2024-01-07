@@ -1,0 +1,20 @@
+// TAGether - Share self-made exam for classmates
+// CopyRight (c) 2020-2023 watasuke
+//
+// Email  : <watasuke102@gmail.com>
+// Twitter: @Watasuke102
+// This software is released under the MIT or MIT SUSHI-WARE License.
+@import '../../../common/variable';
+
+.answer_text {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.wrong {
+  color: $color-wrong;
+}
+
+.multi_select_not_answer {
+  text-decoration: 4px line-through;
+}

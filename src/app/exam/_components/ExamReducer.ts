@@ -9,6 +9,7 @@ import AnswerState from '@mytypes/AnswerState';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
 import {Move, Shuffle, ToggleElement} from '@utils/ArrayUtil';
+import {check_answer} from '@/features/Exam/CheckAnswer';
 
 type ReducerType = (current: StateType, action: Action) => StateType;
 export const ExamReducerContext = React.createContext<[StateType, React.Dispatch<Action>]>([
@@ -63,9 +64,9 @@ export function init_state(exam: Exam[]): StateType {
           throw Error('Unknown exam type');
       }
       return {
-        order: AnswerState.AllWrong,
         checked: false,
         user_answer,
+        result: [],
         total_question: e.answer.length,
         correct_count: 0,
       };
@@ -112,8 +113,10 @@ export const exam_reducer: ReducerType = (current, action) => {
           ++current.index;
         }
       } else {
-        // TODO
-        current.exam_state[current.index].checked = true;
+        current.exam_state[current.index] = check_answer(
+          current.exam[current.index],
+          current.exam_state[current.index].user_answer,
+        );
       }
       break;
   }
