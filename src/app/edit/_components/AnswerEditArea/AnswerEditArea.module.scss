@@ -15,7 +15,7 @@
   // prettier-ignore
   grid-template:
     "check form    dragger" auto
-    "check buttons dragger" auto / auto 1fr auto;
+    "check buttons dragger" auto / auto 1fr 40px;
   gap: 4px 8px;
   margin-bottom: 16px;
 }
@@ -27,8 +27,9 @@
 }
 .dragger {
   grid-area: dragger;
+  height: 100%;
   border: 1px solid $color-fg;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 4px;
   margin: auto;
 }
