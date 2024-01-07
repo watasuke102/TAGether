@@ -25,6 +25,8 @@ import DoubleChevronRightIcon from '@assets/double-chevron-right.svg';
 import DeleteIcon from '@assets/delete.svg';
 import ListIcon from '@assets/list.svg';
 import CloseIcon from '@assets/close.svg';
+import {ComboBox} from '@/common/ComboBox/ComboBox';
+import ExamType from '@mytypes/ExamType';
 
 export enum TabIndexList {
   TypeSelect = 1,
@@ -178,36 +180,20 @@ export default function ExamEditForms(): React.ReactElement {
             問題の形式を変更するチェックボックス
             表示される文字列と、実際に設定される値が異なるため、一つずつ付けている
           */}
-          <div className={css.type_select}>
-            <SelectButton
-              type='radio'
-              desc='テキスト'
-              tabIndex={TabIndexList.TypeSelect}
-              status={(state.exam[state.current_editing].type ?? 'Text') === 'Text'}
-              onChange={() => dispatch({type: 'q:type/set', data: 'Text'})}
-            />
-            <SelectButton
-              type='radio'
-              desc='選択問題'
-              tabIndex={TabIndexList.TypeSelect}
-              status={(state.exam[state.current_editing].type ?? 'Text') === 'Select'}
-              onChange={() => dispatch({type: 'q:type/set', data: 'Select'})}
-            />
-            <SelectButton
-              type='radio'
-              desc='複数選択'
-              tabIndex={TabIndexList.TypeSelect}
-              status={(state.exam[state.current_editing].type ?? 'Text') === 'MultiSelect'}
-              onChange={() => dispatch({type: 'q:type/set', data: 'MultiSelect'})}
-            />
-            <SelectButton
-              type='radio'
-              desc='並び替え'
-              tabIndex={TabIndexList.TypeSelect}
-              status={(state.exam[state.current_editing].type ?? 'Text') === 'Sort'}
-              onChange={() => dispatch({type: 'q:type/set', data: 'Sort'})}
-            />
-          </div>
+          <ComboBox
+            label='問題形式'
+            value={state.exam[state.current_editing].type ?? 'Text'}
+            on_change={data => dispatch({type: 'q:type/set', data: data as ExamType})}
+            options={
+              // prettier-ignore
+              [
+                {value: 'Text',        text: 'テキスト'},
+                {value: 'Select',      text: '選択問題'},
+                {value: 'MultiSelect', text: '複数選択'},
+                {value: 'Sort',        text: '並び替え'},
+              ]
+            }
+          />
           <AnswerEditArea />
         </div>
       </div>
