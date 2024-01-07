@@ -37,7 +37,6 @@ export default function TagListEdit(props: Props): React.ReactElement {
   const [picker_pos, SetPickerPos] = React.useState({top: 0, left: 0});
   const [search_box, SetSearchBox] = React.useState('');
   const [current_tag, SetCurrentTag] = React.useState(props.current_tag);
-  const [tag_list, SetTagList] = React.useState(props.tags);
   const is_first_click = React.useRef(true);
 
   React.useEffect(() => {
@@ -78,20 +77,16 @@ export default function TagListEdit(props: Props): React.ReactElement {
   }
 
   function TagList() {
-    let list: TagData[];
-    if (search_box !== '') {
-      list = tag_list.filter(e => e.name.includes(search_box));
-    } else {
-      list = tag_list;
-    }
-    const elements = list.map(e => (
-      <div key={`taglist_${e.id}`} className={css.item} onClick={() => UpdateTag([...current_tag, e])}>
-        <div className={css.item_icon}>
-          <AddIcon />
+    const elements = props.tags
+      .filter(e => search_box === '' || e.name.includes(search_box))
+      .map(e => (
+        <div key={`taglist_${e.id}`} className={css.item} onClick={() => UpdateTag([...current_tag, e])}>
+          <div className={css.item_icon}>
+            <AddIcon />
+          </div>
+          <span>{e.name}</span>
         </div>
-        <span>{e.name}</span>
-      </div>
-    ));
+      ));
     // 新規作成欄
     elements.unshift(
       <div className={`${css.item} ${css.add_wrapper}`} onClick={() => SetIsModalOpen(true)}>
@@ -178,10 +173,6 @@ export default function TagListEdit(props: Props): React.ReactElement {
         isOpen={is_modal_open}
         tag={{name: '', description: '', updated_at: ''}}
         close={() => SetIsModalOpen(false)}
-        onComplete={(e: TagData) => {
-          SetTagList([...tag_list, e]);
-          SetIsModalOpen(false);
-        }}
       />
     </>
   );

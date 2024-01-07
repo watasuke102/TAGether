@@ -185,7 +185,7 @@ export default function list(): React.ReactElement {
                   list: JSON.stringify([
                     {type: 'Text', question: '問題文', question_choices: [''], answer: ['解答'], comment: ''},
                   ]),
-                }).then(result => result.then(e => router.push(`/edit?id=${e.data.inserted_id}`)));
+                }).then(e => router.push(`/edit?id=${e.data.inserted_id}`));
               }}
             />
           </div>
