@@ -25,7 +25,7 @@ export function fetch_category_with_spec_tag_data(tag_id: number | string): Prom
   return fetcher(`http://localhost:3009${tag_key}/${tag_id}/all_category`);
 }
 
-export async function new_category(data: NewCategory): Promise<AxiosPromise> {
+export async function new_category(data: NewCategory): AxiosPromise {
   return axios.post(category_key, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
 }
 

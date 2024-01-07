@@ -27,7 +27,7 @@ export default async function Exam(props: Props): Promise<JSX.Element> {
   if (props.searchParams.id) {
     category = await fetcher(`http://localhost:3009/api/category/${props.searchParams.id}`);
   } else if (props.searchParams.tag) {
-    category = await fetcher(`http://localhost:3009//${tag_id}/all_category`);
+    category = await fetcher(`http://localhost:3009/${props.searchParams.tag}/all_category`);
   }
 
   const begin = Number(props.searchParams.begin);
