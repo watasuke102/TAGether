@@ -119,7 +119,7 @@ export const exam_reducer: ReducerType = (current, action) => {
       if (current.exam_state[current.index].checked) {
         if (current.index < current.exam.length - 1) {
           ++current.index;
-        } else {
+        } else if (current.exam_state.filter(e => !e.checked).length === 0) {
           current.is_modal_open = true;
         }
       } else {

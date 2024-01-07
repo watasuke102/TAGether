@@ -22,6 +22,7 @@ import ArrowRightIcon from '@assets/arrow-right.svg';
 import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
 import {FinishModal} from '../FinishModal/FinishModal';
+import ButtonInfo from '@mytypes/ButtonInfo';
 
 type Props = {
   title: string;
@@ -82,28 +83,23 @@ export function ExamPage(props: Props): JSX.Element {
                 />
               )
             }
-            <Button
-              type='material'
-              OnClick={() => dispatch({type: 'handle_button/next'})}
-              {...(() => {
-                if (!state.exam_state[state.index].checked) {
-                  return {
-                    text: '答え合わせ',
-                    icon: <CircleIcon />,
-                  };
+            {(() => {
+              const common: Omit<ButtonInfo, 'text' | 'icon'> = {
+                type: 'material',
+                OnClick: () => dispatch({type: 'handle_button/next'}),
+              };
+              if (!state.exam_state[state.index].checked) {
+                return <Button text='答え合わせ' icon={<CircleIcon />} {...common} />;
+              }
+              if (state.index === state.exam.length - 1) {
+                if (state.exam_state.filter(e => !e.checked).length === 0) {
+                  return <Button text='終了' icon={<CheckIcon />} {...common} />;
+                } else {
+                  return <div></div>;
                 }
-                if (state.index === state.exam.length - 1) {
-                  return {
-                    text: '終了',
-                    icon: <CheckIcon />,
-                  };
-                }
-                return {
-                  text: '次の問題',
-                  icon: <ArrowRightIcon />,
-                };
-              })()}
-            />
+              }
+              return <Button text='次の問題' icon={<ArrowRightIcon />} {...common} />;
+            })()}
           </div>
         </section>
       </div>
