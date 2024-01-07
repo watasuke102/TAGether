@@ -16,7 +16,6 @@ import AnswerState from '@mytypes/AnswerState';
 import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
 import ExamHistory from '@mytypes/ExamHistory';
-import ExamStatus from '@mytypes/ExamState';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import VisibleIcon from '@assets/visible.svg';
 import InvisibleIcon from '@assets/invisible.svg';
