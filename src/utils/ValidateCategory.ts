@@ -33,6 +33,14 @@ export function validate_category(category: PutCategory): string[] {
           blank_exam.add(i + 1);
         }
         break;
+      case 'ListSelect':
+        // 答えとして設定されている値が選択肢として用意されているかチェック
+        e.answer.forEach(answer => {
+          if (!e.question_choices?.includes(answer)) {
+            // 選択肢にない場合、ComboBoxのprops生成との兼ね合いで空欄になっているはず
+            blank_exam.add(i + 1);
+          }
+        });
     }
     // 問題文が空欄かチェック
     if (e.question === '') blank_exam.add(i + 1);

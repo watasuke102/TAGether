@@ -16,6 +16,8 @@
 }
 
 .viewport {
+  // headerより上、Modalより下
+  z-index: 1000;
   background-color: rgba($color-0, 0.85);
   padding: 4px 8px;
 }

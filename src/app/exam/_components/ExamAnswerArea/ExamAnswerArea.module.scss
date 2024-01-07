@@ -25,6 +25,17 @@
   background-color: rgba($color-bg, 0.9);
 }
 
+.listselect_container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.listselect_label {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
 .result_indicator_before_check {
   background-color: transparent;
 }

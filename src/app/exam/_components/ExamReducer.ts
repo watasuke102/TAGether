@@ -55,6 +55,7 @@ export function init_state(exam: Exam[]): StateType {
       switch (e.type) {
         case undefined:
         case 'Text':
+        case 'ListSelect':
           user_answer = Array(e.answer.length).fill('');
           break;
         case 'Select':

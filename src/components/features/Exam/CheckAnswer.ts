@@ -29,6 +29,9 @@ export function check_answer(exam: Exam, user_answer: string[]): ExamState {
     case 'Sort':
       check_result = check_sort(exam.answer, user_answer);
       break;
+    case 'ListSelect':
+      check_result = check_list_select(exam.answer, user_answer);
+      break;
     default:
       throw Error('invalid Exam type');
   }
@@ -78,5 +81,14 @@ function check_sort(answer: string[], user_answer: string[]): CheckResult {
     result,
     total_question: 1,
     correct_count: result.includes(false) ? 0 : 1,
+  };
+}
+
+function check_list_select(answer: string[], user_answer: string[]): CheckResult {
+  const result = answer.map((e, i) => e === user_answer[i]);
+  return {
+    result,
+    total_question: answer.length,
+    correct_count: result.filter(e => e).length,
   };
 }

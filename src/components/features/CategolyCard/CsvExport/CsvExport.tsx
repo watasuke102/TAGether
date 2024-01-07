@@ -57,6 +57,9 @@ export function CsvExport(props: Props): React.ReactElement {
             case 'Sort':
               question += `並び替え: ${Shuffle(exam.answer).join(' | ')}]`;
               break;
+            case 'ListSelect':
+              question += `選択肢: ${Shuffle(exam.question_choices).join(' | ')}]`;
+              break;
           }
         }
         push_content(question);

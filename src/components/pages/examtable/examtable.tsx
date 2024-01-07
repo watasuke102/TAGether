@@ -48,6 +48,7 @@ export default function ExamTable(props: Props): React.ReactElement {
         switch (exam.type) {
           case 'Select':
           case 'MultiSelect':
+          case 'ListSelect':
             array = exam.question_choices ?? [];
             break;
           case 'Sort':

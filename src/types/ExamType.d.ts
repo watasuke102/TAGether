@@ -4,6 +4,6 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-type ExamType = 'Text' | 'Select' | 'MultiSelect' | 'Sort';
+type ExamType = 'Text' | 'Select' | 'MultiSelect' | 'Sort' | 'ListSelect';
 
 export default ExamType;
