@@ -21,6 +21,7 @@ import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
 import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
+import {FinishModal} from '../FinishModal/FinishModal';
 
 type Props = {
   title: string;
@@ -106,6 +107,7 @@ export function ExamPage(props: Props): JSX.Element {
           </div>
         </section>
       </div>
+      <FinishModal />
     </ExamReducerContext.Provider>
   );
 }

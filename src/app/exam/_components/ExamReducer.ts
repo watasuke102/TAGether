@@ -5,7 +5,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
-import AnswerState from '@mytypes/AnswerState';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
 import {Move, Shuffle, ToggleElement} from '@utils/ArrayUtil';
@@ -33,6 +32,10 @@ export type Action =
       to: number;
     }
   | {
+      type: 'is_modal_open/set';
+      data: boolean;
+    }
+  | {
       type: 'handle_button/prev' | 'handle_button/next';
     };
 
@@ -40,6 +43,7 @@ export type StateType = {
   index: number;
   exam: Exam[];
   exam_state: ExamState[];
+  is_modal_open: boolean;
 };
 
 export function init_state(exam: Exam[]): StateType {
@@ -71,6 +75,7 @@ export function init_state(exam: Exam[]): StateType {
         correct_count: 0,
       };
     }),
+    is_modal_open: false,
   };
 }
 
@@ -102,6 +107,9 @@ export const exam_reducer: ReducerType = (current, action) => {
         current.index = action.index;
       }
       break;
+    case 'is_modal_open/set':
+      current.is_modal_open = action.data;
+      break;
     case 'handle_button/prev':
       if (current.index > 0) {
         --current.index;
@@ -111,6 +119,8 @@ export const exam_reducer: ReducerType = (current, action) => {
       if (current.exam_state[current.index].checked) {
         if (current.index < current.exam.length - 1) {
           ++current.index;
+        } else {
+          current.is_modal_open = true;
         }
       } else {
         current.exam_state[current.index] = check_answer(
