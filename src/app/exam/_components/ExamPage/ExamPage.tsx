@@ -56,8 +56,14 @@ export function ExamPage(props: Props): JSX.Element {
             {state.exam_state[state.index].checked && (
               <>
                 <Result />
-                <p className={css.correct_answer_label}>正解：</p>
+                <p className={css.result_label}>正解：</p>
                 <FmtCorrectAnswer exam={props.exam[state.index]} result={state.exam_state[state.index].result} />
+                {state.exam[state.index].comment && (
+                  <>
+                    <p className={css.result_label}>コメント：</p>
+                    {state.exam[state.index].comment}
+                  </>
+                )}
               </>
             )}
           </div>
