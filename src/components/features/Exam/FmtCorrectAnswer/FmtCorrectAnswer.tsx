@@ -21,7 +21,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
           {e}
         </span>,
       );
-      array.push(<> or </>);
+      array.push(<span key={text + 'or' + i}> or </span>);
     });
     array.splice(-1);
     return array;
