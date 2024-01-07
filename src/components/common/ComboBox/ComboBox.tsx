@@ -10,7 +10,8 @@ import * as Select from '@radix-ui/react-select';
 import CheckIcon from '@assets/check.svg';
 
 type Props = {
-  label: string;
+  id?: string;
+  disabled?: boolean;
   value: string;
   on_change: (s: string) => void;
   options: {text: string; value: string}[];
@@ -18,23 +19,25 @@ type Props = {
 
 export function ComboBox(props: Props): JSX.Element {
   return (
-    <Select.Root value={props.value} onValueChange={props.on_change}>
-      <Select.Trigger className={css.trigger}>
+    <Select.Root value={props.value} onValueChange={props.on_change} disabled={props.disabled}>
+      <Select.Trigger className={css.trigger} id={props.id ?? ''}>
         <Select.Value placeholder='選択…' />
         <Select.Icon />
       </Select.Trigger>
 
       <Select.Portal>
-        <Select.Content>
+        <Select.Content position='popper'>
           <Select.Viewport className={css.viewport}>
-            {props.options.map((e, i) => (
-              <Select.Item key={e.value + i} value={e.value} className={css.item}>
-                <Select.ItemText>{e.text}</Select.ItemText>
-                <Select.ItemIndicator>
-                  <CheckIcon />
-                </Select.ItemIndicator>
-              </Select.Item>
-            ))}
+            {props.options
+              .filter(e => e.value !== '')
+              .map((e, i) => (
+                <Select.Item key={e.value + i} value={e.value} className={css.item}>
+                  <Select.ItemText>{e.text}</Select.ItemText>
+                  <Select.ItemIndicator>
+                    <CheckIcon />
+                  </Select.ItemIndicator>
+                </Select.Item>
+              ))}
           </Select.Viewport>
         </Select.Content>
       </Select.Portal>

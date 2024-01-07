@@ -11,7 +11,6 @@ import {EditReducerContext} from '../EditReducer';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
-import {SelectButton} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import Loading from '../../loading';
 import {useShortcut} from '@utils/useShortcut';
@@ -181,7 +180,6 @@ export default function ExamEditForms(): React.ReactElement {
             表示される文字列と、実際に設定される値が異なるため、一つずつ付けている
           */}
           <ComboBox
-            label='問題形式'
             value={state.exam[state.current_editing].type ?? 'Text'}
             on_change={data => dispatch({type: 'q:type/set', data: data as ExamType})}
             options={
@@ -191,6 +189,7 @@ export default function ExamEditForms(): React.ReactElement {
                 {value: 'Select',      text: '選択問題'},
                 {value: 'MultiSelect', text: '複数選択'},
                 {value: 'Sort',        text: '並び替え'},
+                {value: 'ListSelect',  text: '一覧からの選択問題'},
               ]
             }
           />

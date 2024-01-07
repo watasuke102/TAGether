@@ -17,6 +17,7 @@ import ArrowUpIcon from '@assets/arrow-up.svg';
 import ArrowDownIcon from '@assets/arrow-down.svg';
 import ListIcon from '@assets/list.svg';
 import DeleteIcon from '@assets/delete.svg';
+import {ComboBox} from '@/common/ComboBox/ComboBox';
 
 export function AnswerEditArea(): React.ReactElement {
   const [state, dispatch] = React.useContext(EditReducerContext);
@@ -24,7 +25,7 @@ export function AnswerEditArea(): React.ReactElement {
 
   useShortcut([{keycode: 'KeyJ', handler: () => undefined}], {shift: true});
 
-  const target_str = exam.type === 'Text' || exam.type === 'Sort' ? 'answer' : 'choice';
+  const target_str = exam.type === 'Select' || exam.type === 'MultiSelect' ? 'choice' : 'answer';
   const target_array = target_str === 'answer' ? exam.answer : exam.question_choices ?? [];
   return (
     <>
@@ -92,13 +93,28 @@ export function AnswerEditArea(): React.ReactElement {
                             )}
                           </div>
                           <div className={css.form}>
-                            <Form
-                              id={id}
-                              label={`答え (${i + 1})`}
-                              value={e}
-                              layer={TabIndexList.Answer}
-                              OnChange={ev => dispatch({type: `q:${target_str}/set`, index: i, data: ev.target.value})}
-                            />
+                            {exam.type === 'ListSelect' ? (
+                              <div className={css.listselect_answer}>
+                                <span className={css.listselect_label}>{`答え (${i + 1})`}</span>
+                                <ComboBox
+                                  value={e}
+                                  on_change={data => dispatch({type: `q:${target_str}/set`, index: i, data})}
+                                  options={(exam.question_choices ?? []).map(e => {
+                                    return {text: e, value: e};
+                                  })}
+                                />
+                              </div>
+                            ) : (
+                              <Form
+                                id={id}
+                                label={`答え (${i + 1})`}
+                                value={e}
+                                layer={TabIndexList.Answer}
+                                OnChange={ev =>
+                                  dispatch({type: `q:${target_str}/set`, index: i, data: ev.target.value})
+                                }
+                              />
+                            )}
                           </div>
                           <div className={css.dragger} {...provided.dragHandleProps}>
                             <ListIcon />
@@ -130,6 +146,33 @@ export function AnswerEditArea(): React.ReactElement {
           )}
         </Droppable>
       </DragDropContext>
+      {exam.type === 'ListSelect' &&
+        exam.question_choices?.map((e, i) => (
+          <div key={'listselect_choiceedit_' + i}>
+            <Form
+              label={`選択肢 (${i + 1})`}
+              value={e}
+              layer={TabIndexList.Answer}
+              OnChange={ev => dispatch({type: 'q:choice/set', index: i, data: ev.target.value})}
+            />
+            <div className={css.button_container}>
+              <Button
+                text='1つ下に追加'
+                icon={<ArrowDownIcon />}
+                type='material'
+                OnClick={() => dispatch({type: 'q:choice/insert', at: i + 1})}
+              />
+              {exam.question_choices?.length !== 1 && (
+                <Button
+                  text='削除'
+                  icon={<DeleteIcon />}
+                  type='material'
+                  OnClick={() => dispatch({type: 'q:choice/remove', at: i})}
+                />
+              )}
+            </div>
+          </div>
+        ))}
     </>
   );
 }

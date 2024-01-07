@@ -71,7 +71,20 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
               <ol>
                 {props.exam.answer.map((e, i) => (
                   <li
-                    key={'result_multiselect_' + i}
+                    key={'result_sort_' + i}
+                    className={`${css.answer_text} ${props.result?.at(i) ?? true ? '' : css.wrong}`}
+                  >
+                    {e}
+                  </li>
+                ))}
+              </ol>
+            );
+          case 'ListSelect':
+            return (
+              <ol>
+                {props.exam.answer.map((e, i) => (
+                  <li
+                    key={'result_listselect_' + i}
                     className={`${css.answer_text} ${props.result?.at(i) ?? true ? '' : css.wrong}`}
                   >
                     {e}

@@ -11,10 +11,9 @@ import {ExamReducerContext} from '../ExamReducer';
 import Form from '@/common/TextForm/Form';
 import {SelectButton} from '@/common/SelectBox';
 import ListIcon from '@assets/list.svg';
+import {ComboBox} from '@/common/ComboBox/ComboBox';
 
-const TEXT_FIRST_FORM_ID = 'TextExamFirstForm';
-const SELECT_FIRST_ITEM_ID = 'SelectExamFirstItem';
-const SORT_FIRST_ITEM_ID = 'SortExamFirstItem';
+const FIRST_ITEM = 'ExamFirstItem';
 
 export function ExamAnswerArea(): JSX.Element {
   const [state, dispatch] = React.useContext(ExamReducerContext);
@@ -89,18 +88,7 @@ export function ExamAnswerArea(): JSX.Element {
 
   // ページ移動時、フォーカスする
   React.useEffect(() => {
-    switch (exam.type) {
-      case 'Text':
-        document.getElementById(TEXT_FIRST_FORM_ID)?.focus();
-        break;
-      case 'Select':
-      case 'MultiSelect':
-        document.getElementById(SELECT_FIRST_ITEM_ID)?.focus();
-        break;
-      case 'Sort':
-        document.getElementById(SORT_FIRST_ITEM_ID)?.focus();
-        break;
-    }
+    document.getElementById(FIRST_ITEM)?.focus();
   }, [exam]);
 
   function ResultIndicator(props: {index: number}): JSX.Element {
@@ -121,7 +109,7 @@ export function ExamAnswerArea(): JSX.Element {
               <div key={'text-' + i} className={css.item}>
                 <ResultIndicator index={i} />
                 <Form
-                  id={i === 0 ? TEXT_FIRST_FORM_ID : ''}
+                  id={i === 0 ? FIRST_ITEM : ''}
                   label={exam.answer.length === 1 ? '解答' : `解答 (${i + 1})`}
                   value={status.user_answer[i]}
                   disabled={status.checked}
@@ -143,7 +131,7 @@ export function ExamAnswerArea(): JSX.Element {
                   })()}
                 />
                 <SelectButton
-                  id={i === 0 ? SELECT_FIRST_ITEM_ID : ''}
+                  id={i === 0 ? FIRST_ITEM : ''}
                   type='radio'
                   desc={e}
                   status={status.user_answer[0] === String(i)}
@@ -156,7 +144,7 @@ export function ExamAnswerArea(): JSX.Element {
               <div key={'multiselect-' + i} className={css.item}>
                 <ResultIndicator index={i} />
                 <SelectButton
-                  id={i === 0 ? SELECT_FIRST_ITEM_ID : ''}
+                  id={i === 0 ? FIRST_ITEM : ''}
                   type='check'
                   desc={e}
                   status={status.user_answer.indexOf(String(i)) !== -1}
@@ -185,7 +173,7 @@ export function ExamAnswerArea(): JSX.Element {
                                 <ResultIndicator index={i} />
                                 <div
                                   className={css.sort_item}
-                                  id={i === 0 ? SORT_FIRST_ITEM_ID : ''}
+                                  id={i === 0 ? FIRST_ITEM : ''}
                                   {...{sort_index: i}}
                                   {...provided.dragHandleProps}
                                 >
@@ -205,6 +193,24 @@ export function ExamAnswerArea(): JSX.Element {
                 </Droppable>
               </DragDropContext>
             );
+          case 'ListSelect':
+            return status.user_answer.map((e, i) => (
+              <div className={css.item} key={'listselect-' + i}>
+                <ResultIndicator index={i} />
+                <div className={css.listselect_container}>
+                  <span className={css.listselect_label}>{exam.answer.length === 1 ? '解答' : `解答 (${i + 1})`}</span>
+                  <ComboBox
+                    id={i === 0 ? FIRST_ITEM : ''}
+                    disabled={status.checked}
+                    value={e}
+                    on_change={data => dispatch({type: 'text/set', at: i, data})}
+                    options={(exam.question_choices ?? []).map(e => {
+                      return {text: e, value: e};
+                    })}
+                  />
+                </div>
+              </div>
+            ));
           default:
             throw Error(`invalid exam type (${state.index}: ${JSON.stringify(exam)})`);
         }

@@ -25,6 +25,18 @@
 .form {
   grid-area: form;
 }
+
+.listselect_answer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.listselect_label {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
 .dragger {
   grid-area: dragger;
   height: 100%;
