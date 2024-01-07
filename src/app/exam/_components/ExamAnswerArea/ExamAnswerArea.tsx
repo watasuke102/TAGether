@@ -17,11 +17,10 @@ export function ExamAnswerArea(): JSX.Element {
   const exam = state.exam[state.index];
   const status = state.exam_state[state.index];
 
-  function ResultIndicator(): JSX.Element {
+  function ResultIndicator(props: {index: number}): JSX.Element {
     let classname = css.result_indicator_before_check;
     if (status.checked) {
-      // TODO
-      classname = css.result_indicator_correct;
+      classname = status.result[props.index] ? css.result_indicator_correct : css.result_indicator_wrong;
     }
     return <div className={classname} />;
   }
@@ -34,10 +33,11 @@ export function ExamAnswerArea(): JSX.Element {
           case 'Text':
             return exam.answer.map((e, i) => (
               <div key={'text-' + i} className={css.item}>
-                <ResultIndicator />
+                <ResultIndicator index={i} />
                 <Form
                   label={exam.answer.length === 1 ? '解答' : `解答 (${i + 1})`}
                   value={status.user_answer[i]}
+                  disabled={status.checked}
                   OnChange={ev => dispatch({type: 'text/set', at: i, data: ev.target.value})}
                 />
               </div>
@@ -45,24 +45,33 @@ export function ExamAnswerArea(): JSX.Element {
           case 'Select':
             return exam.question_choices?.map((e, i) => (
               <div key={'select-' + i} className={css.item}>
-                <ResultIndicator />
+                <div
+                  className={(() => {
+                    // ここが本来の正解だった場合
+                    if (status.checked && exam.answer[0] === String(i)) {
+                      // 正解した（正しく選んだ）場合はcorrect
+                      return status.correct_count === 1 ? css.result_indicator_correct : css.result_indicator_wrong;
+                    }
+                    return css.result_indicator_before_check;
+                  })()}
+                />
                 <SelectButton
                   type='radio'
                   desc={e}
-                  status={Number(status.user_answer[i]) === i}
-                  onChange={() => dispatch({type: 'select/set', index: i})}
+                  status={status.user_answer[0] === String(i)}
+                  onChange={() => status.checked || dispatch({type: 'select/set', index: i})}
                 />
               </div>
             ));
           case 'MultiSelect':
             return exam.question_choices?.map((e, i) => (
               <div key={'multiselect-' + i} className={css.item}>
-                <ResultIndicator />
+                <ResultIndicator index={i} />
                 <SelectButton
                   type='check'
                   desc={e}
                   status={status.user_answer.indexOf(String(i)) !== -1}
-                  onChange={() => dispatch({type: 'multi/toggle', index: i})}
+                  onChange={() => status.checked || dispatch({type: 'multi/toggle', index: i})}
                 />
               </div>
             ));
@@ -84,7 +93,7 @@ export function ExamAnswerArea(): JSX.Element {
                           <Draggable key={id} draggableId={id} index={i} isDragDisabled={status.checked}>
                             {provided => (
                               <div className={css.item} ref={provided.innerRef} {...provided.draggableProps}>
-                                <ResultIndicator />
+                                <ResultIndicator index={i} />
                                 <div
                                   className={css.sort_item}
                                   id={i === 0 ? 'sort-first-draghandle' : ''}

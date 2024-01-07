@@ -10,15 +10,17 @@ import scroll_area from '../ScrollArea.module.scss';
 import React from 'react';
 import {useImmerReducer} from 'use-immer';
 import {ExamReducerContext, exam_reducer, init_state} from '../ExamReducer';
-import Exam from '@mytypes/Exam';
+import {Result} from '../Result/Result';
+import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
+import {ExamStatusList} from '../ExamStatusList/ExamStatusListPage';
 import Button from '@/common/Button/Button';
+import {useShortcut} from '@utils/useShortcut';
+import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
+import Exam from '@mytypes/Exam';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
 import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
-import {ExamStatusList} from '../ExamStatusList/ExamStatusListPage';
-import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
-import {useShortcut} from '@utils/useShortcut';
 
 type Props = {
   title: string;
@@ -51,12 +53,13 @@ export function ExamPage(props: Props): JSX.Element {
             <ExamAnswerArea />
           </div>
           <div className={`${css.result} ${scroll_area.scroll_area}`}>
-            {[...Array(100)].map((e, i) => (
-              <p key={'test' + i}>
-                {`00${i}`.slice(-3)}:{'0000000000000000000012345678901234500000000000000000000000000000000' + i * i * i}
-              </p>
-            ))}
-            result
+            {state.exam_state[state.index].checked && (
+              <>
+                <Result />
+                <p className={css.correct_answer_label}>正解：</p>
+                <FmtCorrectAnswer exam={props.exam[state.index]} result={state.exam_state[state.index].result} />
+              </>
+            )}
           </div>
           <div className={css.button_container}>
             {
