@@ -39,6 +39,9 @@
   margin: 0 auto;
   margin-bottom: 120px;
 
+  tr {
+    white-space: pre-wrap;
+  }
   th {
     border-bottom: solid 2px;
   }
@@ -46,6 +49,13 @@
     overflow-wrap: break-word;
     padding: 8px 5px;
     border-bottom: solid 1px;
+  }
+
+  ol,
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
   }
 
   .hide {
