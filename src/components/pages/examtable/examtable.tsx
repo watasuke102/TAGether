@@ -41,11 +41,24 @@ export default function ExamTable(props: Props): React.ReactElement {
     });
   };
 
-  const shuffled_sort_choices: string[] = React.useMemo(
+  const choices: string[] = React.useMemo(
     () =>
-      (JSON.parse(props.data.list) as Exam[]).map(exam =>
-        exam.type === 'Sort' ? Shuffle(exam.answer).join(' / ') : '',
-      ),
+      (JSON.parse(props.data.list) as Exam[]).map(exam => {
+        let array: string[];
+        switch (exam.type) {
+          case 'Select':
+          case 'MultiSelect':
+            array = exam.question_choices ?? [];
+            break;
+          case 'Sort':
+            array = Shuffle(exam.answer);
+            break;
+          default:
+            array = [];
+            break;
+        }
+        return array.join(' | ');
+      }),
     [],
   );
 
@@ -103,17 +116,11 @@ export default function ExamTable(props: Props): React.ReactElement {
               <tr key={`tr-${i}`}>
                 <td>
                   {exam.question}
-                  {(exam.type === 'Select' || exam.type === 'MultiSelect') && (
-                    <>
-                      <hr />
-                      <ul>{exam.question_choices?.map((e, j) => <li key={i + '_choice_' + j}>{e}</li>)}</ul>
-                    </>
-                  )}
-                  {exam.type === 'Sort' && (
+                  {choices[i] !== '' && (
                     <>
                       <br />
                       <hr />
-                      <span className={css.sort_}>{shuffled_sort_choices[i]}</span>
+                      <span className={css.sort_}>選択肢：{choices[i]}</span>
                     </>
                   )}
                 </td>
