@@ -104,11 +104,15 @@ export default function ExamTable(props: Props): React.ReactElement {
                 <td>
                   {exam.question}
                   {(exam.type === 'Select' || exam.type === 'MultiSelect') && (
-                    <ul>{exam.question_choices?.map((e, j) => <li key={i + '_choice_' + j}>{e}</li>)}</ul>
+                    <>
+                      <hr />
+                      <ul>{exam.question_choices?.map((e, j) => <li key={i + '_choice_' + j}>{e}</li>)}</ul>
+                    </>
                   )}
                   {exam.type === 'Sort' && (
                     <>
                       <br />
+                      <hr />
                       <span className={css.sort_}>{shuffled_sort_choices[i]}</span>
                     </>
                   )}
