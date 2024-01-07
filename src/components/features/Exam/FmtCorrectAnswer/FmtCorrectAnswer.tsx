@@ -8,7 +8,7 @@ import css from './FmtCorrectAnswer.module.scss';
 import React from 'react';
 import Exam from '@mytypes/Exam';
 type Props = {
-  result: boolean[];
+  result?: boolean[];
   exam: Exam;
 };
 
@@ -32,12 +32,14 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
         switch (props.exam.type ?? 'Text') {
           case 'Text':
             if (props.exam.answer.length === 1) {
-              return <span className={props.result[0] ? '' : css.wrong}>{split_text(props.exam.answer[0])}</span>;
+              return (
+                <span className={props.result?.at(0) ?? true ? '' : css.wrong}>{split_text(props.exam.answer[0])}</span>
+              );
             }
             return (
               <ol>
                 {props.exam.answer.map((e, i) => (
-                  <li key={'result_select_' + i} className={props.result[i] ? '' : css.wrong}>
+                  <li key={'result_select_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
                     {split_text(e)}
                   </li>
                 ))}
@@ -45,7 +47,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
             );
           case 'Select':
             return (
-              <span className={`${css.answer_text} ${props.result[0] ? '' : css.wrong}`}>
+              <span className={`${css.answer_text} ${props.result?.at(0) ?? true ? '' : css.wrong}`}>
                 {props.exam.question_choices?.at(Number(props.exam.answer[0]))}
               </span>
             );
@@ -55,7 +57,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
                 {props.exam.question_choices?.map((e, i) => (
                   <li
                     key={'result_multiselect_' + i}
-                    className={`${css.answer_text} ${props.result[i] ? '' : css.wrong} ${
+                    className={`${css.answer_text} ${props.result?.at(i) ?? true ? '' : css.wrong} ${
                       props.exam.answer.indexOf(String(i)) === -1 ? css.multi_select_not_answer : ''
                     }`}
                   >
@@ -70,7 +72,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
                 {props.exam.answer.map((e, i) => (
                   <li
                     key={'result_multiselect_' + i}
-                    className={`${css.answer_text} ${props.result[i] ? '' : css.wrong}`}
+                    className={`${css.answer_text} ${props.result?.at(i) ?? true ? '' : css.wrong}`}
                   >
                     {e}
                   </li>

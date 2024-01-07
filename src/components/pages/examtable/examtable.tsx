@@ -9,10 +9,9 @@ import css from './examtable.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import {useRouter} from 'next/navigation';
-import BreakWithCR from '@/common/BreakWithCR/BreakWithCR';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
-import {ParseAnswer} from '@/features/ParseAnswer';
+import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
 import AnswerState from '@mytypes/AnswerState';
 import {CategoryDataType} from '@mytypes/Categoly';
 import Exam from '@mytypes/Exam';
@@ -21,6 +20,7 @@ import ExamStatus from '@mytypes/ExamState';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import VisibleIcon from '@assets/visible.svg';
 import InvisibleIcon from '@assets/invisible.svg';
+import {Shuffle} from '@utils/ArrayUtil';
 
 interface Props {
   data: CategoryDataType;
@@ -42,43 +42,13 @@ export default function ExamTable(props: Props): React.ReactElement {
     });
   };
 
-  const Result = (stat: ExamStatus) => {
-    if (stat.total_question === 1) {
-      if (stat.order === AnswerState.AllCorrect) return '正解';
-      else return '不正解';
-    }
-    if (stat.order === AnswerState.AllCorrect) return '全問正解';
-    if (stat.correct_count === 0) return '不正解';
-    return `${stat.correct_count}問正解`;
-  };
-
-  const rate = props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100;
-
-  const result_list = (() => {
-    let list = (JSON.parse(props.data.list) as Exam[]).map((exam, i) => (
-      <tr key={`tr-${i}`}>
-        <td>
-          <BreakWithCR str={exam.question} />
-        </td>
-        {/* 表示した上で透明にすることで、表示・非表示を切り替えたときに高さが変わるのを防ぐ */}
-        <td className={show_correct_answer ? '' : css.hide}>{ParseAnswer(exam.answer, exam)}</td>
-        <td className={show_correct_answer ? '' : css.hide}>
-          <BreakWithCR str={exam.comment ?? ''} />
-        </td>
-        {props.history && (
-          <>
-            <td>{ParseAnswer(props.history.exam_state[i].user_answer, exam)}</td>
-            <td>{Result(props.history.exam_state[i])}</td>
-          </>
-        )}
-      </tr>
-    ));
-
-    if (props.history) {
-      list = list.filter((_, i) => (filter & props.history?.exam_state[i].order) !== 0);
-    }
-    return list;
-  })();
+  const shuffled_sort_choices: string[] = React.useMemo(
+    () =>
+      (JSON.parse(props.data.list) as Exam[]).map(exam =>
+        exam.type === 'Sort' ? Shuffle(exam.answer).join(' / ') : '',
+      ),
+    [],
+  );
 
   return (
     <>
@@ -109,7 +79,8 @@ export default function ExamTable(props: Props): React.ReactElement {
               />
             </div>
             <span>
-              {props.history.total_question}問中{props.history.correct_count}問正解、 正答率{rate}%
+              {props.history.total_question}問中{props.history.correct_count}問正解、 正答率
+              {props.history && Math.round((props.history.correct_count / props.history.total_question) * 10000) / 100}%
             </span>
           </>
         )}
@@ -128,7 +99,48 @@ export default function ExamTable(props: Props): React.ReactElement {
               </>
             )}
           </tr>
-          {result_list}
+          {(JSON.parse(props.data.list) as Exam[])
+            .map((exam, i) => (
+              <tr key={`tr-${i}`}>
+                <td>
+                  {exam.question}
+                  {(exam.type === 'Select' || exam.type === 'MultiSelect') && (
+                    <ul>{exam.question_choices?.map((e, j) => <li key={i + '_choice_' + j}>{e}</li>)}</ul>
+                  )}
+                  {exam.type === 'Sort' && (
+                    <>
+                      <br />
+                      <span className={css.sort_}>{shuffled_sort_choices[i]}</span>
+                    </>
+                  )}
+                </td>
+                {/* 表示した上で透明にすることで、表示・非表示を切り替えたときに高さが変わるのを防ぐ */}
+                <td className={show_correct_answer ? '' : css.hide}>
+                  <FmtCorrectAnswer exam={exam} />
+                </td>
+                <td className={show_correct_answer ? '' : css.hide}>{exam.comment ?? ''}</td>
+                {props.history && (
+                  <>
+                    <td>
+                      <FmtCorrectAnswer exam={exam} result={props.history.exam_state[i].result} />
+                    </td>
+                    <td>
+                      {(() => {
+                        const stat = props.history.exam_state[i];
+                        if (stat.correct_count === stat.total_question) {
+                          return '正解';
+                        }
+                        if (stat.correct_count === 0) {
+                          return '不正解';
+                        }
+                        return `${stat.correct_count}問正解`;
+                      })()}
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))
+            .filter((_, i) => !props.history || (filter & props.history?.exam_state[i].order) !== 0)}
         </tbody>
       </table>
 
