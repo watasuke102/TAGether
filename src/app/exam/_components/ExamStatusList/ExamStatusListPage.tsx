@@ -15,7 +15,6 @@ export function ExamStatusList(): JSX.Element {
 
   return (
     <section className={`${css.exam_status} ${scroll_area.scroll_area}`}>
-      <div className={css.current_index_status}>{`${state.index + 1} / ${state.exam.length}`}</div>
       {state.exam_state.map((e, i) => (
         <span className={css.item} key={'exam_state_item-' + i} onClick={() => dispatch({type: 'index/set', index: i})}>
           {`0000${i + 1}`.slice(-1 * String(state.exam.length).length)}：

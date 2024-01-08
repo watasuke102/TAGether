@@ -15,6 +15,7 @@ import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
 import {ExamStatusList} from '../ExamStatusList/ExamStatusListPage';
 import Button from '@/common/Button/Button';
 import {useShortcut} from '@utils/useShortcut';
+import {is_mobile_device} from '@utils/IsMobileDevice';
 import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
 import Exam from '@mytypes/Exam';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
@@ -50,6 +51,41 @@ export function ExamPage(props: Props): JSX.Element {
       <div className={css.exam_area_wrapper}>
         <ExamStatusList />
         <section className={css.exam_area}>
+          <div className={css.button_container}>
+            <div>
+              {
+                // 戻るボタンを非表示にする時、divを置いて次へボタンを右寄せ
+                state.index !== 0 && (
+                  <Button
+                    type='material'
+                    text={is_mobile_device() ? '' : '前の問題'}
+                    OnClick={() => dispatch({type: 'handle_button/prev'})}
+                    icon={<ArrowLeftIcon />}
+                  />
+                )
+              }
+            </div>
+            <div className={css.current_index_status}>{`${state.index + 1} / ${state.exam.length}`}</div>
+            <div className={css.button_wrapper_right}>
+              {(() => {
+                const common: Omit<ButtonInfo, 'text' | 'icon'> = {
+                  type: 'material',
+                  OnClick: () => dispatch({type: 'handle_button/next'}),
+                };
+                if (!state.exam_state[state.index].checked) {
+                  return <Button text={is_mobile_device() ? '' : '答え合わせ'} icon={<CircleIcon />} {...common} />;
+                }
+                if (state.index === state.exam.length - 1) {
+                  if (state.exam_state.filter(e => !e.checked).length === 0) {
+                    return <Button text={is_mobile_device() ? '' : '終了'} icon={<CheckIcon />} {...common} />;
+                  } else {
+                    return <></>;
+                  }
+                }
+                return <Button text={is_mobile_device() ? '' : '次の問題'} icon={<ArrowRightIcon />} {...common} />;
+              })()}
+            </div>
+          </div>
           <div className={css.question}>{props.exam[state.index].question}</div>
           <div className={`${css.answer} ${scroll_area.scroll_area}`}>
             <ExamAnswerArea />
@@ -68,38 +104,6 @@ export function ExamPage(props: Props): JSX.Element {
                 )}
               </>
             )}
-          </div>
-          <div className={css.button_container}>
-            {
-              // 戻るボタンを非表示にする時、divを置いて次へボタンを右寄せ
-              state.index === 0 ? (
-                <div></div>
-              ) : (
-                <Button
-                  type='material'
-                  text='前の問題'
-                  OnClick={() => dispatch({type: 'handle_button/prev'})}
-                  icon={<ArrowLeftIcon />}
-                />
-              )
-            }
-            {(() => {
-              const common: Omit<ButtonInfo, 'text' | 'icon'> = {
-                type: 'material',
-                OnClick: () => dispatch({type: 'handle_button/next'}),
-              };
-              if (!state.exam_state[state.index].checked) {
-                return <Button text='答え合わせ' icon={<CircleIcon />} {...common} />;
-              }
-              if (state.index === state.exam.length - 1) {
-                if (state.exam_state.filter(e => !e.checked).length === 0) {
-                  return <Button text='終了' icon={<CheckIcon />} {...common} />;
-                } else {
-                  return <div></div>;
-                }
-              }
-              return <Button text='次の問題' icon={<ArrowRightIcon />} {...common} />;
-            })()}
           </div>
         </section>
       </div>
