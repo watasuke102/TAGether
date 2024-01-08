@@ -8,13 +8,36 @@
 
 .exam_status {
   padding: 0px 8px;
-  min-width: 172px;
   max-height: 100%;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   background-color: $color-1;
   font-size: 1.3em;
+}
+.normal {
+  min-width: 172px;
+}
+.mobile {
+  position: fixed;
+  height: 100dvh;
+  top: 0;
+  left: 0;
+  z-index: 980;
+  transform: translateX(min(var(--slide-amount, -100%), 0px));
+  transition: transform 0.3s cubic-bezier(0, 0.55, 0.45, 1);
+  .item {
+    padding: 8px 0;
+  }
+}
+
+.mobile_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-weight: bold;
 }
 
 .item {

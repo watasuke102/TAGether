@@ -22,6 +22,7 @@ import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
 import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
+import MenuIcon from '@assets/menu.svg';
 import {FinishModal} from '../FinishModal/FinishModal';
 import ButtonInfo from '@mytypes/ButtonInfo';
 
@@ -50,9 +51,17 @@ export function ExamPage(props: Props): JSX.Element {
     <ExamReducerContext.Provider value={[state, dispatch]}>
       <div className={css.exam_area_wrapper}>
         <ExamStatusList />
-        <section className={css.exam_area}>
+        <section className={`${css.exam_area} ${is_mobile_device()? css.exam_area_mobile : css.exam_area_normal}`}>
           <div className={css.button_container}>
-            <div>
+            <div className={css.button_wrapper_left}>
+              {is_mobile_device() && (
+                <Button
+                  type='material'
+                  text=''
+                  OnClick={() => document.documentElement.style.setProperty('--slide-amount', '100%')}
+                  icon={<MenuIcon />}
+                />
+              )}
               {
                 // 戻るボタンを非表示にする時、divを置いて次へボタンを右寄せ
                 state.index !== 0 && (
