@@ -21,9 +21,9 @@
   display: grid;
   // prettier-ignore
   grid-template:
+    'button   button'   auto 
     'question question' auto
-    'answer   result'   1fr
-    'button   button'   auto / 1fr 1fr;
+    'answer   result'   1fr / 1fr 1fr;
   // max-height: calc(100dvh - 48px);
 }
 .question {
@@ -32,7 +32,6 @@
   font-size: 1.7em;
   white-space: pre-wrap;
   word-wrap: break-word;
-  border-bottom: 2px solid $color-fg;
 }
 .answer {
   grid-area: answer;
@@ -56,9 +55,19 @@
 
 .button_container {
   grid-area: button;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  border-top: 2px solid $color-fg;
+  border-bottom: 2px solid $color-fg;
+}
+
+.current_index_status {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.button_wrapper_right {
+  margin-left: auto;
 }
