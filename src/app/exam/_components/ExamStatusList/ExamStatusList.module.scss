@@ -25,7 +25,7 @@
   left: 0;
   z-index: 980;
   transform: translateX(min(var(--slide-amount, -100%), 0px));
-  transition: transform 0.3s cubic-bezier(0, 0.55, 0.45, 1);
+  transition: transform cubic-bezier(0, 0.55, 0.45, 1);
   .item {
     padding: 8px 0;
   }
@@ -40,8 +40,29 @@
   font-weight: bold;
 }
 
+.draggable {
+  position: fixed;
+  height: 100dvh;
+  width: 20px;
+}
+.overray {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  opacity: 0.8;
+  background-color: rgba($color-bg, calc(100% + var(--slide-amount)));
+  transition: background-color linear;
+}
+
 .item {
   &:hover {
     cursor: pointer;
   }
+}
+
+.transform_animation {
+  transition-duration: 0.3s;
 }

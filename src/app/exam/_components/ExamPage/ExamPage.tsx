@@ -51,14 +51,14 @@ export function ExamPage(props: Props): JSX.Element {
     <ExamReducerContext.Provider value={[state, dispatch]}>
       <div className={css.exam_area_wrapper}>
         <ExamStatusList />
-        <section className={`${css.exam_area} ${is_mobile_device()? css.exam_area_mobile : css.exam_area_normal}`}>
+        <section className={`${css.exam_area} ${is_mobile_device() ? css.exam_area_mobile : css.exam_area_normal}`}>
           <div className={css.button_container}>
             <div className={css.button_wrapper_left}>
               {is_mobile_device() && (
                 <Button
                   type='material'
                   text=''
-                  OnClick={() => document.documentElement.style.setProperty('--slide-amount', '100%')}
+                  OnClick={() => document.documentElement.style.setProperty('--slide-amount', '0%')}
                   icon={<MenuIcon />}
                 />
               )}
