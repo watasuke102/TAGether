@@ -5,9 +5,9 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
-import {ExamTable} from '@/pages/examtable';
 import {useSearchParams} from 'next/navigation';
 import React from 'react';
+import {Table} from './_components/Table/Table';
 import Loading from '@/common/Loading/Loading';
 import ExamHistory from '@mytypes/ExamHistory';
 import {useCategoryData} from '@utils/api/useCategoryData';
@@ -39,5 +39,5 @@ export default function ExamTablePage(): React.ReactElement {
     return <Loading />;
   }
 
-  return <ExamTable data={data} history={history} />;
+  return <Table data={data} history={history} />;
 }

@@ -5,7 +5,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
-import css from './examtable.module.scss';
+import css from './Table.module.scss';
 import React from 'react';
 import Helmet from 'react-helmet';
 import {useRouter} from 'next/navigation';
@@ -26,7 +26,7 @@ interface Props {
   history?: ExamHistory;
 }
 
-export default function ExamTable(props: Props): React.ReactElement {
+export function Table(props: Props): React.ReactElement {
   const [show_correct_answer, SetShowCorrectAnswer] = React.useState(false);
   const [filter, SetFilter] = React.useState(0x07);
   const router = useRouter();

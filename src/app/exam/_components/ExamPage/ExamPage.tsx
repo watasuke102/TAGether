@@ -12,7 +12,7 @@ import {useImmerReducer} from 'use-immer';
 import {ExamReducerContext, exam_reducer, init_state} from '../ExamReducer';
 import {Result} from '../Result/Result';
 import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
-import {ExamStatusList} from '../ExamStatusList/ExamStatusListPage';
+import {ExamStatusList} from '../ExamStatusList/ExamStatusList';
 import Button from '@/common/Button/Button';
 import {useShortcut} from '@utils/useShortcut';
 import {is_mobile_device} from '@utils/IsMobileDevice';
