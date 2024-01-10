@@ -9,9 +9,9 @@
   margin: -16px;
   display: flex;
   width: 100dvw;
-  height: calc(100dvh - 48px);
+  height: calc(100dvh - 40px);
   @media screen and (min-width: 701px) and (max-width: 900px) {
-    height: calc(100dvh - 84px);
+    height: calc(100dvh - 68px);
   }
 }
 
