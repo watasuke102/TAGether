@@ -7,7 +7,6 @@
 import React from 'react';
 import '@/common/main.scss';
 import '@/common/nprogress.css';
-import Header from '../components/features/Header/Header';
 import {Toast, ToastProvider} from '@/common/Toast/Toast';
 
 export const metadata = {
@@ -26,7 +25,6 @@ export default function RootLayout({children}: {children: React.ReactNode}): JSX
         <link href='https://fonts.googleapis.com/css2?family=M+PLUS+1p&display=swap' rel='stylesheet' />
       </head>
       <body>
-        <Header />
         <ToastProvider>
           {children}
           <Toast />
