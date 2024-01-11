@@ -4,6 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import Header from '@/features/Header/Header';
 import React from 'react';
 
 export const metadata = {
@@ -13,6 +14,7 @@ export const metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}): JSX.Element {
   return (
     <>
+      <Header />
       <h1>カテゴリの編集</h1>
       <h2>機能について</h2>
       <ul>

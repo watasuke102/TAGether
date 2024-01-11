@@ -4,64 +4,68 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import Header from '@/features/Header/Header';
 import css from './top.module.scss';
 import React from 'react';
 
 export default function index(): React.ReactElement {
   return (
-    <div>
-      <h1>ようこそ</h1>
-      <p>
-        「カテゴリ一覧」を選択して問題を解いてみましょう。
-        <br />
-        バグ・新機能の提案については「機能要望」ページでお願いします。
-        <br />
-        サービス名はTAGether(たげざー)です
-      </p>
+    <>
+      <Header />
+      <div>
+        <h1>ようこそ</h1>
+        <p>
+          「カテゴリ一覧」を選択して問題を解いてみましょう。
+          <br />
+          バグ・新機能の提案については「機能要望」ページでお願いします。
+          <br />
+          サービス名はTAGether(たげざー)です
+        </p>
 
-      <details>
-        <summary>更新履歴</summary>
-        <Releases />
-      </details>
+        <details>
+          <summary>更新履歴</summary>
+          <Releases />
+        </details>
 
-      <p>
-        以前のリリースは
-        <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
-        から確認可能です。
-      </p>
+        <p>
+          以前のリリースは
+          <a href='https://github.com/watasuke102/TAGether/releases'>こちら</a>
+          から確認可能です。
+        </p>
 
-      <h2>ショートカットキーについて</h2>
-      <p>問題解答ページ、カテゴリ編集ページで使用できます。</p>
-      <ul>
-        <li>Ctrl + Shift + (Lもしくは右矢印キー)：次の問題・答え合わせ</li>
-        <li>Ctrl + Shift + (Hもしくは左矢印キー)：前の問題</li>
-      </ul>
+        <h2>ショートカットキーについて</h2>
+        <p>問題解答ページ、カテゴリ編集ページで使用できます。</p>
+        <ul>
+          <li>Ctrl + Shift + (Lもしくは右矢印キー)：次の問題・答え合わせ</li>
+          <li>Ctrl + Shift + (Hもしくは左矢印キー)：前の問題</li>
+        </ul>
 
-      <p>カテゴリ編集ページのみ、以下のショートカットキーが使えます。</p>
-      <ul>
-        <li>Ctrl + S：編集結果の適用</li>
-        <li>Ctrl + Shift + A：問題形式を「テキスト」に変更</li>
-        <li>Ctrl + Shift + S：問題形式を「選択問題」に変更</li>
-        <li>Ctrl + Shift + Z：問題形式を「複数選択」に変更</li>
-        <li>Ctrl + Shift + X：問題形式を「並び替え」に変更</li>
-      </ul>
+        <p>カテゴリ編集ページのみ、以下のショートカットキーが使えます。</p>
+        <ul>
+          <li>Ctrl + S：編集結果の適用</li>
+          <li>Ctrl + Shift + A：問題形式を「テキスト」に変更</li>
+          <li>Ctrl + Shift + S：問題形式を「選択問題」に変更</li>
+          <li>Ctrl + Shift + Z：問題形式を「複数選択」に変更</li>
+          <li>Ctrl + Shift + X：問題形式を「並び替え」に変更</li>
+        </ul>
 
-      <p>問題解答ページのみ、以下のショートカットキーが使えます。</p>
-      <ul>
-        <li>Tab：一つ次の問題に移動</li>
-        <li>Shift + Tab：一つ前の問題に移動</li>
-        <li>SpaceもしくはEnter：（選択問題で）チェック状態の切り替え</li>
-        <li>Ctrl + Shift + (Kもしくは上矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
-        <li>Ctrl + Shift + (Jもしくは下矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
-      </ul>
+        <p>問題解答ページのみ、以下のショートカットキーが使えます。</p>
+        <ul>
+          <li>Tab：一つ次の問題に移動</li>
+          <li>Shift + Tab：一つ前の問題に移動</li>
+          <li>SpaceもしくはEnter：（選択問題で）チェック状態の切り替え</li>
+          <li>Ctrl + Shift + (Kもしくは上矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
+          <li>Ctrl + Shift + (Jもしくは下矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
+        </ul>
 
-      <h2>既知の不具合</h2>
-      <ul>
-        <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
-      </ul>
+        <h2>既知の不具合</h2>
+        <ul>
+          <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
+        </ul>
 
-      <p className={css.version}>TAGether v2.1.0</p>
-    </div>
+        <p className={css.version}>TAGether v2.1.0</p>
+      </div>
+    </>
   );
 }
 
