@@ -1,5 +1,5 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2023 watasuke
+// CopyRight (c) 2020-2024 watasuke
 //
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102

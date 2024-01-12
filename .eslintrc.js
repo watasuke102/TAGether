@@ -51,7 +51,7 @@ module.exports = {
       'line',
       [
         ' TAGether - Share self-made exam for classmates',
-        {pattern: ' CopyRight \\(c\\) 2020-\\d{4} watasuke', template: ' CopyRight (c) 2020-2023 watasuke'},
+        ' CopyRight (c) 2020-2024 watasuke',
         '',
         ' Email  : <watasuke102@gmail.com>',
         ' Twitter: @Watasuke102',
