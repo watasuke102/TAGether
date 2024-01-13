@@ -8,9 +8,17 @@ import {exam, tag} from 'src/db/schema';
 import {connect_drizzle} from '../../../../../db/drizzle';
 import {eq, sql} from 'drizzle-orm';
 import {CategoryDataType} from '@mytypes/Categoly';
+import {cookies} from 'next/headers';
+import {getIronSession} from 'iron-session';
+import {Session} from '@mytypes/Session';
+import {env} from 'env';
 
 // 特定のタグが付いたカテゴリをすべて取得する
 export async function GET(_: Request, {params}: {params: {id: number}}): Promise<Response> {
+  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+  if (!session.is_logged_in) {
+    return Response.json([], {status: 401});
+  }
   const db = await connect_drizzle();
   const fetched_categories = (
     await db

@@ -8,8 +8,16 @@ import {exam, tag} from 'src/db/schema';
 import {connect_drizzle} from '../../../../db/drizzle';
 import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
 import {eq, sql} from 'drizzle-orm';
+import {cookies} from 'next/headers';
+import {getIronSession} from 'iron-session';
+import {Session} from '@mytypes/Session';
+import {env} from 'env';
 
 export async function GET(_: Request, {params}: {params: {id: number}}): Promise<Response> {
+  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+  if (!session.is_logged_in) {
+    return Response.json([], {status: 401});
+  }
   const db = await connect_drizzle();
   const tags = await db.select().from(tag);
   const categories = (await db.select().from(exam).where(eq(exam.id, params.id))).map(e => {
@@ -26,6 +34,10 @@ export type PutCategory = {
   list: string;
 };
 export async function PUT(req: Request, {params}: {params: {id: number}}): Promise<Response> {
+  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+  if (!session.is_logged_in) {
+    return Response.json([], {status: 401});
+  }
   const data: PutCategory = await req.json();
   const db = await connect_drizzle();
   const result = await db
@@ -36,6 +48,10 @@ export async function PUT(req: Request, {params}: {params: {id: number}}): Promi
 }
 
 export async function DELETE(_: Request, {params}: {params: {id: number}}): Promise<Response> {
+  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+  if (!session.is_logged_in) {
+    return Response.json([], {status: 401});
+  }
   const db = await connect_drizzle();
   const result = await db
     .update(exam)

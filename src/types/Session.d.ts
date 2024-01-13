@@ -9,4 +9,5 @@ export type Session = {
   uid: string;
   email: string;
   is_admin: boolean;
+  favorite_list: string;
 };

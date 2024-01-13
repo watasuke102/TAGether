@@ -34,6 +34,6 @@ CREATE TABLE `users` (
 	`uid`           varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
 	`email`         text COLLATE utf8mb4_unicode_ci NOT NULL,
 	`is_admin`      boolean NOT NULL DEFAULT false,
-	`favorite_list` text COLLATE utf8mb4_unicode_ci,
+	`favorite_list` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ('[]'),
 	CONSTRAINT `users_uid` PRIMARY KEY(`uid`)
 );

@@ -22,7 +22,14 @@ export async function POST(req: Request): Promise<Response> {
   const db = await connect_drizzle();
   const registered_user = await db.select().from(users).where(eq(users.uid, data.uid));
 
-  let user: Omit<Session, 'is_logged_in'> | undefined = registered_user?.at(0);
+  let user:
+    | {
+        uid: string;
+        email: string;
+        is_admin: boolean;
+        favorite_list: string | null;
+      }
+    | undefined = registered_user?.at(0);
   if (!user) {
     // registration
     if (!env.EMAIL_WHITE_LIST.map(e => e.test(data.email)).includes(true)) {
@@ -32,6 +39,7 @@ export async function POST(req: Request): Promise<Response> {
     user = {
       ...data,
       is_admin: false,
+      favorite_list: '[]',
     };
   }
 
@@ -39,6 +47,7 @@ export async function POST(req: Request): Promise<Response> {
   session.uid = user.uid;
   session.email = user.email;
   session.is_admin = user.is_admin;
+  session.favorite_list = user?.favorite_list ?? '[]';
   await session.save();
   return Response.json({});
 }
