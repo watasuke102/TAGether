@@ -11,6 +11,9 @@
 
 .button {
   font-family: 'M PLUS 1p', sans-serif;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  align-items: center;
 
   // 横幅が広かったら（スマホじゃなければ）
   // ボタンのフォーカス時にボーダーを表示
@@ -19,13 +22,5 @@
       outline: none;
       box-shadow: 0 0 0 2px $color-4;
     }
-  }
-}
-
-// アイコンとテキストが通常通り表示されていない時はアイコンサイズを増やす
-@media screen and (max-height: 600px) {
-  .tagether {
-    width: 130%;
-    height: 130%;
   }
 }
