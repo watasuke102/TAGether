@@ -4,11 +4,23 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import Header from '@/features/Header/Header';
 import css from './top.module.scss';
 import React from 'react';
+import {useSession} from '@utils/api/session';
+import {Login} from './_components/Login/Login';
 
 export default function index(): React.ReactElement {
+  const [data, is_loading] = useSession();
+
+  if (is_loading) {
+    return <></>;
+  }
+  if (!data.is_logged_in) {
+    return <Login />;
+  }
+
   return (
     <>
       <Header />

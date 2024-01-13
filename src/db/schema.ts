@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {int, mysqlTable, timestamp, text, boolean} from 'drizzle-orm/mysql-core';
+import {int, mysqlTable, timestamp, text, boolean, varchar} from 'drizzle-orm/mysql-core';
 
 export const exam = mysqlTable('exam', {
   id: int('id').notNull().primaryKey().autoincrement(),
@@ -29,4 +29,10 @@ export const request = mysqlTable('request', {
   updated_at: timestamp('updated_at').notNull().defaultNow().onUpdateNow(),
   body: text('body').notNull(),
   answer: text('answer'),
+});
+
+export const users = mysqlTable('users', {
+  uid: varchar('uid', {length: 255}).notNull().primaryKey(),
+  email: text('email').notNull(),
+  is_admin: boolean('is_admin').notNull().default(false),
 });
