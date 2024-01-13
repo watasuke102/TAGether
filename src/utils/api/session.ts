@@ -8,6 +8,8 @@ import axios from 'axios';
 import {useApiData} from './common';
 import {Session} from '@mytypes/Session';
 import {mutate} from 'swr';
+import React from 'react';
+import {redirect} from 'next/navigation';
 
 const user_key = '/api/session';
 
@@ -22,4 +24,22 @@ export async function login(uid: string, email: string): Promise<void> {
   mutate(user_key);
 }
 
-export const useSession = useApiData<Session>(user_key);
+export async function logout(): Promise<void> {
+  await axios.post(`${user_key}/logout`);
+  mutate(user_key);
+}
+
+export function useSession(use_redirect?: boolean): [Session, boolean, boolean] {
+  const data = useApiData<Session>(user_key)();
+
+  React.useEffect(() => {
+    if (data[1]) {
+      return;
+    }
+    if (use_redirect && !data[0].is_logged_in) {
+      redirect('/');
+    }
+  }, [data]);
+
+  return data;
+}

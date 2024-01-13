@@ -14,13 +14,16 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
+import {logout, useSession} from '@utils/api/session';
 import {useAllCategoryData} from '@utils/api/category';
 import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@utils/ManageDB';
 import ExamHistory from '@mytypes/ExamHistory';
 import DeleteIcon from '@assets/delete.svg';
 import CloseIcon from '@assets/close.svg';
+import ArrowLeftIcon from '@assets/arrow-left.svg';
 
 export default function profile(): React.ReactElement {
+  const [session, is_session_loading] = useSession(true);
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
   const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
@@ -44,6 +47,10 @@ export default function profile(): React.ReactElement {
     GetFavorite().then(res => SetFavoriteList(res));
   }, []);
 
+  if (is_session_loading) {
+    return <Loading />;
+  }
+
   const FavoriteList = () => {
     if (isLoading) return <Loading />;
     const list = data.filter(a => favorite_list.includes(a.id ?? -1));
@@ -65,6 +72,10 @@ export default function profile(): React.ReactElement {
       <Helmet title='プロフィール - TAGether' />
 
       <div className={css.container}>
+        <div className={css.user_info}>
+          <span>{session.email} としてログイン中です。</span>
+          <Button type='filled' icon={<ArrowLeftIcon />} text='ログアウト' OnClick={logout} />
+        </div>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_categoly}>
           <FavoriteList />

@@ -16,6 +16,13 @@
   }
 }
 
+.user_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
 .card_wrapper {
   height: 100%;
   min-height: 100px;

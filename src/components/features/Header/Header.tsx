@@ -19,8 +19,8 @@ export default function Header(): React.ReactElement {
     {href: '/'       , icon: <TAGetherIcon />, text: 'TAGether'    },
     {href: '/list'   , icon: <ListIcon />    , text: 'カテゴリ一覧'},
     {href: '/tag'    , icon: <TagIcon />     , text: 'タグ一覧'    },
-    {href: '/profile', icon: <ProfileIcon /> , text: 'プロフィール'},
     {href: '/request', icon: <RequestIcon /> , text: '機能要望'    },
+    {href: '/profile', icon: <ProfileIcon /> , text: 'アカウント'},
   ];
 
   return (
