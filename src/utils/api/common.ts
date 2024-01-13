@@ -7,7 +7,7 @@
 import useMutSWR from 'swr';
 
 export const fetcher = (url: string, ...args) => fetch(url, ...args).then(res => res.json());
-export function useApiData<T>(key: string): () => [T[], boolean, boolean] {
+export function useApiData<T>(key: string): () => [T, boolean, boolean] {
   return () => {
     const {data, isLoading, error} = useMutSWR(key, fetcher);
     return [data, isLoading, !!error];

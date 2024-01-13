@@ -12,7 +12,7 @@ import FeatureRequest from '@mytypes/FeatureRequest';
 const request_key = '/api/request';
 
 export const mutate_request = (): Promise<void> => mutate(request_key);
-export const useRequestData = useApiData<FeatureRequest>(request_key);
+export const useRequestData = useApiData<FeatureRequest[]>(request_key);
 
 export async function new_request(body: string): Promise<AxiosPromise> {
   return axios.post(request_key, body);

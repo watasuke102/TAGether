@@ -14,7 +14,7 @@ import {PostTag} from 'src/app/api/tag/route';
 export const tag_key = '/api/tag';
 
 export const mutate_tag = (): Promise<void> => mutate(tag_key);
-export const useTagData = useApiData<TagData>(tag_key);
+export const useTagData = useApiData<TagData[]>(tag_key);
 export function fetch_tag(): Promise<TagData[]> {
   return fetcher(`http://localhost:3009${tag_key}`);
 }

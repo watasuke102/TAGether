@@ -15,7 +15,7 @@ import {tag_key} from './tag';
 export const category_key = '/api/category';
 
 export const mutate_category = (): Promise<void> => mutate(category_key);
-export const useAllCategoryData = useApiData<AllCategoryDataType>(category_key);
+export const useAllCategoryData = useApiData<AllCategoryDataType[]>(category_key);
 
 export function fetch_category_data(id: number | string): Promise<CategoryDataType> {
   return fetcher(`http://localhost:3009${category_key}/${id}`);
