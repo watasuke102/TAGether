@@ -35,4 +35,5 @@ export const users = mysqlTable('users', {
   uid: varchar('uid', {length: 255}).notNull().primaryKey(),
   email: text('email').notNull(),
   is_admin: boolean('is_admin').notNull().default(false),
+  favorite_list: text('favorite_list').default('[]'),
 });
