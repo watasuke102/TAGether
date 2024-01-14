@@ -17,12 +17,12 @@ export async function GET(_: Request, {params}: {params: {id: string}}): Promise
   if (!session.is_logged_in) {
     return Response.json([], {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const histories = await db.select().from(history).where(eq(history.id, params.id));
   if (histories[0].owner !== session.uid) {
     return Response.json([], {status: 401});
   }
-
+  con.end();
   return Response.json({...histories[0], updated_at: histories[0].created_at.toISOString()});
 }
 
@@ -31,7 +31,8 @@ export async function DELETE(_: Request, {params}: {params: {id: string}}): Prom
   if (!session.is_logged_in) {
     return Response.json({}, {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   await db.delete(history).where(eq(history.id, params.id));
+  con.end();
   return Response.json({});
 }

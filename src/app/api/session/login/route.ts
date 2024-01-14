@@ -19,7 +19,7 @@ export type LoginData = {
 export async function POST(req: Request): Promise<Response> {
   const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
   const data: LoginData = await req.json();
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const registered_user = await db.select().from(users).where(eq(users.uid, data.uid));
 
   let user: Omit<Session, 'is_logged_in'> | undefined = registered_user?.at(0);
@@ -34,6 +34,7 @@ export async function POST(req: Request): Promise<Response> {
       is_admin: false,
     };
   }
+  con.end();
 
   session.is_logged_in = true;
   session.uid = user.uid;

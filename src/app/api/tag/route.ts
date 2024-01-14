@@ -16,10 +16,11 @@ export async function GET(): Promise<Response> {
   if (!session.is_logged_in) {
     return Response.json([], {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const tags = (await db.select().from(tag)).map(e => {
     return {...e, updated_at: e.updated_at.toISOString()};
   });
+  con.end();
   return Response.json(tags);
 }
 
@@ -33,7 +34,8 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json([], {status: 401});
   }
   const data: PostTag = await req.json();
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const result = await db.insert(tag).values(data);
+  con.end();
   return Response.json({inserted_id: result[0].insertId});
 }

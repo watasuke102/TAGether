@@ -19,7 +19,7 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
   if (!session.is_logged_in) {
     return Response.json([], {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const fetched_categories = (
     await db
       .select()
@@ -34,6 +34,7 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
   );
 
   const specified_tag = await db.select({name: tag.name}).from(tag).where(eq(tag.id, params.id));
+  con.end();
   return Response.json({
     id: -1,
     title: `タグ (${specified_tag[0].name})`,

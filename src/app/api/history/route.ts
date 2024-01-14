@@ -20,7 +20,7 @@ export async function GET(): Promise<Response> {
   if (session.is_logged_in !== true) {
     return Response.json({}, {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const histories: AllHistory[] = (
     await db
       .select({
@@ -38,6 +38,7 @@ export async function GET(): Promise<Response> {
       created_at: e.created_at.toISOString(),
     };
   });
+  con.end();
   return Response.json(histories);
 }
 
@@ -53,7 +54,8 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json([], {status: 401});
   }
   const data: NewHistory = await req.json();
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const result = await db.insert(history).values({...data, owner: session.uid});
+  con.end();
   return Response.json({inserted_id: result[0].insertId});
 }
