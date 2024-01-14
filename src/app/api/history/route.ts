@@ -32,12 +32,14 @@ export async function GET(): Promise<Response> {
       })
       .from(history)
       .where(eq(history.owner, session.uid))
-  ).map(e => {
-    return {
-      ...e,
-      created_at: e.created_at.toISOString(),
-    };
-  });
+  )
+    .toSorted((a, b) => b.created_at.getTime() - a.created_at.getTime())
+    .map(e => {
+      return {
+        ...e,
+        created_at: e.created_at.toISOString(),
+      };
+    });
   con.end();
   return Response.json(histories);
 }
