@@ -31,10 +31,10 @@ export async function GET(): Promise<Response> {
       })
       .from(exam)
   ).map(e => {
-    return {...e, updated_at: e.updated_at.toISOString()};
+    return {...e, updated_at: e.updated_at.toISOString(), tag: replace_tag_of_category(e.tag, tags)};
   });
 
-  return Response.json(replace_tag_of_category(categories, tags));
+  return Response.json(categories);
 }
 
 export type NewCategory = {
