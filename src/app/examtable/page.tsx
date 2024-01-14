@@ -10,7 +10,7 @@ import React from 'react';
 import {Table} from './_components/Table/Table';
 import Loading from '@/common/Loading/Loading';
 import ExamHistory from '@mytypes/ExamHistory';
-import {useCategoryData} from '@utils/api/useCategoryData';
+import {useCategoryData} from '@utils/api/swr_hooks';
 import {GetSpecifiedExamHistory} from '@utils/ManageDB';
 
 export default function ExamTablePage(): React.ReactElement {
