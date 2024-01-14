@@ -12,5 +12,5 @@ import {CategoryDataType} from '@mytypes/Categoly';
 // utils/api/category.tsに配置するとserver clientからimportしたときにエラーとなるから
 export function useCategoryData(id: number | string): [CategoryDataType, boolean, boolean] {
   const {data, isLoading, error} = useImmSWR(`${category_key}/${id}`, fetcher);
-  return [data?.at(0), isLoading, !!error];
+  return [data, isLoading, !!error];
 }
