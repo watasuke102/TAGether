@@ -17,7 +17,7 @@ import ButtonInfo from '@mytypes/ButtonInfo';
 import {AllCategoryDataType} from '@mytypes/Categoly';
 import ExamHistory from '@mytypes/ExamHistory';
 import {CsvExport} from './CsvExport/CsvExport';
-import {useCategoryData} from '@utils/api/useCategoryData';
+import {useCategoryData} from '@utils/api/swr_hooks';
 import {mutate_category, toggle_delete_category} from '@utils/api/category';
 import Exam from '@mytypes/Exam';
 import Loading from '@/common/Loading/Loading';
