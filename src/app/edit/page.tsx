@@ -4,8 +4,9 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import React from 'react';
-import {EditPage} from './_components/EditPage/EditPage';
+import {EditPage, EditPageProps} from './_components/EditPage/EditPage';
 import {fetch_category_data} from '@utils/api/category';
 import {fetch_tag} from '@utils/api/tag';
 
@@ -16,10 +17,17 @@ type Props = {
 };
 
 export default async function Edit(props: Props): Promise<JSX.Element> {
-  if (!props.searchParams.id) {
-    throw Error('id is not specified');
-  }
-  const category = await fetch_category_data(props.searchParams.id);
-  const tags = await fetch_tag();
-  return <EditPage category={category} tags={tags} />;
+  const [edit_props, set_edit_props] = React.useState<EditPageProps | undefined>();
+
+  React.useEffect(() => {
+    (async () => {
+      if (!props.searchParams.id) {
+        throw Error('id is not specified');
+      }
+      const category = await fetch_category_data(props.searchParams.id);
+      const tags = await fetch_tag();
+      set_edit_props({category, tags});
+    })();
+  }, []);
+  return edit_props ? <EditPage {...edit_props} /> : <></>;
 }

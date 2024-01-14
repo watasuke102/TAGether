@@ -11,26 +11,26 @@ import {useApiData} from './common';
 import {redirect} from 'next/navigation';
 import {Session} from '@mytypes/Session';
 
-const user_key = '/api/session';
+const session_key = '/api/session';
 
 export async function login(uid: string, email: string): Promise<void> {
   console.info('[login]', {uid, email});
-  const res = await axios.post(`${user_key}/login`, JSON.stringify({uid, email}), {
+  const res = await axios.post(`${session_key}/login`, JSON.stringify({uid, email}), {
     headers: {'Content-Type': 'application/json'},
   });
   if (res.data.message) {
     throw Error(res.data.message);
   }
-  mutate(user_key);
+  mutate(session_key);
 }
 
 export async function logout(): Promise<void> {
-  await axios.post(`${user_key}/logout`);
-  mutate(user_key);
+  await axios.post(`${session_key}/logout`);
+  mutate(session_key);
 }
 
 export function useSession(use_redirect?: boolean): [Session, boolean, boolean] {
-  const data = useApiData<Session>(user_key)();
+  const data = useApiData<Session>(session_key)();
 
   React.useEffect(() => {
     if (data[1]) {

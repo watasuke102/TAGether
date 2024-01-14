@@ -37,3 +37,15 @@ CREATE TABLE `users` (
 	`favorite_list` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ('[]'),
 	CONSTRAINT `users_uid` PRIMARY KEY(`uid`)
 );
+
+DROP TABLE IF EXISTS `history`;
+CREATE TABLE `history` (
+	`id` varchar(255) NOT NULL,
+	`owner` varchar(255) NOT NULL,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`original_title` text NOT NULL,
+	`times` int NOT NULL DEFAULT 0,
+	`exam_state` json NOT NULL,
+	`list` json NOT NULL,
+	CONSTRAINT `history_id` PRIMARY KEY(`id`)
+);

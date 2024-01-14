@@ -14,43 +14,24 @@ import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
 import CategolyCard from '@/features/CategolyCard/CategolyCard';
 import HistoryTable from '@/features/ExamHistoryTable/ExamHistoryItem';
-import {logout} from '@utils/api/session';
+import {logout, useSession} from '@utils/api/session';
 import {useUser} from '@utils/api/user';
 import {useAllCategoryData} from '@utils/api/category';
-import {GetExamHistory, GetFavorite, ClearExamHistory, RemoveExamHistory} from '@utils/ManageDB';
-import ExamHistory from '@mytypes/ExamHistory';
 import DeleteIcon from '@assets/delete.svg';
 import CloseIcon from '@assets/close.svg';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
+import {useAllHistory} from '@utils/api/history';
 
 export default function profile(): React.ReactElement {
+  useSession(true);
   const [user, is_user_loading] = useUser();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
-  const [history_list, SetHistoryList] = React.useState<ExamHistory[]>([]);
-  const [favorite_list, SetFavoriteList] = React.useState<number[]>([]);
+  const [histories, is_history_loading] = useAllHistory();
   const [data, isLoading] = useAllCategoryData();
 
-  const InitExamHistory = () => {
-    GetExamHistory().then(res => {
-      res.sort((_a, _b) => {
-        const a = Number(_a.history_key ?? '');
-        const b = Number(_b.history_key ?? '');
-        if (a < b) return 1;
-        if (a > b) return -1;
-        return 0;
-      });
-      SetHistoryList(res);
-    });
-  };
-
-  React.useEffect(() => {
-    InitExamHistory();
-    GetFavorite().then(res => SetFavoriteList(res));
-  }, []);
-
   const FavoriteList = () => {
-    if (isLoading) return <Loading />;
-    const list = data.filter(a => favorite_list.includes(a.id ?? -1));
+    if (isLoading || is_user_loading) return <Loading />;
+    const list = data.filter(a => user.favorite_list.includes(a.id ?? -1));
     return (
       <IndexedContainer len={list.length} width='300px' per={6}>
         {list.map((item, i) => {
@@ -94,24 +75,31 @@ export default function profile(): React.ReactElement {
           </div>
         </div>
 
-        <IndexedContainer len={history_list.length} per={8}>
-          {history_list.map(item => {
-            return (
-              <HistoryTable
-                key={`history_${item.history_key}`}
-                item={item}
-                categoly={item.categoly}
-                remove={() => {
-                  RemoveExamHistory(item.history_key ?? '');
-                  const tmp = history_list.concat();
-                  // history_keyが存在しない場合は何も削除しない
-                  tmp.splice(Number(item.history_key ?? tmp.length), 1);
-                  SetHistoryList(tmp);
-                }}
-              />
-            );
-          })}
-        </IndexedContainer>
+        {is_history_loading ? (
+          <Loading />
+        ) : (
+          <IndexedContainer len={histories.length} per={8}>
+            {histories.map(item => {
+              return (
+                <div key={item.id} style={{whiteSpace: 'pre-wrap'}}>
+                  {JSON.stringify(item, undefined, '  ')}
+                </div>
+                // <HistoryTable
+                //   key={`history_${item.history_key}`}
+                //   item={item}
+                //   categoly={item.categoly}
+                //   remove={() => {
+                //     RemoveExamHistory(item.history_key ?? '');
+                //     const tmp = history_list.concat();
+                //     // history_keyが存在しない場合は何も削除しない
+                //     tmp.splice(Number(item.history_key ?? tmp.length), 1);
+                //     SetHistoryList(tmp);
+                //   }}
+                // />
+              );
+            })}
+          </IndexedContainer>
+        )}
       </div>
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
