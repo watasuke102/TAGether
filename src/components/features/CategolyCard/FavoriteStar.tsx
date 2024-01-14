@@ -7,19 +7,27 @@
 import css from './FavoriteStar.module.scss';
 import React from 'react';
 import {motion} from 'framer-motion';
-import {UpdateFavorite, GetFavorite} from '@utils/ManageDB';
 import StarIcon from '@assets/star.svg';
+import {toggle_favorite, useUser} from '@utils/api/user';
 
 interface Props {
   id: number;
 }
 
 export default function FavoriteStar(props: Props): React.ReactElement {
-  // 既にお気に入り登録されているものにおいて、初回レンダリング時のアニメーションを抑制する
+  const [user, is_user_loading] = useUser();
+  // このstateはuserから算出可能だからアンチパターンではあるけれど、アニメーションの見栄えのほうが大事
+  // 既にお気に入り登録されているものにおいて、初回レンダリング時のアニメーションを抑制するために'already'を用いる
   const [favorite_status, SetFavoriteStatus] = React.useState<'already' | true | false>(false);
+
   React.useEffect(() => {
-    GetFavorite().then(res => SetFavoriteStatus(res.includes(props.id ?? -1) ? 'already' : false));
-  }, []);
+    if (is_user_loading) {
+      return;
+    }
+    if (user.favorite_list.includes(props.id)) {
+      SetFavoriteStatus('already');
+    }
+  }, [is_user_loading]);
 
   return (
     <motion.div
@@ -27,8 +35,9 @@ export default function FavoriteStar(props: Props): React.ReactElement {
       whileTap={{scale: 1.2}}
       onClick={e => {
         e.stopPropagation();
-        UpdateFavorite(props.id ?? -1);
-        SetFavoriteStatus(!favorite_status);
+        toggle_favorite(user, props.id ?? -1);
+        // !'already' === false
+        SetFavoriteStatus(e => !e);
       }}
     >
       {favorite_status === true && <motion.div className={css.animation_circle} />}

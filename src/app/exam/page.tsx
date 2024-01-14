@@ -12,7 +12,6 @@ import {ExamPage, ExamPageProps} from './_components/ExamPage/ExamPage';
 import {Shuffle} from '@utils/ArrayUtil';
 import {redirect} from 'next/navigation';
 import {fetch_history} from '@utils/api/history';
-import {History} from '@mytypes/ExamHistory';
 import {fetch_category_data, fetch_category_with_spec_tag_data} from '@utils/api/category';
 import Loading from './loading';
 
@@ -38,7 +37,6 @@ export default async function Exam(props: Props): Promise<JSX.Element> {
         exam: [],
       };
       if (props.searchParams.id) {
-        fetcher(`http://localhost:3009/api/category/${props.searchParams.id}`).then(console.log);
         const category = await fetch_category_data(props.searchParams.id);
         prop.exam = JSON.parse(category.list);
         prop.title = category.title;
