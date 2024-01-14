@@ -43,7 +43,6 @@ export function ExamStatusList(): JSX.Element {
       // これが初クリックで、メニューが開かれている→このクリックはメニュー開閉のためのクリック
       if (is_first_click.current && Number.isInteger(drag_amount) && drag_amount >= 0) {
         is_first_click.current = false;
-        console.log('not opening');
         return;
       }
       // 開いている時に外側をクリックした
