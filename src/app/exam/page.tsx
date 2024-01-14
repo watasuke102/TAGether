@@ -7,7 +7,6 @@
 'use client';
 import React from 'react';
 import Exam from '@mytypes/Exam';
-import {fetcher} from '@utils/api/common';
 import {ExamPage, ExamPageProps} from './_components/ExamPage/ExamPage';
 import {Shuffle} from '@utils/ArrayUtil';
 import {redirect} from 'next/navigation';

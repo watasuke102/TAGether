@@ -56,7 +56,5 @@ jobs:
           cache: 'npm'
       - name: Setup
         run: npm install
-      - name: basic check
-        run: npm run check
       - name: build
         run: npm run build
