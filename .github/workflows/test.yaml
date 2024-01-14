@@ -56,5 +56,7 @@ jobs:
           cache: 'npm'
       - name: Setup
         run: npm install
+      - name: create env.ts
+        run: cp -v sample-env.ts env.ts
       - name: build
         run: npm run build
