@@ -21,5 +21,5 @@ export default async function Edit(props: Props): Promise<JSX.Element> {
   }
   const category = await fetch_category_data(props.searchParams.id);
   const tags = await fetch_tag();
-  return <EditPage category={category[0]} tags={tags} />;
+  return <EditPage category={category} tags={tags} />;
 }

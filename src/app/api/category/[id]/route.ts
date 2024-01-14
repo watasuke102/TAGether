@@ -20,11 +20,12 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
   }
   const db = await connect_drizzle();
   const tags = await db.select().from(tag);
-  const categories = (await db.select().from(exam).where(eq(exam.id, params.id))).map(e => {
-    return {...e, updated_at: e.updated_at.toISOString(), tag: replace_tag_of_category(e.tag, tags)};
+  const categories = await db.select().from(exam).where(eq(exam.id, params.id));
+  return Response.json({
+    ...categories[0],
+    updated_at: categories[0].updated_at.toISOString(),
+    tag: replace_tag_of_category(categories[0].tag, tags),
   });
-
-  return Response.json(categories);
 }
 
 export type PutCategory = {
