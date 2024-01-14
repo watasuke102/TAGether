@@ -94,7 +94,7 @@ export function EditPage(props: Props): JSX.Element {
         Toast.open(`エラーが発生しました。\n${err.toString()}`);
       });
     console.groupCollapsed('Category update request');
-    console.log(request_data);
+    console.info(request_data);
     console.groupEnd();
   }, [edit_states]);
   useShortcut([{keycode: 'KeyS', handler: RegistCategoly}], {ctrl: true});
