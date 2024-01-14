@@ -13,7 +13,7 @@
   display: grid;
   grid-template: 'delete_btn title status redo_btn' auto / auto 1fr auto;
   align-items: center;
-  gap: 12px 16px;
+  gap: 4px 16px;
 
   @media screen and (max-width: 600px) {
     grid-template-columns: auto 1fr;
@@ -59,7 +59,7 @@
 
 .modal {
   max-width: 70vw;
-  padding: 30px 50px;
+  padding: 24px 12px;
   text-align: center;
 
   .buttons {
