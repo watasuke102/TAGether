@@ -7,7 +7,7 @@
     "test": "vitest run --exclude docker",
     "lint": "eslint src --fix",
     "fmt": "prettier --write src/",
-    "check": "npm run lint && npm run fmt && npm run build",
+    "check": "eslint src && prettier src",
     "dev": "next dev -p 3009",
     "build": "next build",
     "start": "next start -p 3009"

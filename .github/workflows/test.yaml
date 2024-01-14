@@ -10,6 +10,38 @@ on:
     branches: ['main', 'dev']
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.0]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: setup
+        run: npm install
+      - name: test
+        run: npm run test
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.0]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: setup
+        run: npm install
+      - name: basic check
+        run: npm run check
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -24,7 +56,7 @@ jobs:
           cache: 'npm'
       - name: Setup
         run: npm install
+      - name: basic check
+        run: npm run check
       - name: build
         run: npm run build
-      - name: lint
-        run: npm run lint
