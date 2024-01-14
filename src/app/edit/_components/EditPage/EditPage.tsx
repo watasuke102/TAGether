@@ -25,12 +25,12 @@ import {edit_reducer, EditReducerContext} from '../EditReducer';
 import {useShortcut} from '@utils/useShortcut';
 import CheckIcon from '@assets/check.svg';
 
-type Props = {
+export type EditPageProps = {
   category: CategoryDataType;
   tags: TagData[];
 };
 
-export function EditPage(props: Props): JSX.Element {
+export function EditPage(props: EditPageProps): JSX.Element {
   const [is_json_edit, SetIsJsonEdit] = React.useState(false);
   const [edit_states, dispatch] = useImmerReducer(edit_reducer, {
     title: props.category.title,

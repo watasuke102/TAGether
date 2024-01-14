@@ -4,17 +4,17 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {CategoryDataType} from './Categoly';
+import Exam from './Exam';
+import ExamState from './ExamState';
 
-interface ExamHistory {
-  history_key?: string;
-  total_question: number;
-  correct_count: number;
-
-  times: number;
-  categoly: CategoryDataType;
+export interface AllHistory {
+  id: string;
+  created_at: string;
+  title: string;
+  redo_times: number;
   exam_state: ExamState[];
-  original_title: string;
 }
 
-export default ExamHistory;
+export interface History extends AllHistory {
+  exam: Exam[];
+}

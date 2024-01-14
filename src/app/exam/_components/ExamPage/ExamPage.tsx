@@ -25,14 +25,18 @@ import CheckIcon from '@assets/check.svg';
 import MenuIcon from '@assets/menu.svg';
 import {FinishModal} from '../FinishModal/FinishModal';
 import ButtonInfo from '@mytypes/ButtonInfo';
+import {new_history} from '@utils/api/history';
+import {AllHistory} from '@mytypes/ExamHistory';
 
-type Props = {
+export type ExamPageProps = {
   title: string;
   exam: Exam[];
+  history?: AllHistory;
 };
 
-export function ExamPage(props: Props): JSX.Element {
+export function ExamPage(props: ExamPageProps): JSX.Element {
   const [state, dispatch] = useImmerReducer(exam_reducer, init_state(props.exam));
+  const inserted_history_id = React.useRef('');
 
   React.useEffect(() => {
     document.title = `(${state.index + 1} / ${props.exam.length}) : ${props.title} - TAGether`;
@@ -46,6 +50,20 @@ export function ExamPage(props: Props): JSX.Element {
     ],
     {ctrl: true, shift: true},
   );
+
+  React.useEffect(() => {
+    if (state.exam_state.map(e => e.checked).includes(false)) {
+      return;
+    }
+    new_history({
+      exam: state.exam,
+      exam_state: state.exam_state,
+      redo_times: (props.history?.redo_times ?? -1) + 1,
+      title: props.history ? `解き直し：${props.title}（${props.history.redo_times}回目）` : props.title,
+    }).then(e => {
+      inserted_history_id.current = e.data.inserted_id;
+    });
+  }, [state.exam_state]);
 
   return (
     <ExamReducerContext.Provider value={[state, dispatch]}>

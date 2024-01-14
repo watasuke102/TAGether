@@ -4,7 +4,10 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {int, mysqlTable, timestamp, text, boolean, varchar} from 'drizzle-orm/mysql-core';
+import Exam from '@mytypes/Exam';
+import ExamState from '@mytypes/ExamState';
+import {int, mysqlTable, timestamp, text, boolean, varchar, json} from 'drizzle-orm/mysql-core';
+import {v4} from 'uuid';
 
 export const exam = mysqlTable('exam', {
   id: int('id').notNull().primaryKey().autoincrement(),
@@ -36,4 +39,16 @@ export const users = mysqlTable('users', {
   email: text('email').notNull(),
   is_admin: boolean('is_admin').notNull().default(false),
   favorite_list: text('favorite_list').default('[]'),
+});
+
+export const history = mysqlTable('history', {
+  id: varchar('id', {length: 255}).notNull().primaryKey().$defaultFn(v4),
+  owner: varchar('owner', {length: 255}).notNull(),
+  created_at: timestamp('created_at').notNull().defaultNow(),
+  title: text('original_title').notNull(),
+  // 解き直しの回数、0なら通常の（やり直しではない）解答履歴
+  redo_times: int('times').notNull().default(0),
+
+  exam_state: json('exam_state').$type<ExamState[]>().notNull(),
+  exam: json('list').$type<Exam[]>().notNull(),
 });

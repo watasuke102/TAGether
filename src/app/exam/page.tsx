@@ -4,11 +4,17 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import React from 'react';
 import Exam from '@mytypes/Exam';
 import {fetcher} from '@utils/api/common';
-import {ExamPage} from './_components/ExamPage/ExamPage';
+import {ExamPage, ExamPageProps} from './_components/ExamPage/ExamPage';
 import {Shuffle} from '@utils/ArrayUtil';
+import {redirect} from 'next/navigation';
+import {fetch_history} from '@utils/api/history';
+import {History} from '@mytypes/ExamHistory';
+import {fetch_category_data, fetch_category_with_spec_tag_data} from '@utils/api/category';
+import Loading from './loading';
 
 type Props = {
   searchParams: {
@@ -23,26 +29,50 @@ type Props = {
 };
 
 export default async function Exam(props: Props): Promise<JSX.Element> {
-  let category;
-  if (props.searchParams.id) {
-    category = await fetcher(`http://localhost:3009/api/category/${props.searchParams.id}`);
-  } else if (props.searchParams.tag) {
-    category = await fetcher(`http://localhost:3009/${props.searchParams.tag}/all_category`);
-  }
+  const [exam_props, set_exam_props] = React.useState<ExamPageProps | undefined>();
 
-  const begin = Number(props.searchParams.begin);
-  const end = Number(props.searchParams.end);
-  let exam = (JSON.parse(category[0].list) as Exam[])
-    .filter((_, i) => !((begin && i < begin) || (end && i > end)))
-    .map(e => {
-      if (props.searchParams.choiceShuffle && Array.isArray(e.question_choices)) {
-        e.question_choices = Shuffle(e.question_choices);
+  React.useEffect(() => {
+    (async () => {
+      const prop: ExamPageProps = {
+        title: '',
+        exam: [],
+      };
+      if (props.searchParams.id) {
+        fetcher(`http://localhost:3009/api/category/${props.searchParams.id}`).then(console.log);
+        const category = await fetch_category_data(props.searchParams.id);
+        prop.exam = JSON.parse(category.list);
+        prop.title = category.title;
+      } else if (props.searchParams.tag) {
+        const category = await fetch_category_with_spec_tag_data(props.searchParams.tag);
+        prop.exam = JSON.parse(category.list);
+        prop.title = category.title;
+      } else if (props.searchParams.history_id) {
+        const history = await fetch_history(props.searchParams.history_id);
+        prop.exam = history.exam.filter(
+          (_, i) => history.exam_state[i].correct_count !== history.exam_state[i].total_question,
+        );
+        prop.title = history.title;
+        prop.history = history;
+      } else {
+        redirect('/list');
       }
-      return e;
-    });
-  if (props.searchParams.shuffle) {
-    exam = Shuffle(exam);
-  }
 
-  return <ExamPage exam={exam} title={category[0].title} />;
+      const begin = Number(props.searchParams.begin);
+      const end = Number(props.searchParams.end);
+      prop.exam = prop.exam
+        .filter((_, i) => !((begin && i < begin) || (end && i > end)))
+        .map(e => {
+          if (props.searchParams.choiceShuffle && Array.isArray(e.question_choices)) {
+            e.question_choices = Shuffle(e.question_choices);
+          }
+          return e;
+        });
+      if (props.searchParams.shuffle) {
+        prop.exam = Shuffle(prop.exam);
+      }
+      set_exam_props(prop);
+    })();
+  }, []);
+
+  return exam_props ? <ExamPage {...exam_props} /> : <Loading />;
 }
