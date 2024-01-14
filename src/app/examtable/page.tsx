@@ -5,39 +5,46 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
-import {useSearchParams} from 'next/navigation';
 import React from 'react';
-import {Table} from './_components/Table/Table';
+import {ExamTableProps, Table} from './_components/Table/Table';
 import Loading from '@/common/Loading/Loading';
-import ExamHistory from '@mytypes/ExamHistory';
-import {useCategoryData} from '@utils/api/swr_hooks';
-import {GetSpecifiedExamHistory} from '@utils/ManageDB';
+import {fetch_category_data} from '@utils/api/category';
+import {fetch_history} from '@utils/api/history';
+import {redirect} from 'next/navigation';
 
-export default function ExamTablePage(): React.ReactElement {
-  const search_params = useSearchParams();
-  const id = search_params.get('id');
-  const history_id = search_params.get('history_id');
+type Props = {
+  searchParams: {
+    id?: string;
+    history_id?: string;
+  };
+};
 
-  const [history, SetHistory] = React.useState<ExamHistory | undefined>();
-  const [data, is_loading] = useCategoryData(id ?? -1);
+export default function ExamTablePage(props: Props): React.ReactElement {
+  const [examtable_props, set_examtable_props] = React.useState<ExamTableProps | undefined>();
 
   React.useEffect(() => {
-    if (id) {
-      return;
-    }
-    const history_id_str = Array.isArray(history_id) ? history_id[0] : history_id ?? '';
-    GetSpecifiedExamHistory(history_id_str).then(result => {
-      if (result) {
-        SetHistory(result);
+    (async () => {
+      let prop: ExamTableProps;
+      if (props.searchParams.id) {
+        const category = await fetch_category_data(props.searchParams.id);
+        prop = {
+          exam: JSON.parse(category.list),
+          title: category.title,
+          id: props.searchParams.id,
+        };
+      } else if (props.searchParams.history_id) {
+        const history = await fetch_history(props.searchParams.history_id);
+        prop = {
+          exam: history.exam,
+          title: history.title,
+          history: history,
+        };
       } else {
-        throw new Error('[FATAL] cannot get ExamHistory');
+        redirect('/list');
       }
-    });
-  }, [search_params, is_loading]);
+      set_examtable_props(prop);
+    })();
+  }, []);
 
-  if ((id && is_loading) || (history_id && !history)) {
-    return <Loading />;
-  }
-
-  return <Table data={data} history={history} />;
+  return examtable_props ? <Table {...examtable_props} /> : <Loading />;
 }
