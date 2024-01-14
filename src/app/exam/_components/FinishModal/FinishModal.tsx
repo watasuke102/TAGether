@@ -13,9 +13,14 @@ import TadaIcon from '@assets/tada.svg';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Button from '@/common/Button/Button';
 import EditIcon from '@assets/edit.svg';
+import ListIcon from '@assets/list.svg';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 
-export function FinishModal(): JSX.Element {
+type Props = {
+  inserted_history_id: string;
+};
+
+export function FinishModal(props: Props): JSX.Element {
   const router = useRouter();
   const params = useSearchParams();
   const id = params.get('id');
@@ -30,20 +35,24 @@ export function FinishModal(): JSX.Element {
   return (
     <Modal isOpen={state.is_modal_open} close={() => dispatch({type: 'is_modal_open/set', data: false})}>
       <div className={css.modal}>
-        <div className={css.modal_mes}>
+        <div className={css.modal_header}>
           <TadaIcon /> <span>問題終了</span>
         </div>
         <p className={css.correct_rate}>
           正答率：{correct_rate}% （{total_questions}問中{correct_answers}問正解）
         </p>
-        {/* TODO: jump to history */}
         <ButtonContainer>
-          <></>
           <Button
             text={'編集する'}
             icon={<EditIcon />}
             type={'material'}
             OnClick={() => id && router.push(`/edit?id=${id}`)}
+          />
+          <Button
+            text={'結果一覧'}
+            icon={<ListIcon />}
+            type={'material'}
+            OnClick={() => router.push(`/examtable?history_id=${props.inserted_history_id}`)}
           />
           <Button
             text={'カテゴリ一覧へ移動'}

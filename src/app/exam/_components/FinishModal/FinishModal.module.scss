@@ -12,7 +12,7 @@
   text-align: center;
 }
 
-.modal_mes {
+.modal_header {
   display: inline-grid;
   grid-template-columns: 32px auto;
   gap: 8px;
@@ -21,4 +21,8 @@
   svg {
     color: $color-primary-3;
   }
+}
+
+.correct_rate {
+  font-size: 1.25em;
 }
