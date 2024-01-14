@@ -7,7 +7,6 @@
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
 import {int, mysqlTable, timestamp, text, boolean, varchar, json} from 'drizzle-orm/mysql-core';
-import {v4} from 'uuid';
 
 export const exam = mysqlTable('exam', {
   id: int('id').notNull().primaryKey().autoincrement(),
@@ -42,7 +41,7 @@ export const users = mysqlTable('users', {
 });
 
 export const history = mysqlTable('history', {
-  id: varchar('id', {length: 255}).notNull().primaryKey().$defaultFn(v4),
+  id: varchar('id', {length: 255}).notNull().primaryKey(),
   owner: varchar('owner', {length: 255}).notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
   title: text('original_title').notNull(),

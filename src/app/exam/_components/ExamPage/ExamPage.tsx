@@ -36,7 +36,7 @@ export type ExamPageProps = {
 
 export function ExamPage(props: ExamPageProps): JSX.Element {
   const [state, dispatch] = useImmerReducer(exam_reducer, init_state(props.exam));
-  const inserted_history_id = React.useRef('');
+  const [inserted_history_id, set_inserted_history_id] = React.useState('');
 
   React.useEffect(() => {
     document.title = `(${state.index + 1} / ${props.exam.length}) : ${props.title} - TAGether`;
@@ -55,14 +55,13 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
     if (state.exam_state.map(e => e.checked).includes(false)) {
       return;
     }
+    const redo_times = (props.history?.redo_times ?? -1) + 1;
     new_history({
       exam: state.exam,
       exam_state: state.exam_state,
-      redo_times: (props.history?.redo_times ?? -1) + 1,
-      title: props.history ? `解き直し：${props.title}（${props.history.redo_times}回目）` : props.title,
-    }).then(e => {
-      inserted_history_id.current = e.data.inserted_id;
-    });
+      redo_times,
+      title: props.history ? `解き直し：${props.title}（${redo_times}回目）` : props.title,
+    }).then(e => set_inserted_history_id(e.data.inserted_id));
   }, [state.exam_state]);
 
   return (
@@ -134,7 +133,7 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
           </div>
         </section>
       </div>
-      <FinishModal />
+      <FinishModal inserted_history_id={inserted_history_id} />
     </ExamReducerContext.Provider>
   );
 }
