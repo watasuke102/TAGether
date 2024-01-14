@@ -10,6 +10,7 @@
 
 .container {
   display: flex;
+  gap: 0 12px;
   justify-content: space-between;
   @media screen and (max-width: 850px) {
     flex-direction: column;
@@ -24,8 +25,8 @@
   @media screen and (max-width: 850px) {
     width: 100%;
     display: grid;
-    grid-template-columns: 48% 48%;
-    gap: 15px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
     button {
       margin-top: 0;
     }

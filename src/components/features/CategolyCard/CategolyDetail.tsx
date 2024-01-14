@@ -129,7 +129,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
         <div className={css.button_container}>
           <Button text='' icon={<CloseIcon />} OnClick={props.close} type='material' />
           <Button
-            text='csvとしてダウンロード'
+            text='csvのダウンロード'
             icon={<DownloadIcon />}
             OnClick={() => set_is_csv_export_open(true)}
             type='material'
