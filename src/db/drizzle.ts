@@ -7,12 +7,13 @@
 import {MySql2Database, drizzle} from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 
-export async function connect_drizzle(): Promise<MySql2Database> {
+export async function connect_drizzle(): Promise<{db: MySql2Database; con: mysql.Connection}> {
   const con = await mysql.createConnection({
     host: 'mysql',
     user: 'root',
     password: 'root',
     database: 'tagether',
   });
-  return drizzle(con);
+  const db = drizzle(con);
+  return {db, con};
 }

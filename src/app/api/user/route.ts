@@ -18,8 +18,9 @@ export async function GET(): Promise<Response> {
   if (session.is_logged_in !== true) {
     return Response.json({}, {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const fetched_user = await db.select().from(users).where(eq(users.uid, session.uid));
+  con.end();
   const user: User = {
     ...fetched_user[0],
     favorite_list: JSON.parse(fetched_user[0].favorite_list ?? '[]'),

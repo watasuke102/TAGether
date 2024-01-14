@@ -16,8 +16,9 @@ export async function GET(): Promise<Response> {
   if (!session.is_logged_in) {
     return Response.json([], {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const requests = await db.select().from(request);
+  con.end();
   return Response.json(requests);
 }
 
@@ -27,7 +28,8 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json([], {status: 401});
   }
   const body: string = await req.text();
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const result = await db.insert(request).values({body});
+  con.end();
   return Response.json({inserted_id: result[0].insertId});
 }

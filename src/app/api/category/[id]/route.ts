@@ -18,9 +18,10 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
   if (!session.is_logged_in) {
     return Response.json([], {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const tags = await db.select().from(tag);
   const categories = await db.select().from(exam).where(eq(exam.id, params.id));
+  con.end();
   return Response.json({
     ...categories[0],
     updated_at: categories[0].updated_at.toISOString(),
@@ -40,11 +41,12 @@ export async function PUT(req: Request, {params}: {params: {id: number}}): Promi
     return Response.json([], {status: 401});
   }
   const data: PutCategory = await req.json();
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const result = await db
     .update(exam)
     .set({...data})
     .where(eq(exam.id, params.id));
+  con.end();
   return Response.json({inserted_id: result[0].insertId});
 }
 
@@ -53,10 +55,11 @@ export async function DELETE(_: Request, {params}: {params: {id: number}}): Prom
   if (!session.is_logged_in) {
     return Response.json([], {status: 401});
   }
-  const db = await connect_drizzle();
+  const {db, con} = await connect_drizzle();
   const result = await db
     .update(exam)
     .set({deleted: sql`if (deleted = 0, 1, 0)`})
     .where(eq(exam.id, params.id));
+  con.end();
   return Response.json({inserted_id: result[0].insertId});
 }
