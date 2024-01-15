@@ -26,6 +26,7 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
       .from(exam)
       .where(sql`INSTR(exam.tag, ${params.id})`)
   ).map(e => {
+    e.updated_at.setHours(e.updated_at.getHours() + 9);
     return {...e, updated_at: e.updated_at.toISOString()};
   });
   const categories_exam: CategoryDataType[] = fetched_categories.reduce(

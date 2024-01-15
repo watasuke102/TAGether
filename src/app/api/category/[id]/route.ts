@@ -23,6 +23,7 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
   const tags = await db.select().from(tag);
   const categories = await db.select().from(exam).where(eq(exam.id, params.id));
   con.end();
+  categories[0].updated_at.setHours(categories[0].updated_at.getHours() + 9);
   return Response.json({
     ...categories[0],
     updated_at: categories[0].updated_at.toISOString(),

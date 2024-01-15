@@ -20,6 +20,7 @@ export async function GET(_: Request, {params}: {params: {id: number}}): Promise
   }
   const {db, con} = await connect_drizzle();
   const tags = (await db.select().from(tag).where(eq(tag.id, params.id))).map(e => {
+    e.updated_at.setHours(e.updated_at.getHours() + 9);
     return {...e, updated_at: e.updated_at.toISOString()};
   });
   con.end();

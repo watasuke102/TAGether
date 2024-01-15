@@ -23,7 +23,11 @@ export async function GET(_: Request, {params}: {params: {id: string}}): Promise
     return Response.json([], {status: 401});
   }
   con.end();
-  return Response.json({...histories[0], updated_at: histories[0].created_at.toISOString()});
+  histories[0].created_at.setHours(histories[0].created_at.getHours() + 9);
+  return Response.json({
+    ...histories[0],
+    updated_at: histories[0].created_at.toISOString(),
+  });
 }
 
 export async function DELETE(_: Request, {params}: {params: {id: string}}): Promise<Response> {

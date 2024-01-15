@@ -32,7 +32,12 @@ export async function GET(): Promise<Response> {
       })
       .from(exam)
   ).map(e => {
-    return {...e, updated_at: e.updated_at.toISOString(), tag: replace_tag_of_category(e.tag, tags)};
+    e.updated_at.setHours(e.updated_at.getHours() + 9);
+    return {
+      ...e,
+      updated_at: e.updated_at.toISOString(),
+      tag: replace_tag_of_category(e.tag, tags),
+    };
   });
   con.end();
   return Response.json(categories);

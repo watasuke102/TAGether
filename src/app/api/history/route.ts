@@ -36,6 +36,7 @@ export async function GET(): Promise<Response> {
   )
     .toSorted((a, b) => b.created_at.getTime() - a.created_at.getTime())
     .map(e => {
+      e.created_at.setHours(e.created_at.getHours() + 9);
       return {
         ...e,
         created_at: e.created_at.toISOString(),
