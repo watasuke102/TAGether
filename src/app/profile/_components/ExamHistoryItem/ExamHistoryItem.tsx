@@ -56,7 +56,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
-          <span className={css.title}>{props.title}</span>
+          <span className={css.title}>{history_title(props)}</span>
           <p>この解答履歴を削除しますか？</p>
           <div className={css.buttons}>
             <Button
