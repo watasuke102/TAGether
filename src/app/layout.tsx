@@ -8,18 +8,12 @@ import React from 'react';
 import '@/common/main.scss';
 import '@/common/nprogress.css';
 import {Toast, ToastProvider} from '@/common/Toast/Toast';
-import {getIronSession} from 'iron-session';
-import {cookies} from 'next/headers';
-import {Session} from '@mytypes/Session';
-import {env} from 'env';
-import Header from '@/features/Header/Header';
 
 export const metadata = {
   title: 'TAGether',
 };
 
-export default async function RootLayout({children}: {children: React.ReactNode}): Promise<JSX.Element> {
-  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+export default function RootLayout({children}: {children: React.ReactNode}): JSX.Element {
   return (
     <html lang='ja'>
       <head>
@@ -32,7 +26,6 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       </head>
       <body>
         <ToastProvider>
-          {session && <Header />}
           {children}
           <Toast />
         </ToastProvider>
