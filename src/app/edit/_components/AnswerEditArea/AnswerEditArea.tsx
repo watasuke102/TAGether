@@ -72,8 +72,8 @@ export function AnswerEditArea(): React.ReactElement {
                     {provided => {
                       return (
                         <div className={css.editor_wrapper} ref={provided.innerRef} {...provided.draggableProps}>
-                          <div className={css.check}>
-                            {exam.type === 'Select' && (
+                          {exam.type === 'Select' && (
+                            <div className={css.check}>
                               <SelectButton
                                 type='radio'
                                 desc={''}
@@ -81,8 +81,10 @@ export function AnswerEditArea(): React.ReactElement {
                                 status={exam.answer[0] === String(i)}
                                 onChange={() => dispatch({type: 'q:answer/set_single', index: i})}
                               />
-                            )}
-                            {exam.type === 'MultiSelect' && (
+                            </div>
+                          )}
+                          {exam.type === 'MultiSelect' && (
+                            <div className={css.check}>
                               <SelectButton
                                 type='check'
                                 desc={''}
@@ -90,8 +92,8 @@ export function AnswerEditArea(): React.ReactElement {
                                 status={exam.answer.indexOf(String(i)) !== -1}
                                 onChange={() => dispatch({type: 'q:answer/toggle_multi', index: i})}
                               />
-                            )}
-                          </div>
+                            </div>
+                          )}
                           <div className={css.form}>
                             {exam.type === 'ListSelect' ? (
                               <div className={css.listselect_answer}>
