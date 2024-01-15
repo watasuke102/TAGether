@@ -131,7 +131,10 @@ export default function ExamEditForms(): React.ReactElement {
               type='material'
               icon={<DoubleChevronLeftIcon />}
               text='最初に挿入'
-              OnClick={() => dispatch({type: 'exam/insert', at: -1})}
+              OnClick={() => {
+                dispatch({type: 'exam/insert', at: -1});
+                dispatch({type: 'index/jump', at: 0});
+              }}
             />
             <Button
               type='material'
@@ -143,13 +146,19 @@ export default function ExamEditForms(): React.ReactElement {
               type='material'
               icon={<ArrowRightIcon />}
               text='1つ後に挿入'
-              OnClick={() => dispatch({type: 'exam/insert', at: state.current_editing + 1})}
+              OnClick={() => {
+                dispatch({type: 'exam/insert', at: state.current_editing + 1});
+                dispatch({type: 'index/next'});
+              }}
             />
             <Button
               type='material'
               icon={<DoubleChevronRightIcon />}
               text='最後に挿入'
-              OnClick={() => dispatch({type: 'exam/insert', at: state.exam.length})}
+              OnClick={() => {
+                dispatch({type: 'exam/insert', at: state.exam.length});
+                dispatch({type: 'index/jump', at: state.exam.length + 1});
+              }}
             />
           </ButtonContainer>
         </div>
