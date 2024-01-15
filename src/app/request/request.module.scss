@@ -40,6 +40,15 @@
   }
 }
 
+.edit_link {
+  text-wrap: nowrap;
+  // height: 100%;
+  color: $color-primary-3;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .form {
   width: 92vw;
   width: 0 auto;
@@ -48,4 +57,16 @@
 .button {
   margin-top: 10px;
   margin-bottom: 50px;
+}
+
+.modal {
+  max-width: 70vw;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 12px;
+  .req {
+    text-align: center;
+    font-size: 1.2em;
+  }
 }

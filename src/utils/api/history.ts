@@ -23,7 +23,7 @@ export async function new_history(data: NewHistory): AxiosPromise {
   return axios.post(history_key, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
 }
 
-export async function delete_history(id:  string): Promise<void> {
+export async function delete_history(id: string): Promise<void> {
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await axios.delete(`${history_key}/${id}`);
   mutate_history();
