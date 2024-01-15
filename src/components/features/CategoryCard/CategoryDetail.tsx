@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import css from './CategolyDetail.module.scss';
+import css from './CategoryDetail.module.scss';
 import {useRouter} from 'next/navigation';
 import React from 'react';
 import Button from '@/common/Button/Button';
@@ -14,7 +14,7 @@ import {SelectButton} from '@/common/SelectBox';
 import {useToastOperator} from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
-import {AllCategoryDataType} from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Category';
 import {CsvExport} from './CsvExport/CsvExport';
 import {useCategoryData} from '@utils/api/swr_hooks';
 import {mutate_category, toggle_delete_category} from '@utils/api/category';
@@ -38,7 +38,7 @@ interface Props {
   close: () => void;
 }
 
-export default function CategolyDetail(props: Props): React.ReactElement {
+export default function CategoryDetail(props: Props): React.ReactElement {
   const Toast = useToastOperator();
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [is_csv_export_open, set_is_csv_export_open] = React.useState(false);
@@ -149,7 +149,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
 
         <ButtonContainer>
           {info.map(e => (
-            <Button key={`categolydetail_${e.text}`} {...e} />
+            <Button key={`categorydetail_${e.text}`} {...e} />
           ))}
         </ButtonContainer>
       </div>

@@ -17,7 +17,7 @@ import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
 import {mutate_category, update_category} from '@utils/api/category';
 import Exam from '@mytypes/Exam';
-import {CategoryDataType} from '@mytypes/Categoly';
+import {CategoryDataType} from '@mytypes/Category';
 import TagData from '@mytypes/TagData';
 import {validate_category} from '@utils/ValidateCategory';
 import {useImmerReducer} from 'use-immer';
@@ -58,7 +58,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
   }, [edit_states]);
 
   // カテゴリ登録
-  const RegistCategoly = React.useCallback(() => {
+  const RegistCategory = React.useCallback(() => {
     Toast.close();
     const request_data: PutCategory = {
       title: edit_states.title,
@@ -97,7 +97,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
     console.info(request_data);
     console.groupEnd();
   }, [edit_states]);
-  useShortcut([{keycode: 'KeyS', handler: RegistCategoly}], {ctrl: true});
+  useShortcut([{keycode: 'KeyS', handler: RegistCategory}], {ctrl: true});
 
   return (
     <>
@@ -129,7 +129,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
       <div className={css.buttons}>
         <SelectButton type='check' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
         <div className={css.pushbutton_wrapper}>
-          <Button type={'filled'} icon={<CheckIcon />} text={'編集を適用'} OnClick={() => RegistCategoly()} />
+          <Button type={'filled'} icon={<CheckIcon />} text={'編集を適用'} OnClick={() => RegistCategory()} />
         </div>
       </div>
       <hr />

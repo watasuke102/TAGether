@@ -7,7 +7,7 @@
 import useImmSWR from 'swr/immutable';
 import {fetcher} from './common';
 import {category_key} from './category';
-import {CategoryDataType} from '@mytypes/Categoly';
+import {CategoryDataType} from '@mytypes/Category';
 
 // utils/api/category.tsに配置するとserver clientからimportしたときにエラーとなるから
 export function useCategoryData(id: number | string): [CategoryDataType, boolean, boolean] {

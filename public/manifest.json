@@ -23,12 +23,12 @@
   ],
   "shortcuts": [
     {
-      "name": "Categoly list",
+      "name": "Category list",
       "short_name": "list",
       "url": "/list"
     },
     {
-      "name": "Create new categoly",
+      "name": "Create new category",
       "short_name": "create",
       "url": "/create"
     },

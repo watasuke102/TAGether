@@ -4,13 +4,13 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import css from './CategolyCard.module.scss';
+import css from './CategoryCard.module.scss';
 import React from 'react';
 import {Card} from '@/common/Card';
 import Modal from '@/common/Modal/Modal';
-import {AllCategoryDataType} from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Category';
 import Tag from '../TagContainer/TagContainer';
-import Detail from './CategolyDetail';
+import Detail from './CategoryDetail';
 import FavoriteStar from './FavoriteStar';
 
 export default function ExamCard(props: AllCategoryDataType): React.ReactElement {

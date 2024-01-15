@@ -10,7 +10,7 @@ import Button from '@/common/Button/Button';
 import Modal from '@/common/Modal/Modal';
 import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import {Shuffle} from '@utils/ArrayUtil';
-import {CategoryDataType} from '@mytypes/Categoly';
+import {CategoryDataType} from '@mytypes/Category';
 import Exam from '@mytypes/Exam';
 import CloseIcon from '@assets/close.svg';
 import DownloadIcon from '@assets/download.svg';

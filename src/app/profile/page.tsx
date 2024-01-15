@@ -10,7 +10,7 @@ import React from 'react';
 import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
-import CategolyCard from '@/features/CategolyCard/CategolyCard';
+import CategoryCard from '@/features/CategoryCard/CategoryCard';
 import {ExamHistoryItem} from './_components/ExamHistoryItem/ExamHistoryItem';
 import {logout, useSession} from '@utils/api/session';
 import {useUser} from '@utils/api/user';
@@ -32,7 +32,7 @@ export default function profile(): React.ReactElement {
         {list.map((item, i) => {
           return (
             <div className={css.card_wrapper} key={`favorite_${i}`}>
-              <CategolyCard key={`card_${item.id}`} {...item} />
+              <CategoryCard key={`card_${item.id}`} {...item} />
             </div>
           );
         })}
@@ -48,7 +48,7 @@ export default function profile(): React.ReactElement {
           <Button type='filled' icon={<ArrowLeftIcon />} text='ログアウト' OnClick={logout} />
         </div>
         <h2>お気に入りカテゴリ</h2>
-        <div className={css.favorite_categoly}>
+        <div className={css.favorite_category}>
           <FavoriteList />
         </div>
 
