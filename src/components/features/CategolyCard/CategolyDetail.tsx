@@ -15,7 +15,6 @@ import {useToastOperator} from '@/common/Toast/Toast';
 import Tag from '@/features/TagContainer/TagContainer';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import {AllCategoryDataType} from '@mytypes/Categoly';
-import ExamHistory from '@mytypes/ExamHistory';
 import {CsvExport} from './CsvExport/CsvExport';
 import {useCategoryData} from '@utils/api/swr_hooks';
 import {mutate_category, toggle_delete_category} from '@utils/api/category';
@@ -36,7 +35,6 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 
 interface Props {
   data: AllCategoryDataType;
-  history?: ExamHistory;
   close: () => void;
 }
 
@@ -55,7 +53,7 @@ export default function CategolyDetail(props: Props): React.ReactElement {
 
   function Push(s: string): void {
     let url: string = '';
-    const id_query = props.history ? `?history_id=${props.history.history_key ?? ''}` : `?id=${props.data.id}`;
+    const id_query = `?id=${props.data.id}`;
     switch (s) {
       case 'edit':
         url = `/edit${id_query}`;
@@ -108,20 +106,12 @@ export default function CategolyDetail(props: Props): React.ReactElement {
   );
 
   // prettier-ignore
-  const info: ButtonInfo[] = props.history ?
-    [
-      {text: '間違えた問題一覧',   icon: <ListIcon />,        OnClick: () => Push('table'),        type: 'material'},
-      {text: '解答時の設定',       icon:<SettingIcon />,         OnClick: () => SetIsModalOpen(true), type: 'material'},
-      props.history.correct_count !== props.history.total_question ?
-        { text: '間違えた問題を解く', icon:<ArrowRightIcon />, OnClick: () => Push('exam'), type: 'filled' }
-        :
-        { text: '全問正解', icon:<CheckIcon />, OnClick: () => undefined, type: 'material' },
-    ] : [
-      {text: '編集する',      icon:<EditIcon />,         OnClick: () => Push('edit'),         type: 'material'},
-      {text: '問題一覧',      icon:<ListIcon />,        OnClick: () => Push('table'),        type: 'material'},
-      {text: '解答時の設定',  icon:<SettingIcon />,         OnClick: () => SetIsModalOpen(true), type: 'material'},
-      {text: 'この問題を解く',icon:<ArrowRightIcon />, OnClick: () => Push('exam'),         type: 'filled'},
-    ];
+  const info: ButtonInfo[] = [
+    {icon:<EditIcon />,       OnClick: () => Push('edit'),         type: 'material', text: '編集する'},
+    {icon:<ListIcon />,       OnClick: () => Push('table'),        type: 'material', text: '問題一覧'},
+    {icon:<SettingIcon />,    OnClick: () => SetIsModalOpen(true), type: 'material', text: '解答時の設定'},
+    {icon:<ArrowRightIcon />, OnClick: () => Push('exam'),         type: 'filled',   text: 'この問題を解く'},
+  ];
 
   return (
     <>
