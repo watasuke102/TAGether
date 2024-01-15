@@ -71,10 +71,10 @@
 }
 
 .modal {
-  width: 90vw;
+  width: 90dvw;
   max-height: 95vh;
   overflow-y: scroll;
-  padding: 30px 50px;
+  padding: 24px 16px;
   .head {
     display: block;
     margin: 8px 0;
@@ -93,8 +93,8 @@
 }
 
 .delete_confirm_modal {
-  width: 60vw;
-  padding: 30px 50px;
+  width: 90dvw;
+  padding: 20px 12px;
   text-align: center;
 }
 

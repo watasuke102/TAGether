@@ -52,10 +52,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 30px;
-  //width: 70vw;
-  min-width: 50vw;
+  padding: 20px 16px 4px;
+  width: 90vw;
   max-height: 80vh;
+
+  .modal_desc {
+    text-align: center;
+  }
 
   .question_list {
     width: 100%;

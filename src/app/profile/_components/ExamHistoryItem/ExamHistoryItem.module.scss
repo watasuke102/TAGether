@@ -59,13 +59,13 @@
 }
 
 .modal {
-  max-width: 70vw;
+  width: 90dvw;
   padding: 24px 12px;
   text-align: center;
 
   .buttons {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 20px;
     // ボタン同士の間隔を空ける
     & > * {
