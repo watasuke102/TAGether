@@ -9,6 +9,8 @@ import css from './top.module.scss';
 import React from 'react';
 import {useSession} from '@utils/api/session';
 import {Login} from './_components/Login/Login';
+import {version} from 'package.json';
+import Link from 'next/link';
 
 export default function index(): React.ReactElement {
   const [data, is_loading] = useSession();
@@ -27,7 +29,7 @@ export default function index(): React.ReactElement {
         <p>
           「カテゴリ一覧」を選択して問題を解いてみましょう。
           <br />
-          バグ・新機能の提案については「機能要望」ページでお願いします。
+          バグ・新機能の提案については<Link href='/request'> 「機能要望」ページ</Link>でお願いします。
           <br />
           サービス名はTAGether(たげざー)です
         </p>
@@ -46,8 +48,8 @@ export default function index(): React.ReactElement {
         <h2>ショートカットキーについて</h2>
         <p>問題解答ページ、カテゴリ編集ページで使用できます。</p>
         <ul>
-          <li>Ctrl + Shift + (Lもしくは右矢印キー)：次の問題・答え合わせ</li>
-          <li>Ctrl + Shift + (Hもしくは左矢印キー)：前の問題</li>
+          <li>Ctrl + Shift + L or → (右矢印キー)：次の問題・答え合わせ</li>
+          <li>Ctrl + Shift + H or ← (左矢印キー)：前の問題</li>
         </ul>
 
         <p>カテゴリ編集ページのみ、以下のショートカットキーが使えます。</p>
@@ -61,8 +63,8 @@ export default function index(): React.ReactElement {
 
         <p>問題解答ページのみ、以下のショートカットキーが使えます。</p>
         <ul>
-          <li>Tab：一つ次の問題に移動</li>
-          <li>Shift + Tab：一つ前の問題に移動</li>
+          <li>Tab：1つ次の入力欄に移動</li>
+          <li>Shift + Tab：1つ前の入力欄に移動</li>
           <li>SpaceもしくはEnter：（選択問題で）チェック状態の切り替え</li>
           <li>Ctrl + Shift + (Kもしくは上矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
           <li>Ctrl + Shift + (Jもしくは下矢印キー)：（並び替え問題で）選択中の問題を1つ上に移動</li>
@@ -73,7 +75,7 @@ export default function index(): React.ReactElement {
           <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
         </ul>
 
-        <p className={css.version}>TAGether v2.1.0</p>
+        <p className={css.version}>TAGether v{version}</p>
       </div>
     </>
   );
@@ -95,7 +97,7 @@ function Releases(): JSX.Element {
         </ul>
       </ul>
 
-      <h4>v2.0.0</h4>
+      <h3>v2.0.0</h3>
       <ul>
         <li>新機能：「解答時の設定」機能</li>
         <ul>

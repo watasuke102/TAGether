@@ -44,9 +44,14 @@ body {
     height: 100%;
   }
 
+  details {
+    margin-bottom: 16px;
+    summary {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
   details > *:not(summary) {
     margin-left: 20px;
   }
-
-  //span[class~="fas"] {}
 }

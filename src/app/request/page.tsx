@@ -16,22 +16,22 @@ import SendIcon from '@assets/send.svg';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [requests, isLoading] = useRequestData();
 
   return (
     <div className={css.container}>
       <Helmet title='機能要望 - TAGether' />
       <h1>要望一覧</h1>
-      <p>要望一覧を回答付きで表示します。荒らしや迷惑な内容は削除します。</p>
+      <p>
+        要望一覧を回答付きで表示します。 もし要望がある場合は、気軽に投稿してください。 荒らしや迷惑な内容は削除します。
+      </p>
       <p>
         開発状況（ToDo）は<a href='https://0e0.pw/lusM'>こちら</a>
       </p>
-      {/* 機能要望の送信フォーム */}
       <p>
-        もし要望がある場合は、気軽に投稿してください。
-        <br />
         以下の入力欄に要望を入力し、「送信」ボタンを押すことで送信できます。
+        <br />
+        送信者が特定できるような情報は保存されません。個別対応が必要な際は要望内にその旨を含めてください。
       </p>
       <div className={css.form}>
         <Form label='要望入力欄' value={request} OnChange={e => SetRequest(e.target.value)} />
