@@ -10,7 +10,7 @@ import css from './top.module.scss';
 import React from 'react';
 import {useSession} from '@utils/api/session';
 import {Login} from './_components/Login/Login';
-import {version} from 'package.json';
+import PackageJson from 'package.json';
 import Link from 'next/link';
 
 export default function index(): React.ReactElement {
@@ -77,7 +77,7 @@ export default function index(): React.ReactElement {
           <li>並び替え問題で、まれに並び替えができなくなる（情報求）</li>
         </ul>
 
-        <p className={css.version}>TAGether v{version}</p>
+        <p className={css.version}>TAGether v{PackageJson.version}</p>
       </div>
     </>
   );

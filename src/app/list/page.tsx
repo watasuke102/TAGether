@@ -7,7 +7,6 @@
 'use client';
 import css from './list.module.scss';
 import React from 'react';
-import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import {useRouter} from 'next/navigation';
 import {IndexedContainer} from '@/common/IndexedContainer';
@@ -108,7 +107,6 @@ export default function list(): React.ReactElement {
 
   return (
     <>
-      <Helmet title='カテゴリ一覧 - TAGether' />
       <h1>カテゴリ一覧</h1>
       <div className={css.form}>
         <SelectButton
