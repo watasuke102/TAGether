@@ -11,4 +11,9 @@ export type Env = {
   GOOGLE_CLIENT_SECRET: string;
   SESSION_OPTION: SessionOptions;
   EMAIL_WHITE_LIST: RegExp[];
+  WEBHOOK: {
+    CATEGORY_ADD: string;
+    TAG_REQUEST_ADD: string;
+    UPDATE: string;
+  };
 };

@@ -12,6 +12,7 @@ import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
+import {webhook} from '../../webhook';
 
 export async function GET(_: Request, {params}: {params: {id: number}}): Promise<Response> {
   const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
@@ -47,6 +48,7 @@ export async function PUT(req: Request, {params}: {params: {id: number}}): Promi
     .set({...data})
     .where(eq(exam.id, params.id));
   con.end();
+  webhook(env.WEBHOOK.UPDATE, 'カテゴリ更新', [{name: 'タイトル', value: data.title}]);
   return Response.json({inserted_id: result[0].insertId});
 }
 

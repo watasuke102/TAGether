@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {history} from 'src/db/schema';
 import {connect_drizzle} from 'src/db/drizzle';
-import {eq, sql} from 'drizzle-orm';
+import {eq} from 'drizzle-orm';
 import {getIronSession} from 'iron-session';
 import {v4} from 'uuid';
 import {cookies} from 'next/headers';

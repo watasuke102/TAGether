@@ -14,4 +14,9 @@ export const env: Env = {
     password: '',
   },
   EMAIL_WHITE_LIST: [/.*/],
+  WEBHOOK: {
+    CATEGORY_ADD: '',
+    TAG_REQUEST_ADD: '',
+    UPDATE: '',
+  },
 };

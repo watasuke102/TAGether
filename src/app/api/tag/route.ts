@@ -10,6 +10,7 @@ import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
+import {webhook} from '../webhook';
 
 export async function GET(): Promise<Response> {
   const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
@@ -37,5 +38,9 @@ export async function POST(req: Request): Promise<Response> {
   const {db, con} = await connect_drizzle();
   const result = await db.insert(tag).values(data);
   con.end();
+  webhook(env.WEBHOOK.TAG_REQUEST_ADD, '新規タグ追加', [
+    {name: 'タグ名', value: data.name},
+    {name: '説明', value: data.description},
+  ]);
   return Response.json({inserted_id: result[0].insertId});
 }

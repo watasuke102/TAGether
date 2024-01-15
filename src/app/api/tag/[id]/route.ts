@@ -11,6 +11,7 @@ import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
+import {webhook} from '../../webhook';
 
 export async function GET(_: Request, {params}: {params: {id: number}}): Promise<Response> {
   const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
@@ -36,7 +37,12 @@ export async function PUT(req: Request, {params}: {params: {id: number}}): Promi
   }
   const data: PutTag = await req.json();
   const {db, con} = await connect_drizzle();
+  const old_tag = await db.select().from(tag).where(eq(tag.id, params.id));
   await db.update(tag).set(data).where(eq(tag.id, params.id));
   con.end();
+  webhook(env.WEBHOOK.TAG_REQUEST_ADD, 'タグ更新', [
+    {name: 'diff (name)', value: `\`\`\`diff\n- ${old_tag[0].name}\n+ ${data.name}\n\`\`\``},
+    {name: 'diff (description)', value: `\`\`\`diff\n- ${old_tag[0].description}\n+ ${data.description}\n\`\`\``},
+  ]);
   return Response.json({message: ''});
 }
