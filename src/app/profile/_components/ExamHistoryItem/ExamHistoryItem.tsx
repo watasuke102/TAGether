@@ -42,9 +42,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
           <span className={css.date}>{props.created_at.slice(0, -5).replace('T', ' ')}</span>
         </div>
         <div className={css.redo_button}>
-          {total_questions === correct_answers ? (
-            <></>
-          ) : (
+          {total_questions !== correct_answers && (
             <Button
               text='解き直し'
               icon={<ClockIcon />}
