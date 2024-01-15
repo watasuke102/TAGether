@@ -6,7 +6,6 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
 import '@/common/main.scss';
-import '@/common/nprogress.css';
 import {Toast, ToastProvider} from '@/common/Toast/Toast';
 
 export const metadata = {
