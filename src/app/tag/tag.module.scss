@@ -24,7 +24,7 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  width: 95vw;
+  width: 100%;
 }
 
 .card_wrapper {
@@ -48,12 +48,24 @@
     font-size: 1.3em;
   }
 
-  // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
-  @media screen and (min-width: 800px) {
+  &:hover {
+    cursor: pointer;
+    background-color: $color-3;
+    transition: 300ms;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .heading {
+    justify-content: space-between;
+  }
+  .card_wrapper {
+    width: 100%;
+  }
+  .card {
+    // スマホにおいてhover時アニメーションを抑制
     &:hover {
-      cursor: pointer;
-      background-color: $color-3;
-      transition: 300ms;
+      background-color: inherit;
     }
   }
 }
