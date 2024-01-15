@@ -56,42 +56,46 @@ export default function Request(): React.ReactElement {
       {isLoading || is_user_loading ? (
         <Loading />
       ) : (
-        <table>
-          <tbody>
-            <tr>
-              <th>ID</th>
-              <th>最終更新</th>
-              <th>内容</th>
-              <th>回答</th>
-              {user.is_admin && <th>編集</th>}
-            </tr>
-            {requests
-              .slice(0)
-              .map((e, i) => {
-                const updated_at = e.updated_at.slice(0, -5).replace('T', ' ');
-                return (
-                  <tr key={`req_${e.id}`}>
-                    <td className={css.id}>{e.id}</td>
-                    <td className={css.updated_at}>{updated_at}</td>
-                    <td className={css.body}>{e.body}</td>
-                    <td className={css.answer}>{e.answer}</td>
-                    {user.is_admin && (
-                      <td
-                        className={css.edit_link}
-                        onClick={() => {
-                          set_opening_edit_id(i);
-                          set_answer(e.answer);
-                        }}
-                      >
-                        編集…
-                      </td>
-                    )}
-                  </tr>
-                );
-              })
-              .reverse()}
-          </tbody>
-        </table>
+        <section className={css.table_wrapper}>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>最終更新</th>
+                <th>内容</th>
+                <th>回答</th>
+                {user.is_admin && <th>編集</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {requests
+                .slice(0)
+                .map((e, i) => {
+                  const updated_at = e.updated_at.slice(0, -5).replace('T', ' ');
+                  return (
+                    <tr key={`req_${e.id}`}>
+                      <td className={css.id}>{e.id}</td>
+                      <td className={css.updated_at}>{updated_at}</td>
+                      <td className={css.body}>{e.body}</td>
+                      <td className={css.answer}>{e.answer}</td>
+                      {user.is_admin && (
+                        <td
+                          className={css.edit_link}
+                          onClick={() => {
+                            set_opening_edit_id(i);
+                            set_answer(e.answer);
+                          }}
+                        >
+                          編集…
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })
+                .reverse()}
+            </tbody>
+          </table>
+        </section>
       )}
       <Modal isOpen={opening_index !== undefined} close={() => set_opening_edit_id(undefined)}>
         {opening_index !== undefined && requests?.at(opening_index ?? -1) ? (
