@@ -9,11 +9,15 @@
 */
 @import '../../components/common/variable';
 
+.table_wrapper {
+  min-width: 90dvw;
+  overflow-x: auto;
+}
+
 .container {
   table {
-    width: 90vw;
+    width: 100%;
     margin: auto;
-
     th {
       border-bottom: 2px solid $color-4;
     }
@@ -28,13 +32,15 @@
       }
 
       .updated_at {
+        text-wrap: nowrap;
         width: 220px;
         text-align: center;
+        padding: 0 4px;
       }
 
       .body,
       .answer {
-        width: 40%;
+        padding: 0 12px;
       }
     }
   }
