@@ -23,7 +23,7 @@ export async function PUT(req: Request, {params}: {params: {id: number}}): Promi
   const result = await db.update(request).set({answer}).where(eq(request.id, params.id));
   const updated_req = await db.select().from(request).where(eq(request.id, params.id));
   con.end();
-  webhook(env.WEBHOOK.UPDATE, '要望に対する回答追加', [
+  webhook(env.WEBHOOK.UPDATE, '要望に対する回答更新', [
     {name: '要望内容', value: updated_req[0].body},
     {name: '回答', value: answer},
   ]);
