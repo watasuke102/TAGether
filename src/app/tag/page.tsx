@@ -35,7 +35,6 @@ export default function Tag(): React.ReactElement {
   }
 
   if (error) return <span>Error</span>;
-  if (isLoading || !tags) return <Loading />;
 
   return (
     <>
@@ -45,23 +44,27 @@ export default function Tag(): React.ReactElement {
           <Button type='filled' text='新規作成' icon={<AddIcon />} OnClick={() => SetIsModalOpen(true)} />
         </div>
       </div>
-
-      <div className={css.container}>
-        {tags.length === 0 ? (
-          <p>見つかりませんでした</p>
-        ) : isLoading ? (
-          <Loading />
-        ) : (
-          tags.map(e => <TagItem key={`tagcard_${e.id ?? ''}`} {...e} />)
-        )}
-      </div>
-
-      <TagDetail
-        createMode
-        isOpen={is_modal_open}
-        tag={{name: '', description: '', updated_at: ''}}
-        close={() => SetIsModalOpen(false)}
-      />
+      {isLoading || !tags ? (
+        <Loading />
+      ) : (
+        <>
+          <div className={css.container}>
+            {tags.length === 0 ? (
+              <p>見つかりませんでした</p>
+            ) : isLoading ? (
+              <Loading />
+            ) : (
+              tags.map(e => <TagItem key={`tagcard_${e.id ?? ''}`} {...e} />)
+            )}
+          </div>
+          <TagDetail
+            createMode
+            isOpen={is_modal_open}
+            tag={{name: '', description: '', updated_at: ''}}
+            close={() => SetIsModalOpen(false)}
+          />
+        </>
+      )}
     </>
   );
 }
