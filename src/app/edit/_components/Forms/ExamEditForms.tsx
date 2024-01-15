@@ -208,7 +208,9 @@ export default function ExamEditForms(): React.ReactElement {
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.modal}>
-          <p className={css.modal_desc}>クリックすると問題に移動します。右のアイコンをドラッグすると並び替えができます。</p>
+          <p className={css.modal_desc}>
+            クリックすると問題に移動します。右のアイコンをドラッグすると並び替えができます。
+          </p>
           <DragDropContext
             onDragEnd={(e: DropResult) => {
               if (e.destination) {
