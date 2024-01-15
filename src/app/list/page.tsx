@@ -15,9 +15,9 @@ import Modal from '@/common/Modal/Modal';
 import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
 import {useWaiting} from '@/common/Waiting';
-import CategolyCard from '@/features/CategolyCard/CategolyCard';
+import CategoryCard from '@/features/CategoryCard/CategoryCard';
 import {useAllCategoryData, new_category} from '@utils/api/category';
-import {AllCategoryDataType} from '@mytypes/Categoly';
+import {AllCategoryDataType} from '@mytypes/Category';
 import {useToastOperator} from '@/common/Toast/Toast';
 import AddIcon from '@assets/add.svg';
 import CloseIcon from '@assets/close.svg';
@@ -35,8 +35,8 @@ export default function list(): React.ReactElement {
   const [list, isLoading] = useAllCategoryData();
 
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
-  const [categoly_name, SetCategolyName] = React.useState('');
-  const [categoly_desc, SetCategolyDesc] = React.useState('');
+  const [category_name, SetCategoryName] = React.useState('');
+  const [category_desc, SetCategoryDesc] = React.useState('');
 
   const [Waiting, StartWaiting] = useWaiting();
 
@@ -72,19 +72,19 @@ export default function list(): React.ReactElement {
     } else {
       searchResult = list;
     }
-    const categoly_list = searchResult.filter(e => e.deleted === show_only_trash);
+    const category_list = searchResult.filter(e => e.deleted === show_only_trash);
     // 検索結果からカードを生成
-    if (categoly_list.length === 0) {
+    if (category_list.length === 0) {
       cards.push(
         <p key={'result_404'} className={css.notfound}>
           見つかりませんでした
         </p>,
       );
     } else {
-      categoly_list.forEach(element => {
+      category_list.forEach(element => {
         cards.push(
           <div className={css.card_wrapper}>
-            <CategolyCard key={`card_${element.id}`} {...element} />
+            <CategoryCard key={`card_${element.id}`} {...element} />
           </div>,
         );
       });
@@ -95,7 +95,7 @@ export default function list(): React.ReactElement {
 
     // カテゴリ作成ページへ飛ぶカードを追加
     cards.unshift(
-      <div key={'newcategoly'} className={css.card} onClick={() => SetIsModalOpen(true)}>
+      <div key={'newcategory'} className={css.card} onClick={() => SetIsModalOpen(true)}>
         <div className={css.create_icon}>
           <AddIcon />
         </div>
@@ -161,10 +161,10 @@ export default function list(): React.ReactElement {
       )}
 
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
-        <div className={css.add_categoly_window}>
+        <div className={css.add_category_window}>
           <h2>新規カテゴリの追加</h2>
-          <Form label='タイトル' value={categoly_name} OnChange={ev => SetCategolyName(ev.target.value)} />
-          <Form label='説明' value={categoly_desc} OnChange={ev => SetCategolyDesc(ev.target.value)} />
+          <Form label='タイトル' value={category_name} OnChange={ev => SetCategoryName(ev.target.value)} />
+          <Form label='説明' value={category_desc} OnChange={ev => SetCategoryDesc(ev.target.value)} />
           <div className={css.button_container}>
             <Button type='material' icon={<CloseIcon />} text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
             <Button
@@ -172,14 +172,14 @@ export default function list(): React.ReactElement {
               icon={<CheckIcon />}
               text='作成する'
               OnClick={() => {
-                if (categoly_name === '') {
+                if (category_name === '') {
                   Toast.open('カテゴリのタイトルを設定してください');
                   return;
                 }
                 StartWaiting();
                 new_category({
-                  title: categoly_name,
-                  description: categoly_desc,
+                  title: category_name,
+                  description: category_desc,
                   list: JSON.stringify([
                     {type: 'Text', question: '問題文', question_choices: [''], answer: ['解答'], comment: ''},
                   ]),

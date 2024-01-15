@@ -7,7 +7,7 @@
 import {exam, tag} from 'src/db/schema';
 import {connect_drizzle} from '../../../../../db/drizzle';
 import {eq, sql} from 'drizzle-orm';
-import {CategoryDataType} from '@mytypes/Categoly';
+import {CategoryDataType} from '@mytypes/Category';
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
 import {Session} from '@mytypes/Session';

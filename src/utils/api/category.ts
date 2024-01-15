@@ -7,7 +7,7 @@
 import {mutate} from 'swr';
 import axios, {AxiosPromise} from 'axios';
 import {fetcher, useApiData} from './common';
-import {AllCategoryDataType, CategoryDataType} from '@mytypes/Categoly';
+import {AllCategoryDataType, CategoryDataType} from '@mytypes/Category';
 import {NewCategory} from 'src/app/api/category/route';
 import {PutCategory} from 'src/app/api/category/[id]/route';
 import {tag_key} from './tag';

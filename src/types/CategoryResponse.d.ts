@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 
 // APIレスポンスの型
-interface CategolyResponse {
+interface CategoryResponse {
   id?: number;
   updated_at?: string;
   version: number;
@@ -17,4 +17,4 @@ interface CategolyResponse {
   deleted: number;
 }
 
-export default CategolyResponse;
+export default CategoryResponse;
