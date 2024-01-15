@@ -20,7 +20,7 @@
     // prettier-ignore
     grid-template:
       'delete_btn title'  auto
-      'redo_btn   status' auto / 128px 1fr;
+      'redo_btn   status' auto / auto 1fr;
   }
 }
 
@@ -32,6 +32,7 @@
 }
 .redo_button {
   grid-area: redo_btn;
+  width: 128px;
   button {
     width: 100%;
   }
