@@ -14,6 +14,7 @@ import DeleteIcon from '@assets/delete.svg';
 import CloseIcon from '@assets/close.svg';
 import ClockIcon from '@assets/clock.svg';
 import {useRouter} from 'next/navigation';
+import {history_title} from '@utils/HistoryTitle';
 
 export function ExamHistoryItem(props: AllHistory): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -32,7 +33,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
         </div>
 
         <span className={css.title} onClick={() => router.push(`/examtable?history_id=${props.id}`)}>
-          {props.title}
+          {history_title(props)}
         </span>
 
         <div className={css.status}>
@@ -68,8 +69,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
             />
             <Button
               OnClick={() => {
-                SetIsModalOpen(false);
-                delete_history(props.id);
+                delete_history(props.id).then(() => SetIsModalOpen(false));
               }}
               type='filled'
               icon={<DeleteIcon />}

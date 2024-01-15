@@ -13,6 +13,7 @@ import {redirect} from 'next/navigation';
 import {fetch_history} from '@utils/api/history';
 import {fetch_category_data, fetch_category_with_spec_tag_data} from '@utils/api/category';
 import Loading from './loading';
+import {history_title} from '@utils/HistoryTitle';
 
 type Props = {
   searchParams: {
@@ -48,7 +49,7 @@ export default async function Exam(props: Props): Promise<JSX.Element> {
         prop.exam = history.exam.filter(
           (_, i) => history.exam_state[i].correct_count !== history.exam_state[i].total_question,
         );
-        prop.title = history.title;
+        prop.title = history_title(history);
         prop.history = history;
       } else {
         redirect('/list');

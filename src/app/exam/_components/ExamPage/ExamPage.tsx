@@ -60,7 +60,7 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
       exam: state.exam,
       exam_state: state.exam_state,
       redo_times,
-      title: props.history ? `解き直し：${props.title}（${redo_times}回目）` : props.title,
+      title: props.history ? props.history.title : props.title,
     }).then(e => set_inserted_history_id(e.data.inserted_id));
   }, [state.exam_state]);
 
