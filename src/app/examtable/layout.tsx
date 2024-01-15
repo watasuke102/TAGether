@@ -4,6 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import Header from '@/features/Header/Header';
 import {require_session_or_redirect} from '@utils/RequireSessionOrRedirect';
 import React from 'react';
 
@@ -13,5 +14,10 @@ export const metadata = {
 
 export default async function RootLayout({children}: {children: React.ReactNode}): Promise<JSX.Element> {
   await require_session_or_redirect();
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }
