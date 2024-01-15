@@ -5,7 +5,6 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
-import Header from '@/features/Header/Header';
 import css from './top.module.scss';
 import React from 'react';
 import {useSession} from '@utils/api/session';
@@ -23,7 +22,6 @@ export default function index(): React.ReactElement {
 
   return (
     <>
-      <Header />
       <div>
         <h1>ようこそ</h1>
         <p>
