@@ -7,7 +7,6 @@
 'use client';
 import css from './profile.module.scss';
 import React from 'react';
-import Helmet from 'react-helmet';
 import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
@@ -43,8 +42,6 @@ export default function profile(): React.ReactElement {
 
   return (
     <>
-      <Helmet title='プロフィール - TAGether' />
-
       <div className={css.container}>
         <div className={css.user_info}>
           {is_user_loading ? <div /> : <span>{user.email} としてログイン中です。</span>}
