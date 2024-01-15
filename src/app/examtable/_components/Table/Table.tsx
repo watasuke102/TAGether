@@ -172,12 +172,14 @@ export function Table(props: ExamTableProps): React.ReactElement {
       <div className={css.button_container}>
         <div className={css.buttons}>
           <Button text='戻る' icon={<ArrowLeftIcon />} OnClick={router.back} type='material' />
-          <Button
-            OnClick={() => set_show_user_answer(e => !e)}
-            type='material'
-            text={show_user_answer ? '自分の解答を非表示' : '自分の解答を表示'}
-            icon={show_user_answer ? <InvisibleIcon /> : <VisibleIcon />}
-          />
+          {props.history && (
+            <Button
+              OnClick={() => set_show_user_answer(e => !e)}
+              type='material'
+              text={show_user_answer ? '自分の解答を非表示' : '自分の解答を表示'}
+              icon={show_user_answer ? <InvisibleIcon /> : <VisibleIcon />}
+            />
+          )}
           <Button
             OnClick={() => SetShowCorrectAnswer(!show_correct_answer)}
             type='material'
