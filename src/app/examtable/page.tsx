@@ -11,6 +11,7 @@ import Loading from '@/common/Loading/Loading';
 import {fetch_category_data} from '@utils/api/category';
 import {fetch_history} from '@utils/api/history';
 import {redirect} from 'next/navigation';
+import {history_title} from '@utils/HistoryTitle';
 
 type Props = {
   searchParams: {
@@ -36,7 +37,7 @@ export default function ExamTablePage(props: Props): React.ReactElement {
         const history = await fetch_history(props.searchParams.history_id);
         prop = {
           exam: history.exam,
-          title: history.title,
+          title: history_title(history),
           history: history,
         };
       } else {
