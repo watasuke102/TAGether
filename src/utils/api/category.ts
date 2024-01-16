@@ -23,7 +23,7 @@ export function fetch_category_data(id: number | string): Promise<CategoryDataTy
 }
 // 特定のタグが付けられているすべてのカテゴリ
 export function fetch_category_with_spec_tag_data(tag_id: number | string): Promise<CategoryDataType> {
-  return fetcher(`${env.API_URL}{tag_key}/${tag_id}/all_category`);
+  return fetcher(`${env.API_URL}${tag_key}/${tag_id}/all_category`);
 }
 
 export async function new_category(data: NewCategory): AxiosPromise {
