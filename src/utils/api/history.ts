@@ -9,6 +9,7 @@ import axios, {AxiosPromise} from 'axios';
 import {fetcher, useApiData} from './common';
 import {AllHistory, History} from '@mytypes/ExamHistory';
 import {NewHistory} from 'src/app/api/history/route';
+import {env} from 'env';
 
 export const history_key = '/api/history';
 
@@ -16,7 +17,7 @@ export const mutate_history = (): Promise<void> => mutate(history_key);
 export const useAllHistory = useApiData<AllHistory[]>(history_key);
 
 export function fetch_history(id: string): Promise<History> {
-  return fetcher(`http://localhost:3009${history_key}/${id}`);
+  return fetcher(`${env.API_URL}${history_key}/${id}`);
 }
 
 export async function new_history(data: NewHistory): AxiosPromise {

@@ -7,6 +7,7 @@
 import {Env} from '@mytypes/env';
 
 export const env: Env = {
+  API_URL: '',
   GOOGLE_CLIENT_ID: '',
   GOOGLE_CLIENT_SECRET: '',
   SESSION_OPTION: {

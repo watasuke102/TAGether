@@ -11,6 +11,7 @@ import {AllCategoryDataType, CategoryDataType} from '@mytypes/Category';
 import {NewCategory} from 'src/app/api/category/route';
 import {PutCategory} from 'src/app/api/category/[id]/route';
 import {tag_key} from './tag';
+import {env} from 'env';
 
 export const category_key = '/api/category';
 
@@ -18,11 +19,11 @@ export const mutate_category = (): Promise<void> => mutate(category_key);
 export const useAllCategoryData = useApiData<AllCategoryDataType[]>(category_key);
 
 export function fetch_category_data(id: number | string): Promise<CategoryDataType> {
-  return fetcher(`http://localhost:3009${category_key}/${id}`);
+  return fetcher(`${env.API_URL}${category_key}/${id}`);
 }
 // 特定のタグが付けられているすべてのカテゴリ
 export function fetch_category_with_spec_tag_data(tag_id: number | string): Promise<CategoryDataType> {
-  return fetcher(`http://localhost:3009${tag_key}/${tag_id}/all_category`);
+  return fetcher(`${env.API_URL}{tag_key}/${tag_id}/all_category`);
 }
 
 export async function new_category(data: NewCategory): AxiosPromise {

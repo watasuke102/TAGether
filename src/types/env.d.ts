@@ -7,6 +7,7 @@
 import {SessionOptions} from 'iron-session';
 
 export type Env = {
+  API_URL: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
   SESSION_OPTION: SessionOptions;

@@ -10,13 +10,14 @@ import {fetcher, useApiData} from './common';
 import TagData from '@mytypes/TagData';
 import {PutTag} from 'src/app/api/tag/[id]/route';
 import {PostTag} from 'src/app/api/tag/route';
+import {env} from 'env';
 
 export const tag_key = '/api/tag';
 
 export const mutate_tag = (): Promise<void> => mutate(tag_key);
 export const useTagData = useApiData<TagData[]>(tag_key);
 export function fetch_tag(): Promise<TagData[]> {
-  return fetcher(`http://localhost:3009${tag_key}`);
+  return fetcher(env.API_URL + tag_key);
 }
 
 export async function new_tag(data: PostTag): Promise<AxiosPromise> {
