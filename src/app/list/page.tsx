@@ -41,12 +41,22 @@ export default function list(): React.ReactElement {
   const [Waiting, StartWaiting] = useWaiting();
 
   function CardList(): React.ReactElement[] {
+    const card_new_category = (
+      <div key={'newcategory'} className={css.card} onClick={() => SetIsModalOpen(true)}>
+        <div className={css.create_icon}>
+          <AddIcon />
+        </div>
+        <p id={css.create_new}>新規作成</p>
+      </div>
+    )
+
     if (!list || list.length === 0) {
-      return [];
+      return [card_new_category];
     }
+
     let cards: React.ReactElement[] = [];
     let searchResult: AllCategoryDataType[] = [];
-    cards = [];
+
     // 検索欄になにか記入されていたら、検索
     if (search_str !== '') {
       list.forEach(e => {
@@ -94,14 +104,8 @@ export default function list(): React.ReactElement {
     }
 
     // カテゴリ作成ページへ飛ぶカードを追加
-    cards.unshift(
-      <div key={'newcategory'} className={css.card} onClick={() => SetIsModalOpen(true)}>
-        <div className={css.create_icon}>
-          <AddIcon />
-        </div>
-        <p id={css.create_new}>新規作成</p>
-      </div>,
-    );
+    cards.unshift(card_new_category);
+
     return cards;
   }
 
