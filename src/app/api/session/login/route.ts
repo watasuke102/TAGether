@@ -11,6 +11,7 @@ import {eq} from 'drizzle-orm';
 import {getIronSession} from 'iron-session';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
+import {webhook} from '../../webhook';
 
 export type LoginData = {
   uid: string;
@@ -29,6 +30,10 @@ export async function POST(req: Request): Promise<Response> {
       return Response.json({message: '許可されていないメールアドレス形式です'});
     }
     await db.insert(users).values({...data});
+    webhook(env.WEBHOOK.NEW_USER, '新規ユーザー', [
+      {name: 'email', value: data.email},
+      {name: 'uid', value: data.uid},
+    ]);
     user = {
       ...data,
       is_admin: false,

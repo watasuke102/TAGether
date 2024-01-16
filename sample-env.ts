@@ -19,5 +19,6 @@ export const env: Env = {
     CATEGORY_ADD: '',
     TAG_REQUEST_ADD: '',
     UPDATE: '',
+    NEW_USER: '',
   },
 };

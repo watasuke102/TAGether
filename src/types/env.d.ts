@@ -16,5 +16,6 @@ export type Env = {
     CATEGORY_ADD: string;
     TAG_REQUEST_ADD: string;
     UPDATE: string;
+    NEW_USER: string;
   };
 };
