@@ -43,7 +43,6 @@ React (Next.js) によるフロントエンド
   アイコンのsvg（基本的に[Google Fonts](https://fonts.google.com/icons)から取ってきたもの）
 - db/
   drizzleのschemaとMySQLへ接続する関数
-
 - components/
   - common/ → 共通して使うコンポーネント
   - features/ → 機能ごとに分ける
