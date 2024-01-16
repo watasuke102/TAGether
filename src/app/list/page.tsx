@@ -48,13 +48,13 @@ export default function list(): React.ReactElement {
         </div>
         <p id={css.create_new}>新規作成</p>
       </div>
-    )
+    );
 
     if (!list || list.length === 0) {
       return [card_new_category];
     }
 
-    let cards: React.ReactElement[] = [];
+    const cards: React.ReactElement[] = [];
     let searchResult: AllCategoryDataType[] = [];
 
     // 検索欄になにか記入されていたら、検索
