@@ -13,7 +13,8 @@
 ## How to use
 
 1. [Google Cloud Console](https://console.cloud.google.com/apis/credentials/oauthclient) でOAuthクライアントを作成
-1. `cp sample-env.ts env.ts`等を
+   あるいは後述のenv.tsにおいて、`DISABLE_LOGIN_FEATURE_ON_DEVELOPING`をtrueに設定する
+1. `cp sample-env.ts env.ts`
 1. env.tsを編集し、OAuthのclient idなどを適切に設定する
 1. `./start.sh` (本番環境は`./start.sh product`)
 
@@ -21,11 +22,11 @@
 
 最新情報は compose.yaml をチェックしてね
 
-| 名前 | ポート |
+| 名前                     | ポート |
 | ------------------------ | ------ |
-| フロントエンド (Next.js) | 3009 |
-| phpMyAdmin | 8888 |
-| MySQL | 3334 |
+| フロントエンド (Next.js) | 3009   |
+| phpMyAdmin               | 8888   |
+| MySQL                    | 3334   |
 
 ## ディレクトリ構造
 

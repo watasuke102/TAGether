@@ -18,4 +18,5 @@ export type Env = {
     UPDATE: string;
     NEW_USER: string;
   };
+  DISABLE_LOGIN_FEATURE_ON_DEVELOPING: boolean;
 };

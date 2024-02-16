@@ -36,12 +36,20 @@ function Main(): JSX.Element {
     onSuccess: data => handle_login(jwtDecode(data.credential ?? '')),
     onError: () => Toast.open('ログインに失敗しました。\nインターネット接続を確認し、一定時間後にやり直してください。'),
   });
+
+  const is_enabled_detour_login = process.env.NODE_ENV === 'development' && env.DISABLE_LOGIN_FEATURE_ON_DEVELOPING;
+
   return (
     <section className={css.container}>
       <div className={css.logo}>
         <Logo />
       </div>
-      <Button type='filled' icon={<GoogleIcon />} text='Googleアカウントでログイン' OnClick={google_login} />
+      <Button
+        type='filled'
+        icon={<GoogleIcon />}
+        text={is_enabled_detour_login ? 'ゲストとしてログイン（開発用）' : 'Googleアカウントでログイン'}
+        OnClick={is_enabled_detour_login ? () => login('guest', 'guest') : google_login}
+      />
       <span>学校から与えられているGoogleアカウントを用いてログインを行ってください。</span>
       <span>
         ログインボタンを押下することで、<Link href='/pp'>プライバシーポリシー</Link>に同意したものとみなします。

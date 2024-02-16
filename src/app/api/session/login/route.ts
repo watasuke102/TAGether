@@ -26,7 +26,10 @@ export async function POST(req: Request): Promise<Response> {
   let user: Omit<Session, 'is_logged_in'> | undefined = registered_user?.at(0);
   if (!user) {
     // registration
-    if (!env.EMAIL_WHITE_LIST.map(e => e.test(data.email)).includes(true)) {
+    if (
+      !env.EMAIL_WHITE_LIST.map(e => e.test(data.email)).includes(true) &&
+      !(process.env.NODE_ENV === 'development' && env.DISABLE_LOGIN_FEATURE_ON_DEVELOPING)
+    ) {
       return Response.json({message: '許可されていないメールアドレス形式です'});
     }
     await db.insert(users).values({...data});

@@ -21,4 +21,5 @@ export const env: Env = {
     UPDATE: '',
     NEW_USER: '',
   },
+  DISABLE_LOGIN_FEATURE_ON_DEVELOPING: false,
 };
