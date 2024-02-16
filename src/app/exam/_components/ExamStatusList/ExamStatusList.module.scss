@@ -12,7 +12,7 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  background-color: $color-1;
+  background-color: $color-0;
   font-size: 1.3em;
 }
 .normal {
@@ -58,6 +58,8 @@
 }
 
 .item {
+  border-bottom: 1px double $color-fg;
+  padding: 4px 0;
   &:hover {
     cursor: pointer;
   }

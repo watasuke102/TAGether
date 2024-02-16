@@ -42,6 +42,7 @@
   font-size: 1.7em;
   white-space: pre-wrap;
   word-wrap: break-word;
+  border-bottom: 2px dotted $color-fg;
 }
 .answer {
   grid-area: answer;
