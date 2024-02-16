@@ -61,7 +61,13 @@ export default async function Exam(props: Props): Promise<JSX.Element> {
         .filter((_, i) => !((begin && i < begin) || (end && i > end)))
         .map(e => {
           if (props.searchParams.choiceShuffle && Array.isArray(e.question_choices)) {
-            e.question_choices = Shuffle(e.question_choices);
+            const choices = Shuffle(e.question_choices.map((e, i) => ({original_index: i, choice: e})));
+            e.question_choices = choices.map(choice => choice.choice);
+            if (e.type === 'Select' || e.type === 'MultiSelect') {
+              e.answer = choices.flatMap((choice, i) =>
+                e.answer.indexOf(String(choice.original_index)) !== -1 ? String(i) : [],
+              );
+            }
           }
           return e;
         });
