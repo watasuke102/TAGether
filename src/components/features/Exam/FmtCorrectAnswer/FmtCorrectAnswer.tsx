@@ -81,7 +81,6 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
               <ol>
                 {props.exam.answer.map((e, i) => (
                   <li key={'result_listselect_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
-                    {e}
                     <span className={css.answer_text}>{e}</span>
                   </li>
                 ))}
