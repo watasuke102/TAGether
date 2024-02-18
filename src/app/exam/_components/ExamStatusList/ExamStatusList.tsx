@@ -71,7 +71,7 @@ export function ExamStatusList(): JSX.Element {
         )}
         {state.exam_state.map((e, i) => (
           <span
-            className={css.item}
+            className={`${css.item} ${e.checked ? '' : css.yet}`}
             key={'exam_state_item-' + i}
             onClick={() => {
               dispatch({type: 'index/set', index: i});
