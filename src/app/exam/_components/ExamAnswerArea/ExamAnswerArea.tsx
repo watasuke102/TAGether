@@ -119,7 +119,7 @@ export function ExamAnswerArea(): JSX.Element {
             ));
           case 'Select':
             return exam.question_choices?.map((e, i) => (
-              <div key={'select-' + i} className={css.item}>
+              <div key={'select-' + i} className={`${css.item} ${css.select_item}`}>
                 <div
                   className={(() => {
                     // ここが本来の正解だった場合
@@ -141,7 +141,7 @@ export function ExamAnswerArea(): JSX.Element {
             ));
           case 'MultiSelect':
             return exam.question_choices?.map((e, i) => (
-              <div key={'multiselect-' + i} className={css.item}>
+              <div key={'multiselect-' + i} className={`${css.item} ${css.select_item}`}>
                 <ResultIndicator index={i} />
                 <SelectButton
                   id={i === 0 ? FIRST_ITEM : ''}
