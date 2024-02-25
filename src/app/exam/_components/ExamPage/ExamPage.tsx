@@ -37,10 +37,22 @@ export type ExamPageProps = {
 export function ExamPage(props: ExamPageProps): JSX.Element {
   const [state, dispatch] = useImmerReducer(exam_reducer, init_state(props.exam));
   const [inserted_history_id, set_inserted_history_id] = React.useState('');
+  const prev_index = React.useRef(0);
+  const result_area_ref = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
     document.title = `(${state.index + 1} / ${props.exam.length}) : ${props.title} - TAGether`;
-  }, [state.index]);
+    // 答え合わせされたとき（=== index不変）結果のコンテナまでスクロール
+    if (state.exam_state[state.index].checked && state.index === prev_index.current) {
+      // scrollIntoViewではできない、ヘッダー周りの調節を行う
+      window.scrollTo({
+        top: (result_area_ref.current?.offsetTop ?? 0) - 100,
+      });
+    } else {
+      window.scrollTo({top: 0});
+    }
+    prev_index.current = state.index;
+  }, [state.index, state.exam_state[state.index].checked]);
   useShortcut(
     [
       {keycode: 'KeyH', handler: () => dispatch({type: 'handle_button/prev'})},
@@ -66,7 +78,11 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
 
   return (
     <ExamReducerContext.Provider value={[state, dispatch]}>
-      <div className={css.exam_area_wrapper}>
+      <div
+        className={`${css.exam_area_wrapper_base} ${
+          is_mobile_device() ? css.exam_area_wrapper_mobile : css.exam_area_wrapper_normal
+        }`}
+      >
         <ExamStatusList />
         <section className={`${css.exam_area} ${is_mobile_device() ? css.exam_area_mobile : css.exam_area_normal}`}>
           <div className={css.button_container}>
@@ -112,11 +128,11 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
               })()}
             </div>
           </div>
-          <div className={css.question}>{props.exam[state.index].question}</div>
+          <div className={`${css.question} ${scroll_area.scroll_area}`}>{props.exam[state.index].question}</div>
           <div className={`${css.answer} ${scroll_area.scroll_area}`}>
             <ExamAnswerArea />
           </div>
-          <div className={`${css.result} ${scroll_area.scroll_area}`}>
+          <div className={`${css.result} ${scroll_area.scroll_area}`} ref={result_area_ref}>
             {state.exam_state[state.index].checked && (
               <>
                 <Result />
