@@ -30,4 +30,22 @@
 
 .correct_rate {
   font-size: 1.25em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.percentage {
+  margin: 0 4px;
+  font-size: 3.8em;
+  font-weight: bold;
+  text-decoration: underline $color-primary-3;
+}
+
+.question_num_wrapper {
+  margin-top: 16px;
+}
+.question_num {
+  font-size: 2.1em;
+  margin: 0 4px;
 }

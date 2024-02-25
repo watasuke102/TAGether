@@ -38,8 +38,20 @@ export function FinishModal(props: Props): JSX.Element {
         <div className={css.modal_header}>
           <TadaIcon /> <span>問題終了</span>
         </div>
-        <p className={css.correct_rate}>
-          正答率：{correct_rate}% （{total_questions}問中{correct_answers}問正解）
+        <p
+          className={css.correct_rate}
+          aria-label={`正答率${correct_rate}%、${total_questions}問中${correct_answers}問正解`}
+        >
+          <div aria-hidden>
+            正答率
+            <span className={css.percentage}>{correct_rate}</span>%
+          </div>
+          <div aria-hidden className={css.question_num_wrapper}>
+            <span className={css.question_num}>{total_questions}</span>
+            問中
+            <span className={css.question_num}>{correct_answers}</span>
+            問正解
+          </div>
         </p>
         <ButtonContainer>
           <Button
