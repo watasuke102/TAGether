@@ -39,24 +39,19 @@ export function Table(props: ExamTableProps): React.ReactElement {
     [0, 0],
   ) ?? [undefined, undefined];
 
-  const choices: string[] = React.useMemo(
+  const choices: string[][] = React.useMemo(
     () =>
       props.exam.map(exam => {
-        let array: string[];
         switch (exam.type) {
           case 'Select':
           case 'MultiSelect':
           case 'ListSelect':
-            array = exam.question_choices ?? [];
-            break;
+            return exam.question_choices ?? [];
           case 'Sort':
-            array = Shuffle(exam.answer);
-            break;
+            return Shuffle(exam.answer);
           default:
-            array = [];
-            break;
+            return [];
         }
-        return array.join(' | ');
       }),
     [],
   );
@@ -127,11 +122,16 @@ export function Table(props: ExamTableProps): React.ReactElement {
               <tr key={`tr-${i}`}>
                 <td>
                   {exam.question}
-                  {choices[i] !== '' && (
+                  {choices[i].length !== 0 && (
                     <>
                       <br />
                       <hr />
-                      <span className={css.sort_}>選択肢：{choices[i]}</span>
+                      <span className={css.choices_header}>[選択肢]</span>
+                      <ul>
+                        {choices[i].map((e, j) => (
+                          <li key={`choice${i}${j}`}>{e}</li>
+                        ))}
+                      </ul>
                     </>
                   )}
                 </td>
