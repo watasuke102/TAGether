@@ -6,7 +6,6 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import React from 'react';
-import Exam from '@mytypes/Exam';
 import {ExamPage, ExamPageProps} from './_components/ExamPage/ExamPage';
 import {Shuffle} from '@utils/ArrayUtil';
 import {redirect} from 'next/navigation';
@@ -27,15 +26,12 @@ type Props = {
   };
 };
 
-export default async function Exam(props: Props): Promise<JSX.Element> {
+export default async function Page(props: Props): Promise<JSX.Element> {
   const [exam_props, set_exam_props] = React.useState<ExamPageProps | undefined>();
 
   React.useEffect(() => {
     (async () => {
-      const prop: ExamPageProps = {
-        title: '',
-        exam: [],
-      };
+      const prop: ExamPageProps = {title: '', exam: []};
       if (props.searchParams.id) {
         const category = await fetch_category_data(props.searchParams.id);
         prop.exam = JSON.parse(category.list);
