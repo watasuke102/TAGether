@@ -26,7 +26,7 @@ export function AnswerEditArea(): React.ReactElement {
   useShortcut([{keycode: 'KeyJ', handler: () => undefined}], {shift: true});
 
   const target_str = exam.type === 'Select' || exam.type === 'MultiSelect' ? 'choice' : 'answer';
-  const target_array = target_str === 'answer' ? exam.answer : exam.question_choices ?? [];
+  const target_array = target_str === 'answer' ? exam.answer : (exam.question_choices ?? []);
   return (
     <>
       <div className={css.button_container}>

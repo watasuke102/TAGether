@@ -138,7 +138,7 @@ export default function CategoryDetail(props: Props): React.ReactElement {
           <span>
             {props.data.updated_at?.includes('T')
               ? props.data.updated_at.slice(0, -5).replace('T', ' ')
-              : props.data.updated_at ?? ''}
+              : (props.data.updated_at ?? '')}
           </span>
         </div>
 

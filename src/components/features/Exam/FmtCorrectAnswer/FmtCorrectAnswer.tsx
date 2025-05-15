@@ -33,13 +33,15 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
           case 'Text':
             if (props.exam.answer.length === 1) {
               return (
-                <span className={props.result?.at(0) ?? true ? '' : css.wrong}>{split_text(props.exam.answer[0])}</span>
+                <span className={(props.result?.at(0) ?? true) ? '' : css.wrong}>
+                  {split_text(props.exam.answer[0])}
+                </span>
               );
             }
             return (
               <ol>
                 {props.exam.answer.map((e, i) => (
-                  <li key={'result_select_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                  <li key={'result_select_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                     {split_text(e)}
                   </li>
                 ))}
@@ -47,7 +49,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
             );
           case 'Select':
             return (
-              <span className={`${css.answer_text} ${props.result?.at(0) ?? true ? '' : css.wrong}`}>
+              <span className={`${css.answer_text} ${(props.result?.at(0) ?? true) ? '' : css.wrong}`}>
                 {props.exam.question_choices?.at(Number(props.exam.answer[0]))}
               </span>
             );
@@ -57,7 +59,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
                 {props.exam.question_choices?.map((e, i) => (
                   <li
                     key={'result_multiselect_' + i}
-                    className={`${props.result?.at(i) ?? true ? '' : css.wrong} ${
+                    className={`${(props.result?.at(i) ?? true) ? '' : css.wrong} ${
                       props.exam.answer.indexOf(String(i)) === -1 ? css.multi_select_not_answer : css.answer_text
                     }`}
                   >
@@ -70,7 +72,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
             return (
               <ol>
                 {props.exam.answer.map((e, i) => (
-                  <li key={'result_sort_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                  <li key={'result_sort_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                     <span className={css.answer_text}>{e}</span>
                   </li>
                 ))}
@@ -80,7 +82,7 @@ export function FmtCorrectAnswer(props: Props): JSX.Element {
             return (
               <ol>
                 {props.exam.answer.map((e, i) => (
-                  <li key={'result_listselect_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                  <li key={'result_listselect_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                     <span className={css.answer_text}>{e}</span>
                   </li>
                 ))}

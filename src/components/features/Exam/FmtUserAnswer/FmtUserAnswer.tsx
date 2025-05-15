@@ -21,12 +21,12 @@ export function FmtUserAnswer(props: Props): JSX.Element {
         switch (props.exam.type ?? 'Text') {
           case 'Text':
             if (props.exam.answer.length === 1) {
-              return <span className={props.result?.at(0) ?? true ? '' : css.wrong}>{props.user_answer[0]}</span>;
+              return <span className={(props.result?.at(0) ?? true) ? '' : css.wrong}>{props.user_answer[0]}</span>;
             }
             return (
               <ol>
                 {props.user_answer.map((e, i) => (
-                  <li key={'result_select_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                  <li key={'result_select_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                     {e}
                   </li>
                 ))}
@@ -34,7 +34,7 @@ export function FmtUserAnswer(props: Props): JSX.Element {
             );
           case 'Select':
             return (
-              <span className={props.result?.at(0) ?? true ? '' : css.wrong}>
+              <span className={(props.result?.at(0) ?? true) ? '' : css.wrong}>
                 {props.exam.question_choices?.at(Number(props.exam.answer[0]))}
               </span>
             );
@@ -44,7 +44,7 @@ export function FmtUserAnswer(props: Props): JSX.Element {
                 {props.exam.answer
                   .filter((_m, i) => props.user_answer[i] === String(i))
                   .map((e, i) => (
-                    <li key={'result_multiselect_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                    <li key={'result_multiselect_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                       {e}
                     </li>
                   ))}
@@ -54,7 +54,7 @@ export function FmtUserAnswer(props: Props): JSX.Element {
             return (
               <ol>
                 {props.user_answer.map((e, i) => (
-                  <li key={'result_sort_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                  <li key={'result_sort_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                     {e}
                   </li>
                 ))}
@@ -64,7 +64,7 @@ export function FmtUserAnswer(props: Props): JSX.Element {
             return (
               <ol>
                 {props.user_answer.map((e, i) => (
-                  <li key={'result_listselect_' + i} className={props.result?.at(i) ?? true ? '' : css.wrong}>
+                  <li key={'result_listselect_' + i} className={(props.result?.at(i) ?? true) ? '' : css.wrong}>
                     {e}
                   </li>
                 ))}
