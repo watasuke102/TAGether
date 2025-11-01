@@ -4,24 +4,24 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {exam, tag} from 'src/db/schema';
-import {connect_drizzle} from '../../../../db/drizzle';
-import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
-import {eq, sql} from 'drizzle-orm';
-import {cookies} from 'next/headers';
-import {getIronSession} from 'iron-session';
-import {Session} from '@mytypes/Session';
-import {env} from 'env';
-import {webhook} from '../../webhook';
+import { exam, tag } from 'src/db/schema';
+import { connect_drizzle } from '../../../../db/drizzle';
+import { replace_tag_of_category } from '@utils/ReplaceTagOfCategory';
+import { eq, sql } from 'drizzle-orm';
+import { cookies } from 'next/headers';
+import { getIronSession } from 'iron-session';
+import { Session } from '@mytypes/Session';
+import { env } from 'env';
+import { webhook } from '../../webhook';
 
-export async function GET(_: Request, {params}: {params: {id: number}}): Promise<Response> {
-  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
+  const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (!session.is_logged_in) {
-    return Response.json([], {status: 401});
+    return Response.json([], { status: 401 });
   }
-  const {db, con} = await connect_drizzle();
+  const { db, con } = await connect_drizzle();
   const tags = await db.select().from(tag);
-  const categories = await db.select().from(exam).where(eq(exam.id, params.id));
+  const categories = await db.select().from(exam).where(eq(exam.id, Number((await params).id)));
   con.end();
   categories[0].updated_at.setHours(categories[0].updated_at.getHours() + 9);
   return Response.json({
@@ -37,32 +37,32 @@ export type PutCategory = {
   tag: string;
   list: string;
 };
-export async function PUT(req: Request, {params}: {params: {id: number}}): Promise<Response> {
-  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
+  const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (!session.is_logged_in) {
-    return Response.json([], {status: 401});
+    return Response.json([], { status: 401 });
   }
   const data: PutCategory = await req.json();
-  const {db, con} = await connect_drizzle();
+  const { db, con } = await connect_drizzle();
   const result = await db
     .update(exam)
-    .set({...data})
-    .where(eq(exam.id, params.id));
+    .set({ ...data })
+    .where(eq(exam.id, Number((await params).id)));
   con.end();
-  webhook(env.WEBHOOK.UPDATE, 'カテゴリ更新', [{name: 'タイトル', value: data.title}]);
-  return Response.json({inserted_id: result[0].insertId});
+  webhook(env.WEBHOOK.UPDATE, 'カテゴリ更新', [{ name: 'タイトル', value: data.title }]);
+  return Response.json({ inserted_id: result[0].insertId });
 }
 
-export async function DELETE(_: Request, {params}: {params: {id: number}}): Promise<Response> {
-  const session = await getIronSession<Session>(cookies(), env.SESSION_OPTION);
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
+  const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (!session.is_logged_in) {
-    return Response.json([], {status: 401});
+    return Response.json([], { status: 401 });
   }
-  const {db, con} = await connect_drizzle();
+  const { db, con } = await connect_drizzle();
   const result = await db
     .update(exam)
-    .set({deleted: sql`if (deleted = 0, 1, 0)`})
-    .where(eq(exam.id, params.id));
+    .set({ deleted: sql`if (deleted = 0, 1, 0)` })
+    .where(eq(exam.id, Number((await params).id)));
   con.end();
-  return Response.json({inserted_id: result[0].insertId});
+  return Response.json({ inserted_id: result[0].insertId });
 }

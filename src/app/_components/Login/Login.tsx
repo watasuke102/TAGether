@@ -16,7 +16,7 @@ import {jwtDecode} from 'jwt-decode';
 import {useToastOperator} from '@/common/Toast/Toast';
 import {login} from '@utils/api/session';
 
-function Main(): JSX.Element {
+function Main() {
   const Toast = useToastOperator();
   const handle_login = e => login(e.sub, e.email).catch(e => Toast.open(e.toString()));
   const google_login = useGoogleLogin({
@@ -58,7 +58,7 @@ function Main(): JSX.Element {
   );
 }
 
-export function Login(): JSX.Element {
+export function Login() {
   return (
     <GoogleOAuthProvider clientId={env.GOOGLE_CLIENT_ID}>
       <Main />
