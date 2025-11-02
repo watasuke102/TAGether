@@ -7,14 +7,14 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import 'variable';
+@use 'variable';
 // reseter.css
 @import url('https://cdn.jsdelivr.net/gh/krishdevdb/reseter.css@1.20/css/reseter.min.css');
 
 body {
   margin: 15px;
-  background-color: $color-bg;
-  color: $color-fg;
+  background-color: variable.$color-bg;
+  color: variable.$color-fg;
   overflow-x: hidden;
   font-family: 'M PLUS 1p', sans-serif;
   font-size: 9pt;
@@ -28,10 +28,10 @@ body {
   }
 
   a {
-    color: $color-primary-3;
+    color: variable.$color-primary-3;
 
     &:hover {
-      color: $color-primary-3;
+      color: variable.$color-primary-3;
     }
   }
 

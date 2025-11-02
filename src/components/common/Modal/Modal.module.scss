@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../variable';
+@use '../variable';
 
 .background {
   z-index: 1000;
@@ -16,7 +16,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: $color-transparent-half;
+  background-color: variable.$color-transparent-half;
 }
 
 .modal {
@@ -24,5 +24,5 @@
   margin: auto;
   top: 50%;
   left: 50%;
-  background-color: $color-1;
+  background-color: variable.$color-1;
 }

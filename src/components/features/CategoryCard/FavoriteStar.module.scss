@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../common/variable';
+@use '../../common/variable';
 
 $size: 36px;
 $border_width: 2px;
@@ -29,14 +29,14 @@ $border_width: 2px;
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     &:hover {
-      border-color: $color-primary-1;
+      border-color: variable.$color-primary-1;
       cursor: pointer;
     }
   }
 }
 
 .starred {
-  color: $color-primary-1;
+  color: variable.$color-primary-1;
 }
 
 .animation_circle {
@@ -46,7 +46,7 @@ $border_width: 2px;
   top: -$border_width;
   width: $size;
   height: $size;
-  border: solid $color-primary-1;
+  border: solid variable.$color-primary-1;
   border-width: 2px;
   border-radius: $size;
   animation: starred 0.8s cubic-bezier(0, 0.55, 0.45, 1) forwards;

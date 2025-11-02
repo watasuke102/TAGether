@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../variable';
+@use '../variable';
 
 .label {
   font-size: 1.4em;
@@ -19,8 +19,8 @@
   width: 100%;
   padding: 2px 4px;
   font-size: 1.4em;
-  color: $color-bg;
-  background-color: $color-4;
+  color: variable.$color-bg;
+  background-color: variable.$color-4;
   border: none;
   box-shadow: none;
   font-family: 'M PLUS 1p', sans-serif;
@@ -28,6 +28,6 @@
   &:focus {
     border: none;
     outline: none;
-    box-shadow: 0 0 3px 2.5px $color-1;
+    box-shadow: 0 0 3px 2.5px variable.$color-1;
   }
 }

@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 // 解答状況一覧
 .examdata_container {
@@ -18,7 +18,7 @@
   margin-bottom: 32px;
   padding: 8px 16px;
   font-size: 1.3em;
-  background-color: rgba($color: $color-1, $alpha: 0.9);
+  background-color: rgba(variable.$color: variable.$color-1, variable.$alpha: 0.9);
 
   .title {
     font-size: 1.5em;
@@ -58,7 +58,7 @@
     list-style-position: inside;
   }
   hr {
-    background-color: $color-2;
+    background-color: variable.$color-2;
     opacity: 1;
     margin: 4px 0;
   }
@@ -85,7 +85,7 @@
   width: 100%;
   left: 0px;
   bottom: 0px;
-  background-color: rgba($color: $color-1, $alpha: 0.9);
+  background-color: rgba(variable.$color: variable.$color-1, variable.$alpha: 0.9);
 }
 .buttons {
   margin: 12px 12px;

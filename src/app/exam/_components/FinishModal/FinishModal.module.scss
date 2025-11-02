@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 .modal {
   padding: 24px 16px;
@@ -24,7 +24,7 @@
   font-size: 1.9em;
   font-weight: bold;
   svg {
-    color: $color-primary-3;
+    color: variable.$color-primary-3;
   }
 }
 
@@ -41,7 +41,7 @@
   margin: 0 8px;
   font-size: 3.8em;
   font-weight: bold;
-  text-decoration: underline $color-primary-3;
+  text-decoration: underline variable.$color-primary-3;
 }
 
 .question_num_wrapper {

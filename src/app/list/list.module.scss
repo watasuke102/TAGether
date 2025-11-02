@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../components/common/variable';
+@use '../../components/common/variable';
 
 .form {
   width: 80vw;
@@ -55,16 +55,16 @@
   height: auto;
   min-height: 100px;
   margin: 0 auto;
-  border: 1px solid $color-2;
+  border: 1px solid variable.$color-2;
   font-size: 1.1em;
-  color: $color-fg;
-  background-color: $color-transparent;
+  color: variable.$color-fg;
+  background-color: variable.$color-transparent;
   transition: 0.3s;
 
   &:hover {
     cursor: pointer;
-    color: $color-bg;
-    background-color: $color-2;
+    color: variable.$color-bg;
+    background-color: variable.$color-2;
     transition: 0.3s;
   }
 }

@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 .result_container {
   display: grid;
@@ -14,13 +14,13 @@
 }
 
 .result_icon_correct {
-  color: $color-correct;
+  color: variable.$color-correct;
 }
 .result_icon_partial {
-  color: $color-partial;
+  color: variable.$color-partial;
 }
 .result_icon_wrong {
-  color: $color-wrong;
+  color: variable.$color-wrong;
 }
 
 .result_text {

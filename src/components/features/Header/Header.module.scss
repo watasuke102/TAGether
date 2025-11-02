@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../common/variable';
+@use '../../common/variable';
 
 .header {
   position: sticky;
@@ -21,7 +21,7 @@
   justify-content: space-around;
 
   font-size: 1.5em;
-  background-color: rgba($color: $color-1, $alpha: 0.9);
+  background-color: rgba(variable.$color: variable.$color-1, variable.$alpha: 0.9);
   box-sizing: border-box;
 }
 
@@ -38,11 +38,11 @@
   // ボタン本来の見た目を消す
   border: none;
   font-weight: bold;
-  color: $color-fg;
-  background-color: $color-transparent;
+  color: variable.$color-fg;
+  background-color: variable.$color-transparent;
   transition: background-color 0.3s;
   &:hover {
-    background-color: $color-0;
+    background-color: variable.$color-0;
   }
 }
 .icon {

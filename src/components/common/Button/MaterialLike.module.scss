@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../variable';
+@use '../variable';
 
 @mixin bg-animation($col) {
   cursor: pointer;
@@ -24,18 +24,18 @@
   justify-content: center;
   text-align: center;
   border-radius: 3px;
-  background-color: $color-transparent;
-  border: 1px solid $color-primary-2;
+  background-color: variable.$color-transparent;
+  border: 1px solid variable.$color-primary-2;
   transition: background-color 0.3s;
 
   // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
   @media screen and (min-width: 800px) {
     &:hover {
-      @include bg-animation($color-primary-2);
+      @include bg-animation(variable.$color-primary-2);
     }
   }
   &:active {
-    @include bg-animation($color-primary-2);
+    @include bg-animation(variable.$color-primary-2);
   }
 }
 

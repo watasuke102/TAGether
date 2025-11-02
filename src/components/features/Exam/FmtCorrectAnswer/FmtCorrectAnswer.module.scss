@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../common/variable';
+@use '../../../common/variable';
 
 .answer_text {
   text-decoration: underline;
@@ -12,7 +12,7 @@
 }
 
 .wrong {
-  color: $color-wrong;
+  color: variable.$color-wrong;
 }
 
 .multi_select_not_answer {

@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../common/variable';
+@use '../../common/variable';
 
 .container {
   width: 300px;
@@ -23,7 +23,7 @@
 
   .title,
   .desc {
-    color: $color-bg;
+    color: variable.$color-bg;
     transition: color 300ms;
   }
 
@@ -32,7 +32,7 @@
     &:hover {
       .title,
       .desc {
-        // color: $color-bg;
+        // color: variable.$color-bg;
         transition: color 300ms;
       }
     }
@@ -47,7 +47,7 @@
 }
 
 .desc {
-  border-top: 2px solid $color-0;
+  border-top: 2px solid variable.$color-0;
   overflow-wrap: break-word;
   font-size: 15px;
 }

@@ -4,14 +4,14 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../components/common/variable';
+@use '../../../components/common/variable';
 .scroll_area {
   overflow-y: scroll;
-  scrollbar-color: $color-fg transparent;
+  scrollbar-color: variable.$color-fg transparent;
   ::-webkit-scrollbar-track {
     background-color: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: $color-fg;
+    background-color: variable.$color-fg;
   }
 }

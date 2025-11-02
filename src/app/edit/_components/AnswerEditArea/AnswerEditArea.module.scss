@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 .editor_wrapper {
   display: grid;
@@ -42,7 +42,7 @@
 .dragger {
   grid-area: dragger;
   height: 100%;
-  border: 1px solid $color-fg;
+  border: 1px solid variable.$color-fg;
   border-radius: 2px;
   padding: 4px;
   margin: auto;

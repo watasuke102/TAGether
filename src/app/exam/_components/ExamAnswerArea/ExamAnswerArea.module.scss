@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 .item {
   display: grid;
@@ -24,9 +24,9 @@
   font-size: 1.4em;
   padding: 4px;
   padding-left: 8px;
-  border: 1px solid $color-fg;
+  border: 1px solid variable.$color-fg;
   border-radius: 2px;
-  background-color: rgba($color-bg, 0.9);
+  background-color: rgba(variable.$color-bg, 0.9);
 }
 
 .listselect_container {
@@ -44,8 +44,8 @@
   background-color: transparent;
 }
 .result_indicator_correct {
-  background-color: $color-correct;
+  background-color: variable.$color-correct;
 }
 .result_indicator_wrong {
-  background-color: $color-wrong;
+  background-color: variable.$color-wrong;
 }

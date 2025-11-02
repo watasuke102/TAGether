@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 .exam_area_wrapper_base {
   margin: -16px;
   display: flex;
@@ -54,7 +54,7 @@
   font-size: 1.5em;
   white-space: pre-wrap;
   word-wrap: break-word;
-  border-bottom: 2px dotted $color-fg;
+  border-bottom: 2px dotted variable.$color-fg;
   overflow-y: scroll;
 }
 .answer {
@@ -86,8 +86,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  background-color: rgba($color-bg, 0.92);
-  border-bottom: 2px solid $color-fg;
+  background-color: rgba(variable.$color-bg, 0.92);
+  border-bottom: 2px solid variable.$color-fg;
 }
 
 .current_index_status {

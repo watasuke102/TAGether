@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../variable';
+@use '../variable';
 
 .trigger {
   display: grid;
@@ -13,13 +13,13 @@
   padding: 4px 8px;
   align-items: center;
   text-align: left;
-  border: 1px solid $color-fg;
+  border: 1px solid variable.$color-fg;
 }
 
 .viewport {
   // headerより上、Modalより下
   z-index: 1000;
-  background-color: rgba($color-0, 0.95);
+  background-color: rgba(variable.$color-0, 0.95);
   padding: 4px 8px;
 }
 

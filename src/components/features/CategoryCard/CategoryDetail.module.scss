@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../common/variable';
+@use '../../common/variable';
 
 .container {
   width: 90vw;
@@ -22,7 +22,7 @@
     width: 100%;
     font-family: 'M PLUS 1p', sans-serif;
     border: none;
-    background-color: $color-transparent;
+    background-color: variable.$color-transparent;
 
     &:hover {
       cursor: text;
@@ -78,7 +78,7 @@
   .head {
     display: block;
     margin: 8px 0;
-    border-bottom: 1px solid $color-fg;
+    border-bottom: 1px solid variable.$color-fg;
     font-size: 1.5em;
     font-weight: bold;
   }

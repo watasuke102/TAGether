@@ -4,7 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 .exam_status {
   padding: 0px 8px;
@@ -12,7 +12,7 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  background-color: $color-0;
+  background-color: variable.$color-0;
   font-size: 1.3em;
 }
 .normal {
@@ -53,19 +53,19 @@
   width: 100dvw;
   height: 100dvh;
   opacity: 0.8;
-  background-color: rgba($color-bg, calc(100% + var(--slide-amount)));
+  background-color: rgba(variable.$color-bg, calc(100% + var(--slide-amount)));
   transition: background-color linear;
 }
 
 .item {
-  border-bottom: 1px double $color-fg;
+  border-bottom: 1px double variable.$color-fg;
   padding: 4px 0;
   &:hover {
     cursor: pointer;
   }
 }
 .yet {
-  color: $color-2;
+  color: variable.$color-2;
 }
 
 .transform_animation {

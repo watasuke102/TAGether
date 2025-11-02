@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../components/common/variable';
+@use '../../components/common/variable';
 
 .heading {
   display: flex;
@@ -30,7 +30,7 @@
 .card_wrapper {
   width: 250px;
   margin: 12px;
-  color: $color-bg;
+  color: variable.$color-bg;
 }
 
 .card {
@@ -38,7 +38,7 @@
   flex-direction: column;
 
   .name {
-    border-bottom: 1px solid $color-0;
+    border-bottom: 1px solid variable.$color-0;
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 1.4em;
@@ -50,7 +50,7 @@
 
   &:hover {
     cursor: pointer;
-    background-color: $color-3;
+    background-color: variable.$color-3;
     transition: 300ms;
   }
 }

@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../variable';
+@use '../variable';
 
 .container {
   display: grid;
@@ -23,7 +23,7 @@
 .box {
   width: 25px;
   height: 25px;
-  background-color: $color-4;
+  background-color: variable.$color-4;
   margin: 5px 10px;
 }
 
@@ -43,7 +43,7 @@
 .multi_checked {
   width: 25px;
   height: 25px;
-  color: $color-0;
+  color: variable.$color-0;
   text-align: center;
   align-items: center;
 }
@@ -52,7 +52,7 @@
   margin: auto;
   margin-top: 5px;
   border-radius: 20px;
-  background-color: $color-0;
+  background-color: variable.$color-0;
   width: 15px;
   height: 15px;
 }

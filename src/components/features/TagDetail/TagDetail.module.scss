@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../common/variable';
+@use '../../common/variable';
 
 .modal {
   width: 90dvw;
@@ -27,7 +27,7 @@
 
   // 親要素（Card）のCSSを打ち消す
   cursor: default;
-  color: $color-fg;
+  color: variable.$color-fg;
 }
 
 .icon_wrapper {

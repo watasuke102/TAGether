@@ -7,11 +7,11 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../common/variable';
+@use '../../common/variable';
 
 .modal {
   width: 80vw;
   padding: 20px 12px;
   font-size: 1.1em;
-  background-color: $color-1;
+  background-color: variable.$color-1;
 }

@@ -7,7 +7,7 @@
  Twitter: @Watasuke102
  This software is released under the MIT or MIT SUSHI-WARE License.
 */
-@import '../../../../components/common/variable';
+@use '../../../../components/common/variable';
 
 .button_list {
   display: flex;
@@ -77,8 +77,8 @@
       display: grid;
       grid-template-columns: 30px 1fr 50px;
       user-select: none;
-      color: $color-bg;
-      background-color: $color-4;
+      color: variable.$color-bg;
+      background-color: variable.$color-4;
 
       span {
         margin: auto 0;
@@ -86,8 +86,8 @@
 
       .icon {
         font-size: 1.3em;
-        color: $color-0;
-        border: 1px solid $color-0;
+        color: variable.$color-0;
+        border: 1px solid variable.$color-0;
         border-radius: 6px;
         padding: 4px;
         margin: auto;
