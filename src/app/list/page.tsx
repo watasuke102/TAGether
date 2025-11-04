@@ -8,17 +8,17 @@
 import css from './list.module.scss';
 import React from 'react';
 import Button from '@/common/Button/Button';
-import {useRouter} from 'next/navigation';
-import {IndexedContainer} from '@/common/IndexedContainer';
+import { useRouter } from 'next/navigation';
+import { IndexedContainer } from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
-import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
+import { SelectButton, SingleSelectBox } from '@/common/SelectBox';
 import Form from '@/common/TextForm/Form';
-import {useWaiting} from '@/common/Waiting';
+import { useWaiting } from '@/common/Waiting';
 import CategoryCard from '@/features/CategoryCard/CategoryCard';
-import {useAllCategoryData, new_category} from '@utils/api/category';
-import {AllCategoryDataType} from '@mytypes/Category';
-import {useToastOperator} from '@/common/Toast/Toast';
+import { useAllCategoryData, new_category } from '@utils/api/category';
+import { AllCategoryDataType } from '@mytypes/Category';
+import { useToastOperator } from '@/common/Toast/Toast';
 import AddIcon from '@assets/add.svg';
 import CloseIcon from '@assets/close.svg';
 import CheckIcon from '@assets/check.svg';
@@ -93,8 +93,8 @@ export default function list(): React.ReactElement {
     } else {
       category_list.forEach(element => {
         cards.push(
-          <div className={css.card_wrapper}>
-            <CategoryCard key={`card_${element.id}`} {...element} />
+          <div className={css.card_wrapper} key={`wrapper_${element.id}`}>
+            <CategoryCard {...element} />
           </div>,
         );
       });
@@ -185,7 +185,7 @@ export default function list(): React.ReactElement {
                   title: category_name,
                   description: category_desc,
                   list: JSON.stringify([
-                    {type: 'Text', question: '問題文', question_choices: [''], answer: ['解答'], comment: ''},
+                    { type: 'Text', question: '問題文', question_choices: [''], answer: ['解答'], comment: '' },
                   ]),
                 }).then(e => router.push(`/edit?id=${e.data.inserted_id}`));
               }}
