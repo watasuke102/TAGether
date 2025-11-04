@@ -13,6 +13,7 @@
   font-family: variable.$font-family;
   display: grid;
   grid-template-columns: 32px 1fr;
+  box-shadow: 2px 2px 3px variable.$color-0;
   align-items: center;
 
   // 横幅が広かったら（スマホじゃなければ）
