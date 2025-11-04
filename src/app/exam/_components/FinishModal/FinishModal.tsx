@@ -6,8 +6,8 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './FinishModal.module.scss';
 import React from 'react';
-import {useRouter, useSearchParams} from 'next/navigation';
-import {ExamReducerContext} from '../ExamReducer';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ExamReducerContext } from '../ExamReducer';
 import Modal from '@/common/Modal/Modal';
 import TadaIcon from '@assets/tada.svg';
 import ButtonContainer from '@/common/Button/ButtonContainer';
@@ -33,13 +33,14 @@ export function FinishModal(props: Props): JSX.Element {
   const correct_rate = Math.round((correct_answers / total_questions) * 10000) / 100;
 
   return (
-    <Modal isOpen={state.is_modal_open} close={() => dispatch({type: 'is_modal_open/set', data: false})}>
+    <Modal isOpen={state.is_modal_open} close={() => dispatch({ type: 'is_modal_open/set', data: false })}>
       <div className={css.modal}>
         <div className={css.modal_header}>
           <TadaIcon /> <span>問題終了</span>
         </div>
-        <p
+        <div
           className={css.correct_rate}
+          role='text'
           aria-label={`正答率${correct_rate}%、${total_questions}問中${correct_answers}問正解`}
         >
           <div aria-hidden>
@@ -52,7 +53,7 @@ export function FinishModal(props: Props): JSX.Element {
             <span className={css.question_num}>{correct_answers}</span>
             問正解
           </div>
-        </p>
+        </div>
         <ButtonContainer>
           <Button
             text={'編集する'}
