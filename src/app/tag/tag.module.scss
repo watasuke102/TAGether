@@ -47,11 +47,14 @@
   .desc {
     font-size: 1.3em;
   }
-
-  &:hover {
-    cursor: pointer;
-    background-color: variable.$color-3;
-    transition: 300ms;
+}
+@media (hover: hover){
+  .card {
+    &:hover {
+      cursor: pointer;
+      background-color: variable.$color-3;
+      transition: 300ms;
+    }
   }
 }
 
@@ -61,11 +64,5 @@
   }
   .card_wrapper {
     width: 100%;
-  }
-  .card {
-    // スマホにおいてhover時アニメーションを抑制
-    &:hover {
-      background-color: inherit;
-    }
   }
 }

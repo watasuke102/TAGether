@@ -27,8 +27,7 @@
     transition: color 300ms;
   }
 
-  // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
-  @media screen and (min-width: 800px) {
+  @media (hover: hover) {
     &:hover {
       .title,
       .desc {

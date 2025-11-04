@@ -29,8 +29,7 @@
   background-color: variable.$color-primary-1;
   transition: background-color 0.3s;
 
-  // 横幅が広かったら（スマホじゃなければ）ホバー時に色を変える
-  @media screen and (min-width: 800px) {
+  @media (hover: hover) {
     &:hover {
       @include bg-animation(variable.$color-primary-2);
     }

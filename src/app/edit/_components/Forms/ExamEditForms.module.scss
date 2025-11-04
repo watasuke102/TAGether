@@ -98,7 +98,7 @@
 }
 
 // 横幅が狭かったらボタンと問題編集欄を縦に並べる
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
   .form_container {
     flex-direction: column;
   }

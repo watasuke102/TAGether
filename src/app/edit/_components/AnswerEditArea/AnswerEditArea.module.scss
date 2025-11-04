@@ -16,8 +16,7 @@
   grid-template:
     "check form    dragger" auto
     "check buttons dragger" auto / auto 1fr 40px;
-  // gapを設定すると、checkに何も表示されていない際の表示が微妙になる
-  gap: 4px 0;
+  gap: 8px;
   margin-bottom: 16px;
 }
 .check {
@@ -25,7 +24,6 @@
 }
 .form {
   grid-area: form;
-  margin-right: 12px;
 }
 
 .listselect_answer {

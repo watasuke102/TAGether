@@ -16,13 +16,6 @@
   align-items: center;
   gap: 4px 16px;
 
-  @media screen and (max-width: 600px) {
-    grid-template-columns: auto 1fr;
-    // prettier-ignore
-    grid-template:
-      'delete_btn title'  auto
-      'redo_btn   status' auto / auto 1fr;
-  }
 }
 
 .delete_button {
@@ -54,8 +47,22 @@
   grid-area: status;
   display: flex;
   flex-direction: column;
+  text-align: right;
   .date {
     color: color.scale(variable.$color-fg, $lightness: -15%);
+  }
+}
+
+@media screen and (width < 700px) {
+  .container {
+    grid-template-columns: auto 1fr;
+    // prettier-ignore
+    grid-template:
+      'delete_btn title'  auto
+      'redo_btn   status' auto / auto 1fr;
+  }
+  .status {
+    text-align: left;
   }
 }
 
