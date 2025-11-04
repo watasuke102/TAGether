@@ -10,7 +10,7 @@
 @use '../variable';
 
 .button {
-  font-family: 'M PLUS 1p', sans-serif;
+  font-family: variable.$font-family;
   display: grid;
   grid-template-columns: 32px 1fr;
   align-items: center;

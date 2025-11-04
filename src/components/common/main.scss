@@ -16,7 +16,7 @@ body {
   background-color: variable.$color-bg;
   color: variable.$color-fg;
   overflow-x: hidden;
-  font-family: -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  font-family: variable.$font-family;
 
   h2 {
     font-size: 1.7em;

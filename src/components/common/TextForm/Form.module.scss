@@ -23,7 +23,7 @@
   background-color: variable.$color-4;
   border: none;
   box-shadow: none;
-  font-family: 'M PLUS 1p', sans-serif;
+  font-family: variable.$font-family;
   transition: box-shadow 0.3s;
   &:focus {
     border: none;
