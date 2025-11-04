@@ -12,7 +12,7 @@
 
 .container {
   display: grid;
-  grid-template: 'delete_btn title status redo_btn' auto / auto 1fr auto;
+  grid-template: 'delete_btn title status redo_btn' auto / auto 1fr auto auto;
   align-items: center;
   gap: 4px 16px;
 
@@ -33,7 +33,7 @@
 }
 .redo_button {
   grid-area: redo_btn;
-  width: 128px;
+  width: 136px;
   button {
     width: 100%;
   }
