@@ -6,18 +6,18 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import React from 'react';
-import {ExamTableProps, Table} from './_components/Table/Table';
+import { ExamTableProps, Table } from './_components/Table/Table';
 import Loading from '@/common/Loading/Loading';
-import {fetch_category_data} from '@utils/api/category';
-import {fetch_history} from '@utils/api/history';
-import {redirect} from 'next/navigation';
-import {history_title} from '@utils/HistoryTitle';
+import { fetch_category_data } from '@utils/api/category';
+import { fetch_history } from '@utils/api/history';
+import { redirect } from 'next/navigation';
+import { history_title } from '@utils/HistoryTitle';
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     id?: string;
     history_id?: string;
-  };
+  }>;
 };
 
 export default function ExamTablePage(props: Props): React.ReactElement {
@@ -26,15 +26,16 @@ export default function ExamTablePage(props: Props): React.ReactElement {
   React.useEffect(() => {
     (async () => {
       let prop: ExamTableProps;
-      if (props.searchParams.id) {
-        const category = await fetch_category_data(props.searchParams.id);
+      const params = await props.searchParams;
+      if (params.id) {
+        const category = await fetch_category_data(params.id);
         prop = {
           exam: JSON.parse(category.list),
           title: category.title,
-          id: props.searchParams.id,
+          id: params.id,
         };
-      } else if (props.searchParams.history_id) {
-        const history = await fetch_history(props.searchParams.history_id);
+      } else if (params.history_id) {
+        const history = await fetch_history(params.history_id);
         prop = {
           exam: history.exam,
           title: history_title(history),

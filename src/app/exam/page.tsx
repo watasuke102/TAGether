@@ -6,16 +6,16 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import React from 'react';
-import {ExamPage, ExamPageProps} from './_components/ExamPage/ExamPage';
-import {Shuffle} from '@utils/ArrayUtil';
-import {redirect} from 'next/navigation';
-import {fetch_history} from '@utils/api/history';
-import {fetch_category_data, fetch_category_with_spec_tag_data} from '@utils/api/category';
+import { ExamPage, ExamPageProps } from './_components/ExamPage/ExamPage';
+import { Shuffle } from '@utils/ArrayUtil';
+import { redirect } from 'next/navigation';
+import { fetch_history } from '@utils/api/history';
+import { fetch_category_data, fetch_category_with_spec_tag_data } from '@utils/api/category';
 import Loading from './loading';
-import {history_title} from '@utils/HistoryTitle';
+import { history_title } from '@utils/HistoryTitle';
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     id?: string;
     history_id?: string;
     tag?: string;
@@ -23,25 +23,26 @@ type Props = {
     choiceShuffle?: string;
     begin?: string;
     end?: string;
-  };
+  }>;
 };
 
-export default async function Page(props: Props): Promise<JSX.Element> {
+export default function Page(props: Props): JSX.Element {
   const [exam_props, set_exam_props] = React.useState<ExamPageProps | undefined>();
 
   React.useEffect(() => {
     (async () => {
-      const prop: ExamPageProps = {title: '', exam: []};
-      if (props.searchParams.id) {
-        const category = await fetch_category_data(props.searchParams.id);
+      const prop: ExamPageProps = { title: '', exam: [] };
+      const params = await props.searchParams;
+      if (params.id) {
+        const category = await fetch_category_data(params.id);
         prop.exam = JSON.parse(category.list);
         prop.title = category.title;
-      } else if (props.searchParams.tag) {
-        const category = await fetch_category_with_spec_tag_data(props.searchParams.tag);
+      } else if (params.tag) {
+        const category = await fetch_category_with_spec_tag_data(params.tag);
         prop.exam = JSON.parse(category.list);
         prop.title = category.title;
-      } else if (props.searchParams.history_id) {
-        const history = await fetch_history(props.searchParams.history_id);
+      } else if (params.history_id) {
+        const history = await fetch_history(params.history_id);
         prop.exam = history.exam.filter(
           (_, i) => history.exam_state[i].correct_count !== history.exam_state[i].total_question,
         );
@@ -51,13 +52,13 @@ export default async function Page(props: Props): Promise<JSX.Element> {
         redirect('/list');
       }
 
-      const begin = Number(props.searchParams.begin);
-      const end = Number(props.searchParams.end);
+      const begin = Number(params.begin);
+      const end = Number(params.end);
       prop.exam = prop.exam
         .filter((_, i) => !((begin && i < begin) || (end && i > end)))
         .map(e => {
-          if (props.searchParams.choiceShuffle && Array.isArray(e.question_choices)) {
-            const choices = Shuffle(e.question_choices.map((e, i) => ({original_index: i, choice: e})));
+          if (params.choiceShuffle && Array.isArray(e.question_choices)) {
+            const choices = Shuffle(e.question_choices.map((e, i) => ({ original_index: i, choice: e })));
             e.question_choices = choices.map(choice => choice.choice);
             if (e.type === 'Select' || e.type === 'MultiSelect') {
               e.answer = choices.flatMap((choice, i) =>
@@ -67,7 +68,7 @@ export default async function Page(props: Props): Promise<JSX.Element> {
           }
           return e;
         });
-      if (props.searchParams.shuffle) {
+      if (params.shuffle) {
         prop.exam = Shuffle(prop.exam);
       }
       set_exam_props(prop);
