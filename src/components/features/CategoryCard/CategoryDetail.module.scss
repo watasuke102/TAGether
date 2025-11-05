@@ -93,7 +93,7 @@
 }
 
 .delete_confirm_modal {
-  width: 90dvw;
+  width: min(400px, 90dvw);
   padding: 20px 12px;
   text-align: center;
 }
