@@ -4,14 +4,13 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {mutate} from 'swr';
-import axios, {AxiosPromise} from 'axios';
-import {fetcher, useApiData} from './common';
-import {AllCategoryDataType, CategoryDataType} from '@mytypes/Category';
-import {NewCategory} from 'src/app/api/category/route';
-import {PutCategory} from 'src/app/api/category/[id]/route';
-import {tag_key} from './tag';
-import {env} from 'env';
+import { mutate } from 'swr';
+import { fetcher, useApiData } from './common';
+import { AllCategoryDataType, CategoryDataType } from '@mytypes/Category';
+import { NewCategory } from 'src/app/api/category/route';
+import { PutCategory } from 'src/app/api/category/[id]/route';
+import { tag_key } from './tag';
+import { env } from 'env';
 
 export const category_key = '/api/category';
 
@@ -26,15 +25,24 @@ export function fetch_category_with_spec_tag_data(tag_id: number | string): Prom
   return fetcher(`${env.API_URL}${tag_key}/${tag_id}/all_category`);
 }
 
-export async function new_category(data: NewCategory): AxiosPromise {
-  return axios.post(category_key, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
+export async function new_category(data: NewCategory): Promise<{ inserted_id: number }> {
+  return fetcher(`${env.API_URL}${category_key}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
 }
 
-export async function update_category(id: number | string, data: PutCategory): Promise<AxiosPromise> {
-  return axios.put(`${category_key}/${id}`, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
+export async function update_category(id: number | string, data: PutCategory): Promise<{ inserted_id: number }> {
+  return fetcher(`${env.API_URL}${category_key}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
 }
 
-export async function toggle_delete_category(id: number | string): Promise<AxiosPromise> {
-  // eslint-disable-next-line drizzle/enforce-delete-with-where
-  return axios.delete(`${category_key}/${id}`);
+export async function toggle_delete_category(id: number | string): Promise<{ inserted_id: number }> {
+  return fetcher(`${env.API_URL}${category_key}/${id}`, {
+    method: 'delete',
+  });
 }

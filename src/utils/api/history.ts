@@ -4,12 +4,11 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {mutate} from 'swr';
-import axios, {AxiosPromise} from 'axios';
-import {fetcher, useApiData} from './common';
-import {AllHistory, History} from '@mytypes/ExamHistory';
-import {NewHistory} from 'src/app/api/history/route';
-import {env} from 'env';
+import { mutate } from 'swr';
+import { fetcher, useApiData } from './common';
+import { AllHistory, History } from '@mytypes/ExamHistory';
+import { NewHistory } from 'src/app/api/history/route';
+import { env } from 'env';
 
 export const history_key = '/api/history';
 
@@ -20,12 +19,15 @@ export function fetch_history(id: string): Promise<History> {
   return fetcher(`${env.API_URL}${history_key}/${id}`);
 }
 
-export async function new_history(data: NewHistory): AxiosPromise {
-  return axios.post(history_key, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}});
+export async function new_history(data: NewHistory): Promise<{ inserted_id: string }> {
+  return fetcher(`${env.API_URL}${history_key}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
 }
 
 export async function delete_history(id: string): Promise<void> {
-  // eslint-disable-next-line drizzle/enforce-delete-with-where
-  await axios.delete(`${history_key}/${id}`);
+  await fetcher(`${history_key}/${id}`, { method: 'DELETE' });
   mutate_history();
 }

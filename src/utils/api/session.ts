@@ -5,27 +5,29 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
-import axios from 'axios';
-import {mutate} from 'swr';
-import {useApiData} from './common';
-import {redirect} from 'next/navigation';
-import {Session} from '@mytypes/Session';
+import { mutate } from 'swr';
+import { fetcher, useApiData } from './common';
+import { redirect } from 'next/navigation';
+import { Session } from '@mytypes/Session';
 
 const session_key = '/api/session';
 
 export async function login(uid: string, email: string): Promise<void> {
-  console.info('[login]', {uid, email});
-  const res = await axios.post(`${session_key}/login`, JSON.stringify({uid, email}), {
-    headers: {'Content-Type': 'application/json'},
+  console.info('[login]', { uid, email });
+  const res = await fetcher(`${session_key}/login`, {
+    method: 'POST',
+    body: JSON.stringify({ uid, email }),
+    headers: { 'Content-Type': 'application/json' },
   });
-  if (res.data.message) {
-    throw Error(res.data.message);
+  console.log(res);
+  if (res.message) {
+    throw Error(res.message);
   }
   mutate(session_key);
 }
 
 export async function logout(): Promise<void> {
-  await axios.post(`${session_key}/logout`);
+  await fetcher(`${session_key}/logout`, { method: 'POST' });
   mutate(session_key);
 }
 
