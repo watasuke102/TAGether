@@ -23,6 +23,9 @@ import AddIcon from '@assets/add.svg';
 import CloseIcon from '@assets/close.svg';
 import CheckIcon from '@assets/check.svg';
 import SortIcon from '@assets/sort.svg';
+import TagListEdit from '@/features/TagListEdit/TagListEdit';
+import TagData from '@mytypes/TagData';
+import { useTagData } from '@utils/api/tag';
 
 export default function list(): React.ReactElement {
   const router = useRouter();
@@ -30,9 +33,11 @@ export default function list(): React.ReactElement {
 
   const [show_only_trash, SetShowOnlyTrash] = React.useState(false);
   const [search_str, SetSearchStr] = React.useState('');
+  const [search_tags, SetSearchTags] = React.useState<TagData[]>([]);
   const [radio_state, SetRadioState] = React.useState('タイトル');
   const [newer_first, SetNewerFirst] = React.useState(true);
-  const [list, isLoading] = useAllCategoryData();
+  const [list, isCategoryLoading] = useAllCategoryData();
+  const [tags, isTagLoading] = useTagData();
 
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [category_name, SetCategoryName] = React.useState('');
@@ -55,34 +60,29 @@ export default function list(): React.ReactElement {
     }
 
     const cards: React.ReactElement[] = [];
-    let searchResult: AllCategoryDataType[] = [];
+    const category_list: AllCategoryDataType[] = list.filter(e => {
+      // 検索欄になにか記入されているときのみ検索
+      if (radio_state === 'タグ') {
+        if (search_tags.length === 0) {
+          return true;
 
-    // 検索欄になにか記入されていたら、検索
-    if (search_str !== '') {
-      list.forEach(e => {
-        let text: string = '';
-        switch (radio_state) {
-          case 'タイトル':
-            text = e.title;
-            break;
-          case '説明':
-            text = e.description;
-            break;
-          case 'ID':
-            if (e.id?.toString() !== undefined) text = e.id.toString();
-            break;
-          case 'タグ':
-            e.tag.forEach(a => (text += `${a.name},`));
-            text = text.slice(0, -1);
-            break;
         }
-        // 検索欄に入力された文字と一致したら検索結果に追加
-        if (text.indexOf(search_str) !== -1) searchResult.push(e);
-      });
-    } else {
-      searchResult = list;
-    }
-    const category_list = searchResult.filter(e => e.deleted === show_only_trash);
+      } else if (search_str === '') {
+        return true;
+      }
+      switch (radio_state) {
+        case 'タイトル':
+          return e.title.includes(search_str);
+        case '説明':
+          return e.description.includes(search_str);
+        case 'ID':
+          return e.id === Number(search_str);
+        case 'タグ':
+          // カテゴリが選択されたタグを1つでも持っていたらtrue
+          return search_tags.some(selected => e.tag.some(category_tag => category_tag.id === selected.id));
+      }
+    })
+      .filter(e => e.deleted === show_only_trash);
     // 検索結果からカードを生成
     if (category_list.length === 0) {
       cards.push(
@@ -119,15 +119,6 @@ export default function list(): React.ReactElement {
           status={show_only_trash}
           onChange={SetShowOnlyTrash}
         />
-        {/* 検索欄 */}
-        <Form
-          {...{
-            label: '検索',
-            value: search_str,
-            rows: 1,
-            OnChange: ev => SetSearchStr(ev.target.value),
-          }}
-        />
         <Button
           {...{
             text: '入力のクリア',
@@ -145,6 +136,23 @@ export default function list(): React.ReactElement {
           />
         </div>
 
+        {/* 検索欄 */}
+        {(radio_state === 'タグ' && !isTagLoading) ?
+          <div>
+            <span className={css.search_area_heading}>検索するタグ</span>
+            <TagListEdit tags={tags} current_tag={search_tags} SetTag={SetSearchTags} />
+          </div>
+          :
+          <Form
+            {...{
+              label: '検索',
+              value: search_str,
+              rows: 1,
+              OnChange: ev => SetSearchStr(ev.target.value),
+            }}
+          />
+        }
+
         <div className={css.sort}>
           <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
           <Button
@@ -156,7 +164,7 @@ export default function list(): React.ReactElement {
         </div>
       </div>
 
-      {isLoading ? (
+      {isCategoryLoading ? (
         <Loading />
       ) : (
         <IndexedContainer len={list.filter(e => e.deleted === show_only_trash).length} width='300px'>
