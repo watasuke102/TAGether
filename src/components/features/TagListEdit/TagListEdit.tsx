@@ -36,24 +36,26 @@ export default function TagListEdit(props: Props): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
   const [picker_pos, SetPickerPos] = React.useState({top: 0, left: 0});
   const [search_box, SetSearchBox] = React.useState('');
-  const [current_tag, SetCurrentTag] = React.useState(props.current_tag);
-  const is_first_click = React.useRef(true);
 
   React.useEffect(() => {
-    // いつも通りReact.useCallbackとrefを使おうとすると、
-    // ピッカーを開くためのクリックでこれが発火してしまい、
-    // refはすでに変わっているので閉じてしまう（開けなくなってしまう）
     const CloseOnClickOutside = (ev: MouseEvent) => {
       const picker = document.getElementById(PICKER_ID);
       if (!picker) return;
 
-      if (is_first_click.current) {
-        is_first_click.current = false;
-        return;
+      // 選択したタグを削除するためのクリックでは閉じない
+      if (ev.target instanceof Element) {
+        // クリックした要素それ自体が選択済みタグ
+        if (ev.target instanceof HTMLElement && ev.target.dataset.taglistSelectedItem === 'true') {
+          return;
+        }
+        // 選択済みタグの子要素
+        const closest = ev.target?.closest(`.${css.item}`);
+        if (closest instanceof HTMLElement && closest.dataset.taglistSelectedItem === 'true') {
+          return;
+        }
       }
 
       if (!picker.contains(ev.target as Node)) {
-        is_first_click.current = true;
         SetIsPickerOpen(false);
       }
     };
@@ -62,13 +64,15 @@ export default function TagListEdit(props: Props): React.ReactElement {
     return () => document.removeEventListener('click', CloseOnClickOutside);
   }, [is_picker_open]);
 
-  function UpdateTag(e: TagData[]) {
-    const tag_list = Array.from(new Set(e));
-    SetCurrentTag(tag_list);
+  function UpdateTag(new_tags: TagData[]) {
+    const tag_list = Array.from(new Map(new_tags.map(e => [e.id, e])).values());
     props.SetTag(tag_list);
   }
 
   function PickerOpen(e: React.MouseEvent) {
+    if (is_picker_open) {
+      return;
+    }
     SetPickerPos({
       left: e.clientX,
       top: e.clientY + window.scrollY + 30, // ボタンと重ならないように
@@ -80,7 +84,7 @@ export default function TagListEdit(props: Props): React.ReactElement {
     const elements = props.tags
       .filter(e => search_box === '' || e.name.includes(search_box))
       .map(e => (
-        <div key={`taglist_${e.id}`} className={css.item} onClick={() => UpdateTag([...current_tag, e])}>
+        <div key={`taglist_${e.id}`} className={css.item} onClick={() => UpdateTag([...props.current_tag, e])}>
           <div className={css.item_icon}>
             <AddIcon />
           </div>
@@ -109,11 +113,12 @@ export default function TagListEdit(props: Props): React.ReactElement {
           <span>追加</span>
         </div>
         {/* タグ一覧（クリックで削除） */}
-        {current_tag.map((e, i) => (
+        {props.current_tag.map((e, i) => (
           <div
             key={`current_tag_${i}`}
             className={css.item}
-            onClick={() => UpdateTag(current_tag.filter((_, j) => j !== i))}
+            data-taglist-selected-item
+            onClick={() => UpdateTag(props.current_tag.filter((_, j) => j !== i))}
           >
             <div className={css.item_icon}>
               <CloseIcon />
@@ -126,7 +131,7 @@ export default function TagListEdit(props: Props): React.ReactElement {
       {/* タグピッカー */}
       <AnimatePresence>
         {is_picker_open &&
-          (current_tag.length >= 8 ? (
+          (props.current_tag.length >= 8 ? (
             // タグ
             <motion.div
               id={PICKER_ID}
