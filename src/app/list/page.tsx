@@ -124,7 +124,7 @@ export default function list(): React.ReactElement {
             text: '入力のクリア',
             icon: <CloseIcon />,
             OnClick: () => SetSearchStr(''),
-            type: 'filled',
+            variant: 'filled',
           }}
         />
         {/* 何を検索するか選択 */}
@@ -156,7 +156,7 @@ export default function list(): React.ReactElement {
         <div className={css.sort}>
           <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
           <Button
-            type='material'
+            variant='material'
             text={newer_first ? '古い順に並べる' : '新しい順に並べる'}
             icon={<SortIcon />}
             OnClick={() => SetNewerFirst(!newer_first)}
@@ -178,9 +178,9 @@ export default function list(): React.ReactElement {
           <Form label='タイトル' value={category_name} OnChange={ev => SetCategoryName(ev.target.value)} />
           <Form label='説明' value={category_desc} OnChange={ev => SetCategoryDesc(ev.target.value)} />
           <div className={css.button_container}>
-            <Button type='material' icon={<CloseIcon />} text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
+            <Button variant='material' icon={<CloseIcon />} text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
             <Button
-              type='filled'
+              variant='filled'
               icon={<CheckIcon />}
               text='作成する'
               OnClick={() => {

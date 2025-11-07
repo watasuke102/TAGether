@@ -44,7 +44,7 @@ export default function Request(): React.ReactElement {
           <Button
             icon={<SendIcon />}
             text='送信'
-            type='filled'
+            variant='filled'
             OnClick={() => {
               if (request === '') return;
               new_request(request).then(() => SetRequest(''));
@@ -104,7 +104,7 @@ export default function Request(): React.ReactElement {
             <Form label='回答' value={answer} OnChange={e => set_answer(e.target.value)} />
             <ButtonContainer>
               <Button
-                type='material'
+                variant='material'
                 text='閉じる'
                 icon={<CloseIcon />}
                 OnClick={() => {
@@ -112,7 +112,7 @@ export default function Request(): React.ReactElement {
                 }}
               />
               <Button
-                type='filled'
+                variant='filled'
                 text='回答を更新'
                 icon={<SendIcon />}
                 OnClick={() => {

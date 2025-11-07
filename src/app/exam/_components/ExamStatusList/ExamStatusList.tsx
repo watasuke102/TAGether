@@ -67,7 +67,7 @@ export function ExamStatusList(): JSX.Element {
         {is_mobile_device() && (
           <div className={css.mobile_header}>
             <span>解答状況</span>
-            <Button type='material' text='' OnClick={close} icon={<CloseIcon />} />
+            <Button variant='material' text='' OnClick={close} icon={<CloseIcon />} />
           </div>
         )}
         {state.exam_state.map((e, i) => {

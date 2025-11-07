@@ -45,7 +45,7 @@ function Main() {
         <Logo />
       </div>
       <Button
-        type='filled'
+        variant='filled'
         icon={<GoogleIcon />}
         text={is_enabled_detour_login ? 'ゲストとしてログイン（開発用）' : 'Googleアカウントでログイン'}
         OnClick={is_enabled_detour_login ? () => login('guest', 'guest') : google_login}

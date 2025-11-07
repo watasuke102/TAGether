@@ -29,7 +29,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
     <>
       <div className={css.container}>
         <div className={css.delete_button}>
-          <Button text='削除' icon={<DeleteIcon />} type='material' OnClick={() => SetIsModalOpen(true)} />
+          <Button text='削除' icon={<DeleteIcon />} variant='material' OnClick={() => SetIsModalOpen(true)} />
         </div>
 
         <span className={css.title} onClick={() => router.push(`/examtable?history_id=${props.id}`)}>
@@ -47,7 +47,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
             <Button
               text='解き直し'
               icon={<ClockIcon />}
-              type='material'
+              variant='material'
               OnClick={() => router.push(`/exam?history_id=${props.id}`)}
             />
           )}
@@ -63,7 +63,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
               OnClick={() => {
                 SetIsModalOpen(false);
               }}
-              type='material'
+              variant='material'
               icon={<CloseIcon />}
               text='閉じる'
             />
@@ -71,7 +71,7 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
               OnClick={() => {
                 delete_history(props.id).then(() => SetIsModalOpen(false));
               }}
-              type='filled'
+              variant='filled'
               icon={<DeleteIcon />}
               text='削除する'
             />

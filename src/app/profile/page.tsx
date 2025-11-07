@@ -45,7 +45,7 @@ export default function profile(): React.ReactElement {
       <div className={css.container}>
         <div className={css.user_info}>
           {is_user_loading ? <div /> : <span>{user.email} としてログイン中です。</span>}
-          <Button type='filled' icon={<ArrowLeftIcon />} text='ログアウト' OnClick={logout} />
+          <Button variant='filled' icon={<ArrowLeftIcon />} text='ログアウト' OnClick={logout} />
         </div>
         <h2>お気に入りカテゴリ</h2>
         <div className={css.favorite_category}>

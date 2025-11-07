@@ -58,19 +58,19 @@ export function FinishModal(props: Props): JSX.Element {
           <Button
             text={'編集する'}
             icon={<EditIcon />}
-            type={'material'}
+            variant={'material'}
             OnClick={() => id && router.push(`/edit?id=${id}`)}
           />
           <Button
             text={'結果一覧'}
             icon={<ListIcon />}
-            type={'material'}
+            variant={'material'}
             OnClick={() => router.push(`/examtable?history_id=${props.inserted_history_id}`)}
           />
           <Button
             text={'カテゴリ一覧へ移動'}
             icon={<ArrowLeftIcon />}
-            type={'filled'}
+            variant={'filled'}
             OnClick={() => router.push('/list')}
           />
         </ButtonContainer>

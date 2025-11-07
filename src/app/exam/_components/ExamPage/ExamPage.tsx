@@ -8,25 +8,25 @@
 import css from './ExamPage.module.scss';
 import scroll_area from '../ScrollArea.module.scss';
 import React from 'react';
-import { useImmerReducer } from 'use-immer';
-import { ExamReducerContext, exam_reducer, init_state } from '../ExamReducer';
-import { Result } from '../Result/Result';
-import { ExamAnswerArea } from '../ExamAnswerArea/ExamAnswerArea';
-import { ExamStatusList } from '../ExamStatusList/ExamStatusList';
+import {useImmerReducer} from 'use-immer';
+import {ExamReducerContext, exam_reducer, init_state} from '../ExamReducer';
+import {Result} from '../Result/Result';
+import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
+import {ExamStatusList} from '../ExamStatusList/ExamStatusList';
 import Button from '@/common/Button/Button';
-import { useShortcut } from '@utils/useShortcut';
-import { is_mobile_device } from '@utils/IsMobileDevice';
-import { FmtCorrectAnswer } from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
+import {useShortcut} from '@utils/useShortcut';
+import {is_mobile_device} from '@utils/IsMobileDevice';
+import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
 import Exam from '@mytypes/Exam';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
 import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
 import MenuIcon from '@assets/menu.svg';
-import { FinishModal } from '../FinishModal/FinishModal';
+import {FinishModal} from '../FinishModal/FinishModal';
 import ButtonInfo from '@mytypes/ButtonInfo';
-import { new_history } from '@utils/api/history';
-import { AllHistory } from '@mytypes/ExamHistory';
+import {new_history} from '@utils/api/history';
+import {AllHistory} from '@mytypes/ExamHistory';
 
 export type ExamPageProps = {
   title: string;
@@ -49,18 +49,18 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
         top: (result_area_ref.current?.offsetTop ?? 0) - 100,
       });
     } else {
-      window.scrollTo({ top: 0 });
+      window.scrollTo({top: 0});
     }
     prev_index.current = state.index;
   }, [state.index, state.exam_state[state.index].checked]);
   useShortcut(
     [
-      { keycode: 'KeyH', handler: () => dispatch({ type: 'handle_button/prev' }) },
-      { keycode: 'ArrowLeft', handler: () => dispatch({ type: 'handle_button/prev' }) },
-      { keycode: 'KeyL', handler: () => dispatch({ type: 'handle_button/next' }) },
-      { keycode: 'ArrowRight', handler: () => dispatch({ type: 'handle_button/next' }) },
+      {keycode: 'KeyH', handler: () => dispatch({type: 'handle_button/prev'})},
+      {keycode: 'ArrowLeft', handler: () => dispatch({type: 'handle_button/prev'})},
+      {keycode: 'KeyL', handler: () => dispatch({type: 'handle_button/next'})},
+      {keycode: 'ArrowRight', handler: () => dispatch({type: 'handle_button/next'})},
     ],
-    { ctrl: true, shift: true },
+    {ctrl: true, shift: true},
   );
 
   React.useEffect(() => {
@@ -79,8 +79,9 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
   return (
     <ExamReducerContext.Provider value={[state, dispatch]}>
       <div
-        className={`${css.exam_area_wrapper_base} ${is_mobile_device() ? css.exam_area_wrapper_mobile : css.exam_area_wrapper_normal
-          }`}
+        className={`${css.exam_area_wrapper_base} ${
+          is_mobile_device() ? css.exam_area_wrapper_mobile : css.exam_area_wrapper_normal
+        }`}
       >
         <ExamStatusList />
         <section className={`${css.exam_area} ${is_mobile_device() ? css.exam_area_mobile : css.exam_area_normal}`}>
@@ -88,7 +89,7 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
             <div className={css.button_wrapper_left}>
               {is_mobile_device() && (
                 <Button
-                  type='material'
+                  variant='material'
                   text=''
                   OnClick={() => document.documentElement.style.setProperty('--slide-amount', '0%')}
                   icon={<MenuIcon />}
@@ -98,9 +99,9 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
                 // 戻るボタンを非表示にする時、divを置いて次へボタンを右寄せ
                 state.index !== 0 && (
                   <Button
-                    type='material'
+                    variant='material'
                     text={is_mobile_device() ? '' : '前の問題'}
-                    OnClick={() => dispatch({ type: 'handle_button/prev' })}
+                    OnClick={() => dispatch({type: 'handle_button/prev'})}
                     icon={<ArrowLeftIcon />}
                   />
                 )
@@ -110,8 +111,8 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
             <div className={css.button_wrapper_right}>
               {(() => {
                 const common: Omit<ButtonInfo, 'text' | 'icon'> = {
-                  type: 'material',
-                  OnClick: () => dispatch({ type: 'handle_button/next' }),
+                  variant: 'material',
+                  OnClick: () => dispatch({type: 'handle_button/next'}),
                 };
                 if (!state.exam_state[state.index].checked) {
                   return <Button text={is_mobile_device() ? '' : '答え合わせ'} icon={<CircleIcon />} {...common} />;

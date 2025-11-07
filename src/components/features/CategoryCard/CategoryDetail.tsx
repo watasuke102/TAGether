@@ -96,39 +96,39 @@ export default function CategoryDetail(props: Props): React.ReactElement {
     <>
       <span className={css.counter_name}> {props.text} </span>
       <div className={css.counter}>
-        <Button text='10' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 10)} type='material' />
-        <Button text='1' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 1)} type='material' />
+        <Button text='10' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 10)} variant='material' />
+        <Button text='1' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 1)} variant='material' />
         <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
-        <Button text='1' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 1)} type='material' />
-        <Button text='10' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 10)} type='material' />
+        <Button text='1' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 1)} variant='material' />
+        <Button text='10' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 10)} variant='material' />
       </div>
     </>
   );
 
   // prettier-ignore
   const info: ButtonInfo[] = [
-    {icon:<EditIcon />,       OnClick: () => Push('edit'),         type: 'material', text: '編集する'},
-    {icon:<ListIcon />,       OnClick: () => Push('table'),        type: 'material', text: '問題一覧'},
-    {icon:<SettingIcon />,    OnClick: () => SetIsModalOpen(true), type: 'material', text: '解答時の設定'},
-    {icon:<ArrowRightIcon />, OnClick: () => Push('exam'),         type: 'filled',   text: 'この問題を解く'},
+    {icon:<EditIcon />,       OnClick: () => Push('edit'),         variant: 'material', text: '編集する'},
+    {icon:<ListIcon />,       OnClick: () => Push('table'),        variant: 'material', text: '問題一覧'},
+    {icon:<SettingIcon />,    OnClick: () => SetIsModalOpen(true), variant: 'material', text: '解答時の設定'},
+    {icon:<ArrowRightIcon />, OnClick: () => Push('exam'),         variant: 'filled',   text: 'この問題を解く'},
   ];
 
   return (
     <>
       <div className={css.container}>
         <div className={css.button_container}>
-          <Button text='' icon={<CloseIcon />} OnClick={props.close} type='material' />
+          <Button text='' icon={<CloseIcon />} OnClick={props.close} variant='material' />
           <Button
             text='csvのダウンロード'
             icon={<DownloadIcon />}
             OnClick={() => set_is_csv_export_open(true)}
-            type='material'
+            variant='material'
           />
           <Button
             text={props.data.deleted ? 'ゴミ箱から取り出す' : 'ゴミ箱に移動'}
             icon={<DeleteIcon />}
             OnClick={() => SetIsDeleteModalOpen(true)}
-            type='material'
+            variant='material'
           />
         </div>
         <ReactTextareaAutosize disabled={true} value={props.data.title} id={css.title} />
@@ -167,7 +167,7 @@ export default function CategoryDetail(props: Props): React.ReactElement {
             <Button
               text='閉じる'
               icon={<CloseIcon />}
-              type='material'
+              variant='material'
               OnClick={() => {
                 SetIsDeleteModalOpen(false);
               }}
@@ -175,7 +175,7 @@ export default function CategoryDetail(props: Props): React.ReactElement {
             <Button
               text='確定'
               icon={<CheckIcon />}
-              type='filled'
+              variant='filled'
               OnClick={() => {
                 if (!props.data.id) {
                   return;
@@ -233,8 +233,13 @@ export default function CategoryDetail(props: Props): React.ReactElement {
             />
 
             <ButtonContainer>
-              <Button text='閉じる' icon={<CloseIcon />} OnClick={() => SetIsModalOpen(false)} type='material'></Button>
-              <Button text='この問題を解く' icon={<ArrowRightIcon />} OnClick={() => Push('exam')} type='filled' />
+              <Button
+                text='閉じる'
+                icon={<CloseIcon />}
+                OnClick={() => SetIsModalOpen(false)}
+                variant='material'
+              ></Button>
+              <Button text='この問題を解く' icon={<ArrowRightIcon />} OnClick={() => Push('exam')} variant='filled' />
             </ButtonContainer>
           </div>
         )}

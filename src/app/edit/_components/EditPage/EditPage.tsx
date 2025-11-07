@@ -129,7 +129,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
       <div className={css.buttons}>
         <SelectButton type='check' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
         <div className={css.pushbutton_wrapper}>
-          <Button type={'filled'} icon={<CheckIcon />} text={'編集を適用'} OnClick={() => RegistCategory()} />
+          <Button variant={'filled'} icon={<CheckIcon />} text={'編集を適用'} OnClick={() => RegistCategory()} />
         </div>
       </div>
       <hr />

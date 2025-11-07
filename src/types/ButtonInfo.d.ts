@@ -5,7 +5,7 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 interface ButtonInfo {
-  type: 'material' | 'filled';
+  variant: 'material' | 'filled';
   icon?: React.ReactNode;
   text: string;
   OnClick: () => void;

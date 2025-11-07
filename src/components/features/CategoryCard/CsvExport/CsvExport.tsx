@@ -125,8 +125,8 @@ export function CsvExport(props: Props): React.ReactElement {
           </div>
         )}
         <div className={css.button_container}>
-          <Button text='閉じる' icon={<CloseIcon />} type='material' OnClick={props.close} />
-          <Button text='ダウンロード' icon={<DownloadIcon />} type='filled' OnClick={download_csv} />
+          <Button text='閉じる' icon={<CloseIcon />} variant='material' OnClick={props.close} />
+          <Button text='ダウンロード' icon={<DownloadIcon />} variant='filled' OnClick={download_csv} />
         </div>
       </div>
     </Modal>

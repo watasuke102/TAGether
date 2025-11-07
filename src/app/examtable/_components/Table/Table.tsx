@@ -171,18 +171,18 @@ export function Table(props: ExamTableProps): React.ReactElement {
 
       <div className={css.button_container}>
         <div className={css.buttons}>
-          <Button text='戻る' icon={<ArrowLeftIcon />} OnClick={router.back} type='material' />
+          <Button text='戻る' icon={<ArrowLeftIcon />} OnClick={router.back} variant='material' />
           {props.history && (
             <Button
               OnClick={() => set_show_user_answer(e => !e)}
-              type='material'
+              variant='material'
               text={show_user_answer ? '自分の解答を非表示' : '自分の解答を表示'}
               icon={show_user_answer ? <InvisibleIcon /> : <VisibleIcon />}
             />
           )}
           <Button
             OnClick={() => SetShowCorrectAnswer(!show_correct_answer)}
-            type='material'
+            variant='material'
             text={show_correct_answer ? '正解を非表示' : '正解を表示'}
             icon={show_correct_answer ? <InvisibleIcon /> : <VisibleIcon />}
           />
@@ -190,7 +190,7 @@ export function Table(props: ExamTableProps): React.ReactElement {
             OnClick={() =>
               router.push(props.history ? `/exam?history_id=${props.history.id}` : `/exam?id=${props.id ?? ''}`)
             }
-            type='filled'
+            variant='filled'
             text={'この問題を解く'}
             icon={<ArrowRightIcon />}
           />

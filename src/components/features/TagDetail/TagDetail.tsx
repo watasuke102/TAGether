@@ -92,18 +92,18 @@ export default function TagDetail(props: Props): React.ReactElement {
 
           {/* ボタン */}
           <ButtonContainer>
-            <Button type='material' icon={<CloseIcon />} text='閉じる' OnClick={props.close} />
+            <Button variant='material' icon={<CloseIcon />} text='閉じる' OnClick={props.close} />
             {props.createMode ? (
               <></>
             ) : (
               <Button
-                type='material'
+                variant='material'
                 icon={<EditIcon />}
                 text='このタグのカテゴリを解く'
                 OnClick={() => router.push(`/exam?tag=${props.tag.id ?? ''}`)}
               />
             )}
-            <Button type='filled' icon={<CheckIcon />} text='編集結果を適用' OnClick={UpdateTag} />
+            <Button variant='filled' icon={<CheckIcon />} text='編集結果を適用' OnClick={UpdateTag} />
           </ButtonContainer>
         </div>
       </Modal>

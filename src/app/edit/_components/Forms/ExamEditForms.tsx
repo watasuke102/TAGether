@@ -92,18 +92,18 @@ export default function ExamEditForms(): React.ReactElement {
       <div className={css.button_list}>
         <div className={css.button_container}>
           <Button
-            type={'material'}
+            variant={'material'}
             icon={<DoubleChevronLeftIcon />}
             text={''}
             OnClick={() => dispatch({type: 'index/first'})}
           />
-          <Button type={'material'} icon={<ChevronLeftIcon />} text={''} OnClick={() => step_page_with_adding(-1)} />
+          <Button variant={'material'} icon={<ChevronLeftIcon />} text={''} OnClick={() => step_page_with_adding(-1)} />
           <span className={css.current_editing}>
             {state.current_editing + 1}/{exam_len}
           </span>
-          <Button type={'material'} icon={<ChevronRightIcon />} text={''} OnClick={() => step_page_with_adding(1)} />
+          <Button variant={'material'} icon={<ChevronRightIcon />} text={''} OnClick={() => step_page_with_adding(1)} />
           <Button
-            type={'material'}
+            variant={'material'}
             icon={<DoubleChevronRightIcon />}
             text={''}
             OnClick={() => dispatch({type: 'index/last'})}
@@ -112,7 +112,7 @@ export default function ExamEditForms(): React.ReactElement {
 
         <div className={css.button_container}>
           <Button
-            type={'material'}
+            variant={'material'}
             icon={<DeleteIcon />}
             text={'この問題を削除'}
             OnClick={() => {
@@ -122,13 +122,13 @@ export default function ExamEditForms(): React.ReactElement {
               dispatch({type: 'exam/remove', at: state.current_editing});
             }}
           />
-          <Button type={'material'} icon={<ListIcon />} text={'問題一覧'} OnClick={() => SetIsModalOpen(true)} />
+          <Button variant={'material'} icon={<ListIcon />} text={'問題一覧'} OnClick={() => SetIsModalOpen(true)} />
         </div>
 
         <div className={css.append_exam}>
           <ButtonContainer>
             <Button
-              type='material'
+              variant='material'
               icon={<DoubleChevronLeftIcon />}
               text='最初に挿入'
               OnClick={() => {
@@ -137,13 +137,13 @@ export default function ExamEditForms(): React.ReactElement {
               }}
             />
             <Button
-              type='material'
+              variant='material'
               icon={<ArrowLeftIcon />}
               text='1つ前に挿入'
               OnClick={() => dispatch({type: 'exam/insert', at: state.current_editing})}
             />
             <Button
-              type='material'
+              variant='material'
               icon={<ArrowRightIcon />}
               text='1つ後に挿入'
               OnClick={() => {
@@ -152,7 +152,7 @@ export default function ExamEditForms(): React.ReactElement {
               }}
             />
             <Button
-              type='material'
+              variant='material'
               icon={<DoubleChevronRightIcon />}
               text='最後に挿入'
               OnClick={() => {
@@ -255,7 +255,7 @@ export default function ExamEditForms(): React.ReactElement {
           </DragDropContext>
 
           <div className={css.button_container}>
-            <Button type={'filled'} icon={<CloseIcon />} text={'閉じる'} OnClick={() => SetIsModalOpen(false)} />
+            <Button variant={'filled'} icon={<CloseIcon />} text={'閉じる'} OnClick={() => SetIsModalOpen(false)} />
           </div>
         </div>
       </Modal>

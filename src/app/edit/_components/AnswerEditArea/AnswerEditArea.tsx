@@ -31,13 +31,13 @@ export function AnswerEditArea(): React.ReactElement {
     <>
       <div className={css.button_container}>
         <Button
-          type='material'
+          variant='material'
           icon={<ArrowUpIcon />}
           text='最初に挿入'
           OnClick={() => dispatch({type: `q:${target_str}/insert`, at: -1})}
         />
         <Button
-          type='material'
+          variant='material'
           icon={<ArrowDownIcon />}
           text='最後に挿入'
           OnClick={() => dispatch({type: `q:${target_str}/insert`, at: target_array.length})}
@@ -125,14 +125,14 @@ export function AnswerEditArea(): React.ReactElement {
                             <Button
                               text='1つ下に追加'
                               icon={<ArrowDownIcon />}
-                              type='material'
+                              variant='material'
                               OnClick={() => dispatch({type: `q:${target_str}/insert`, at: i + 1})}
                             />
                             {target_array.length !== 1 && (
                               <Button
                                 text='削除'
                                 icon={<DeleteIcon />}
-                                type='material'
+                                variant='material'
                                 OnClick={() => dispatch({type: `q:${target_str}/remove`, at: i})}
                               />
                             )}
@@ -161,14 +161,14 @@ export function AnswerEditArea(): React.ReactElement {
               <Button
                 text='1つ下に追加'
                 icon={<ArrowDownIcon />}
-                type='material'
+                variant='material'
                 OnClick={() => dispatch({type: 'q:choice/insert', at: i + 1})}
               />
               {exam.question_choices?.length !== 1 && (
                 <Button
                   text='削除'
                   icon={<DeleteIcon />}
-                  type='material'
+                  variant='material'
                   OnClick={() => dispatch({type: 'q:choice/remove', at: i})}
                 />
               )}
