@@ -8,7 +8,7 @@ import css from './ExamAnswerArea.module.scss';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import {ExamReducerContext} from '../ExamReducer';
-import Form from '@/common/TextForm/Form';
+import TextForm from '@/common/TextForm/TextForm';
 import {SelectButton} from '@/common/SelectBox';
 import ListIcon from '@assets/list.svg';
 import {ComboBox} from '@/common/ComboBox/ComboBox';
@@ -108,7 +108,7 @@ export function ExamAnswerArea(): JSX.Element {
             return exam.answer.map((e, i) => (
               <div key={'text-' + i} className={css.item}>
                 <ResultIndicator index={i} />
-                <Form
+                <TextForm
                   id={i === 0 ? FIRST_ITEM : ''}
                   label={exam.answer.length === 1 ? '解答' : `解答 (${i + 1})`}
                   value={status.user_answer[i]}

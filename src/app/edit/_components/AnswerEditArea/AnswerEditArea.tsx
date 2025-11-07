@@ -9,7 +9,7 @@ import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
 import {EditReducerContext} from '../EditReducer';
 import {useShortcut} from '@utils/useShortcut';
-import Form from '@/common/TextForm/Form';
+import TextForm from '@/common/TextForm/TextForm';
 import Button from '@/common/Button/Button';
 import {TabIndexList} from '../Forms/ExamEditForms';
 import {SelectButton} from '@/common/SelectBox';
@@ -107,7 +107,7 @@ export function AnswerEditArea(): React.ReactElement {
                                 />
                               </div>
                             ) : (
-                              <Form
+                              <TextForm
                                 id={id}
                                 label={`答え (${i + 1})`}
                                 value={e}
@@ -151,7 +151,7 @@ export function AnswerEditArea(): React.ReactElement {
       {exam.type === 'ListSelect' &&
         exam.question_choices?.map((e, i) => (
           <div key={'listselect_choiceedit_' + i}>
-            <Form
+            <TextForm
               label={`選択肢 (${i + 1})`}
               value={e}
               layer={TabIndexList.Answer}

@@ -8,24 +8,24 @@
 import css from './list.module.scss';
 import React from 'react';
 import Button from '@/common/Button/Button';
-import { useRouter } from 'next/navigation';
-import { IndexedContainer } from '@/common/IndexedContainer';
+import {useRouter} from 'next/navigation';
+import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
-import { SelectButton, SingleSelectBox } from '@/common/SelectBox';
-import Form from '@/common/TextForm/Form';
-import { useWaiting } from '@/common/Waiting';
+import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
+import TextForm from '@/common/TextForm/TextForm';
+import {useWaiting} from '@/common/Waiting';
 import CategoryCard from '@/features/CategoryCard/CategoryCard';
-import { useAllCategoryData, new_category } from '@utils/api/category';
-import { AllCategoryDataType } from '@mytypes/Category';
-import { useToastOperator } from '@/common/Toast/Toast';
+import {useAllCategoryData, new_category} from '@utils/api/category';
+import {AllCategoryDataType} from '@mytypes/Category';
+import {useToastOperator} from '@/common/Toast/Toast';
 import AddIcon from '@assets/add.svg';
 import CloseIcon from '@assets/close.svg';
 import CheckIcon from '@assets/check.svg';
 import SortIcon from '@assets/sort.svg';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import TagData from '@mytypes/TagData';
-import { useTagData } from '@utils/api/tag';
+import {useTagData} from '@utils/api/tag';
 
 export default function list(): React.ReactElement {
   const router = useRouter();
@@ -60,28 +60,28 @@ export default function list(): React.ReactElement {
     }
 
     const cards: React.ReactElement[] = [];
-    const category_list: AllCategoryDataType[] = list.filter(e => {
-      // 検索欄になにか記入されているときのみ検索
-      if (radio_state === 'タグ') {
-        if (search_tags.length === 0) {
+    const category_list: AllCategoryDataType[] = list
+      .filter(e => {
+        // 検索欄になにか記入されているときのみ検索
+        if (radio_state === 'タグ') {
+          if (search_tags.length === 0) {
+            return true;
+          }
+        } else if (search_str === '') {
           return true;
-
         }
-      } else if (search_str === '') {
-        return true;
-      }
-      switch (radio_state) {
-        case 'タイトル':
-          return e.title.includes(search_str);
-        case '説明':
-          return e.description.includes(search_str);
-        case 'ID':
-          return e.id === Number(search_str);
-        case 'タグ':
-          // カテゴリが選択されたタグを1つでも持っていたらtrue
-          return search_tags.some(selected => e.tag.some(category_tag => category_tag.id === selected.id));
-      }
-    })
+        switch (radio_state) {
+          case 'タイトル':
+            return e.title.includes(search_str);
+          case '説明':
+            return e.description.includes(search_str);
+          case 'ID':
+            return e.id === Number(search_str);
+          case 'タグ':
+            // カテゴリが選択されたタグを1つでも持っていたらtrue
+            return search_tags.some(selected => e.tag.some(category_tag => category_tag.id === selected.id));
+        }
+      })
       .filter(e => e.deleted === show_only_trash);
     // 検索結果からカードを生成
     if (category_list.length === 0) {
@@ -137,13 +137,13 @@ export default function list(): React.ReactElement {
         </div>
 
         {/* 検索欄 */}
-        {(radio_state === 'タグ' && !isTagLoading) ?
+        {radio_state === 'タグ' && !isTagLoading ? (
           <div>
             <span className={css.search_area_heading}>検索するタグ</span>
             <TagListEdit tags={tags} current_tag={search_tags} SetTag={SetSearchTags} />
           </div>
-          :
-          <Form
+        ) : (
+          <TextForm
             {...{
               label: '検索',
               value: search_str,
@@ -151,7 +151,7 @@ export default function list(): React.ReactElement {
               OnChange: ev => SetSearchStr(ev.target.value),
             }}
           />
-        }
+        )}
 
         <div className={css.sort}>
           <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
@@ -175,8 +175,8 @@ export default function list(): React.ReactElement {
       <Modal isOpen={is_modal_open} close={() => SetIsModalOpen(false)}>
         <div className={css.add_category_window}>
           <h2>新規カテゴリの追加</h2>
-          <Form label='タイトル' value={category_name} OnChange={ev => SetCategoryName(ev.target.value)} />
-          <Form label='説明' value={category_desc} OnChange={ev => SetCategoryDesc(ev.target.value)} />
+          <TextForm label='タイトル' value={category_name} OnChange={ev => SetCategoryName(ev.target.value)} />
+          <TextForm label='説明' value={category_desc} OnChange={ev => SetCategoryDesc(ev.target.value)} />
           <div className={css.button_container}>
             <Button variant='material' icon={<CloseIcon />} text='キャンセル' OnClick={() => SetIsModalOpen(false)} />
             <Button
@@ -193,7 +193,7 @@ export default function list(): React.ReactElement {
                   title: category_name,
                   description: category_desc,
                   list: JSON.stringify([
-                    { type: 'Text', question: '問題文', question_choices: [''], answer: ['解答'], comment: '' },
+                    {type: 'Text', question: '問題文', question_choices: [''], answer: ['解答'], comment: ''},
                   ]),
                 }).then(e => router.push(`/edit?id=${e.inserted_id}`));
               }}

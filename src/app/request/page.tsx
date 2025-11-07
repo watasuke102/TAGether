@@ -9,7 +9,7 @@ import css from './request.module.scss';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import Loading from '@/common/Loading/Loading';
-import Form from '@/common/TextForm/Form';
+import TextForm from '@/common/TextForm/TextForm';
 import Modal from '@/common/Modal/Modal';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import {useUser} from '@utils/api/user';
@@ -39,7 +39,7 @@ export default function Request(): React.ReactElement {
         送信者が特定できるような情報は保存されません。個別対応が必要な際は要望内にその旨を含めてください。
       </p>
       <div className={css.form}>
-        <Form label='要望入力欄' value={request} OnChange={e => SetRequest(e.target.value)} />
+        <TextForm label='要望入力欄' value={request} OnChange={e => SetRequest(e.target.value)} />
         <div className={css.button}>
           <Button
             icon={<SendIcon />}
@@ -101,7 +101,7 @@ export default function Request(): React.ReactElement {
         {opening_index !== undefined && requests?.at(opening_index ?? -1) ? (
           <div className={css.modal}>
             <span className={css.req}>{requests[opening_index].body}</span>
-            <Form label='回答' value={answer} OnChange={e => set_answer(e.target.value)} />
+            <TextForm label='回答' value={answer} OnChange={e => set_answer(e.target.value)} />
             <ButtonContainer>
               <Button
                 variant='material'

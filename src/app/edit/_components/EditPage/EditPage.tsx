@@ -11,7 +11,7 @@ import ExamEditForms from '../Forms/ExamEditForms';
 import {PutCategory} from '../../../api/category/[id]/route';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
-import Form from '@/common/TextForm/Form';
+import TextForm from '@/common/TextForm/TextForm';
 import {useToastOperator} from '@/common/Toast/Toast';
 import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useConfirmBeforeLeave} from '@utils/ConfirmBeforeLeave';
@@ -102,7 +102,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
   return (
     <>
       <div className={css.edit_area}>
-        <Form
+        <TextForm
           {...{
             label: 'タイトル',
             value: edit_states.title,
@@ -110,7 +110,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
             OnChange: e => dispatch({type: 'title/set', data: e.target.value}),
           }}
         />
-        <Form
+        <TextForm
           {...{
             label: '説明',
             value: edit_states.desc,
@@ -136,7 +136,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
       {is_json_edit ? (
         <>
           <p>注意：編集内容はリッチエディタと同期されません</p>
-          <Form
+          <TextForm
             label='JSON'
             value={edit_states.list}
             OnChange={e => dispatch({type: 'list/set', data: e.target.value})}

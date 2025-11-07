@@ -4,12 +4,12 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import css from './Form.module.scss';
+import css from './TextForm.module.scss';
 import React from 'react';
 import FormInfo from '@mytypes/FormInfo';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
-export default function Form(props: FormInfo): JSX.Element {
+export default function TextForm(props: FormInfo): JSX.Element {
   return (
     <div>
       {props.label && (

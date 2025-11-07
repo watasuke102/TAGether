@@ -10,7 +10,7 @@ import {useRouter} from 'next/navigation';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
-import Form from '@/common/TextForm/Form';
+import TextForm from '@/common/TextForm/TextForm';
 import {useToastOperator} from '@/common/Toast/Toast';
 import TagData from '@mytypes/TagData';
 import {mutate_tag, new_tag, update_tag} from '@utils/api/tag';
@@ -70,7 +70,7 @@ export default function TagDetail(props: Props): React.ReactElement {
 
           {/* 編集 */}
           <div className={css.forms}>
-            <Form
+            <TextForm
               {...{
                 label: 'タグ名',
                 rows: 1,
@@ -79,7 +79,7 @@ export default function TagDetail(props: Props): React.ReactElement {
                 OnChange: e => SetEditedName(e.target.value),
               }}
             />
-            <Form
+            <TextForm
               {...{
                 label: '説明',
                 rows: 4,

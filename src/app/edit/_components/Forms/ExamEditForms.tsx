@@ -11,7 +11,7 @@ import {EditReducerContext} from '../EditReducer';
 import Button from '@/common/Button/Button';
 import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
-import Form from '@/common/TextForm/Form';
+import TextForm from '@/common/TextForm/TextForm';
 import Loading from '../../loading';
 import {useShortcut} from '@utils/useShortcut';
 import {AnswerEditArea} from '../AnswerEditArea/AnswerEditArea';
@@ -167,14 +167,14 @@ export default function ExamEditForms(): React.ReactElement {
       {/* 問題文の編集欄（左側） */}
       <div className={css.form_container}>
         <div className={css.qa_list}>
-          <Form
+          <TextForm
             id={QUESTION_ID}
             label={'問題文'}
             value={state.exam[state.current_editing].question}
             layer={TabIndexList.Question}
             OnChange={e => dispatch({type: 'q:question/set', data: e.target.value})}
           />
-          <Form
+          <TextForm
             label={'コメント（解説など）'}
             value={state.exam[state.current_editing].comment ?? ''}
             OnChange={e => dispatch({type: 'q:comment/set', data: e.target.value})}
