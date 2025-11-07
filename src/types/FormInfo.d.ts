@@ -10,7 +10,8 @@ interface FormInfo {
   id?: string;
   layer?: number;
   disabled?: boolean;
-  OnChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  oneline?: boolean;
+  OnChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
 }
 
 export default FormInfo;

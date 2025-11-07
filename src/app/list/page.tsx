@@ -148,6 +148,7 @@ export default function list(): React.ReactElement {
               label: '検索',
               value: search_str,
               rows: 1,
+              oneline: true,
               OnChange: ev => SetSearchStr(ev.target.value),
             }}
           />

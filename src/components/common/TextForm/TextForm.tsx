@@ -17,16 +17,29 @@ export default function TextForm(props: FormInfo): JSX.Element {
           {props.label}
         </label>
       )}
-      <ReactTextareaAutosize
-        id={props.id ?? ''}
-        className={css.form}
-        value={props.value}
-        minRows={1}
-        spellCheck={false}
-        tabIndex={props.layer ?? 1}
-        onChange={e => props.OnChange(e)}
-        disabled={props.disabled}
-      />
+      {props.oneline ? (
+        <input
+          type='text'
+          id={props.id ?? ''}
+          className={css.form}
+          value={props.value}
+          spellCheck={false}
+          tabIndex={props.layer ?? 1}
+          onChange={e => props.OnChange(e)}
+          disabled={props.disabled}
+        />
+      ) : (
+        <ReactTextareaAutosize
+          id={props.id ?? ''}
+          className={css.form}
+          value={props.value}
+          minRows={1}
+          spellCheck={false}
+          tabIndex={props.layer ?? 1}
+          onChange={e => props.OnChange(e)}
+          disabled={props.disabled}
+        />
+      )}
     </div>
   );
 }

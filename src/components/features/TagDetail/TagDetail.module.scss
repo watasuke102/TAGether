@@ -21,8 +21,10 @@
     margin-bottom: 16px;
   }
 
-  .forms div {
-    margin-bottom: 20px;
+  .forms {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   // 親要素（Card）のCSSを打ち消す

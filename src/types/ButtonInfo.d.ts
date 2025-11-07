@@ -8,7 +8,8 @@ interface ButtonInfo {
   variant: 'material' | 'filled';
   icon?: React.ReactNode;
   text: string;
-  OnClick: () => void;
+  type?: HTMLButtonElement['type'];
+  OnClick?: () => void;
 }
 
 export default ButtonInfo;

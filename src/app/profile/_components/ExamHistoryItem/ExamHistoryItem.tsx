@@ -15,6 +15,7 @@ import CloseIcon from '@assets/close.svg';
 import ClockIcon from '@assets/clock.svg';
 import {useRouter} from 'next/navigation';
 import {history_title} from '@utils/HistoryTitle';
+import {Form} from '@/common/Form/Form';
 
 export function ExamHistoryItem(props: AllHistory): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);
@@ -58,24 +59,19 @@ export function ExamHistoryItem(props: AllHistory): React.ReactElement {
         <div className={css.modal}>
           <span className={css.title}>{history_title(props)}</span>
           <p>この解答履歴を削除しますか？</p>
-          <div className={css.buttons}>
-            <Button
-              OnClick={() => {
-                SetIsModalOpen(false);
-              }}
-              variant='material'
-              icon={<CloseIcon />}
-              text='閉じる'
-            />
-            <Button
-              OnClick={() => {
-                delete_history(props.id).then(() => SetIsModalOpen(false));
-              }}
-              variant='filled'
-              icon={<DeleteIcon />}
-              text='削除する'
-            />
-          </div>
+          <Form onSubmit={() => delete_history(props.id).then(() => SetIsModalOpen(false))}>
+            <div className={css.buttons}>
+              <Button
+                OnClick={() => {
+                  SetIsModalOpen(false);
+                }}
+                variant='material'
+                icon={<CloseIcon />}
+                text='閉じる'
+              />
+              <Button variant='filled' type='submit' icon={<DeleteIcon />} text='削除する' />
+            </div>
+          </Form>
         </div>
       </Modal>
     </>

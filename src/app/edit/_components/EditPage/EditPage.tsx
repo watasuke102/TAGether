@@ -107,6 +107,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
             label: 'タイトル',
             value: edit_states.title,
             rows: 1,
+            oneline: true,
             OnChange: e => dispatch({type: 'title/set', data: e.target.value}),
           }}
         />

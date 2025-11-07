@@ -16,6 +16,7 @@ import {useUser} from '@utils/api/user';
 import {useRequestData, new_request, set_answer_to_request} from '@utils/api/request';
 import SendIcon from '@assets/send.svg';
 import CloseIcon from '@assets/close.svg';
+import {Form} from '@/common/Form/Form';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
@@ -38,20 +39,18 @@ export default function Request(): React.ReactElement {
         <br />
         送信者が特定できるような情報は保存されません。個別対応が必要な際は要望内にその旨を含めてください。
       </p>
-      <div className={css.form}>
+      <Form
+        className={css.form}
+        onSubmit={() => {
+          if (request === '') return;
+          new_request(request).then(() => SetRequest(''));
+        }}
+      >
         <TextForm label='要望入力欄' value={request} OnChange={e => SetRequest(e.target.value)} />
         <div className={css.button}>
-          <Button
-            icon={<SendIcon />}
-            text='送信'
-            variant='filled'
-            OnClick={() => {
-              if (request === '') return;
-              new_request(request).then(() => SetRequest(''));
-            }}
-          />
+          <Button icon={<SendIcon />} text='送信' variant='filled' type='submit' />
         </div>
-      </div>
+      </Form>
       <hr />
       {isLoading || is_user_loading ? (
         <Loading />
@@ -99,9 +98,14 @@ export default function Request(): React.ReactElement {
       )}
       <Modal isOpen={opening_index !== undefined} close={() => set_opening_edit_id(undefined)}>
         {opening_index !== undefined && requests?.at(opening_index ?? -1) ? (
-          <div className={css.modal}>
+          <Form
+            className={css.modal}
+            onSubmit={() =>
+              set_answer_to_request(requests[opening_index].id, answer).then(() => set_opening_edit_id(undefined))
+            }
+          >
             <span className={css.req}>{requests[opening_index].body}</span>
-            <TextForm label='回答' value={answer} OnChange={e => set_answer(e.target.value)} />
+            <TextForm label='回答' value={answer} oneline OnChange={e => set_answer(e.target.value)} />
             <ButtonContainer>
               <Button
                 variant='material'
@@ -111,16 +115,9 @@ export default function Request(): React.ReactElement {
                   set_opening_edit_id(undefined);
                 }}
               />
-              <Button
-                variant='filled'
-                text='回答を更新'
-                icon={<SendIcon />}
-                OnClick={() => {
-                  set_answer_to_request(requests[opening_index].id, answer).then(() => set_opening_edit_id(undefined));
-                }}
-              />
+              <Button variant='filled' text='回答を更新' icon={<SendIcon />} type='submit' />
             </ButtonContainer>
-          </div>
+          </Form>
         ) : (
           <></>
         )}

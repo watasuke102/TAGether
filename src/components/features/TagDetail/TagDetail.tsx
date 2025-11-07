@@ -18,6 +18,7 @@ import TagIcon from '@assets/tag.svg';
 import CloseIcon from '@assets/close.svg';
 import CheckIcon from '@assets/check.svg';
 import EditIcon from '@assets/edit.svg';
+import {Form} from '@/common/Form/Form';
 
 interface Props {
   tag: TagData;
@@ -47,6 +48,9 @@ export default function TagDetail(props: Props): React.ReactElement {
       new_tag({name: edited_name, description: edited_desc}).then(() => {
         Toast.open('タグを追加しました');
         mutate_tag();
+        SetEditedName('');
+        SetEditedDesc('');
+        props.close();
       });
     } else {
       update_tag(props.tag?.id ?? -1, {name: edited_name, description: edited_desc}).then(() => {
@@ -69,13 +73,14 @@ export default function TagDetail(props: Props): React.ReactElement {
           </div>
 
           {/* 編集 */}
-          <div className={css.forms}>
+          <Form className={css.forms} onSubmit={UpdateTag}>
             <TextForm
               {...{
                 label: 'タグ名',
                 rows: 1,
                 value: edited_name,
                 disabled: disabled,
+                oneline: true,
                 OnChange: e => SetEditedName(e.target.value),
               }}
             />
@@ -88,23 +93,23 @@ export default function TagDetail(props: Props): React.ReactElement {
                 OnChange: e => SetEditedDesc(e.target.value),
               }}
             />
-          </div>
 
-          {/* ボタン */}
-          <ButtonContainer>
-            <Button variant='material' icon={<CloseIcon />} text='閉じる' OnClick={props.close} />
-            {props.createMode ? (
-              <></>
-            ) : (
-              <Button
-                variant='material'
-                icon={<EditIcon />}
-                text='このタグのカテゴリを解く'
-                OnClick={() => router.push(`/exam?tag=${props.tag.id ?? ''}`)}
-              />
-            )}
-            <Button variant='filled' icon={<CheckIcon />} text='編集結果を適用' OnClick={UpdateTag} />
-          </ButtonContainer>
+            {/* ボタン */}
+            <ButtonContainer>
+              <Button variant='material' icon={<CloseIcon />} text='閉じる' OnClick={props.close} />
+              {props.createMode ? (
+                <></>
+              ) : (
+                <Button
+                  variant='material'
+                  icon={<EditIcon />}
+                  text='このタグのカテゴリを解く'
+                  OnClick={() => router.push(`/exam?tag=${props.tag.id ?? ''}`)}
+                />
+              )}
+              <Button variant='filled' icon={<CheckIcon />} text='編集結果を適用' type='submit' />
+            </ButtonContainer>
+          </Form>
         </div>
       </Modal>
     </>
