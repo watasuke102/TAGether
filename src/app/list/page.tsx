@@ -119,14 +119,6 @@ export default function list(): React.ReactElement {
           status={show_only_trash}
           onChange={SetShowOnlyTrash}
         />
-        <Button
-          {...{
-            text: '入力のクリア',
-            icon: <CloseIcon />,
-            OnClick: () => SetSearchStr(''),
-            variant: 'filled',
-          }}
-        />
         {/* 何を検索するか選択 */}
         <div className={css.radiobutton_container}>
           <SingleSelectBox
@@ -153,6 +145,15 @@ export default function list(): React.ReactElement {
             }}
           />
         )}
+        <Button
+          text='入力のクリア'
+          icon={<CloseIcon />}
+          OnClick={() => {
+            SetSearchStr('');
+            SetSearchTags([]);
+          }}
+          variant='filled'
+        />
 
         <div className={css.sort}>
           <p>{newer_first ? '新しい順' : '古い順'}に並べています。</p>
