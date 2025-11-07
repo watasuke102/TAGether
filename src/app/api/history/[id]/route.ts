@@ -17,7 +17,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   if (!session.is_logged_in) {
     return Response.json([], { status: 401 });
   }
-  const { db, con } = await connect_drizzle();
+  const { db, con } = connect_drizzle();
   const histories = await db.select().from(history).where(eq(history.id, (await params).id));
   if (histories[0].owner !== session.uid) {
     return Response.json([], { status: 401 });
@@ -35,7 +35,7 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
   if (!session.is_logged_in) {
     return Response.json({}, { status: 401 });
   }
-  const { db, con } = await connect_drizzle();
+  const { db, con } = connect_drizzle();
   await db.delete(history).where(eq(history.id, (await params).id));
   con.end();
   return Response.json({});

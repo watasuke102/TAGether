@@ -4,15 +4,14 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {MySql2Database, drizzle} from 'drizzle-orm/mysql2';
-import mysql from 'mysql2/promise';
+import {drizzle} from 'drizzle-orm/node-postgres';
+import {Pool} from 'pg';
 
-export async function connect_drizzle(): Promise<{db: MySql2Database; con: mysql.Connection}> {
-  const con = await mysql.createConnection({
-    host: 'mysql',
-    user: 'root',
-    password: 'root',
-    database: 'tagether',
+export type DrizzleConnection = {db: ReturnType<typeof drizzle>; con: Pool};
+
+export function connect_drizzle(): DrizzleConnection {
+  const con = new Pool({
+    connectionString: 'postgresql://tagether:root@postgres:5432/tagether?sslmode=disable',
   });
   const db = drizzle(con);
   return {db, con};

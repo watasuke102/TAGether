@@ -18,7 +18,7 @@ export async function PUT(req: Request): Promise<Response> {
     return Response.json({}, { status: 401 });
   }
   const favorite_list: string = await req.text();
-  const { db, con } = await connect_drizzle();
+  const { db, con } = connect_drizzle();
   await db.update(users).set({ favorite_list }).where(eq(users.uid, session.uid));
   con.end();
   return Response.json({});

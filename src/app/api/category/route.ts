@@ -4,21 +4,21 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import { exam, tag } from 'src/db/schema';
-import { connect_drizzle } from '../../../db/drizzle';
-import { cookies } from 'next/headers';
-import { getIronSession } from 'iron-session';
-import { replace_tag_of_category } from '@utils/ReplaceTagOfCategory';
-import { Session } from '@mytypes/Session';
-import { env } from 'env';
-import { webhook } from '../webhook';
+import {exam, tag} from 'src/db/schema';
+import {connect_drizzle} from '../../../db/drizzle';
+import {cookies} from 'next/headers';
+import {getIronSession} from 'iron-session';
+import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
+import {Session} from '@mytypes/Session';
+import {env} from 'env';
+import {webhook} from '../webhook';
 
 export async function GET(): Promise<Response> {
   const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (!session.is_logged_in) {
-    return Response.json([], { status: 401 });
+    return Response.json([], {status: 401});
   }
-  const { db, con } = await connect_drizzle();
+  const {db, con} = connect_drizzle();
   const tags = await db.select().from(tag);
   const categories = (
     await db
@@ -51,15 +51,18 @@ export type NewCategory = {
 export async function POST(req: Request): Promise<Response> {
   const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (!session.is_logged_in) {
-    return Response.json([], { status: 401 });
+    return Response.json([], {status: 401});
   }
   const data: NewCategory = await req.json();
-  const { db, con } = await connect_drizzle();
-  const result = await db.insert(exam).values({ ...data, version: 2, tag: '' });
+  const {db, con} = connect_drizzle();
+  const result = await db
+    .insert(exam)
+    .values({...data, version: 2, tag: ''})
+    .returning({inserted_id: exam.id});
   con.end();
   webhook(env.WEBHOOK.CATEGORY_ADD, '新規カテゴリ追加', [
-    { name: 'タイトル', value: data.title },
-    { name: '説明', value: data.description },
+    {name: 'タイトル', value: data.title},
+    {name: '説明', value: data.description},
   ]);
-  return Response.json({ inserted_id: result[0].insertId });
+  return Response.json({inserted_id: result[0].inserted_id});
 }

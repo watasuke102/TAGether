@@ -18,7 +18,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   if (!session.is_logged_in) {
     return Response.json([], { status: 401 });
   }
-  const { db, con } = await connect_drizzle();
+  const { db, con } = connect_drizzle();
   const tags = (await db.select().from(tag).where(eq(tag.id, Number((await params).id)))).map(e => {
     e.updated_at.setHours(e.updated_at.getHours() + 9);
     return { ...e, updated_at: e.updated_at.toISOString() };
@@ -37,7 +37,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     return Response.json([], { status: 401 });
   }
   const data: PutTag = await req.json();
-  const { db, con } = await connect_drizzle();
+  const { db, con } = connect_drizzle();
   const old_tag = await db.select().from(tag).where(eq(tag.id, Number((await params).id)));
   await db.update(tag).set(data).where(eq(tag.id, Number((await params).id)));
   con.end();

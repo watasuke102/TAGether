@@ -19,7 +19,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   if (!session.is_logged_in) {
     return Response.json([], { status: 401 });
   }
-  const { db, con } = await connect_drizzle();
+  const { db, con } = connect_drizzle();
   const fetched_categories = (
     await db
       .select()

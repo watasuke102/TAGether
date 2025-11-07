@@ -4,24 +4,23 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import { history } from 'src/db/schema';
-import { connect_drizzle } from 'src/db/drizzle';
-import { eq } from 'drizzle-orm';
-import { getIronSession } from 'iron-session';
-import { v4 } from 'uuid';
-import { cookies } from 'next/headers';
-import { Session } from '@mytypes/Session';
-import { AllHistory } from '@mytypes/ExamHistory';
+import {history} from 'src/db/schema';
+import {connect_drizzle} from 'src/db/drizzle';
+import {eq} from 'drizzle-orm';
+import {getIronSession} from 'iron-session';
+import {cookies} from 'next/headers';
+import {Session} from '@mytypes/Session';
+import {AllHistory} from '@mytypes/ExamHistory';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
-import { env } from 'env';
+import {env} from 'env';
 
 export async function GET(): Promise<Response> {
   const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (session.is_logged_in !== true) {
-    return Response.json({}, { status: 401 });
+    return Response.json({}, {status: 401});
   }
-  const { db, con } = await connect_drizzle();
+  const {db, con} = connect_drizzle();
   const histories: AllHistory[] = (
     await db
       .select({
@@ -55,12 +54,14 @@ export type NewHistory = {
 export async function POST(req: Request): Promise<Response> {
   const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   if (!session.is_logged_in) {
-    return Response.json([], { status: 401 });
+    return Response.json([], {status: 401});
   }
   const data: NewHistory = await req.json();
-  const id = v4();
-  const { db, con } = await connect_drizzle();
-  await db.insert(history).values({ ...data, owner: session.uid, id });
+  const {db, con} = connect_drizzle();
+  const result = await db
+    .insert(history)
+    .values({...data, owner: session.uid})
+    .returning({inserted_id: history.id});
   con.end();
-  return Response.json({ inserted_id: id });
+  return Response.json({inserted_id: result[0].inserted_id});
 }

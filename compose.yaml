@@ -1,26 +1,14 @@
 services:
-  mysql:
-    image: mysql
-    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
+  postgres:
+    image: postgres:18
     volumes:
-      - ./docker/mysql:/docker-entrypoint-initdb.d
-      - ./docker/data:/var/lib/mysql
+      - ./docker/data:/var/lib/postgresql
     ports:
-      - '3334:3306'
+      - '5432:5432'
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: tagether
-    cap_add:
-      - SYS_NICE
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql:db
-    ports:
-      - '8888:80'
-    depends_on:
-      - mysql
+      POSTGRES_USER: tagether
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: tagether
 
   front:
     image: node:20
