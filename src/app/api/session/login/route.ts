@@ -18,6 +18,7 @@ export type LoginData = {
   email: string;
 };
 export async function POST(req: Request): Promise<Response> {
+  return Response.json({message: 'obsolete route'}, {status: 405});
   const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
   const data: LoginData = await req.json();
   const {db, con} = connect_drizzle();

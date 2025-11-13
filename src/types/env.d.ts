@@ -8,9 +8,11 @@ import {SessionOptions} from 'iron-session';
 
 export type Env = {
   API_URL: string;
-  GOOGLE_CLIENT_ID: string;
-  GOOGLE_CLIENT_SECRET: string;
   SESSION_OPTION: SessionOptions;
+  SMTP_HOST: string;
+  SMTP_PORT: number;
+  SMTP_USER: string;
+  SMTP_PASS: string;
   EMAIL_WHITE_LIST: RegExp[];
   WEBHOOK: {
     CATEGORY_ADD: string;

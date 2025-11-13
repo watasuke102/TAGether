@@ -8,8 +8,10 @@ import {Env} from '@mytypes/env';
 
 export const env: Env = {
   API_URL: '',
-  GOOGLE_CLIENT_ID: '',
-  GOOGLE_CLIENT_SECRET: '',
+  SMTP_HOST: '',
+  SMTP_PORT: 587,
+  SMTP_USER: '',
+  SMTP_PASS: '',
   SESSION_OPTION: {
     cookieName: 'TAGether-Session',
     password: '',

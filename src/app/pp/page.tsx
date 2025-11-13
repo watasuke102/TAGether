@@ -30,7 +30,7 @@ export default function PrivacyPolicy(): React.ReactElement {
           </ol>
           <ul>
             <li>
-              ここでの「個人情報」とは、Googleアカウントに紐付けられた識別子およびメールアドレスを主に指しますが、これに限定されません
+              ここでの「個人情報」とはメールアドレスを主に指しますが、これに限定されません
             </li>
           </ul>
           <li>本プライバシーポリシーは改定される可能性があります</li>

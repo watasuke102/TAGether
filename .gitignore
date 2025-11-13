@@ -1,4 +1,4 @@
-/docker/data
+/docker
 node_modules
 .next
 env.json

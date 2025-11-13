@@ -4,6 +4,8 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+@use '../../../components/common/variable';
+
 .container {
   position: absolute;
   top: 50%;
@@ -12,10 +14,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  text-align: center;
-  font-size: 1.2em;
   opacity: 0;
-  animation: fadein 1.5s 0.5s forwards;
+  animation: fadein 0.5s 0.2s forwards;
 }
 
 @keyframes fadein {
@@ -28,5 +28,32 @@
 }
 
 .logo {
-  width: min(90dvw, 600px);
+  width: min(90dvw, 650px);
+  margin: 0 auto;
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  input {
+    border: 1px solid variable.$color-primary-2;
+    margin-bottom: 12px;
+  }
+}
+.waiting_email {
+  text-align: center;
+}
+
+.or_separator {
+  display: block;
+  text-align: center;
+  margin: 4px 0;
+  color: variable.$color-2;
+}
+
+.desc {
+  font-size: 0.9em;
+  color: variable.$color-2;
+  text-align: center;
 }

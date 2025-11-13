@@ -43,7 +43,7 @@ export const request = pgTable('request', {
 });
 
 export const users = pgTable('users', {
-  uid: text().notNull().primaryKey(),
+  uid: uuid().notNull().primaryKey().defaultRandom(),
   email: text().notNull(),
   is_admin: boolean().notNull().default(false),
   favorite_list: text().default('[]'),
@@ -51,7 +51,7 @@ export const users = pgTable('users', {
 
 export const history = pgTable('history', {
   id: uuid().notNull().primaryKey().defaultRandom(),
-  owner: text()
+  owner: uuid()
     .notNull()
     .references(() => users.uid),
   created_at: timestamp().notNull().defaultNow(),
@@ -61,4 +61,23 @@ export const history = pgTable('history', {
 
   exam_state: json().$type<ExamState[]>().notNull(),
   exam: json().$type<Exam[]>().notNull(),
+});
+
+export const email_login_tokens = pgTable('email_login_tokens', {
+  id: uuid().notNull().primaryKey().defaultRandom(),
+  email: text().notNull(),
+  token: text().notNull(),
+  created_at: timestamp().notNull().defaultNow(),
+  expire_at: timestamp().notNull(),
+  is_used: boolean().notNull().default(false),
+});
+
+export const passkeys = pgTable('passkeys', {
+  id: uuid().notNull().primaryKey().defaultRandom(),
+  owner: uuid()
+    .notNull()
+    .references(() => users.uid),
+  credential_id: text().notNull(),
+  public_key: text().notNull(), // base64url
+  counter: integer().notNull().default(0),
 });

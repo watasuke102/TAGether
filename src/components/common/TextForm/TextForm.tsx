@@ -27,6 +27,7 @@ export default function TextForm(props: FormInfo): JSX.Element {
           tabIndex={props.layer ?? 1}
           onChange={e => props.OnChange(e)}
           disabled={props.disabled}
+          autoComplete={props.autoComplete}
         />
       ) : (
         <ReactTextareaAutosize
