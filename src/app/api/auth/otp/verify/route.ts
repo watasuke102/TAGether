@@ -1,10 +1,16 @@
-import {env} from 'env';
+// TAGether - Share self-made exam for classmates
+// CopyRight (c) 2020-2025 watasuke
+//
+// Email  : <watasuke102@gmail.com>
+// Twitter: @watasuke1024
+// This software is released under the MIT or MIT SUSHI-WARE License.
 import {NextResponse} from 'next/server';
-import {connect_drizzle} from 'src/db/drizzle';
-import {email_login_tokens} from 'src/db/schema';
 import isEmail from 'validator/es/lib/isEmail';
 import bcrypt from 'bcrypt';
 import {and, eq, gt} from 'drizzle-orm';
+import {email_login_tokens} from 'src/db/schema';
+import {env} from 'env';
+import {connect_drizzle} from 'src/db/drizzle';
 import {ensure_user_exist_and_new_session} from '../../new_session';
 
 export type OtpVerifyRequest = {

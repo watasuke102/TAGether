@@ -1,12 +1,12 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './SelectButton.module.scss';
-import React from 'react';
 import CheckIcon from '@assets/check.svg';
+import React from 'react';
 
 interface Props {
   type: 'check' | 'radio';

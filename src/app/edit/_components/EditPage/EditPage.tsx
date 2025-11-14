@@ -1,14 +1,14 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './EditPage.module.scss';
+import CheckIcon from '@assets/check.svg';
 import React from 'react';
-import ExamEditForms from '../Forms/ExamEditForms';
-import {PutCategory} from '../../../api/category/[id]/route';
+import {useImmerReducer} from 'use-immer';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
 import TextForm from '@/common/TextForm/TextForm';
@@ -20,10 +20,10 @@ import Exam from '@mytypes/Exam';
 import {CategoryDataType} from '@mytypes/Category';
 import TagData from '@mytypes/TagData';
 import {validate_category} from '@utils/ValidateCategory';
-import {useImmerReducer} from 'use-immer';
-import {edit_reducer, EditReducerContext} from '../EditReducer';
 import {useShortcut} from '@utils/useShortcut';
-import CheckIcon from '@assets/check.svg';
+import {edit_reducer, EditReducerContext} from '../EditReducer';
+import {PutCategory} from '../../../api/category/[id]/route';
+import ExamEditForms from '../Forms/ExamEditForms';
 
 export type EditPageProps = {
   category: CategoryDataType;
@@ -55,7 +55,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
     } else {
       SetShowConfirmBeforeLeave(true);
     }
-  }, [edit_states]);
+  }, [SetShowConfirmBeforeLeave]);
 
   // カテゴリ登録
   const RegistCategory = React.useCallback(() => {
@@ -96,7 +96,17 @@ export function EditPage(props: EditPageProps): JSX.Element {
     console.groupCollapsed('Category update request');
     console.info(request_data);
     console.groupEnd();
-  }, [edit_states]);
+  }, [
+    SetShowConfirmBeforeLeave,
+    Toast,
+    edit_states.desc,
+    edit_states.exam,
+    edit_states.list,
+    edit_states.tags,
+    edit_states.title,
+    is_json_edit,
+    props.category.id,
+  ]);
   useShortcut([{keycode: 'KeyS', handler: RegistCategory}], {ctrl: true});
 
   return (

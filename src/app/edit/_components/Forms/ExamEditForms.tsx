@@ -1,20 +1,10 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './ExamEditForms.module.scss';
-import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
-import {EditReducerContext} from '../EditReducer';
-import Button from '@/common/Button/Button';
-import ButtonContainer from '@/common/Button/ButtonContainer';
-import Modal from '@/common/Modal/Modal';
-import TextForm from '@/common/TextForm/TextForm';
-import Loading from '../../loading';
-import {useShortcut} from '@utils/useShortcut';
-import {AnswerEditArea} from '../AnswerEditArea/AnswerEditArea';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
 import ChevronLeftIcon from '@assets/chevron-left.svg';
@@ -24,8 +14,18 @@ import DoubleChevronRightIcon from '@assets/double-chevron-right.svg';
 import DeleteIcon from '@assets/delete.svg';
 import ListIcon from '@assets/list.svg';
 import CloseIcon from '@assets/close.svg';
+import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
+import React from 'react';
+import TextForm from '@/common/TextForm/TextForm';
+import Modal from '@/common/Modal/Modal';
+import ButtonContainer from '@/common/Button/ButtonContainer';
+import Button from '@/common/Button/Button';
 import {ComboBox} from '@/common/ComboBox/ComboBox';
+import {useShortcut} from '@utils/useShortcut';
 import ExamType from '@mytypes/ExamType';
+import {AnswerEditArea} from '../AnswerEditArea/AnswerEditArea';
+import Loading from '../../loading';
+import {EditReducerContext} from '../EditReducer';
 
 export enum TabIndexList {
   TypeSelect = 1,
@@ -54,7 +54,7 @@ export default function ExamEditForms(): React.ReactElement {
       }
       dispatch({type: dir === -1 ? 'index/prev' : 'index/next'});
     },
-    [state.current_editing],
+    [dispatch, state.current_editing, state.exam.length],
   );
 
   // ショートカットキー

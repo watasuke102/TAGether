@@ -1,20 +1,20 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './FinishModal.module.scss';
-import React from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ExamReducerContext } from '../ExamReducer';
-import Modal from '@/common/Modal/Modal';
 import TadaIcon from '@assets/tada.svg';
-import ButtonContainer from '@/common/Button/ButtonContainer';
-import Button from '@/common/Button/Button';
 import EditIcon from '@assets/edit.svg';
 import ListIcon from '@assets/list.svg';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
+import {useRouter, useSearchParams} from 'next/navigation';
+import React from 'react';
+import Button from '@/common/Button/Button';
+import ButtonContainer from '@/common/Button/ButtonContainer';
+import Modal from '@/common/Modal/Modal';
+import {ExamReducerContext} from '../ExamReducer';
 
 type Props = {
   inserted_history_id: string;
@@ -33,7 +33,7 @@ export function FinishModal(props: Props): JSX.Element {
   const correct_rate = Math.round((correct_answers / total_questions) * 10000) / 100;
 
   return (
-    <Modal isOpen={state.is_modal_open} close={() => dispatch({ type: 'is_modal_open/set', data: false })}>
+    <Modal isOpen={state.is_modal_open} close={() => dispatch({type: 'is_modal_open/set', data: false})}>
       <div className={css.modal}>
         <div className={css.modal_header}>
           <TadaIcon /> <span>問題終了</span>

@@ -1,14 +1,14 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
 import {mutate} from 'swr';
-import {fetcher, useApiData} from './common';
 import {redirect} from 'next/navigation';
 import {Session} from '@mytypes/Session';
+import {fetcher, useApiData} from './common';
 
 const session_key = '/api/session';
 
@@ -22,7 +22,7 @@ export async function logout(): Promise<void> {
 }
 
 export function useSession(use_redirect?: boolean): [Session, boolean, boolean] {
-  const data = useApiData<Session>(session_key)();
+  const data = useApiData<Session>(session_key);
 
   React.useEffect(() => {
     if (data[1]) {
@@ -31,7 +31,7 @@ export function useSession(use_redirect?: boolean): [Session, boolean, boolean] 
     if (use_redirect && !data[0].is_logged_in) {
       redirect('/');
     }
-  }, [data]);
+  }, [data, use_redirect]);
 
   return data;
 }

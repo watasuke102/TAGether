@@ -1,12 +1,12 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
+import {serial, uuid, pgTable, timestamp, text, boolean, json, integer} from 'drizzle-orm/pg-core';
 import Exam from '@mytypes/Exam';
 import ExamState from '@mytypes/ExamState';
-import {serial, uuid, pgTable, timestamp, text, boolean, json, integer} from 'drizzle-orm/pg-core';
 
 export const exam = pgTable('exam', {
   id: serial().notNull().primaryKey(),

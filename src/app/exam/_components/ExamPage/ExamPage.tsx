@@ -1,32 +1,32 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './ExamPage.module.scss';
 import scroll_area from '../ScrollArea.module.scss';
-import React from 'react';
-import {useImmerReducer} from 'use-immer';
-import {ExamReducerContext, exam_reducer, init_state} from '../ExamReducer';
-import {Result} from '../Result/Result';
-import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
-import {ExamStatusList} from '../ExamStatusList/ExamStatusList';
-import Button from '@/common/Button/Button';
-import {useShortcut} from '@utils/useShortcut';
-import {is_mobile_device} from '@utils/IsMobileDevice';
-import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
-import Exam from '@mytypes/Exam';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
 import CircleIcon from '@assets/circle.svg';
 import CheckIcon from '@assets/check.svg';
 import MenuIcon from '@assets/menu.svg';
-import {FinishModal} from '../FinishModal/FinishModal';
+import {useImmerReducer} from 'use-immer';
+import React from 'react';
+import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
+import Button from '@/common/Button/Button';
+import Exam from '@mytypes/Exam';
+import {is_mobile_device} from '@utils/IsMobileDevice';
+import {useShortcut} from '@utils/useShortcut';
 import ButtonInfo from '@mytypes/ButtonInfo';
 import {new_history} from '@utils/api/history';
 import {AllHistory} from '@mytypes/ExamHistory';
+import {ExamStatusList} from '../ExamStatusList/ExamStatusList';
+import {ExamAnswerArea} from '../ExamAnswerArea/ExamAnswerArea';
+import {Result} from '../Result/Result';
+import {ExamReducerContext, exam_reducer, init_state} from '../ExamReducer';
+import {FinishModal} from '../FinishModal/FinishModal';
 
 export type ExamPageProps = {
   title: string;
@@ -52,7 +52,7 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
       window.scrollTo({top: 0});
     }
     prev_index.current = state.index;
-  }, [state.index, state.exam_state[state.index].checked]);
+  }, [props.exam.length, props.title, state.exam_state, state.index]);
   useShortcut(
     [
       {keycode: 'KeyH', handler: () => dispatch({type: 'handle_button/prev'})},
@@ -74,7 +74,7 @@ export function ExamPage(props: ExamPageProps): JSX.Element {
       redo_times,
       title: props.history ? props.history.title : props.title,
     }).then(e => set_inserted_history_id(e.inserted_id));
-  }, [state.exam_state]);
+  }, [props.history, props.title, state.exam, state.exam_state]);
 
   return (
     <ExamReducerContext.Provider value={[state, dispatch]}>

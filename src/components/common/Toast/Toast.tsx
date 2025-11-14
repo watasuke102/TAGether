@@ -1,14 +1,14 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './Toast.module.scss';
+import NotificationsIcon from '@assets/notifications.svg';
 import {AnimatePresence, motion} from 'framer-motion';
 import React, {Dispatch} from 'react';
-import NotificationsIcon from '@assets/notifications.svg';
 
 type State = {
   is_open: boolean;

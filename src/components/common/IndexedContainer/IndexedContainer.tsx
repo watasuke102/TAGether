@@ -1,20 +1,46 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './IndexedContainer.module.scss';
-import React from 'react';
-import Button from '../Button/Button';
 import ChevronLeftIcon from '@assets/chevron-left.svg';
 import ChevronRightIcon from '@assets/chevron-right.svg';
+import React from 'react';
+import Button from '../Button/Button';
 
 interface Props {
   children: React.ReactElement[];
   width?: string;
   per?: number;
   len: number;
+}
+
+function Operator(props: {
+  SetIndex: React.Dispatch<React.SetStateAction<number>>;
+  index: number;
+  max_page: number;
+}): React.ReactElement {
+  return (
+    <div className={css.operator}>
+      <Button
+        icon={<ChevronLeftIcon />}
+        OnClick={() => props.index > 0 && props.SetIndex(i => i - 1)}
+        variant='material'
+        text=''
+      />
+      <span>
+        {props.index + 1}/{props.max_page}
+      </span>
+      <Button
+        icon={<ChevronRightIcon />}
+        OnClick={() => props.index + 1 < props.max_page && props.SetIndex(i => i + 1)}
+        variant='material'
+        text=''
+      />
+    </div>
+  );
 }
 
 export default function SelectButton(props: Props): React.ReactElement {
@@ -25,28 +51,13 @@ export default function SelectButton(props: Props): React.ReactElement {
 
   if (props.children.length < 1) return <span>何もありません</span>;
 
-  const Operator = () => (
-    <div className={css.operator}>
-      <Button icon={<ChevronLeftIcon />} OnClick={() => index > 0 && SetIndex(i => i - 1)} variant='material' text='' />
-      <span>
-        {index + 1}/{max_page}
-      </span>
-      <Button
-        icon={<ChevronRightIcon />}
-        OnClick={() => index + 1 < max_page && SetIndex(i => i + 1)}
-        variant='material'
-        text=''
-      />
-    </div>
-  );
-
   return (
     <>
-      <Operator />
+      <Operator SetIndex={SetIndex} index={index} max_page={max_page} />
       <div style={width_var} className={css.list}>
         {props.children.slice(index * per, (index + 1) * per)}
       </div>
-      <Operator />
+      <Operator SetIndex={SetIndex} index={index} max_page={max_page} />
     </>
   );
 }

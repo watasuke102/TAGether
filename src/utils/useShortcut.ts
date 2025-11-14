@@ -1,8 +1,8 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
 
@@ -28,12 +28,12 @@ export function useShortcut(
         }
       });
     },
-    [actions],
+    [actions, opt?.ctrl, opt?.shift],
   );
   React.useEffect(() => {
     window.addEventListener('keydown', shortcut);
     return () => {
       window.removeEventListener('keydown', shortcut);
     };
-  }, [actions]);
+  }, [actions, shortcut]);
 }

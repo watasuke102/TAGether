@@ -1,11 +1,12 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './tag.module.scss';
+import AddIcon from '@assets/add.svg';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import {Card} from '@/common/Card';
@@ -13,7 +14,6 @@ import Loading from '@/common/Loading/Loading';
 import TagDetail from '@/features/TagDetail/TagDetail';
 import {useTagData} from '@utils/api/tag';
 import TagData from '@mytypes/TagData';
-import AddIcon from '@assets/add.svg';
 
 export default function Tag(): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);

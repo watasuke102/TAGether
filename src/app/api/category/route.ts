@@ -1,16 +1,16 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {exam, tag} from 'src/db/schema';
-import {connect_drizzle} from '../../../db/drizzle';
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
+import {exam, tag} from 'src/db/schema';
 import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
+import {connect_drizzle} from '../../../db/drizzle';
 import {webhook} from '../webhook';
 
 export async function GET(): Promise<Response> {

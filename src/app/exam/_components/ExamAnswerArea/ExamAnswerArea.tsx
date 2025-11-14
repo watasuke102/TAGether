@@ -1,17 +1,17 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './ExamAnswerArea.module.scss';
+import ListIcon from '@assets/list.svg';
 import React from 'react';
 import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
-import {ExamReducerContext} from '../ExamReducer';
 import TextForm from '@/common/TextForm/TextForm';
 import {SelectButton} from '@/common/SelectBox';
-import ListIcon from '@assets/list.svg';
 import {ComboBox} from '@/common/ComboBox/ComboBox';
+import {ExamReducerContext} from '../ExamReducer';
 
 const FIRST_ITEM = 'ExamFirstItem';
 
@@ -84,7 +84,7 @@ export function ExamAnswerArea(): JSX.Element {
 
     window.addEventListener('keydown', Shortcut);
     return () => window.removeEventListener('keydown', Shortcut);
-  }, [state]);
+  }, [dispatch, exam.answer.length, exam.type, state, status.checked]);
 
   // ページ移動時、フォーカスする
   React.useEffect(() => {

@@ -1,15 +1,15 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './Result.module.scss';
-import React from 'react';
-import {ExamReducerContext} from '../ExamReducer';
 import CircleIcon from '@assets/circle.svg';
 import CrossIcon from '@assets/close.svg';
 import TriangleIcon from '@assets/triangle.svg';
+import React from 'react';
+import {ExamReducerContext} from '../ExamReducer';
 
 export function Result(): JSX.Element {
   const [state] = React.useContext(ExamReducerContext);

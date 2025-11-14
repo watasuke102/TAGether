@@ -1,12 +1,12 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './PrivacyPolicy.module.scss';
-import React from 'react';
 import ArrowLeftIcon from '@assets/arrow-left.svg';
+import React from 'react';
 import Link from 'next/link';
 
 export default function PrivacyPolicy(): React.ReactElement {
@@ -29,9 +29,7 @@ export default function PrivacyPolicy(): React.ReactElement {
             <li>その他、以上の目的に付随する目的</li>
           </ol>
           <ul>
-            <li>
-              ここでの「個人情報」とはメールアドレスを主に指しますが、これに限定されません
-            </li>
+            <li>ここでの「個人情報」とはメールアドレスを主に指しますが、これに限定されません</li>
           </ul>
           <li>本プライバシーポリシーは改定される可能性があります</li>
         </ul>

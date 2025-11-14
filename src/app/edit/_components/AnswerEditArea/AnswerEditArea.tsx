@@ -1,23 +1,23 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './AnswerEditArea.module.scss';
-import React from 'react';
-import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
-import {EditReducerContext} from '../EditReducer';
-import {useShortcut} from '@utils/useShortcut';
-import TextForm from '@/common/TextForm/TextForm';
-import Button from '@/common/Button/Button';
-import {TabIndexList} from '../Forms/ExamEditForms';
-import {SelectButton} from '@/common/SelectBox';
 import ArrowUpIcon from '@assets/arrow-up.svg';
 import ArrowDownIcon from '@assets/arrow-down.svg';
 import ListIcon from '@assets/list.svg';
 import DeleteIcon from '@assets/delete.svg';
+import {DragDropContext, Droppable, Draggable, DropResult} from '@hello-pangea/dnd';
+import React from 'react';
+import {SelectButton} from '@/common/SelectBox';
+import Button from '@/common/Button/Button';
+import TextForm from '@/common/TextForm/TextForm';
 import {ComboBox} from '@/common/ComboBox/ComboBox';
+import {useShortcut} from '@utils/useShortcut';
+import {TabIndexList} from '../Forms/ExamEditForms';
+import {EditReducerContext} from '../EditReducer';
 
 export function AnswerEditArea(): React.ReactElement {
   const [state, dispatch] = React.useContext(EditReducerContext);

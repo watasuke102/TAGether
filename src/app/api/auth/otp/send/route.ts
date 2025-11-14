@@ -1,11 +1,17 @@
+// TAGether - Share self-made exam for classmates
+// CopyRight (c) 2020-2025 watasuke
+//
+// Email  : <watasuke102@gmail.com>
+// Twitter: @watasuke1024
+// This software is released under the MIT or MIT SUSHI-WARE License.
 import {randomInt} from 'node:crypto';
-import {env} from 'env';
 import {NextResponse} from 'next/server';
-import {connect_drizzle} from 'src/db/drizzle';
-import {email_login_tokens} from 'src/db/schema';
 import isEmail from 'validator/es/lib/isEmail';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import {email_login_tokens} from 'src/db/schema';
+import {connect_drizzle} from 'src/db/drizzle';
+import {env} from 'env';
 
 export type OtpSendRequest = {
   email: string;

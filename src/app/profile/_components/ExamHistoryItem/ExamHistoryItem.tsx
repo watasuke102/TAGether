@@ -1,21 +1,21 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './ExamHistoryItem.module.scss';
-import React from 'react';
-import Button from '@/common/Button/Button';
-import Modal from '@/common/Modal/Modal';
-import {delete_history} from '@utils/api/history';
-import {AllHistory} from '@mytypes/ExamHistory';
 import DeleteIcon from '@assets/delete.svg';
 import CloseIcon from '@assets/close.svg';
 import ClockIcon from '@assets/clock.svg';
+import React from 'react';
 import {useRouter} from 'next/navigation';
-import {history_title} from '@utils/HistoryTitle';
+import Button from '@/common/Button/Button';
+import Modal from '@/common/Modal/Modal';
 import {Form} from '@/common/Form/Form';
+import {delete_history} from '@utils/api/history';
+import {AllHistory} from '@mytypes/ExamHistory';
+import {history_title} from '@utils/HistoryTitle';
 
 export function ExamHistoryItem(props: AllHistory): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);

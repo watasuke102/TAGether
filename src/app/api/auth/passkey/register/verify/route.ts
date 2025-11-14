@@ -1,16 +1,23 @@
+// TAGether - Share self-made exam for classmates
+// CopyRight (c) 2020-2025 watasuke
+//
+// Email  : <watasuke102@gmail.com>
+// Twitter: @watasuke1024
+// This software is released under the MIT or MIT SUSHI-WARE License.
 import {type RegistrationResponseJSON, verifyRegistrationResponse} from '@simplewebauthn/server';
 import {eq} from 'drizzle-orm';
 import {NextResponse} from 'next/server';
+import isEmail from 'validator/es/lib/isEmail';
 import {connect_drizzle} from 'src/db/drizzle';
 import {passkeys, users} from 'src/db/schema';
 import {env} from 'env';
-import isEmail from 'validator/es/lib/isEmail';
 
 export type PasskeyLoginVerifyRequest = {
   email: string;
   challenge: string;
   attestation_response: RegistrationResponseJSON;
 };
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type PasskeyLoginVerifyResponse = {} | {error_message: string};
 
 export async function POST(request: Request): Promise<NextResponse<PasskeyLoginVerifyResponse>> {

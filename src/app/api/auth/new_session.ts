@@ -2,16 +2,16 @@
 // CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {Session} from '@mytypes/Session';
 import {eq} from 'drizzle-orm';
-import {DrizzleConnection} from 'src/db/drizzle';
-import {users} from 'src/db/schema';
-import {webhook} from '../webhook';
 import {getIronSession} from 'iron-session';
 import {cookies} from 'next/headers';
+import {Session} from '@mytypes/Session';
+import {DrizzleConnection} from 'src/db/drizzle';
+import {users} from 'src/db/schema';
 import {env} from 'env';
+import {webhook} from '../webhook';
 
 export async function ensure_user_exist_and_new_session(
   user_email: string,

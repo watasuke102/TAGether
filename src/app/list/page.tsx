@@ -1,14 +1,18 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './list.module.scss';
+import AddIcon from '@assets/add.svg';
+import CloseIcon from '@assets/close.svg';
+import CheckIcon from '@assets/check.svg';
+import SortIcon from '@assets/sort.svg';
 import React from 'react';
-import Button from '@/common/Button/Button';
 import {useRouter} from 'next/navigation';
+import Button from '@/common/Button/Button';
 import {IndexedContainer} from '@/common/IndexedContainer';
 import Loading from '@/common/Loading/Loading';
 import Modal from '@/common/Modal/Modal';
@@ -16,18 +20,14 @@ import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
 import TextForm from '@/common/TextForm/TextForm';
 import {useWaiting} from '@/common/Waiting';
 import CategoryCard from '@/features/CategoryCard/CategoryCard';
+import {useToastOperator} from '@/common/Toast/Toast';
+import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import {useAllCategoryData, new_category} from '@utils/api/category';
 import {AllCategoryDataType} from '@mytypes/Category';
-import {useToastOperator} from '@/common/Toast/Toast';
-import AddIcon from '@assets/add.svg';
-import CloseIcon from '@assets/close.svg';
-import CheckIcon from '@assets/check.svg';
-import SortIcon from '@assets/sort.svg';
-import TagListEdit from '@/features/TagListEdit/TagListEdit';
 import TagData from '@mytypes/TagData';
 import {useTagData} from '@utils/api/tag';
 
-export default function list(): React.ReactElement {
+export default function List(): React.ReactElement {
   const router = useRouter();
   const Toast = useToastOperator();
 

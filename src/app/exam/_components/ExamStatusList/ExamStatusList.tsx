@@ -1,18 +1,18 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './ExamStatusList.module.scss';
 import scroll_area from '../ScrollArea.module.scss';
-import React from 'react';
-import { ExamReducerContext } from '../ExamReducer';
-import { is_mobile_device } from '@utils/IsMobileDevice';
-import Button from '@/common/Button/Button';
 import CloseIcon from '@assets/close.svg';
+import React from 'react';
 import Draggable from 'react-draggable';
+import Button from '@/common/Button/Button';
+import {is_mobile_device} from '@utils/IsMobileDevice';
+import {ExamReducerContext} from '../ExamReducer';
 
 const CONTAINER_ID = 'ExamStatusList_container';
 export function ExamStatusList(): JSX.Element {
@@ -86,7 +86,7 @@ export function ExamStatusList(): JSX.Element {
               className={`${css.item} ${e.checked ? '' : css.yet}`}
               key={'exam_state_item-' + i}
               onClick={() => {
-                dispatch({ type: 'index/set', index: i });
+                dispatch({type: 'index/set', index: i});
                 close();
               }}
             >
@@ -101,7 +101,7 @@ export function ExamStatusList(): JSX.Element {
           <Draggable
             nodeRef={draggable_ref}
             axis='x'
-            position={{ x: 0, y: 0 }}
+            position={{x: 0, y: 0}}
             onDrag={(_, e) => {
               document.documentElement.style.setProperty('--slide-amount', `${slide_rate(e.x) - 100}%`);
             }}
@@ -111,6 +111,8 @@ export function ExamStatusList(): JSX.Element {
               const is_enough_to_open = slide_rate(e.x) > 50;
               document.documentElement.style.setProperty('--slide-amount', `${is_enough_to_open ? '0' : '-100'}%`);
               if (is_enough_to_open) {
+                // FIXME?
+                // eslint-disable-next-line react-hooks/immutability
                 is_first_click.current = false;
               }
             }}

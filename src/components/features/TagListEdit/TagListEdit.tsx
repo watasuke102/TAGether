@@ -1,16 +1,16 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './TagListEdit.module.scss';
+import AddIcon from '@assets/add.svg';
+import CloseIcon from '@assets/close.svg';
 import {AnimatePresence, motion} from 'framer-motion';
 import React from 'react';
 import TagData from '@mytypes/TagData';
 import TagDetail from '../TagDetail/TagDetail';
-import AddIcon from '@assets/add.svg';
-import CloseIcon from '@assets/close.svg';
 
 interface Props {
   tags: TagData[];

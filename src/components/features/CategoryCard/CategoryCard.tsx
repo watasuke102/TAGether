@@ -1,17 +1,17 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './CategoryCard.module.scss';
 import React from 'react';
 import {Card} from '@/common/Card';
 import Modal from '@/common/Modal/Modal';
 import {AllCategoryDataType} from '@mytypes/Category';
-import Tag from '../TagContainer/TagContainer';
 import Detail from './CategoryDetail';
 import FavoriteStar from './FavoriteStar';
+import Tag from '../TagContainer/TagContainer';
 
 export default function ExamCard(props: AllCategoryDataType): React.ReactElement {
   const [is_modal_open, SetIsModalOpen] = React.useState(false);

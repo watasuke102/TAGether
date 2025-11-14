@@ -2,21 +2,22 @@
 // CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {type AuthenticationResponseJSON, verifyAuthenticationResponse} from '@simplewebauthn/server';
 import {eq} from 'drizzle-orm';
 import {NextResponse} from 'next/server';
 import {connect_drizzle} from 'src/db/drizzle';
 import {passkeys, users} from 'src/db/schema';
-import {ensure_user_exist_and_new_session} from '../../../new_session';
 import {env} from 'env';
+import {ensure_user_exist_and_new_session} from '../../../new_session';
 
 export type PasskeyLoginVerifyRequest = {
   challenge: string;
   auth_response: AuthenticationResponseJSON;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type PasskeyLoginVerifyResponse = {} | {error_message: string};
 
 export async function POST(request: Request): Promise<NextResponse<PasskeyLoginVerifyResponse>> {

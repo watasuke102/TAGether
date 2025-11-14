@@ -1,10 +1,14 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './TagDetail.module.scss';
+import TagIcon from '@assets/tag.svg';
+import CloseIcon from '@assets/close.svg';
+import CheckIcon from '@assets/check.svg';
+import EditIcon from '@assets/edit.svg';
 import React from 'react';
 import {useRouter} from 'next/navigation';
 import Button from '@/common/Button/Button';
@@ -12,13 +16,9 @@ import ButtonContainer from '@/common/Button/ButtonContainer';
 import Modal from '@/common/Modal/Modal';
 import TextForm from '@/common/TextForm/TextForm';
 import {useToastOperator} from '@/common/Toast/Toast';
+import {Form} from '@/common/Form/Form';
 import TagData from '@mytypes/TagData';
 import {mutate_tag, new_tag, update_tag} from '@utils/api/tag';
-import TagIcon from '@assets/tag.svg';
-import CloseIcon from '@assets/close.svg';
-import CheckIcon from '@assets/check.svg';
-import EditIcon from '@assets/edit.svg';
-import {Form} from '@/common/Form/Form';
 
 interface Props {
   tag: TagData;
@@ -58,7 +58,7 @@ export default function TagDetail(props: Props): React.ReactElement {
         mutate_tag();
       });
     }
-  }, [edited_name, edited_desc]);
+  }, [disabled, edited_name, props, Toast, edited_desc]);
 
   return (
     <>

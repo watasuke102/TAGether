@@ -1,25 +1,10 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './CategoryDetail.module.scss';
-import {useRouter} from 'next/navigation';
-import React from 'react';
-import Button from '@/common/Button/Button';
-import ButtonContainer from '@/common/Button/ButtonContainer';
-import Modal from '@/common/Modal/Modal';
-import {SelectButton} from '@/common/SelectBox';
-import {useToastOperator} from '@/common/Toast/Toast';
-import Tag from '@/features/TagContainer/TagContainer';
-import ButtonInfo from '@mytypes/ButtonInfo';
-import {AllCategoryDataType} from '@mytypes/Category';
-import {CsvExport} from './CsvExport/CsvExport';
-import {useCategoryData} from '@utils/api/swr_hooks';
-import {mutate_category, toggle_delete_category} from '@utils/api/category';
-import Exam from '@mytypes/Exam';
-import Loading from '@/common/Loading/Loading';
 import MinusIcon from '@assets/minus.svg';
 import PlusIcon from '@assets/add.svg';
 import CloseIcon from '@assets/close.svg';
@@ -31,11 +16,41 @@ import ArrowRightIcon from '@assets/arrow-right.svg';
 import CheckIcon from '@assets/check.svg';
 import ListIcon from '@assets/list.svg';
 import ClockIcon from '@assets/clock.svg';
+import React from 'react';
+import {useRouter} from 'next/navigation';
 import ReactTextareaAutosize from 'react-textarea-autosize';
+import Loading from '@/common/Loading/Loading';
+import Tag from '@/features/TagContainer/TagContainer';
+import {useToastOperator} from '@/common/Toast/Toast';
+import {SelectButton} from '@/common/SelectBox';
+import Modal from '@/common/Modal/Modal';
+import ButtonContainer from '@/common/Button/ButtonContainer';
+import Button from '@/common/Button/Button';
+import Exam from '@mytypes/Exam';
+import {mutate_category, toggle_delete_category} from '@utils/api/category';
+import {useCategoryData} from '@utils/api/swr_hooks';
+import {AllCategoryDataType} from '@mytypes/Category';
+import ButtonInfo from '@mytypes/ButtonInfo';
+import {CsvExport} from './CsvExport/CsvExport';
 
 interface Props {
   data: AllCategoryDataType;
   close: () => void;
+}
+
+function Counter(props: {text: string; value: number; setValue: (e: number) => void}) {
+  return (
+    <>
+      <span className={css.counter_name}> {props.text} </span>
+      <div className={css.counter}>
+        <Button text='10' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 10)} variant='material' />
+        <Button text='1' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 1)} variant='material' />
+        <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
+        <Button text='1' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 1)} variant='material' />
+        <Button text='10' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 10)} variant='material' />
+      </div>
+    </>
+  );
 }
 
 export default function CategoryDetail(props: Props): React.ReactElement {
@@ -91,19 +106,6 @@ export default function CategoryDetail(props: Props): React.ReactElement {
     }
     router.push(url);
   }
-
-  const Counter = (props: {text: string; value: number; setValue: (e: number) => void}) => (
-    <>
-      <span className={css.counter_name}> {props.text} </span>
-      <div className={css.counter}>
-        <Button text='10' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 10)} variant='material' />
-        <Button text='1' icon={<MinusIcon />} OnClick={() => props.setValue(props.value - 1)} variant='material' />
-        <span className={css.value}> {props.value === 0 ? '-' : props.value} </span>
-        <Button text='1' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 1)} variant='material' />
-        <Button text='10' icon={<PlusIcon />} OnClick={() => props.setValue(props.value + 10)} variant='material' />
-      </div>
-    </>
-  );
 
   // prettier-ignore
   const info: ButtonInfo[] = [

@@ -1,18 +1,18 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import React from 'react';
-import { ExamPage, ExamPageProps } from './_components/ExamPage/ExamPage';
-import { Shuffle } from '@utils/ArrayUtil';
-import { redirect } from 'next/navigation';
-import { fetch_history } from '@utils/api/history';
-import { fetch_category_data, fetch_category_with_spec_tag_data } from '@utils/api/category';
+import {redirect} from 'next/navigation';
+import {Shuffle} from '@utils/ArrayUtil';
+import {fetch_history} from '@utils/api/history';
+import {fetch_category_data, fetch_category_with_spec_tag_data} from '@utils/api/category';
+import {history_title} from '@utils/HistoryTitle';
 import Loading from './loading';
-import { history_title } from '@utils/HistoryTitle';
+import {ExamPage, ExamPageProps} from './_components/ExamPage/ExamPage';
 
 type Props = {
   searchParams: Promise<{
@@ -31,7 +31,7 @@ export default function Page(props: Props): JSX.Element {
 
   React.useEffect(() => {
     (async () => {
-      const prop: ExamPageProps = { title: '', exam: [] };
+      const prop: ExamPageProps = {title: '', exam: []};
       const params = await props.searchParams;
       if (params.id) {
         const category = await fetch_category_data(params.id);
@@ -58,7 +58,7 @@ export default function Page(props: Props): JSX.Element {
         .filter((_, i) => !((begin && i < begin) || (end && i > end)))
         .map(e => {
           if (params.choiceShuffle && Array.isArray(e.question_choices)) {
-            const choices = Shuffle(e.question_choices.map((e, i) => ({ original_index: i, choice: e })));
+            const choices = Shuffle(e.question_choices.map((e, i) => ({original_index: i, choice: e})));
             e.question_choices = choices.map(choice => choice.choice);
             if (e.type === 'Select' || e.type === 'MultiSelect') {
               e.answer = choices.flatMap((choice, i) =>
@@ -73,7 +73,7 @@ export default function Page(props: Props): JSX.Element {
       }
       set_exam_props(prop);
     })();
-  }, []);
+  }, [props.searchParams]);
 
   return exam_props ? <ExamPage {...exam_props} /> : <Loading />;
 }

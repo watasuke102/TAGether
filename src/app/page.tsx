@@ -1,22 +1,22 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
-import Header from '@/features/Header/Header';
 import css from './top.module.scss';
 import React from 'react';
-import {Login} from './_components/Login/Login';
-import PackageJson from 'package.json';
 import Link from 'next/link';
+import Header from '@/features/Header/Header';
+import PackageJson from 'package.json';
+import {Login} from './_components/Login/Login';
 
 export const TopPageSessionContext = React.createContext<() => void>(() => undefined);
 
 // 本当はサーバーコンポーネントにしたかったが、
 // セッション情報はクライアントのWebブラウザにあるのでだめそう
-export default function index(): React.ReactElement {
+export default function Index(): React.ReactElement {
   // SWRの自動更新機能により、セッションが更新されて画面が更新される場合がある
   // （例：ユーザーがブラウザからフォーカスを外して、後で戻ってきた場合）
   // OTP入力後にこれが発生すると、パスキー登録の確認が消えてしまう
@@ -30,7 +30,7 @@ export default function index(): React.ReactElement {
       });
   }, [set_is_logged_in]);
 
-  React.useEffect(refresh_session, []);
+  React.useEffect(refresh_session, [refresh_session]);
 
   if (is_logged_in === null) {
     return (

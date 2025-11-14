@@ -1,25 +1,25 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './Table.module.scss';
+import ArrowLeftIcon from '@assets/arrow-left.svg';
+import VisibleIcon from '@assets/visible.svg';
+import InvisibleIcon from '@assets/invisible.svg';
+import ArrowRightIcon from '@assets/arrow-right.svg';
 import React from 'react';
 import {useRouter} from 'next/navigation';
 import Button from '@/common/Button/Button';
 import {SelectButton} from '@/common/SelectBox';
 import {FmtCorrectAnswer} from '@/features/Exam/FmtCorrectAnswer/FmtCorrectAnswer';
+import {FmtUserAnswer} from '@/features/Exam/FmtUserAnswer/FmtUserAnswer';
 import AnswerState from '@mytypes/AnswerState';
 import Exam from '@mytypes/Exam';
 import {History} from '@mytypes/ExamHistory';
-import ArrowLeftIcon from '@assets/arrow-left.svg';
-import VisibleIcon from '@assets/visible.svg';
-import InvisibleIcon from '@assets/invisible.svg';
-import ArrowRightIcon from '@assets/arrow-right.svg';
 import {Shuffle} from '@utils/ArrayUtil';
-import {FmtUserAnswer} from '@/features/Exam/FmtUserAnswer/FmtUserAnswer';
 
 export type ExamTableProps = {
   title: string;
@@ -53,7 +53,7 @@ export function Table(props: ExamTableProps): React.ReactElement {
             return [];
         }
       }),
-    [],
+    [props.exam],
   );
   const answer_state = React.useMemo(
     () =>
@@ -65,7 +65,7 @@ export function Table(props: ExamTableProps): React.ReactElement {
         }
         return AnswerState.PartialCorrect;
       }),
-    [],
+    [props.history?.exam_state],
   );
 
   return (

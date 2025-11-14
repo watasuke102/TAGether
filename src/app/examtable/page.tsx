@@ -1,17 +1,17 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import React from 'react';
-import { ExamTableProps, Table } from './_components/Table/Table';
+import {redirect} from 'next/navigation';
 import Loading from '@/common/Loading/Loading';
-import { fetch_category_data } from '@utils/api/category';
-import { fetch_history } from '@utils/api/history';
-import { redirect } from 'next/navigation';
-import { history_title } from '@utils/HistoryTitle';
+import {fetch_category_data} from '@utils/api/category';
+import {fetch_history} from '@utils/api/history';
+import {history_title} from '@utils/HistoryTitle';
+import {ExamTableProps, Table} from './_components/Table/Table';
 
 type Props = {
   searchParams: Promise<{
@@ -46,7 +46,7 @@ export default function ExamTablePage(props: Props): React.ReactElement {
       }
       set_examtable_props(prop);
     })();
-  }, []);
+  }, [props.searchParams]);
 
   return examtable_props ? <Table {...examtable_props} /> : <Loading />;
 }

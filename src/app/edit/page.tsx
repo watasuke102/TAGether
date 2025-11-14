@@ -1,14 +1,14 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import React from 'react';
-import { EditPage, EditPageProps } from './_components/EditPage/EditPage';
-import { fetch_category_data } from '@utils/api/category';
-import { fetch_tag } from '@utils/api/tag';
+import {fetch_category_data} from '@utils/api/category';
+import {fetch_tag} from '@utils/api/tag';
+import {EditPage, EditPageProps} from './_components/EditPage/EditPage';
 
 type Props = {
   searchParams: Promise<{
@@ -21,14 +21,14 @@ export default function Edit(props: Props): JSX.Element {
 
   React.useEffect(() => {
     (async () => {
-      const { id } = await props.searchParams;
+      const {id} = await props.searchParams;
       if (!id) {
         throw Error('id is not specified');
       }
       const category = await fetch_category_data(id);
       const tags = await fetch_tag();
-      set_edit_props({ category, tags });
+      set_edit_props({category, tags});
     })();
-  }, []);
+  }, [props.searchParams]);
   return edit_props ? <EditPage {...edit_props} /> : <></>;
 }

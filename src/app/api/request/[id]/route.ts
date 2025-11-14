@@ -1,17 +1,17 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
-import {connect_drizzle} from '../../../../db/drizzle';
 import {eq} from 'drizzle-orm';
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
-import {webhook} from '../../webhook';
 import {request} from 'src/db/schema';
+import {webhook} from '../../webhook';
+import {connect_drizzle} from '../../../../db/drizzle';
 
 export async function PUT(req: Request, {params}: {params: Promise<{id: string}>}): Promise<Response> {
   const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);

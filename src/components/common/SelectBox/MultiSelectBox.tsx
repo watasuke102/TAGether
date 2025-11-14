@@ -1,8 +1,8 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
 import CheckBox from './SelectButton';
@@ -27,7 +27,11 @@ export default function MultiSelectBox(props: Props): React.ReactElement {
             desc={str}
             onChange={() => {
               const list = JSON.parse(JSON.stringify(props.status));
-              index !== -1 ? list.splice(index, 1) : list.push(str);
+              if (index === -1) {
+                list.push(str);
+              } else {
+                list.splice(index, 1);
+              }
               props.onChange(list);
             }}
           />

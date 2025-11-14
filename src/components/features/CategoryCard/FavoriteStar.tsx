@@ -1,13 +1,13 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './FavoriteStar.module.scss';
+import StarIcon from '@assets/star.svg';
 import React from 'react';
 import {motion} from 'framer-motion';
-import StarIcon from '@assets/star.svg';
 import {toggle_favorite, useUser} from '@utils/api/user';
 
 interface Props {
@@ -27,7 +27,7 @@ export default function FavoriteStar(props: Props): React.ReactElement {
     if (user.favorite_list.includes(props.id)) {
       SetFavoriteStatus('already');
     }
-  }, [is_user_loading]);
+  }, [is_user_loading, props.id, user.favorite_list]);
 
   return (
     <motion.div

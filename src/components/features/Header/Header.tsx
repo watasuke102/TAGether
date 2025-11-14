@@ -1,17 +1,17 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import css from './Header.module.scss';
-import React from 'react';
-import Link from 'next/link';
 import TAGetherIcon from 'public/static/icon.svg';
 import ListIcon from '@assets/list.svg';
 import TagIcon from '@assets/tag.svg';
 import ProfileIcon from '@assets/profile.svg';
 import RequestIcon from '@assets/request.svg';
+import Link from 'next/link';
+import React from 'react';
 
 export default function Header(): React.ReactElement {
   // prettier-ignore

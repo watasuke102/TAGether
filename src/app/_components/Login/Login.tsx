@@ -1,25 +1,25 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 'use client';
 import css from './Login.module.scss';
-import React from 'react';
-import Link from 'next/link';
-import Button from '@/common/Button/Button';
 import Logo from 'public/static/logo.svg';
-import {useToastOperator} from '@/common/Toast/Toast';
-import {Form} from '@/common/Form/Form';
-import TextForm from '@/common/TextForm/TextForm';
 import SendIcon from '@assets/send.svg';
 import PasskeyIcon from '@assets/passkey.svg';
 import ArrowRightIcon from '@assets/arrow-right.svg';
-import {OtpSendRequest, OtpSendResponse} from 'src/app/api/auth/otp/send/route';
-import {OtpVerifyRequest, OtpVerifyResponse} from 'src/app/api/auth/otp/verify/route';
+import React from 'react';
+import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {PublicKeyCredentialRequestOptionsJSON, startAuthentication, startRegistration} from '@simplewebauthn/browser';
+import Button from '@/common/Button/Button';
+import {useToastOperator} from '@/common/Toast/Toast';
+import {Form} from '@/common/Form/Form';
+import TextForm from '@/common/TextForm/TextForm';
+import {OtpSendRequest, OtpSendResponse} from 'src/app/api/auth/otp/send/route';
+import {OtpVerifyRequest, OtpVerifyResponse} from 'src/app/api/auth/otp/verify/route';
 import {PasskeyLoginVerifyRequest, PasskeyLoginVerifyResponse} from 'src/app/api/auth/passkey/login/verify/route';
 import {PasskeyRegisterOptionsRequest} from 'src/app/api/auth/passkey/register/options/route';
 import {TopPageSessionContext} from 'src/app/page';
@@ -117,6 +117,7 @@ export function Login() {
       try {
         await auth_passkey();
         refresh_session();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (_) {}
     })();
   }, [router, refresh_session]);

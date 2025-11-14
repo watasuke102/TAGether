@@ -1,13 +1,13 @@
 // TAGether - Share self-made exam for classmates
-// CopyRight (c) 2020-2024 watasuke
+// CopyRight (c) 2020-2025 watasuke
 //
 // Email  : <watasuke102@gmail.com>
-// Twitter: @Watasuke102
+// Twitter: @watasuke1024
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import useImmSWR from 'swr/immutable';
+import {CategoryDataType} from '@mytypes/Category';
 import {fetcher} from './common';
 import {category_key} from './category';
-import {CategoryDataType} from '@mytypes/Category';
 
 // utils/api/category.tsに配置するとserver clientからimportしたときにエラーとなるから
 export function useCategoryData(id: number | string): [CategoryDataType, boolean, boolean] {
