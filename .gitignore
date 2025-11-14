@@ -3,6 +3,7 @@ node_modules
 .next
 env.json
 env.ts
+next-env.d.ts
 
 /public/sw*
 /public/workbox*
