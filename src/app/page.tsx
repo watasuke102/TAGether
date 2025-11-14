@@ -8,19 +8,44 @@
 import Header from '@/features/Header/Header';
 import css from './top.module.scss';
 import React from 'react';
-import {useSession} from '@utils/api/session';
 import {Login} from './_components/Login/Login';
 import PackageJson from 'package.json';
 import Link from 'next/link';
 
-export default function index(): React.ReactElement {
-  const [data, is_loading] = useSession();
+export const TopPageSessionContext = React.createContext<() => void>(() => undefined);
 
-  if (is_loading) {
-    return <></>;
+// 本当はサーバーコンポーネントにしたかったが、
+// セッション情報はクライアントのWebブラウザにあるのでだめそう
+export default function index(): React.ReactElement {
+  // SWRの自動更新機能により、セッションが更新されて画面が更新される場合がある
+  // （例：ユーザーがブラウザからフォーカスを外して、後で戻ってきた場合）
+  // OTP入力後にこれが発生すると、パスキー登録の確認が消えてしまう
+  // そのため、ここでは useSession() を使わず、自前でセッション確認を行う
+  const [is_logged_in, set_is_logged_in] = React.useState<boolean | null>(null);
+  const refresh_session = React.useCallback(() => {
+    fetch('/api/session')
+      .then(res => res.json())
+      .then(async data => {
+        set_is_logged_in(data.is_logged_in);
+      });
+  }, [set_is_logged_in]);
+
+  React.useEffect(refresh_session, []);
+
+  if (is_logged_in === null) {
+    return (
+      <>
+        <Header />
+        <span>Loading...</span>
+      </>
+    );
   }
-  if (!data.is_logged_in) {
-    return <Login />;
+  if (is_logged_in === false) {
+    return (
+      <TopPageSessionContext.Provider value={refresh_session}>
+        <Login />
+      </TopPageSessionContext.Provider>
+    );
   }
 
   return (

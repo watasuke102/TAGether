@@ -4,6 +4,7 @@
 // Email  : <watasuke102@gmail.com>
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
+'use client';
 import css from './Login.module.scss';
 import React from 'react';
 import Link from 'next/link';
@@ -16,6 +17,7 @@ import SendIcon from '@assets/send.svg';
 import PasskeyIcon from '@assets/passkey.svg';
 import {OtpSendRequest, OtpSendResponse} from 'src/app/api/auth/otp/send/route';
 import {OtpVerifyRequest, OtpVerifyResponse} from 'src/app/api/auth/otp/verify/route';
+import {TopPageSessionContext} from 'src/app/page';
 
 async function request_otp(req: OtpSendRequest): Promise<Omit<OtpVerifyRequest, 'token'>> {
   const res = await fetch('/api/auth/otp/send', {
@@ -53,6 +55,8 @@ export function Login() {
   const [email, set_email] = React.useState('');
   const [otp_verify_request, set_otp_verify_request] = React.useState<Omit<OtpVerifyRequest, 'token'> | null>(null);
   const [otp, set_otp] = React.useState<string>('');
+
+  const refresh_session = React.useContext(TopPageSessionContext);
 
   return (
     <section className={css.container}>
@@ -142,8 +146,8 @@ export function Login() {
                     // TODO
                   }
                 />
-                <Button text='行わない' variant='material' OnClick={window?.location.reload ?? (() => undefined)} />
-              </>
+                <Button text='行わない' variant='material' OnClick={refresh_session} />
+              </div>
             );
         }
       })()}
