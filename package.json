@@ -21,6 +21,8 @@
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
     "@radix-ui/react-select": "^2.2.6",
+    "@simplewebauthn/browser": "^13.2.2",
+    "@simplewebauthn/server": "^13.2.2",
     "@svgr/webpack": "^8.1.0",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^24.9.2",

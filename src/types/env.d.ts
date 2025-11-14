@@ -7,7 +7,9 @@
 import {SessionOptions} from 'iron-session';
 
 export type Env = {
+  ORIGIN: string;
   API_URL: string;
+  RPID: string;
   SESSION_OPTION: SessionOptions;
   SMTP_HOST: string;
   SMTP_PORT: number;
@@ -20,5 +22,4 @@ export type Env = {
     UPDATE: string;
     NEW_USER: string;
   };
-  DISABLE_LOGIN_FEATURE_ON_DEVELOPING: boolean;
 };

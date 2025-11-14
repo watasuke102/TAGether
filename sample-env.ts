@@ -7,7 +7,9 @@
 import {Env} from '@mytypes/env';
 
 export const env: Env = {
-  API_URL: '',
+  API_URL: 'http://localhost:3009',
+  RPID: 'tagether.example.com',
+  ORIGIN: 'http://localhost:3009',
   SMTP_HOST: '',
   SMTP_PORT: 587,
   SMTP_USER: '',
@@ -23,5 +25,4 @@ export const env: Env = {
     UPDATE: '',
     NEW_USER: '',
   },
-  DISABLE_LOGIN_FEATURE_ON_DEVELOPING: false,
 };

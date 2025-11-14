@@ -1,15 +1,11 @@
-import {randomInt} from 'node:crypto';
 import {env} from 'env';
 import {NextResponse} from 'next/server';
 import {connect_drizzle} from 'src/db/drizzle';
-import {email_login_tokens, users} from 'src/db/schema';
+import {email_login_tokens} from 'src/db/schema';
 import isEmail from 'validator/es/lib/isEmail';
 import bcrypt from 'bcrypt';
 import {and, eq, gt} from 'drizzle-orm';
-import {getIronSession} from 'iron-session';
-import {Session} from '@mytypes/Session';
-import {cookies} from 'next/headers';
-import {webhook} from 'src/app/api/webhook';
+import {ensure_user_exist_and_new_session} from '../../new_session';
 
 export type OtpVerifyRequest = {
   id: string;
@@ -55,29 +51,13 @@ export async function POST(res: Request): Promise<NextResponse<OtpVerifyResponse
     }
 
     await db.update(email_login_tokens).set({is_used: true}).where(eq(email_login_tokens.id, data.id));
-
-    let user = await db.select().from(users).where(eq(users.email, data.email)).limit(1);
-    if (user.length === 0) {
-      // ユーザー登録
-      user = await db
-        .insert(users)
-        .values({
-          email: data.email,
-        })
-        .returning();
-      webhook(env.WEBHOOK.NEW_USER, '新規ユーザー', [{name: 'email', value: data.email}]);
-    }
-    con.end();
-
-    const session = await getIronSession<Session>(await cookies(), env.SESSION_OPTION);
-    session.is_logged_in = true;
-    session.is_admin = user[0].is_admin;
-    session.uid = user[0].uid;
-    await session.save();
-
+    await ensure_user_exist_and_new_session(data.email, db);
     return NextResponse.json({is_verification_success: true});
   } catch (e) {
     console.error(e);
-    return NextResponse.json({error_message: 'サーバーエラーが発生しました'}, {status: 500});
+    return NextResponse.json(
+      {error_message: 'サーバーエラーが発生しました。\nしばらく待ってから再度お試しください。'},
+      {status: 500},
+    );
   }
 }

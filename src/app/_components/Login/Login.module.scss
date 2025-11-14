@@ -11,9 +11,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
+  height: min(90dvh, 500px);
+  display: grid;
+  grid-template-rows: auto 1fr;
   gap: 12px;
+  border: 4px double variable.$color-primary-1;
+  padding: 20px;
+  border-radius: 4px;
   opacity: 0;
   animation: fadein 0.5s 0.2s forwards;
 }
@@ -32,7 +36,7 @@
   margin: 0 auto;
 }
 
-.login_form {
+.login_area {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -41,19 +45,31 @@
     margin-bottom: 12px;
   }
 }
-.waiting_email {
-  text-align: center;
-}
-
 .or_separator {
   display: block;
   text-align: center;
   margin: 4px 0;
-  color: variable.$color-2;
+  color: variable.$color-3;
 }
-
 .desc {
+  margin-top: 8px;
   font-size: 0.9em;
   color: variable.$color-2;
   text-align: center;
+}
+
+.waiting_email {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.waiting_email_message {
+  text-align: center;
+}
+
+.ask_passkey_register {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

@@ -15,8 +15,13 @@ import {Form} from '@/common/Form/Form';
 import TextForm from '@/common/TextForm/TextForm';
 import SendIcon from '@assets/send.svg';
 import PasskeyIcon from '@assets/passkey.svg';
+import ArrowRightIcon from '@assets/arrow-right.svg';
 import {OtpSendRequest, OtpSendResponse} from 'src/app/api/auth/otp/send/route';
 import {OtpVerifyRequest, OtpVerifyResponse} from 'src/app/api/auth/otp/verify/route';
+import {useRouter} from 'next/navigation';
+import {PublicKeyCredentialRequestOptionsJSON, startAuthentication, startRegistration} from '@simplewebauthn/browser';
+import {PasskeyLoginVerifyRequest, PasskeyLoginVerifyResponse} from 'src/app/api/auth/passkey/login/verify/route';
+import {PasskeyRegisterOptionsRequest} from 'src/app/api/auth/passkey/register/options/route';
 import {TopPageSessionContext} from 'src/app/page';
 
 async function request_otp(req: OtpSendRequest): Promise<Omit<OtpVerifyRequest, 'token'>> {
@@ -47,7 +52,48 @@ async function verify_otp(req: OtpVerifyRequest): Promise<boolean> {
   return data.is_verification_success;
 }
 
-async function 
+async function register_passkey(email: string): Promise<void> {
+  const options_res = await fetch('/api/auth/passkey/register/options', {
+    method: 'POST',
+    body: JSON.stringify({email} as PasskeyRegisterOptionsRequest),
+    headers: {'Content-Type': 'application/json'},
+  });
+  const options: PublicKeyCredentialJSON = await options_res.json();
+  if ('error_message' in options) {
+    throw Error(options.error_message);
+  }
+  const attestation_response = await startRegistration({optionsJSON: options});
+  const res = await fetch('/api/auth/passkey/register/verify', {
+    method: 'POST',
+    body: JSON.stringify({
+      email,
+      challenge: options.challenge,
+      attestation_response,
+    } as PasskeyRegisterOptionsRequest),
+  });
+  const data: PasskeyLoginVerifyResponse = await res.json();
+  if ('error_message' in data) {
+    throw Error(data.error_message);
+  }
+}
+async function auth_passkey(): Promise<void> {
+  const options_res = await fetch('/api/auth/passkey/login/options', {method: 'POST'});
+  const options: PublicKeyCredentialRequestOptionsJSON = await options_res.json();
+  const auth_response = await startAuthentication({
+    optionsJSON: options,
+  });
+  const verify_res = await fetch('/api/auth/passkey/login/verify', {
+    method: 'POST',
+    body: JSON.stringify({
+      challenge: options.challenge,
+      auth_response,
+    } as PasskeyLoginVerifyRequest),
+  });
+  const verify_data: PasskeyLoginVerifyResponse = await verify_res.json();
+  if ('error_message' in verify_data) {
+    throw new Error(verify_data.error_message);
+  }
+}
 
 export function Login() {
   const Toast = useToastOperator();
@@ -58,8 +104,25 @@ export function Login() {
 
   const refresh_session = React.useContext(TopPageSessionContext);
 
+  const router = useRouter();
+  React.useEffect(() => {
+    (async () => {
+      if (!window || !window.PublicKeyCredential) {
+        return;
+      }
+      const is_available = await window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+      if (!router || !is_available) {
+        return;
+      }
+      try {
+        await auth_passkey();
+        refresh_session();
+      } catch (_) {}
+    })();
+  }, [router, refresh_session]);
+
   return (
-    <section className={css.container}>
+    <div className={css.container}>
       <div className={css.logo}>
         <Logo />
       </div>
@@ -68,7 +131,7 @@ export function Login() {
           case 'initial':
             return (
               <Form
-                className={css.login_form}
+                className={css.login_area}
                 onSubmit={() =>
                   request_otp({email})
                     .then(res => {
@@ -92,72 +155,78 @@ export function Login() {
                   icon={<PasskeyIcon />}
                   text='パスキーを用いてログイン'
                   variant='material'
-                  OnClick={() => {
-                    // TODO
-                  }}
+                  OnClick={() =>
+                    auth_passkey()
+                      .then(refresh_session)
+                      .catch(err => Toast.open(err.message))
+                  }
                 />
+                <div className={css.desc}>
+                  <p>
+                    学校から与えられているメールアドレスを用いてログインしてください。
+                    <br />
+                    ログインボタンを押下することで、<Link href='/pp'>プライバシーポリシー</Link>
+                    に同意したものとみなします。
+                  </p>
+                </div>
               </Form>
             );
           case 'entered_email':
             return (
-              <>
-                <p className={css.waiting_email}>
+              <div className={css.waiting_email}>
+                <p className={css.waiting_email_message}>
                   入力されたメールアドレスにログイン用メールを送信しました。メールに記載されている認証コードを入力してください。
                 </p>
-                <Form
-                  className={css.login_form}
-                  onSubmit={() =>
-                    verify_otp({
-                      ...(otp_verify_request as Omit<OtpVerifyRequest, 'token'>),
-                      token: otp,
-                    })
-                      .then(is_success => {
-                        if (is_success) {
-                          Toast.open('ログインに成功しました');
-                          set_state('ask_register_passkey');
-                        } else {
-                          Toast.open('認証コードが正しくありません。再度お試しください。');
-                          set_otp('');
-                        }
-                      })
-                      .catch(err => Toast.open(err.message))
-                  }
-                >
+                <Form className={css.login_form}>
                   <TextForm
                     oneline
                     id='login_otp'
                     label='認証コード'
                     value={otp}
-                    OnChange={e => set_otp(e.target.value)}
+                    autoComplete='one-time-code'
+                    OnChange={e => {
+                      set_otp(e.target.value);
+                      if (e.target.value.length < 6) {
+                        return;
+                      }
+                      verify_otp({
+                        ...(otp_verify_request as Omit<OtpVerifyRequest, 'token'>),
+                        token: e.target.value,
+                      })
+                        .then(is_success => {
+                          if (is_success) {
+                            Toast.open('ログインに成功しました');
+                            set_state('ask_register_passkey');
+                          } else {
+                            Toast.open('認証コードが正しくありません。再度お試しください。');
+                            set_otp('');
+                          }
+                        })
+                        .catch(err => Toast.open(err.message));
+                    }}
                   />
-                  <Button icon={<SendIcon />} text='ログイン' variant='filled' type='submit' />
                 </Form>
-              </>
+              </div>
             );
           case 'ask_register_passkey':
             return (
-              <>
+              <div className={css.ask_passkey_register}>
                 <p>パスキー登録を行いますか？</p>
                 <Button
                   text='パスキー登録を行う'
                   variant='filled'
-                  OnClick={
-                    () => {}
-                    // TODO
+                  icon={<PasskeyIcon />}
+                  OnClick={() =>
+                    register_passkey(email)
+                      .then(refresh_session)
+                      .catch(err => Toast.open(err.message))
                   }
                 />
-                <Button text='行わない' variant='material' OnClick={refresh_session} />
+                <Button text='行わない' variant='material' icon={<ArrowRightIcon />} OnClick={refresh_session} />
               </div>
             );
         }
       })()}
-      <div className={css.desc}>
-        <p>
-          学校から与えられているメールアドレスを用いてログインを行ってください。
-          <br />
-          ログインボタンを押下することで、<Link href='/pp'>プライバシーポリシー</Link>に同意したものとみなします。
-        </p>
-      </div>
-    </section>
+    </div>
   );
 }

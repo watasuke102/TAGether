@@ -5,29 +5,19 @@
 // Twitter: @Watasuke102
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import React from 'react';
-import { mutate } from 'swr';
-import { fetcher, useApiData } from './common';
-import { redirect } from 'next/navigation';
-import { Session } from '@mytypes/Session';
+import {mutate} from 'swr';
+import {fetcher, useApiData} from './common';
+import {redirect} from 'next/navigation';
+import {Session} from '@mytypes/Session';
 
 const session_key = '/api/session';
 
-export async function login(uid: string, email: string): Promise<void> {
-  console.info('[login]', { uid, email });
-  const res = await fetcher(`${session_key}/login`, {
-    method: 'POST',
-    body: JSON.stringify({ uid, email }),
-    headers: { 'Content-Type': 'application/json' },
-  });
-  console.log(res);
-  if (res.message) {
-    throw Error(res.message);
-  }
+export function reflesh_session() {
   mutate(session_key);
 }
 
 export async function logout(): Promise<void> {
-  await fetcher(`${session_key}/logout`, { method: 'POST' });
+  await fetcher(`${session_key}/logout`, {method: 'POST'});
   mutate(session_key);
 }
 
