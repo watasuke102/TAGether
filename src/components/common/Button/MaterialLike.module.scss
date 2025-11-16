@@ -10,7 +10,6 @@
 @use '../variable';
 
 @mixin bg-animation($col) {
-  cursor: pointer;
   background-color: $col;
   transition: 0.3s;
   span {
@@ -32,9 +31,9 @@
     &:hover {
       @include bg-animation(variable.$color-primary-2);
     }
-  }
-  &:active {
-    @include bg-animation(variable.$color-primary-2);
+    &:active {
+      @include bg-animation(variable.$color-primary-2);
+    }
   }
 }
 

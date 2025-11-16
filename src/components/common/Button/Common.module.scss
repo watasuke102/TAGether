@@ -16,12 +16,13 @@
   box-shadow: 2px 2px 3px variable.$color-0;
   align-items: center;
 
-  // 横幅が広かったら（スマホじゃなければ）
-  // ボタンのフォーカス時にボーダーを表示
-  @media screen and (min-width: 800px) {
+  @media (hover: hover) {
     &:focus {
       outline: none;
       box-shadow: 0 0 0 2px variable.$color-4;
     }
+  }
+  &:disabled {
+    cursor: not-allowed;
   }
 }

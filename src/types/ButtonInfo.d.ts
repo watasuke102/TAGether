@@ -9,6 +9,7 @@ interface ButtonInfo {
   icon?: React.ReactNode;
   text: string;
   type?: HTMLButtonElement['type'];
+  disabled?: boolean;
   OnClick?: () => void;
 }
 

@@ -16,6 +16,7 @@ export default function Button(props: ButtonInfo): React.ReactElement {
     <button
       className={css.button + ' ' + common.button}
       type={props.type ?? 'button'}
+      disabled={props.disabled}
       onClick={() => props.OnClick?.()}
     >
       <div className={css.button_icon}>{props.icon}</div>
