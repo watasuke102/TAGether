@@ -100,6 +100,7 @@ export function Login() {
   const Toast = useToastOperator();
   const [state, set_state] = React.useState<'initial' | 'entered_email' | 'ask_register_passkey'>('initial');
   const [email, set_email] = React.useState('');
+  const [pending, set_pending] = React.useState(false);
   const [otp_verify_request, set_otp_verify_request] = React.useState<Omit<OtpVerifyRequest, 'token'> | null>(null);
   const [otp, set_otp] = React.useState<string>('');
 
@@ -134,14 +135,16 @@ export function Login() {
             return (
               <Form
                 className={css.login_area}
-                onSubmit={() =>
+                onSubmit={() => {
+                  set_pending(true);
                   request_otp({email})
                     .then(res => {
                       set_otp_verify_request(res);
                       set_state('entered_email');
                     })
                     .catch(err => Toast.open(err.message))
-                }
+                    .finally(() => set_pending(false));
+                }}
               >
                 <TextForm
                   oneline
@@ -149,19 +152,29 @@ export function Login() {
                   id='login_email'
                   label='メールアドレス'
                   value={email}
+                  disabled={pending}
                   OnChange={e => set_email(e.target.value)}
                 />
-                <Button icon={<SendIcon />} text='ログイン用メールを送信' variant='filled' type='submit' />
+                <Button
+                  icon={<SendIcon />}
+                  text='ログイン用メールを送信'
+                  variant='filled'
+                  type='submit'
+                  disabled={pending}
+                />
                 <span className={css.or_separator}>または</span>
                 <Button
                   icon={<PasskeyIcon />}
                   text='パスキーを用いてログイン'
                   variant='material'
-                  OnClick={() =>
+                  disabled={true || pending}
+                  OnClick={() => {
+                    set_pending(true);
                     auth_passkey(false)
                       .then(refresh_session)
                       .catch(err => Toast.open(err.message))
-                  }
+                      .finally(() => set_pending(false));
+                  }}
                 />
                 <div className={css.desc}>
                   <p>
@@ -191,6 +204,7 @@ export function Login() {
                       if (e.target.value.length < 6) {
                         return;
                       }
+                      set_pending(true);
                       verify_otp({
                         ...(otp_verify_request as Omit<OtpVerifyRequest, 'token'>),
                         token: e.target.value,
@@ -204,7 +218,8 @@ export function Login() {
                             set_otp('');
                           }
                         })
-                        .catch(err => Toast.open(err.message));
+                        .catch(err => Toast.open(err.message))
+                        .finally(() => set_pending(false));
                     }}
                   />
                 </Form>
@@ -218,11 +233,14 @@ export function Login() {
                   text='パスキー登録を行う'
                   variant='filled'
                   icon={<PasskeyIcon />}
-                  OnClick={() =>
+                  disabled={pending}
+                  OnClick={() => {
+                    set_pending(true);
                     register_passkey(email)
                       .then(refresh_session)
                       .catch(err => Toast.open(err.message))
-                  }
+                      .finally(() => set_pending(false));
+                  }}
                 />
                 <Button text='行わない' variant='material' icon={<ArrowRightIcon />} OnClick={refresh_session} />
               </div>
