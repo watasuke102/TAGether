@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
-import {exam, tag} from 'src/db/schema';
+import {exam, logs, tag} from 'src/db/schema';
 import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
@@ -59,10 +59,16 @@ export async function POST(req: Request): Promise<Response> {
     .insert(exam)
     .values({...data, version: 2, tag: ''})
     .returning({inserted_id: exam.id});
-  con.end();
   webhook(env.WEBHOOK.CATEGORY_ADD, '新規カテゴリ追加', [
     {name: 'タイトル', value: data.title},
     {name: '説明', value: data.description},
   ]);
+  await db.insert(logs).values({
+    severity: 'INFO',
+    path: '/api/category',
+    message: `新規カテゴリ追加 (id: ${result[0].inserted_id}): ${data.title}`,
+    cause_user: session.uid,
+  });
+  con.end();
   return Response.json({inserted_id: result[0].inserted_id});
 }

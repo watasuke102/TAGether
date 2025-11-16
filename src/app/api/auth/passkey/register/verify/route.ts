@@ -9,7 +9,7 @@ import {eq} from 'drizzle-orm';
 import {NextResponse} from 'next/server';
 import isEmail from 'validator/es/lib/isEmail';
 import {connect_drizzle} from 'src/db/drizzle';
-import {passkeys, users} from 'src/db/schema';
+import {logs, passkeys, users} from 'src/db/schema';
 import {env} from 'env';
 
 export type PasskeyLoginVerifyRequest = {
@@ -22,14 +22,26 @@ export type PasskeyLoginVerifyResponse = {} | {error_message: string};
 
 export async function POST(request: Request): Promise<NextResponse<PasskeyLoginVerifyResponse>> {
   const data = await request.json();
+  const {db, con} = await connect_drizzle();
   if (!isEmail(data.email) || typeof data.challenge !== 'string' || !data.attestation_response) {
+    await db.insert(logs).values({
+      severity: 'WARN',
+      path: '/api/auth/passkey/register/verify',
+      message: `無効なPOSTデータ: ${JSON.stringify(data)}`,
+    });
+    con.end();
     return NextResponse.json({error_message: '無効なリクエストが送信されました'}, {status: 400});
   }
 
   try {
-    const {db, con} = connect_drizzle();
     const user = await db.select().from(users).where(eq(users.email, data.email));
     if (user.length === 0) {
+      await db.insert(logs).values({
+        severity: 'WARN',
+        path: '/api/auth/passkey/register/verify',
+        message: `存在しないユーザーのパスキー登録が試みられました: ${data.email}`,
+      });
+      con.end();
       return NextResponse.json({error_message: 'ユーザーが存在しません'}, {status: 400});
     }
     const {verified, registrationInfo} = await verifyRegistrationResponse({
@@ -39,6 +51,13 @@ export async function POST(request: Request): Promise<NextResponse<PasskeyLoginV
       expectedRPID: env.RPID,
     });
     if (!verified || !registrationInfo) {
+      await db.insert(logs).values({
+        severity: 'WARN',
+        path: '/api/auth/passkey/register/verify',
+        message: 'verifyRegistrationResponse() が false を返却',
+        cause_user: user[0].uid,
+      });
+      con.end();
       return NextResponse.json({error_message: 'パスキーの作成に失敗しました'}, {status: 401});
     }
     await db.insert(passkeys).values({
@@ -49,6 +68,12 @@ export async function POST(request: Request): Promise<NextResponse<PasskeyLoginV
     con.end();
     return NextResponse.json({}, {status: 200});
   } catch (e) {
+    await db.insert(logs).values({
+      severity: 'ERROR',
+      path: '/api/auth/passkey/register/verify',
+      message: `exception: ${e}`,
+    });
+    con.end();
     console.error(e);
     return NextResponse.json(
       {error_message: 'サーバーエラーが発生しました。\nしばらく待ってから再度お試しください。'},

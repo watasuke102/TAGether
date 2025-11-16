@@ -15,6 +15,13 @@
       "when": 1762501175258,
       "tag": "0001_eager_boom_boom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763216782363,
+      "tag": "0002_dazzling_loners",
+      "breakpoints": true
     }
   ]
 }

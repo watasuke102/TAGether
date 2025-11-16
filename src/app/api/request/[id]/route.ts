@@ -30,5 +30,6 @@ export async function PUT(req: Request, {params}: {params: Promise<{id: string}>
     {name: '要望内容', value: result[0].body},
     {name: '回答', value: answer},
   ]);
+  // 管理者による操作なのでログはいらないと思う
   return Response.json({inserted_id: result[0].id});
 }

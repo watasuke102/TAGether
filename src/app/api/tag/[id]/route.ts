@@ -7,7 +7,7 @@
 import {eq} from 'drizzle-orm';
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
-import {tag} from 'src/db/schema';
+import {logs, tag} from 'src/db/schema';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
 import {connect_drizzle} from '../../../../db/drizzle';
@@ -51,10 +51,16 @@ export async function PUT(req: Request, {params}: {params: Promise<{id: string}>
     .update(tag)
     .set(data)
     .where(eq(tag.id, Number((await params).id)));
-  con.end();
   webhook(env.WEBHOOK.TAG_REQUEST_ADD, 'タグ更新', [
     {name: 'diff (name)', value: `\`\`\`diff\n- ${old_tag[0].name}\n+ ${data.name}\n\`\`\``},
     {name: 'diff (description)', value: `\`\`\`diff\n- ${old_tag[0].description}\n+ ${data.description}\n\`\`\``},
   ]);
+  await db.insert(logs).values({
+    severity: 'DEBUG',
+    path: '/api/tag/[id]',
+    message: `タグ更新 (id: ${old_tag[0].id})\n\nold:\nname: ${old_tag[0].name}\ndescription: ${old_tag[0].description}\n\nnew:\nname: ${data.name}\ndescription: ${data.description}\n`,
+    cause_user: session.uid,
+  });
+  con.end();
   return Response.json({message: ''});
 }

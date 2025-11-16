@@ -7,6 +7,8 @@
 import {generateRegistrationOptions} from '@simplewebauthn/server';
 import {NextResponse} from 'next/server';
 import {env} from 'env';
+import {connect_drizzle} from 'src/db/drizzle';
+import {logs} from 'src/db/schema';
 
 export type PasskeyRegisterOptionsRequest = {
   email: string;
@@ -16,6 +18,13 @@ export type PasskeyRegisterOptionsResponse = ReturnType<typeof generateRegistrat
 export async function POST(request: Request) {
   const data = await request.json();
   if (typeof data.email !== 'string') {
+    const {db, con} = await connect_drizzle();
+    await db.insert(logs).values({
+      severity: 'WARN',
+      path: '/api/auth/passkey/register/options',
+      message: `無効なPOSTデータ: ${JSON.stringify(data)}`,
+    });
+    con.end();
     return NextResponse.json({error_message: '無効なリクエストが送信されました'}, {status: 400});
   }
   try {

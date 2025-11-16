@@ -8,7 +8,7 @@ import {eq} from 'drizzle-orm';
 import {getIronSession} from 'iron-session';
 import {cookies} from 'next/headers';
 import {connect_drizzle} from 'src/db/drizzle';
-import {history} from 'src/db/schema';
+import {history, logs} from 'src/db/schema';
 import {Session} from '@mytypes/Session';
 import {AllHistory} from '@mytypes/ExamHistory';
 import Exam from '@mytypes/Exam';
@@ -62,6 +62,12 @@ export async function POST(req: Request): Promise<Response> {
     .insert(history)
     .values({...data, owner: session.uid})
     .returning({inserted_id: history.id});
+  await db.insert(logs).values({
+    severity: 'DEBUG', // 「追加」ではあるが、履歴はINFOにするほど重要ではない
+    path: '/api/history',
+    message: `履歴追加 (id: ${result[0].inserted_id}): ${data.title}`,
+    cause_user: session.uid,
+  });
   con.end();
   return Response.json({inserted_id: result[0].inserted_id});
 }

@@ -9,7 +9,7 @@ import {NextResponse} from 'next/server';
 import isEmail from 'validator/es/lib/isEmail';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
-import {email_login_tokens} from 'src/db/schema';
+import {email_login_tokens, logs} from 'src/db/schema';
 import {connect_drizzle} from 'src/db/drizzle';
 import {env} from 'env';
 
@@ -24,10 +24,23 @@ export type OtpSendResponse =
 
 export async function POST(res: Request): Promise<NextResponse<OtpSendResponse>> {
   const data = await res.json();
+  const {db, con} = await connect_drizzle();
   if (typeof data.email !== 'string') {
+    await db.insert(logs).values({
+      severity: 'WARN',
+      path: '/api/auth/otp/send',
+      message: `無効なPOSTデータ: ${JSON.stringify(data)}`,
+    });
+    con.end();
     return NextResponse.json({error_message: '無効なリクエストが送信されました'}, {status: 400});
   }
   if (!isEmail(data.email) || env.EMAIL_WHITE_LIST.every(e => !e.test(data.email))) {
+    await db.insert(logs).values({
+      severity: 'WARN',
+      path: '/api/auth/otp/send',
+      message: `許可されていないメールアドレス形式: ${data.email}`,
+    });
+    con.end();
     return NextResponse.json({error_message: '許可されていないメールアドレス形式です'}, {status: 400});
   }
 
@@ -54,7 +67,6 @@ export async function POST(res: Request): Promise<NextResponse<OtpSendResponse>>
 `,
     });
 
-    const {db, con} = await connect_drizzle();
     const result = await db
       .insert(email_login_tokens)
       .values({
@@ -67,6 +79,12 @@ export async function POST(res: Request): Promise<NextResponse<OtpSendResponse>>
 
     return NextResponse.json({id: result[0].id}, {status: 200});
   } catch (e) {
+    await db.insert(logs).values({
+      severity: 'ERROR',
+      path: '/api/auth/otp/send',
+      message: `exception: ${e}`,
+    });
+    con.end();
     console.error(e);
     return NextResponse.json(
       {error_message: 'メールの送信に失敗しました。\nしばらく待ってから再度お試しください。'},

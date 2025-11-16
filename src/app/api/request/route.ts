@@ -6,7 +6,7 @@
 // This software is released under the MIT or MIT SUSHI-WARE License.
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
-import {request} from 'src/db/schema';
+import {logs, request} from 'src/db/schema';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
 import {connect_drizzle} from '../../../db/drizzle';
@@ -33,5 +33,11 @@ export async function POST(req: Request): Promise<Response> {
   const result = await db.insert(request).values({body}).returning({inserted_id: request.id});
   con.end();
   webhook(env.WEBHOOK.TAG_REQUEST_ADD, '新規要望追加', [{name: '内容', value: body}]);
+  await db.insert(logs).values({
+    severity: 'INFO',
+    path: '/api/request',
+    message: `要望の追加: ${body}`,
+    cause_user: session.uid,
+  });
   return Response.json({inserted_id: result[0].inserted_id});
 }

@@ -8,7 +8,7 @@ import {eq, sql} from 'drizzle-orm';
 import {cookies} from 'next/headers';
 import {getIronSession} from 'iron-session';
 import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
-import {exam, tag} from 'src/db/schema';
+import {category_update_log, exam, tag} from 'src/db/schema';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
 import {connect_drizzle} from '../../../../db/drizzle';
@@ -47,13 +47,25 @@ export async function PUT(req: Request, {params}: {params: Promise<{id: string}>
   }
   const data: PutCategory = await req.json();
   const {db, con} = connect_drizzle();
+  const id = Number((await params).id);
+  const old = await db.select({list: exam.list}).from(exam).where(eq(exam.id, id));
+  if (old.length === 0) {
+    con.end();
+    return Response.json({error_message: '指定されたカテゴリは存在しません'}, {status: 400});
+  }
   const result = await db
     .update(exam)
     .set({...data})
-    .where(eq(exam.id, Number((await params).id)))
-    .returning({inserted_id: exam.id});
-  con.end();
+    .where(eq(exam.id, id))
+    .returning({inserted_id: exam.id, list: exam.list});
   webhook(env.WEBHOOK.UPDATE, 'カテゴリ更新', [{name: 'タイトル', value: data.title}]);
+  await db.insert(category_update_log).values({
+    cause_user: session.uid,
+    category_id: id,
+    old_list: old[0].list,
+    new_list: result[0].list,
+  });
+  con.end();
   return Response.json({inserted_id: result[0].inserted_id});
 }
 
