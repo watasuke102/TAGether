@@ -11,6 +11,7 @@ import {replace_tag_of_category} from '@utils/ReplaceTagOfCategory';
 import {category_update_log, exam, tag} from 'src/db/schema';
 import {Session} from '@mytypes/Session';
 import {env} from 'env';
+import {validate_category} from '@utils/ValidateCategory';
 import {connect_drizzle} from '../../../../db/drizzle';
 import {webhook} from '../../webhook';
 
@@ -46,6 +47,15 @@ export async function PUT(req: Request, {params}: {params: Promise<{id: string}>
     return Response.json([], {status: 401});
   }
   const data: PutCategory = await req.json();
+  const validation_error = validate_category(data);
+  if (validation_error.length !== 0) {
+    return Response.json(
+      {
+        error_message: validation_error.join('\n'),
+      },
+      {status: 400},
+    );
+  }
   const {db, con} = connect_drizzle();
   const id = Number((await params).id);
   const old = await db.select({list: exam.list}).from(exam).where(eq(exam.id, id));
