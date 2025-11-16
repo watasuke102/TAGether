@@ -76,11 +76,12 @@ async function register_passkey(email: string): Promise<void> {
     throw Error(data.error_message);
   }
 }
-async function auth_passkey(): Promise<void> {
+async function auth_passkey(useBrowserAutofill: boolean): Promise<void> {
   const options_res = await fetch('/api/auth/passkey/login/options', {method: 'POST'});
   const options: PublicKeyCredentialRequestOptionsJSON = await options_res.json();
   const auth_response = await startAuthentication({
     optionsJSON: options,
+    useBrowserAutofill,
   });
   const verify_res = await fetch('/api/auth/passkey/login/verify', {
     method: 'POST',
@@ -115,7 +116,7 @@ export function Login() {
         return;
       }
       try {
-        await auth_passkey();
+        await auth_passkey(true);
         refresh_session();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (_) {}
@@ -157,7 +158,7 @@ export function Login() {
                   text='パスキーを用いてログイン'
                   variant='material'
                   OnClick={() =>
-                    auth_passkey()
+                    auth_passkey(false)
                       .then(refresh_session)
                       .catch(err => Toast.open(err.message))
                   }
