@@ -24,7 +24,7 @@ export async function GET(_: Request, {params}: {params: Promise<{id: string}>})
     await db
       .select()
       .from(exam)
-      .where(sql`INSTR(exam.tag, ${Number((await params).id)})`)
+      .where(sql`STRPOS(exam.tag, ${Number((await params).id)}) > 0`)
   ).map(e => {
     e.updated_at.setHours(e.updated_at.getHours() + 9);
     return {...e, updated_at: e.updated_at.toISOString()};
