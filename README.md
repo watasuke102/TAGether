@@ -12,38 +12,28 @@
 
 ## How to use
 
-1. [Google Cloud Console](https://console.cloud.google.com/apis/credentials/oauthclient) でOAuthクライアントを作成
-   あるいは後述のenv.tsにおいて、`DISABLE_LOGIN_FEATURE_ON_DEVELOPING`をtrueに設定する
 1. `cp sample-env.ts env.ts`
-1. env.tsを編集し、OAuthのclient idなどを適切に設定する
+1. env.tsを編集し、SMTPサーバー等の設定を行う
+    1. `SESSION_OPTION.password` は `console.log(require('crypto').randomBytes(64).toString('hex'))` とかで生成してください
 1. `./start.sh` (本番環境は`./start.sh product`)
 
-## docker-compose について
-
-最新情報は compose.yaml をチェックしてね
+以下のポートで Docker Compose が立ち上がります：
 
 | 名前                     | ポート |
 | ------------------------ | ------ |
 | フロントエンド (Next.js) | 3009   |
-| phpMyAdmin               | 8888   |
-| MySQL                    | 3334   |
+| PostgreSQL               | 5432   |
 
 ## ディレクトリ構造
 
-### /public
-
-favicon など
-
-### /src
-
-React (Next.js) によるフロントエンド
+/src 下
 
 - app/
   Next.js App router
 - assets/
   アイコンのsvg（基本的に[Google Fonts](https://fonts.google.com/icons)から取ってきたもの）
 - db/
-  drizzleのschemaとMySQLへ接続する関数
+  drizzleのschemaとPostgreSQLへ接続する関数
 - components/
   - common/ → 共通して使うコンポーネント
   - features/ → 機能ごとに分ける
@@ -53,13 +43,6 @@ React (Next.js) によるフロントエンド
   型定義
 - utils/
   JSXを返却しない関数群
-
-### /docker
-
-docker compose 用
-
-- mysql/  
-  DB 初期化の `db_init.sql`
 
 ## LICENSE
 
