@@ -14,9 +14,9 @@ import Loading from '@/common/Loading/Loading';
 import TextForm from '@/common/TextForm/TextForm';
 import Modal from '@/common/Modal/Modal';
 import ButtonContainer from '@/common/Button/ButtonContainer';
-import { Form } from '@/common/Form/Form';
-import { useUser } from '@utils/api/user';
-import { useRequestData, new_request, set_answer_to_request } from '@utils/api/request';
+import {Form} from '@/common/Form/Form';
+import {useUser} from '@utils/api/user';
+import {useRequestData, new_request, set_answer_to_request} from '@utils/api/request';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
@@ -34,9 +34,7 @@ export default function Request(): React.ReactElement {
       <p>
         開発状況（ToDo）は<a href='https://0e0.pw/lusM'>こちら</a>
       </p>
-      <p>
-        以下の入力欄に要望を入力し、「送信」ボタンを押すことで送信できます。
-      </p>
+      <p>以下の入力欄に要望を入力し、「送信」ボタンを押すことで送信できます。</p>
       <Form
         className={css.form}
         onSubmit={() => {
