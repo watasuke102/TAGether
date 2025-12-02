@@ -14,9 +14,9 @@ import Loading from '@/common/Loading/Loading';
 import TextForm from '@/common/TextForm/TextForm';
 import Modal from '@/common/Modal/Modal';
 import ButtonContainer from '@/common/Button/ButtonContainer';
-import {Form} from '@/common/Form/Form';
-import {useUser} from '@utils/api/user';
-import {useRequestData, new_request, set_answer_to_request} from '@utils/api/request';
+import { Form } from '@/common/Form/Form';
+import { useUser } from '@utils/api/user';
+import { useRequestData, new_request, set_answer_to_request } from '@utils/api/request';
 
 export default function Request(): React.ReactElement {
   const [request, SetRequest] = React.useState('');
@@ -29,15 +29,13 @@ export default function Request(): React.ReactElement {
     <div className={css.container}>
       <h1>要望一覧</h1>
       <p>
-        要望一覧を回答付きで表示します。 もし要望がある場合は、気軽に投稿してください。 荒らしや迷惑な内容は削除します。
+        要望一覧を回答付きで表示します。要望がある場合は気軽に投稿してください。他のユーザーに送信者を知られることはありませんが、ログには記録しているため、悪意のある迷惑行為などはお控えください。
       </p>
       <p>
         開発状況（ToDo）は<a href='https://0e0.pw/lusM'>こちら</a>
       </p>
       <p>
         以下の入力欄に要望を入力し、「送信」ボタンを押すことで送信できます。
-        <br />
-        送信者が特定できるような情報は保存されません。個別対応が必要な際は要望内にその旨を含めてください。
       </p>
       <Form
         className={css.form}
