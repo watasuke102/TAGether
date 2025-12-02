@@ -9,13 +9,14 @@ import {getIronSession} from 'iron-session';
 import {cookies} from 'next/headers';
 import {Session} from '@mytypes/Session';
 import {DrizzleConnection} from 'src/db/drizzle';
-import {users} from 'src/db/schema';
+import {logs, users} from 'src/db/schema';
 import {env} from 'env';
 import {webhook} from '../webhook';
 
 export async function ensure_user_exist_and_new_session(
   user_email: string,
   db: DrizzleConnection['db'],
+  route_for_log: string,
 ): Promise<Session> {
   let user = await db.select().from(users).where(eq(users.email, user_email));
   if (user.length === 0) {
@@ -26,6 +27,12 @@ export async function ensure_user_exist_and_new_session(
         email: user_email,
       })
       .returning();
+      await db.insert(logs).values({
+        severity: 'INFO',
+        path: route_for_log,
+        message: '新規ユーザー登録',
+        cause_user: user[0].uid,
+      });
     webhook(env.WEBHOOK.NEW_USER, '新規ユーザー', [{name: 'email', value: user_email}]);
   }
 

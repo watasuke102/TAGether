@@ -75,7 +75,7 @@ export async function POST(request: Request): Promise<NextResponse<PasskeyLoginV
       .update(passkeys)
       .set({counter: authenticationInfo.newCounter})
       .where(eq(passkeys.id, passkey[0].passkeys.id));
-    await ensure_user_exist_and_new_session(passkey[0].users.email, db);
+    await ensure_user_exist_and_new_session(passkey[0].users.email, db, '/api/auth/passkey/login/verify');
     con.end();
     return NextResponse.json({}, {status: 200});
   } catch (e) {

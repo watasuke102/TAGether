@@ -75,7 +75,7 @@ export async function POST(res: Request): Promise<NextResponse<OtpVerifyResponse
     }
 
     await db.update(email_login_tokens).set({is_used: true}).where(eq(email_login_tokens.id, data.id));
-    await ensure_user_exist_and_new_session(data.email, db);
+    await ensure_user_exist_and_new_session(data.email, db, '/api/auth/otp/verify');
     return NextResponse.json({is_verification_success: true});
   } catch (e) {
     await db.insert(logs).values({
