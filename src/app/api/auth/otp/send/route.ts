@@ -54,7 +54,7 @@ export async function POST(res: Request): Promise<NextResponse<OtpSendResponse>>
         pass: env.SMTP_PASS,
       },
     });
-    transporter.sendMail({
+    await transporter.sendMail({
       from: env.SMTP_USER,
       to: data.email,
       subject: `[TAGether] ${token} はあなたの認証コードです`,
