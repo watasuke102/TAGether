@@ -29,9 +29,8 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json([], {status: 401});
   }
   const body: string = await req.text();
-  const {db, con} = connect_drizzle();
+  const {db} = connect_drizzle();
   const result = await db.insert(request).values({body}).returning({inserted_id: request.id});
-  con.end();
   webhook(env.WEBHOOK.TAG_REQUEST_ADD, '新規要望追加', [{name: '内容', value: body}]);
   await db.insert(logs).values({
     severity: 'INFO',
