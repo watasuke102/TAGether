@@ -27,7 +27,7 @@ export default function FavoriteStar(props: Props): React.ReactElement {
     if (user.favorite_list.includes(props.id)) {
       SetFavoriteStatus('already');
     }
-  }, [is_user_loading, props.id, user.favorite_list]);
+  }, [is_user_loading, props.id, user]);
 
   return (
     <motion.div

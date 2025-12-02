@@ -10,9 +10,9 @@ import DownloadIcon from '@assets/download.svg';
 import React from 'react';
 import Button from '@/common/Button/Button';
 import Modal from '@/common/Modal/Modal';
-import {SelectButton, SingleSelectBox} from '@/common/SelectBox';
-import {Shuffle} from '@utils/ArrayUtil';
-import {CategoryDataType} from '@mytypes/Category';
+import { SelectButton, SingleSelectBox } from '@/common/SelectBox';
+import { Shuffle } from '@utils/ArrayUtil';
+import { CategoryDataType } from '@mytypes/Category';
 import Exam from '@mytypes/Exam';
 
 interface Props {
@@ -84,7 +84,7 @@ export function CsvExport(props: Props): React.ReactElement {
       content.push('\n');
     });
 
-    const blob = new Blob(content, {type: 'text/csv'});
+    const blob = new Blob(content, { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.download = `${props.data.title}.csv`;
@@ -93,7 +93,7 @@ export function CsvExport(props: Props): React.ReactElement {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  }, [props.data.list, props.data.title, wordholic_mode, question_item_lang, answer_item_lang]);
+  }, [props.data, wordholic_mode, question_item_lang, answer_item_lang]);
 
   return (
     <Modal isOpen={props.is_opening} close={props.close}>
