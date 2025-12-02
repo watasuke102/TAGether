@@ -29,11 +29,11 @@
   transition: background-color 0.3s;
 
   @media (hover: hover) {
-    &:hover {
+    &:not(:disabled):hover {
       @include bg-animation(variable.$color-primary-2);
     }
   }
-  &:active {
+  &:not(:disabled):active {
     @include bg-animation(variable.$color-primary-2);
   }
 }
