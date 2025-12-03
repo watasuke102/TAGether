@@ -215,11 +215,13 @@ export function Login() {
                             set_state('ask_register_passkey');
                           } else {
                             Toast.open('認証コードが正しくありません。再度お試しください。');
-                            set_otp('');
                           }
                         })
                         .catch(err => Toast.open(err.message))
-                        .finally(() => set_pending(false));
+                        .finally(() => {
+                          set_otp('');
+                          set_pending(false);
+                        });
                     }}
                   />
                 </Form>

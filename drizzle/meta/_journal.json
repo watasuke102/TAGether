@@ -22,6 +22,13 @@
       "when": 1763216782363,
       "tag": "0002_dazzling_loners",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764759914026,
+      "tag": "0003_regular_sunspot",
+      "breakpoints": true
     }
   ]
 }

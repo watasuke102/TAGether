@@ -8,7 +8,7 @@ import {NextResponse} from 'next/server';
 import isEmail from 'validator/es/lib/isEmail';
 import bcrypt from 'bcrypt';
 import {and, desc, eq, gt} from 'drizzle-orm';
-import {email_login_tokens, logs} from 'src/db/schema';
+import {email_login_tokens, logs, otp_attempts} from 'src/db/schema';
 import {env} from 'env';
 import {connect_drizzle} from 'src/db/drizzle';
 import {ensure_user_exist_and_new_session} from '../../new_session';
@@ -49,6 +49,27 @@ export async function POST(res: Request): Promise<NextResponse<OtpVerifyResponse
   }
 
   try {
+    const recent_attempts = await db
+      .select()
+      .from(otp_attempts)
+      .where(
+        and(eq(otp_attempts.email, data.email), gt(otp_attempts.attempted_at, new Date(Date.now() - 5 * 60 * 1000))),
+      );
+    // 過去5分で5回以上の試行があったら弾く；「連続して5回間違えたら5分ロック」ではない
+    // （0分0秒に4回間違えて、4分59秒で1回間違えると、1秒後に4回試行できるようになる）
+    if (recent_attempts.length >= 5) {
+      await db.insert(logs).values({
+        severity: 'WARN',
+        path: '/api/auth/otp/verify',
+        message: `Too many OTP attempts from ${data.email}`,
+      });
+      con.end();
+      return NextResponse.json(
+        {error_message: '試行回数が多すぎます。しばらくしてから再度お試しください。'},
+        {status: 429},
+      );
+    }
+    await db.insert(otp_attempts).values({email: data.email});
     // prettier-ignore
     const record = await db
       .select()
@@ -76,6 +97,7 @@ export async function POST(res: Request): Promise<NextResponse<OtpVerifyResponse
     }
 
     await db.update(email_login_tokens).set({is_used: true}).where(eq(email_login_tokens.id, data.id));
+    await db.delete(otp_attempts).where(eq(otp_attempts.email, data.email));
     await ensure_user_exist_and_new_session(data.email, db, '/api/auth/otp/verify');
     return NextResponse.json({is_verification_success: true});
   } catch (e) {

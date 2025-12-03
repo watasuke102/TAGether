@@ -72,6 +72,12 @@ export const email_login_tokens = pgTable('email_login_tokens', {
   is_used: boolean().notNull().default(false),
 });
 
+export const otp_attempts = pgTable('otp_attempts', {
+  id: serial().notNull().primaryKey(),
+  email: text().notNull(),
+  attempted_at: timestamp().notNull().defaultNow(),
+});
+
 export const passkeys = pgTable('passkeys', {
   id: uuid().notNull().primaryKey().defaultRandom(),
   owner: uuid()
