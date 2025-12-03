@@ -53,7 +53,7 @@
     "@tony.ganchev/eslint-plugin-header": "^3.1.11",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
-    "drizzle-kit": "^0.31.6",
+    "drizzle-kit": "^0.31.7",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.3",
     "eslint-config-prettier": "^10.1.8",
