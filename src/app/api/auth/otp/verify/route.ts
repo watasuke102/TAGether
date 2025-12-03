@@ -7,7 +7,7 @@
 import {NextResponse} from 'next/server';
 import isEmail from 'validator/es/lib/isEmail';
 import bcrypt from 'bcrypt';
-import {and, eq, gt} from 'drizzle-orm';
+import {and, desc, eq, gt} from 'drizzle-orm';
 import {email_login_tokens, logs} from 'src/db/schema';
 import {env} from 'env';
 import {connect_drizzle} from 'src/db/drizzle';
@@ -53,6 +53,7 @@ export async function POST(res: Request): Promise<NextResponse<OtpVerifyResponse
     const record = await db
       .select()
       .from(email_login_tokens)
+      .orderBy(desc(email_login_tokens.created_at))
       .where(and(
         eq(email_login_tokens.id, data.id),
         gt(email_login_tokens.expire_at, new Date())
