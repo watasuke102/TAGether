@@ -4,7 +4,7 @@ services:
     volumes:
       - ./docker/data:/var/lib/postgresql
     ports:
-      - '5432:5432'
+      - '127.0.0.1:5432:5432'
     environment:
       POSTGRES_USER: tagether
       POSTGRES_PASSWORD: root
@@ -14,7 +14,7 @@ services:
     image: node:20
     user: node
     ports:
-      - '3009:3009'
+      - '127.0.0.1:3009:3009'
     volumes:
       - .:/front
     working_dir: /front
