@@ -21,6 +21,11 @@
   z-index: 1000;
   background-color: rgba(variable.$color-0, 0.95);
   padding: 4px 8px;
+  // header + 問題数&ボタン表示部 == 120px
+  max-height: calc(var(--radix-select-content-available-height) - 120px);
+  overflow-y: auto;
+  scrollbar-width: initial !important;
+  scrollbar-color: variable.$color-primary-3 transparent;
 }
 
 .item {
