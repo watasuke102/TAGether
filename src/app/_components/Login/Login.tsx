@@ -14,6 +14,11 @@ import React from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {PublicKeyCredentialRequestOptionsJSON, startAuthentication, startRegistration} from '@simplewebauthn/browser';
+import {
+  OneTimePasswordField,
+  OneTimePasswordFieldHiddenInput,
+  OneTimePasswordFieldInput,
+} from '@radix-ui/react-one-time-password-field';
 import Button from '@/common/Button/Button';
 import {useToastOperator} from '@/common/Toast/Toast';
 import {Form} from '@/common/Form/Form';
@@ -23,11 +28,6 @@ import {OtpVerifyRequest, OtpVerifyResponse} from 'src/app/api/auth/otp/verify/r
 import {PasskeyLoginVerifyRequest, PasskeyLoginVerifyResponse} from 'src/app/api/auth/passkey/login/verify/route';
 import {PasskeyRegisterOptionsRequest} from 'src/app/api/auth/passkey/register/options/route';
 import {TopPageSessionContext} from 'src/app/page';
-import {
-  OneTimePasswordField,
-  OneTimePasswordFieldHiddenInput,
-  OneTimePasswordFieldInput,
-} from '@radix-ui/react-one-time-password-field';
 
 async function request_otp(req: OtpSendRequest): Promise<Omit<OtpVerifyRequest, 'token'>> {
   const res = await fetch('/api/auth/otp/send', {

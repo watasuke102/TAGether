@@ -27,12 +27,12 @@ export async function ensure_user_exist_and_new_session(
         email: user_email,
       })
       .returning();
-      await db.insert(logs).values({
-        severity: 'INFO',
-        path: route_for_log,
-        message: '新規ユーザー登録',
-        cause_user: user[0].uid,
-      });
+    await db.insert(logs).values({
+      severity: 'INFO',
+      path: route_for_log,
+      message: '新規ユーザー登録',
+      cause_user: user[0].uid,
+    });
     webhook(env.WEBHOOK.NEW_USER, '新規ユーザー', [{name: 'email', value: user_email}]);
   }
 
