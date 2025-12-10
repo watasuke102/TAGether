@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
+    "@radix-ui/react-one-time-password-field": "^0.1.8",
     "@radix-ui/react-select": "^2.2.6",
     "@simplewebauthn/browser": "^13.2.2",
     "@simplewebauthn/server": "^13.2.2",

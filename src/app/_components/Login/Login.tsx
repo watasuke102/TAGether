@@ -23,6 +23,11 @@ import {OtpVerifyRequest, OtpVerifyResponse} from 'src/app/api/auth/otp/verify/r
 import {PasskeyLoginVerifyRequest, PasskeyLoginVerifyResponse} from 'src/app/api/auth/passkey/login/verify/route';
 import {PasskeyRegisterOptionsRequest} from 'src/app/api/auth/passkey/register/options/route';
 import {TopPageSessionContext} from 'src/app/page';
+import {
+  OneTimePasswordField,
+  OneTimePasswordFieldHiddenInput,
+  OneTimePasswordFieldInput,
+} from '@radix-ui/react-one-time-password-field';
 
 async function request_otp(req: OtpSendRequest): Promise<Omit<OtpVerifyRequest, 'token'>> {
   const res = await fetch('/api/auth/otp/send', {
@@ -192,39 +197,41 @@ export function Login() {
                 <p className={css.waiting_email_message}>
                   入力されたメールアドレスにログイン用メールを送信しました。メールに記載されている認証コードを入力してください。
                 </p>
-                <Form className={css.login_form}>
-                  <TextForm
-                    oneline
-                    id='login_otp'
-                    label='認証コード'
-                    value={otp}
-                    autoComplete='one-time-code'
-                    OnChange={e => {
-                      set_otp(e.target.value);
-                      if (e.target.value.length < 6) {
-                        return;
-                      }
-                      set_pending(true);
-                      verify_otp({
-                        ...(otp_verify_request as Omit<OtpVerifyRequest, 'token'>),
-                        token: e.target.value,
+                <OneTimePasswordField
+                  className={css.waiting_email_otp_field}
+                  value={otp}
+                  onValueChange={set_otp}
+                  autoFocus
+                  autoSubmit
+                  onAutoSubmit={e => {
+                    set_pending(true);
+                    verify_otp({
+                      ...(otp_verify_request as Omit<OtpVerifyRequest, 'token'>),
+                      token: e,
+                    })
+                      .then(is_success => {
+                        if (is_success) {
+                          Toast.open('ログインに成功しました');
+                          set_state('ask_register_passkey');
+                        } else {
+                          Toast.open('認証コードが正しくありません。再度お試しください。');
+                        }
                       })
-                        .then(is_success => {
-                          if (is_success) {
-                            Toast.open('ログインに成功しました');
-                            set_state('ask_register_passkey');
-                          } else {
-                            Toast.open('認証コードが正しくありません。再度お試しください。');
-                          }
-                        })
-                        .catch(err => Toast.open(err.message))
-                        .finally(() => {
-                          set_otp('');
-                          set_pending(false);
-                        });
-                    }}
-                  />
-                </Form>
+                      .catch(err => Toast.open(err.message))
+                      .finally(() => {
+                        set_otp('');
+                        set_pending(false);
+                      });
+                  }}
+                >
+                  <OneTimePasswordFieldInput className={css.waiting_email_otp_input} />
+                  <OneTimePasswordFieldInput className={css.waiting_email_otp_input} />
+                  <OneTimePasswordFieldInput className={css.waiting_email_otp_input} />
+                  <OneTimePasswordFieldInput className={css.waiting_email_otp_input} />
+                  <OneTimePasswordFieldInput className={css.waiting_email_otp_input} />
+                  <OneTimePasswordFieldInput className={css.waiting_email_otp_input} />
+                  <OneTimePasswordFieldHiddenInput />
+                </OneTimePasswordField>
               </div>
             );
           case 'ask_register_passkey':

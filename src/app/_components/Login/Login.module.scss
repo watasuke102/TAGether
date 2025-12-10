@@ -65,6 +65,20 @@
 .waiting_email_message {
   text-align: center;
 }
+.waiting_email_otp_field {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+.waiting_email_otp_input {
+  width: 40px;
+  font-size: 1.8em;
+  text-align: center;
+  border: none;
+  color: variable.$color-bg;
+  background-color: variable.$color-4;
+  border-radius: 2px;
+}
 
 .ask_passkey_register {
   text-align: center;
