@@ -32,6 +32,7 @@ export type EditPageProps = {
 
 export function EditPage(props: EditPageProps): JSX.Element {
   const [is_json_edit, SetIsJsonEdit] = React.useState(false);
+  const [is_updating, SetIsUpdating] = React.useState(false);
   const [edit_states, dispatch] = useImmerReducer(edit_reducer, {
     title: props.category.title,
     current_editing: 0,
@@ -83,6 +84,7 @@ export function EditPage(props: EditPageProps): JSX.Element {
       Toast.open(validation_error.join('\n'));
       return;
     }
+    SetIsUpdating(true);
     update_category(props.category.id, request_data)
       .then(() => {
         Toast.open('編集結果を適用しました');
@@ -92,7 +94,8 @@ export function EditPage(props: EditPageProps): JSX.Element {
       })
       .catch(err => {
         Toast.open(`エラーが発生しました。\n${err.toString()}`);
-      });
+      })
+      .finally(() => SetIsUpdating(false));
     console.groupCollapsed('Category update request');
     console.info(request_data);
     console.groupEnd();
@@ -140,7 +143,13 @@ export function EditPage(props: EditPageProps): JSX.Element {
       <div className={css.buttons}>
         <SelectButton type='check' status={is_json_edit} desc='高度な編集（JSON）' onChange={SetIsJsonEdit} />
         <div className={css.pushbutton_wrapper}>
-          <Button variant={'filled'} icon={<CheckIcon />} text={'編集を適用'} OnClick={() => RegistCategory()} />
+          <Button
+            variant={'filled'}
+            icon={<CheckIcon />}
+            text={is_updating ? '更新中…' : '編集を適用'}
+            disabled={is_updating}
+            OnClick={() => RegistCategory()}
+          />
         </div>
       </div>
       <hr />
